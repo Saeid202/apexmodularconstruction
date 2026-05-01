@@ -3,11 +3,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Plus, Trash2, Eye, Pencil, Download, MessageSquare, X,
-  Loader2, Package, ChevronDown, ChevronUp, Send, ExternalLink, ImagePlus,
+  Loader2, Package, ChevronDown, ChevronUp, Send, ExternalLink, ImagePlus, FileUp, FileText,
 } from "lucide-react";
 import {
   getMyOrders, createOrder, updateOrder, deleteOrder, updateOrderNotes,
   uploadItemImages, getOrderImages, deleteItemImage,
+  uploadOrderAttachments, getOrderAttachments, deleteOrderAttachment,
+  type OrderAttachment,
   type ConsolidationOrder, type OrderItem, type ItemImage,
 } from "@/app/actions/consolidation";
 import { CATEGORIES, UNITS } from "@/lib/consolidation-constants";
@@ -55,6 +57,8 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showOrderNameTip, setShowOrderNameTip] = useState(false);
+  const [attachmentFiles, setAttachmentFiles] = useState<File[]>([]);
+  const [existingAttachments, setExistingAttachments] = useState<OrderAttachment[]>([]);
   useEffect(() => {
     if (!showOrderNameTip) return;
     const handler = () => setShowOrderNameTip(false);
@@ -73,6 +77,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
       const grouped = existing.items.map((_, i) => imgs.filter((img) => img.item_index === i));
       setExistingImages(grouped);
     });
+    getOrderAttachments(existing.id).then(setExistingAttachments);
   }, [existing]);
 
   function setItem(i: number, field: keyof OrderItem, value: any) {
@@ -130,6 +135,20 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
         attachments.push({ name: file.name, base64, type: file.type });
       }
       await uploadItemImages(orderId, i, attachments);
+    }
+
+    // Upload order-level attachments (PDF/Excel)
+    if (attachmentFiles.length > 0) {
+      const attachments: { name: string; base64: string; type: string }[] = [];
+      for (const file of attachmentFiles) {
+        const base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve((reader.result as string).split(",")[1]);
+          reader.readAsDataURL(file);
+        });
+        attachments.push({ name: file.name, base64, type: file.type });
+      }
+      await uploadOrderAttachments(orderId, attachments);
     }
 
     setSaving(false);
@@ -235,38 +254,52 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                         placeholder="e.g. Galvanized Steel Pipe"
                         className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
                       {/* Sample images */}
-                      <div className="mt-2">
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {/* Existing saved images */}
-                          {(existingImages[i] ?? []).map((img) => (
-                            <div key={img.id} className="relative group h-16 w-16 rounded-xl overflow-hidden border-2 border-blue-100 shadow-sm">
-                              <img src={img.url} alt={img.file_name} className="h-full w-full object-cover" />
-                              <button type="button" onClick={() => removeExistingImage(i, img)}
-                                className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                <X className="h-4 w-4 text-white" />
-                              </button>
-                            </div>
-                          ))}
-                          {/* New staged images */}
-                          {(newFiles[i] ?? []).map((file, fi) => (
-                            <div key={fi} className="relative group h-16 w-16 rounded-xl overflow-hidden border-2 border-indigo-200 shadow-sm">
-                              <img src={URL.createObjectURL(file)} alt={file.name} className="h-full w-full object-cover" />
-                              <button type="button" onClick={() => removeNewFile(i, fi)}
-                                className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                <X className="h-4 w-4 text-white" />
-                              </button>
-                            </div>
-                          ))}
-                          {/* Upload button */}
-                          <label className="flex flex-col items-center justify-center h-16 w-16 rounded-xl border-2 border-dashed border-gray-200 hover:border-blue-400 hover:bg-blue-50 cursor-pointer transition-colors">
-                            <ImagePlus className="h-5 w-5 text-gray-300 hover:text-blue-400" />
-                            <span className="text-[9px] text-gray-300 mt-0.5">Add</span>
+                      <div className="mt-3">
+                        <label className="text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2 block">Sample Images</label>
+                        {/* Upload drop zone — shown when no images yet */}
+                        {((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) === 0 && (
+                          <label className="flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50"
+                            style={{ borderColor: "rgba(75,29,143,0.4)", background: "rgba(75,29,143,0.03)" }}>
+                            <ImagePlus className="h-7 w-7 mb-1.5" style={{ color: "#4B1D8F" }} />
+                            <span className="text-sm font-bold" style={{ color: "#4B1D8F" }}>Click to upload images</span>
+                            <span className="text-xs text-gray-400 mt-0.5">JPG, PNG, WEBP — multiple allowed</span>
                             <input type="file" multiple accept="image/*" className="hidden"
                               onChange={(e) => e.target.files && addFiles(i, e.target.files)} />
                           </label>
-                        </div>
+                        )}
+                        {/* Thumbnails + add more */}
                         {((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) > 0 && (
-                          <p className="text-[10px] text-gray-400">{(existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)} sample image{((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) !== 1 ? "s" : ""} · hover to remove</p>
+                          <div className="flex flex-wrap gap-2">
+                            {(existingImages[i] ?? []).map((img) => (
+                              <div key={img.id} className="relative group h-20 w-20 rounded-xl overflow-hidden border-2 border-[#4B1D8F]/30 shadow-sm">
+                                <img src={img.url} alt={img.file_name} className="h-full w-full object-cover" />
+                                <button type="button" onClick={() => removeExistingImage(i, img)}
+                                  className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                  <X className="h-4 w-4 text-white" />
+                                </button>
+                              </div>
+                            ))}
+                            {(newFiles[i] ?? []).map((file, fi) => (
+                              <div key={fi} className="relative group h-20 w-20 rounded-xl overflow-hidden border-2 border-[#4B1D8F]/30 shadow-sm">
+                                <img src={URL.createObjectURL(file)} alt={file.name} className="h-full w-full object-cover" />
+                                <button type="button" onClick={() => removeNewFile(i, fi)}
+                                  className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                  <X className="h-4 w-4 text-white" />
+                                </button>
+                              </div>
+                            ))}
+                            {/* Add more */}
+                            <label className="flex flex-col items-center justify-center h-20 w-20 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50"
+                              style={{ borderColor: "rgba(75,29,143,0.4)" }}>
+                              <ImagePlus className="h-5 w-5" style={{ color: "#4B1D8F" }} />
+                              <span className="text-[10px] font-bold mt-0.5" style={{ color: "#4B1D8F" }}>Add more</span>
+                              <input type="file" multiple accept="image/*" className="hidden"
+                                onChange={(e) => e.target.files && addFiles(i, e.target.files)} />
+                            </label>
+                          </div>
+                        )}
+                        {((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) > 0 && (
+                          <p className="text-[10px] text-gray-400 mt-1.5">{(existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)} image{((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) !== 1 ? "s" : ""} · hover to remove</p>
                         )}
                       </div>
                     </div>
@@ -347,6 +380,66 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
         <textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)}
           placeholder="Any additional instructions, delivery requirements, or special requests…"
           className="w-full px-4 py-3 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 resize-none transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+      </div>
+
+      {/* Order attachments */}
+      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12), 0 4px 12px rgba(75,29,143,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#4B1D8F" }}>📎 Order Documents</label>
+        <p className="text-xs text-gray-500 mb-3">Attach your order request as a PDF or Excel file. Our agent will review it alongside your product lines.</p>
+
+        {/* Drop zone */}
+        <label className="flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50 mb-3"
+          style={{ borderColor: "rgba(75,29,143,0.4)", background: "rgba(75,29,143,0.02)" }}>
+          <FileUp className="h-6 w-6 mb-1" style={{ color: "#4B1D8F" }} />
+          <span className="text-sm font-bold" style={{ color: "#4B1D8F" }}>Click to upload PDF or Excel</span>
+          <span className="text-xs text-gray-400 mt-0.5">.pdf, .xls, .xlsx — multiple allowed</span>
+          <input type="file" multiple accept=".pdf,.xls,.xlsx" className="hidden"
+            onChange={(e) => e.target.files && setAttachmentFiles((prev) => [...prev, ...Array.from(e.target.files!)])} />
+        </label>
+
+        {/* Existing saved attachments */}
+        {existingAttachments.length > 0 && (
+          <div className="space-y-1.5 mb-2">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Previously uploaded</p>
+            {existingAttachments.map((att) => (
+              <div key={att.id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-[#4B1D8F]/20 bg-purple-50">
+                <div className="flex items-center gap-2 min-w-0">
+                  <FileText className="h-4 w-4 shrink-0" style={{ color: "#4B1D8F" }} />
+                  <a href={att.url} target="_blank" rel="noopener noreferrer"
+                    className="text-sm font-semibold truncate hover:underline" style={{ color: "#4B1D8F" }}>
+                    {att.file_name}
+                  </a>
+                </div>
+                <button type="button" onClick={async () => {
+                  await deleteOrderAttachment(att.id, att.storage_path);
+                  setExistingAttachments((prev) => prev.filter((a) => a.id !== att.id));
+                }} className="shrink-0 text-gray-400 hover:text-red-500 transition-colors">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* New staged attachments */}
+        {attachmentFiles.length > 0 && (
+          <div className="space-y-1.5">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Ready to upload</p>
+            {attachmentFiles.map((file, i) => (
+              <div key={i} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-gray-50">
+                <div className="flex items-center gap-2 min-w-0">
+                  <FileText className="h-4 w-4 shrink-0 text-gray-400" />
+                  <span className="text-sm font-semibold text-gray-700 truncate">{file.name}</span>
+                  <span className="text-xs text-gray-400 shrink-0">({(file.size / 1024).toFixed(0)} KB)</span>
+                </div>
+                <button type="button" onClick={() => setAttachmentFiles((prev) => prev.filter((_, j) => j !== i))}
+                  className="shrink-0 text-gray-400 hover:text-red-500 transition-colors">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="flex gap-3 pt-2">
