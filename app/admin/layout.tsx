@@ -4,16 +4,17 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/client";
-import { LayoutDashboard, Users, Package, MessageSquare, ShoppingBag, LogOut, ChevronRight, Store, Briefcase, Image, Menu, FileText } from "lucide-react";
+import { LayoutDashboard, Users, Package, MessageSquare, ShoppingBag, LogOut, ChevronRight, Store, Briefcase, Image, Menu, FileText, Truck } from "lucide-react";
 
 const navItems = [
-  { href: "/admin/dashboard",   label: "Dashboard",   icon: LayoutDashboard },
-  { href: "/admin/partners",    label: "Partners",    icon: Users },
-  { href: "/admin/agents",      label: "Agents",      icon: Briefcase },
-  { href: "/admin/engineering", label: "Engineering", icon: Package },
-  { href: "/admin/sellers",     label: "Sellers",     icon: Store },
-  { href: "/admin/orders",      label: "Orders",      icon: ShoppingBag },
-  { href: "/admin/inquiries",   label: "Inquiries",   icon: MessageSquare },
+  { href: "/admin/dashboard",        label: "Dashboard",        icon: LayoutDashboard },
+  { href: "/admin/partners",         label: "Partners",         icon: Users },
+  { href: "/admin/agents",           label: "Agents",           icon: Briefcase },
+  { href: "/admin/shipping-agents",  label: "Shipping Agents",  icon: Truck },
+  { href: "/admin/engineering",      label: "Engineering",      icon: Package },
+  { href: "/admin/sellers",          label: "Sellers",          icon: Store },
+  { href: "/admin/orders",           label: "Orders",           icon: ShoppingBag },
+  { href: "/admin/inquiries",        label: "Inquiries",        icon: MessageSquare },
 ];
 
 const contentNavItems = [

@@ -63,16 +63,16 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
 
         {/* Main image */}
         <div
-          className="relative overflow-hidden rounded-2xl bg-white flex items-center justify-center"
-          style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`, minHeight: 280 }}
+          className="relative overflow-hidden rounded-2xl bg-white"
+          style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`, height: 480 }}
         >
           {activeImage && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={activeImage.url}
               alt={activeImage.altText ?? product.name}
-              className="w-full h-auto block"
-              style={{ maxHeight: 520, objectFit: "contain" }}
+              className="w-full h-full object-cover"
+              style={{ minHeight: 280, maxHeight: 520 }}
             />
           )}
           {activeCode && (

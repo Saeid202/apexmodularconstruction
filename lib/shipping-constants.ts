@@ -1,0 +1,82 @@
+export const CHINA_CITIES = [
+  "Shanghai",
+  "Beijing",
+  "Guangzhou",
+  "Shenzhen",
+  "Yiwu",
+  "Ningbo",
+  "Tianjin",
+  "Qingdao",
+  "Chengdu",
+  "Wuhan",
+  "Xi'an",
+  "Chongqing",
+  "Hangzhou",
+  "Nanjing",
+  "Suzhou",
+  "Dongguan",
+  "Foshan",
+  "Zhengzhou",
+  "Kunming",
+  "Harbin",
+  "Dalian",
+  "Xiamen",
+  "Changsha",
+  "Hefei",
+  "Nanchang",
+  "Fuzhou",
+  "Jinan",
+  "Urumqi",
+  "Lanzhou",
+  "Nanning",
+];
+
+export const IRAN_CITIES = [
+  "Tehran",
+  "Mashhad",
+  "Isfahan",
+  "Karaj",
+  "Tabriz",
+  "Shiraz",
+  "Ahvaz",
+  "Qom",
+  "Kermanshah",
+  "Rasht",
+  "Zahedan",
+  "Hamadan",
+  "Kerman",
+  "Arak",
+  "Yazd",
+  "Ardabil",
+  "Bandar Abbas",
+  "Urmia",
+  "Qazvin",
+  "Zanjan",
+  "Sanandaj",
+  "Khorramabad",
+  "Gorgan",
+  "Sari",
+  "Bojnord",
+  "Birjand",
+  "Ilam",
+  "Shahrekord",
+  "Yasuj",
+  "Bushehr",
+];
+
+export const SHIPPING_METHODS = [
+  { value: "rail", label: "Rail Freight", icon: "🚆" },
+  { value: "sea",  label: "Sea Freight",  icon: "🚢" },
+  { value: "air",  label: "Air Freight",  icon: "✈️" },
+] as const;
+
+export const DOC_TYPES = [
+  { value: "commercial_invoice", label: "Commercial Invoice" },
+  { value: "packing_list",       label: "Packing List" },
+  { value: "supplier_info",      label: "Supplier Information" },
+  { value: "other",              label: "Other Document" },
+] as const;
+
+export type ShippingMethod = "rail" | "sea" | "air";
+export type DocType = "commercial_invoice" | "packing_list" | "supplier_info" | "other";
+export type ShippingStatus = "pending" | "in_progress" | "completed";

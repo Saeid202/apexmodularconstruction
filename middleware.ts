@@ -132,6 +132,12 @@ export async function middleware(request: NextRequest) {
     if (user.user_metadata?.role !== "agent") return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // Shipping agent routes protection
+  if (pathname.startsWith("/shipping-agent")) {
+    if (!user) return NextResponse.redirect(new URL("/auth/login", request.url));
+    if (user.user_metadata?.role !== "shipping_agent") return NextResponse.redirect(new URL("/", request.url));
+  }
+
   // Partner routes protection
   if (pathname.startsWith("/partner")) {
     if (!user) {
@@ -155,5 +161,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/account/:path*", "/seller/:path*", "/admin/:path*", "/partner/:path*", "/agent/:path*"],
+  matcher: ["/account/:path*", "/seller/:path*", "/admin/:path*", "/partner/:path*", "/agent/:path*", "/shipping-agent/:path*"],
 };

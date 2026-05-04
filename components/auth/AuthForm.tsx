@@ -65,6 +65,10 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
         window.location.href = "/admin/dashboard";
       } else if (userRole === "partner") {
         window.location.href = "/partner/dashboard";
+      } else if (userRole === "agent") {
+        window.location.href = "/agent/dashboard";
+      } else if (userRole === "shipping_agent") {
+        window.location.href = "/shipping-agent/dashboard";
       } else if (redirectTo && redirectTo !== "/account/dashboard") {
         window.location.href = redirectTo;
       } else {
