@@ -47,9 +47,9 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function SectionHeading({ children }: { children: React.ReactNode }) {
+function SectionHeading({ id, children }: { id?: string; children: React.ReactNode }) {
   return (
-    <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
+    <h2 id={id} className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight">
       {children}
     </h2>
   );
