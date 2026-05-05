@@ -3,13 +3,16 @@
 import { createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
+import { type FileType } from "@/lib/detectFileType";
+
+export type { FileType } from "@/lib/detectFileType";
 
 export interface ProductDocument {
   id: string;
   product_id: string;
   name: string;
   url: string;
-  file_type: "pdf" | "excel" | "word" | "other";
+  file_type: FileType;
   storage_path: string;
   position: number;
   created_at: string;
