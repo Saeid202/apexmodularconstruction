@@ -5,8 +5,6 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { type FileType } from "@/lib/detectFileType";
 
-export type { FileType } from "@/lib/detectFileType";
-
 export interface ProductDocument {
   id: string;
   product_id: string;
@@ -17,8 +15,6 @@ export interface ProductDocument {
   position: number;
   created_at: string;
 }
-
-export type { FileType } from "@/lib/detectFileType";
 
 // ─── Save documents for a product (called on form submit) ─────────────────────
 // Receives the full desired state: existing docs to keep + new docs to insert.
