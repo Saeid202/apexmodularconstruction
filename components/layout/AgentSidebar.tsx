@@ -26,7 +26,7 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="h-screen flex bg-gray-50 overflow-hidden">
 
       {/* Sidebar */}
       <aside

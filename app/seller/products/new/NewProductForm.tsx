@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createProduct } from "@/app/actions/seller";
 import { uploadProductImage } from "@/lib/uploadProductImage";
@@ -10,6 +10,9 @@ import { Tag, DollarSign, Layers, Hash, FileText, ChevronDown } from "lucide-rea
 import { LuxuryButton } from "@/components/seller/LuxuryButton";
 import { SpecificationsEditor } from "@/components/seller/SpecificationsEditor";
 import { DraggableVariantGrid, newSlot, type VariantSlot } from "@/components/seller/DraggableVariantGrid";
+import { RichTextEditor } from "@/components/seller/RichTextEditor";
+import { ProductDocumentsEditor, type DocSlot } from "@/components/seller/ProductDocumentsEditor";
+import { saveProductDocuments } from "@/app/actions/product-documents";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -53,6 +56,20 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
   const [error, setError] = useState<string | null>(null);
   const [variants, setVariants] = useState<VariantSlot[]>([newSlot(true)]);
   const [specs, setSpecs] = useState<{ key: string; value: string }[]>([]);
+  const [requireOrderRequest, setRequireOrderRequest] = useState(false);
+  const [showStock, setShowStock] = useState(true);
+  const [descriptionHtml, setDescriptionHtml] = useState("");
+  const [docs, setDocs] = useState<DocSlot[]>([]);
+  const [userId, setUserId] = useState("");
+
+  // Get userId on mount for document uploads
+  useEffect(() => {
+    import("@/lib/supabase/client").then(({ createBrowserClient }) => {
+      createBrowserClient().auth.getUser().then(({ data: { user } }) => {
+        if (user) setUserId(user.id);
+      });
+    });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -87,9 +104,18 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       specs.forEach(({ key, value }) => { if (key && value) specObj[key] = value; });
       formData.set("specifications", JSON.stringify(specObj));
       formData.set("variantsJson", JSON.stringify(uploadedVariants));
+      formData.set("requireOrderRequest", requireOrderRequest ? "true" : "false");
+      formData.set("showStock", showStock ? "true" : "false");
+      formData.set("description", descriptionHtml);
 
       const result = await createProduct(formData);
       if (result.error) throw new Error(result.error);
+
+      // Save documents if any
+      if (result.data && docs.length > 0) {
+        const readyDocs = docs.filter((d) => d.url && !d.uploading && !d.error);
+        await saveProductDocuments(result.data.id, readyDocs);
+      }
 
       router.push("/seller/products");
     } catch (err: any) {
@@ -115,7 +141,11 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
         <input name="name" type="text" required className={inputClass} placeholder="e.g., Premium Flooring Collection" />
       </Field>
       <Field label="Description" required icon={FileText}>
-        <textarea name="description" rows={4} required className={`${inputClass} resize-none`} placeholder="Describe your product — materials, dimensions, use cases…" />
+        <RichTextEditor
+          value={descriptionHtml}
+          onChange={setDescriptionHtml}
+          placeholder="Describe your product — materials, dimensions, key features, use cases…"
+        />
       </Field>
 
       <Section title="Pricing & Inventory" />
@@ -134,6 +164,61 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">$</span>
             <input name="price" type="number" step="0.01" min="0" required className={`${inputClass} pl-7`} placeholder="299.99" />
           </div>
+          {/* Require Order Request + Show Stock toggles */}
+          <div
+            className="flex items-center justify-between rounded-xl border px-3 py-2.5 mt-1"
+            style={{ borderColor: requireOrderRequest ? PURPLE : `${GOLD}44`, background: requireOrderRequest ? "#EDE9F6" : "#fdfbf7" }}
+          >
+            <div className="flex-1 pr-3">
+              <p className="text-xs font-semibold text-gray-800">Require Order Request</p>
+              <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+                Buyers must submit a request instead of buying directly.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={requireOrderRequest}
+              onClick={() => setRequireOrderRequest((v) => !v)}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+              style={{
+                backgroundColor: requireOrderRequest ? PURPLE : "#D1D5DB",
+                borderColor: requireOrderRequest ? PURPLE : "#D1D5DB",
+              }}
+            >
+              <span
+                className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+                style={{ transform: requireOrderRequest ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+              />
+            </button>
+          </div>
+          <div
+            className="flex items-center justify-between rounded-xl border px-3 py-2.5 mt-1"
+            style={{ borderColor: showStock ? `${GOLD}44` : "#E5E7EB", background: showStock ? "#fdfbf7" : "#F9FAFB" }}
+          >
+            <div className="flex-1 pr-3">
+              <p className="text-xs font-semibold text-gray-800">Show Stock Status</p>
+              <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+                Display "In Stock / Out of Stock" on the product page.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={showStock}
+              onClick={() => setShowStock((v) => !v)}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+              style={{
+                backgroundColor: showStock ? PURPLE : "#D1D5DB",
+                borderColor: showStock ? PURPLE : "#D1D5DB",
+              }}
+            >
+              <span
+                className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+                style={{ transform: showStock ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+              />
+            </button>
+          </div>
         </Field>
         <Field label="Compare at Price (CAD)" icon={DollarSign} hint="Original price — shows a discount badge">
           <div className="relative">
@@ -148,6 +233,9 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
 
       <Section title="Specifications" />
       <SpecificationsEditor specs={specs} onChange={setSpecs} />
+
+      <Section title="Product Documents" />
+      <ProductDocumentsEditor userId={userId} docs={docs} onChange={setDocs} />
 
       {/* Publish status */}
       <div className="flex items-center justify-between rounded-xl border px-4 py-3" style={{ borderColor: `${GOLD}44`, background: "#fdfbf7" }}>

@@ -93,7 +93,8 @@ export async function getProductBySlug(slug: string): Promise<{
         *,
         product_images (*),
         categories (*),
-        sellers (*)
+        sellers (*),
+        product_documents (*)
       `)
       .eq("slug", slug)
       .eq("status", "active")

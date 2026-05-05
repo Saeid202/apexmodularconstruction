@@ -196,6 +196,8 @@ export async function createProduct(formData: FormData): Promise<{
         category_id: categoryId,
         seller_id: user.id,
         specifications,
+        require_order_request: formData.get("requireOrderRequest") === "true",
+        show_stock: formData.get("showStock") !== "false",
         status: formData.get("publishStatus") === "draft" ? "pending" : "active",
       })
       .select()
@@ -286,6 +288,9 @@ export async function updateProduct(productId: string, formData: FormData): Prom
       }
     }
 
+    const requireOrderRequest = formData.get("requireOrderRequest") === "true";
+    const showStock = formData.get("showStock") !== "false"; // default true
+
     const { data: product, error: productError } = await supabase
       .from("products")
       .update({
@@ -297,6 +302,8 @@ export async function updateProduct(productId: string, formData: FormData): Prom
         stock_quantity: stockQuantity,
         category_id: categoryId,
         specifications,
+        require_order_request: requireOrderRequest,
+        show_stock: showStock,
         updated_at: new Date().toISOString(),
       })
       .eq("id", productId)

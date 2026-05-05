@@ -26,6 +26,8 @@ function transformProduct(
     sellerId: dbProduct.seller_id,
     status: dbProduct.status,
     specifications: dbProduct.specifications as Record<string, string>,
+    requireOrderRequest: (dbProduct as any).require_order_request ?? false,
+    showStock: (dbProduct as any).show_stock ?? true,
     createdAt: dbProduct.created_at,
     updatedAt: dbProduct.updated_at,
     images: dbProduct.product_images.map((img: any) => ({
@@ -56,6 +58,15 @@ function transformProduct(
           status: dbProduct.sellers.status,
         }
       : { id: "", businessName: "Unknown Seller", businessEmail: "", logoUrl: null, status: "active" as const },
+    documents: ((dbProduct as any).product_documents ?? [])
+      .sort((a: any, b: any) => a.position - b.position)
+      .map((d: any) => ({
+        id: d.id,
+        name: d.name,
+        url: d.url,
+        fileType: d.file_type,
+        position: d.position,
+      })),
   };
 }
 

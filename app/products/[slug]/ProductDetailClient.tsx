@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, Check, MessageSquare, Tag, Zap } from "lucide-react";
+import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cartStore";
+import { OrderRequestModal } from "@/components/product/OrderRequestModal";
+import { WhatsAppLink } from "@/components/layout/WhatsAppLink";
+import { RichTextRenderer } from "@/components/product/RichTextRenderer";
 import type { ProductWithRelations, ProductImageData } from "@/types";
 
 const PURPLE = "#4B1D8F";
@@ -18,6 +21,38 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
 
   const [activeId, setActiveId] = useState<string | null>(masterImage?.id ?? null);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [requestSuccess, setRequestSuccess] = useState<string | null>(null);
+
+  const openLightbox = useCallback(() => {
+    const idx = allImages.findIndex((img) => img.id === activeId);
+    setLightboxIndex(idx >= 0 ? idx : 0);
+    setLightboxOpen(true);
+  }, [activeId, allImages]);
+
+  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
+
+  const lightboxPrev = useCallback(() => {
+    setLightboxIndex((i) => (i - 1 + allImages.length) % allImages.length);
+  }, [allImages.length]);
+
+  const lightboxNext = useCallback(() => {
+    setLightboxIndex((i) => (i + 1) % allImages.length);
+  }, [allImages.length]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") lightboxPrev();
+      if (e.key === "ArrowRight") lightboxNext();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxOpen, closeLightbox, lightboxPrev, lightboxNext]);
 
   const activeImage = allImages.find((img) => img.id === activeId) ?? masterImage;
   const activePrice = activeImage?.variantPrice != null ? activeImage.variantPrice : product.price;
@@ -50,6 +85,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
   }
 
   return (
+    <>
     <div className="grid md:grid-cols-2 gap-6 lg:gap-14">
 
       {/* LEFT col */}
@@ -61,67 +97,86 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           <span className="text-xl font-bold shrink-0" style={{ color: PURPLE }}>${activePrice.toFixed(2)} CAD</span>
         </div>
 
-        {/* Main image */}
-        <div
-          className="relative overflow-hidden rounded-2xl bg-white"
-          style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`, height: 480 }}
-        >
-          {activeImage && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={activeImage.url}
-              alt={activeImage.altText ?? product.name}
-              className="w-full h-full object-cover"
-              style={{ minHeight: 280, maxHeight: 520 }}
-            />
-          )}
-          {activeCode && (
-            <span className="absolute bottom-3 right-3 rounded-lg px-2.5 py-1 text-xs font-bold text-white" style={{ backgroundColor: "rgba(75,29,143,0.85)" }}>
-              {activeCode}
-            </span>
-          )}
-        </div>
+        {/* Image area: vertical thumbnail strip + main image side by side */}
+        <div className="flex items-stretch gap-3" style={{ height: 480 }}>
 
-        {/* Thumbnail strip */}
-        {allImages.length > 1 && (
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {allImages.map((img, idx) => {
-              const isActive = img.id === activeId;
-              const label = img.variantCode ? `#${idx + 1} ${img.variantCode}` : `#${idx + 1}`;
-              return (
-                <button
-                  key={img.id}
-                  type="button"
-                  onClick={() => setActiveId(img.id)}
-                  className="flex shrink-0 flex-col items-center gap-1"
-                  style={{ WebkitTapHighlightColor: "transparent" }}
-                >
-                  <div
-                    className="h-16 w-16 overflow-hidden rounded-xl"
-                    style={{
-                      border: isActive ? `2.5px solid ${GOLD}` : `2px solid ${PURPLE}44`,
-                      boxShadow: isActive ? `0 0 0 2px ${PURPLE}` : "none",
-                      transform: isActive ? "scale(1.06)" : "scale(1)",
-                      transition: "all 0.15s",
-                    }}
+          {/* Vertical thumbnail strip — only when there are multiple images */}
+          {allImages.length > 1 && (
+            <div className="flex flex-col gap-2 overflow-y-auto pr-0.5" style={{ width: 72, scrollbarWidth: "thin" }}>
+              {allImages.map((img, idx) => {
+                const isActive = img.id === activeId;
+                const label = img.variantCode ? img.variantCode : `#${idx + 1}`;
+                return (
+                  <button
+                    key={img.id}
+                    type="button"
+                    onClick={() => setActiveId(img.id)}
+                    className="flex shrink-0 flex-col items-center gap-1"
+                    style={{ WebkitTapHighlightColor: "transparent" }}
+                    aria-label={`Select image ${label}`}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={label} className="h-full w-full object-contain bg-white" />
-                  </div>
-                  <span
-                    className="max-w-[80px] truncate rounded-full px-1.5 py-0.5 text-[10px] font-bold text-center"
-                    style={{
-                      backgroundColor: isActive ? PURPLE : "#EDE9F6",
-                      color: isActive ? "white" : PURPLE,
-                    }}
-                  >
-                    {label}
-                  </span>
-                </button>
-              );
-            })}
+                    <div
+                      className="h-16 w-16 overflow-hidden rounded-xl"
+                      style={{
+                        border: isActive ? `2.5px solid ${GOLD}` : `2px solid ${PURPLE}44`,
+                        boxShadow: isActive ? `0 0 0 2px ${PURPLE}` : "none",
+                        transform: isActive ? "scale(1.06)" : "scale(1)",
+                        transition: "all 0.15s",
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={img.url} alt={label} className="h-full w-full object-cover bg-white" />
+                    </div>
+                    <span
+                      className="max-w-[68px] truncate rounded-full px-1.5 py-0.5 text-[9px] font-bold text-center"
+                      style={{
+                        backgroundColor: isActive ? PURPLE : "#EDE9F6",
+                        color: isActive ? "white" : PURPLE,
+                      }}
+                    >
+                      {label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Main image */}
+          <div
+            className="relative flex-1 overflow-hidden rounded-2xl bg-white cursor-zoom-in group"
+            style={{
+              boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
+              minHeight: 0,
+            }}
+            onClick={openLightbox}
+            role="button"
+            aria-label="Enlarge image"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && openLightbox()}
+          >
+            {activeImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={activeImage.url}
+                alt={activeImage.altText ?? product.name}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            )}
+            {/* Zoom hint overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+              <div className="rounded-full p-3" style={{ backgroundColor: "rgba(75,29,143,0.7)" }}>
+                <ZoomIn className="h-7 w-7 text-white" />
+              </div>
+            </div>
+            {activeCode && (
+              <span className="absolute bottom-3 right-3 rounded-lg px-2.5 py-1 text-xs font-bold text-white" style={{ backgroundColor: "rgba(75,29,143,0.85)" }}>
+                {activeCode}
+              </span>
+            )}
           </div>
-        )}
+
+        </div>
       </div>
 
       {/* RIGHT col */}
@@ -138,12 +193,27 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           </div>
         </div>
 
-        {/* Category */}
-        <div className="flex items-center gap-1.5 mb-4">
+        {/* Seller — no box, sits above category */}
+        <div className="flex items-center gap-1.5 mb-3">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Sold by</span>
+          <span className="text-sm font-bold" style={{ color: PURPLE }}>{product.seller.businessName}</span>
+        </div>
+
+        {/* Category + Stock — same row */}
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Category</span>
           <span className="rounded-full px-2.5 py-0.5 text-xs font-semibold" style={{ backgroundColor: `${PURPLE}18`, color: PURPLE, border: `1px solid ${PURPLE}33` }}>
             {product.category.name}
           </span>
+          {product.showStock && (
+            <>
+              <span className="mx-1 text-gray-300">·</span>
+              {inStock
+                ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600"><Check className="h-3.5 w-3.5" /> In Stock ({product.stockQuantity} available)</span>
+                : <span className="text-xs font-medium text-red-500">Out of Stock</span>
+              }
+            </>
+          )}
         </div>
 
         {/* Selected variant */}
@@ -154,19 +224,37 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           </div>
         )}
 
-        {/* Stock */}
-        <div className="mb-5">
-          {inStock
-            ? <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600"><Check className="h-4 w-4" /> In Stock ({product.stockQuantity} available)</span>
-            : <span className="text-sm font-medium text-red-500">Out of Stock</span>
-          }
-        </div>
-
         {/* Description */}
         {product.description && (
           <div className="mb-5">
-            <h2 className="mb-2 font-bold text-gray-900">Description</h2>
-            <p className="text-sm leading-relaxed text-gray-600">{product.description}</p>
+            <h2 className="mb-3 font-bold text-gray-900">Description</h2>
+            <RichTextRenderer html={product.description} />
+          </div>
+        )}
+
+        {/* Parameters / Documents bar */}
+        {product.documents && product.documents.length > 0 && (
+          <div className="mb-5 flex flex-col gap-2">
+            {product.documents.map((doc) => {
+              const Icon =
+                doc.fileType === "excel" ? FileSpreadsheet
+                : doc.fileType === "other" ? File
+                : FileText;
+              return (
+                <a
+                  key={doc.id}
+                  href={doc.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 text-base font-bold text-white transition-all hover:opacity-90"
+                  style={{ backgroundColor: PURPLE, border: `2px solid ${GOLD}` }}
+                >
+                  <Icon className="h-5 w-5 shrink-0" />
+                  <span className="flex-1 truncate">{doc.name}</span>
+                  <ExternalLink className="h-4 w-4 shrink-0 opacity-70" />
+                </a>
+              );
+            })}
           </div>
         )}
 
@@ -217,50 +305,188 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           </div>
         )}
 
-        {/* Seller */}
-        <div className="mb-5 rounded-xl p-4" style={{ backgroundColor: "#EDE9F6" }}>
-          <p className="text-xs text-gray-500">Sold by</p>
-          <p className="text-sm font-bold" style={{ color: PURPLE }}>{product.seller.businessName}</p>
-        </div>
-
         {/* CTAs */}
         <div className="mt-auto space-y-3">
-          <button
-            onClick={handleAddToCart}
-            disabled={!inStock}
-            className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            style={{ backgroundColor: addedToCart ? "#16a34a" : PURPLE, border: `2px solid ${GOLD}` }}
-          >
-            {addedToCart ? (
-              <><Check className="h-5 w-5" /> Added to Cart!</>
-            ) : (
-              <><ShoppingCart className="h-5 w-5" />{inStock ? "Add to Cart" : "Out of Stock"}</>
-            )}
-          </button>
+          {product.requireOrderRequest ? (
+            /* ── Order-request mode ── */
+            <>
+              {requestSuccess ? (
+                <div className="flex items-center gap-3 rounded-xl p-4 text-sm font-semibold text-green-700 bg-green-50 border border-green-200">
+                  <Check className="h-5 w-5 shrink-0" />
+                  <span>Request <span className="font-bold">{requestSuccess}</span> submitted! The seller will be in touch.</span>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setRequestModalOpen(true)}
+                  disabled={!inStock}
+                  className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{ backgroundColor: PURPLE, border: `2px solid ${GOLD}` }}
+                >
+                  <Send className="h-5 w-5" />
+                  {inStock ? "Submit Order Request" : "Out of Stock"}
+                </button>
+              )}
 
-          {inStock && (
-            <button
-              onClick={handleBuyNow}
-              className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90"
-              style={{ backgroundColor: GOLD, color: "#1a1a2e", border: `2px solid ${PURPLE}` }}
-            >
-              <Zap className="h-5 w-5" />
-              Buy Now
-            </button>
-          )}
+              <WhatsAppLink
+                className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90"
+                style={{ backgroundColor: "#25D366", color: "#fff", border: "2px solid #128C7E" }}
+              >
+                {/* WhatsApp icon */}
+                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                Chat on WhatsApp
+              </WhatsAppLink>
+            </>
+          ) : (
+            /* ── Direct purchase mode ── */
+            <>
+              <button
+                onClick={handleAddToCart}
+                disabled={!inStock}
+                className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ backgroundColor: addedToCart ? "#16a34a" : PURPLE, border: `2px solid ${GOLD}` }}
+              >
+                {addedToCart ? (
+                  <><Check className="h-5 w-5" /> Added to Cart!</>
+                ) : (
+                  <><ShoppingCart className="h-5 w-5" />{inStock ? "Add to Cart" : "Out of Stock"}</>
+                )}
+              </button>
 
-          {hasVariants && activeCode && (
-            <a
-              href={`/contact?subject=Quote request for ${activeCode}`}
-              className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border-2 text-sm font-bold transition-all hover:bg-[#EDE9F6]"
-              style={{ borderColor: GOLD, color: PURPLE }}
-            >
-              <MessageSquare className="h-4 w-4" />
-              Request Quote for <span style={{ color: GOLD }}>{activeCode}</span>
-            </a>
+              {inStock && (
+                <button
+                  onClick={handleBuyNow}
+                  className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90"
+                  style={{ backgroundColor: GOLD, color: "#1a1a2e", border: `2px solid ${PURPLE}` }}
+                >
+                  <Zap className="h-5 w-5" />
+                  Buy Now
+                </button>
+              )}
+
+              {hasVariants && activeCode && (
+                <a
+                  href={`/contact?subject=Quote request for ${activeCode}`}
+                  className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border-2 text-sm font-bold transition-all hover:bg-[#EDE9F6]"
+                  style={{ borderColor: GOLD, color: PURPLE }}
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  Request Quote for <span style={{ color: GOLD }}>{activeCode}</span>
+                </a>
+              )}
+            </>
           )}
         </div>
       </div>
     </div>
+
+      {/* Order Request Modal */}
+      {requestModalOpen && (
+        <OrderRequestModal
+          productId={product.id}
+          sellerId={product.sellerId}
+          productName={product.name}
+          productPrice={activePrice}
+          variantCode={activeCode}
+          onClose={() => setRequestModalOpen(false)}
+          onSuccess={(rn) => {
+            setRequestModalOpen(false);
+            setRequestSuccess(rn);
+          }}
+        />
+      )}
+
+      {/* Lightbox */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.88)" }}
+          onClick={closeLightbox}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image lightbox"
+        >
+          {/* Close button */}
+          <button
+            className="absolute top-4 right-4 rounded-full p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+            onClick={closeLightbox}
+            aria-label="Close lightbox"
+          >
+            <X className="h-7 w-7" />
+          </button>
+
+          {/* Prev button */}
+          {allImages.length > 1 && (
+            <button
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+              onClick={(e) => { e.stopPropagation(); lightboxPrev(); }}
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="h-9 w-9" />
+            </button>
+          )}
+
+          {/* Image */}
+          <div
+            className="relative flex items-center justify-center"
+            style={{ width: "min(92vw, 1100px)", height: "min(88vh, 800px)" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={allImages[lightboxIndex]?.url}
+              alt={allImages[lightboxIndex]?.altText ?? product.name}
+              className="rounded-2xl object-contain shadow-2xl"
+              style={{
+                border: `3px solid ${GOLD}`,
+                width: "min(92vw, 1100px)",
+                height: "min(88vh, 800px)",
+                maxWidth: "92vw",
+                maxHeight: "88vh",
+              }}
+            />
+            {/* Variant code badge */}
+            {allImages[lightboxIndex]?.variantCode && (
+              <span
+                className="absolute bottom-3 right-3 rounded-lg px-3 py-1 text-sm font-bold text-white"
+                style={{ backgroundColor: "rgba(75,29,143,0.9)" }}
+              >
+                {allImages[lightboxIndex].variantCode}
+              </span>
+            )}
+          </div>
+
+          {/* Next button */}
+          {allImages.length > 1 && (
+            <button
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+              onClick={(e) => { e.stopPropagation(); lightboxNext(); }}
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-9 w-9" />
+            </button>
+          )}
+
+          {/* Dot indicators */}
+          {allImages.length > 1 && (
+            <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
+              {allImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  className="h-2.5 w-2.5 rounded-full transition-all focus:outline-none"
+                  style={{
+                    backgroundColor: idx === lightboxIndex ? GOLD : "rgba(255,255,255,0.45)",
+                    transform: idx === lightboxIndex ? "scale(1.3)" : "scale(1)",
+                  }}
+                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); }}
+                  aria-label={`Go to image ${idx + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 }

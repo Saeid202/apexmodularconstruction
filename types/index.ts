@@ -61,11 +61,22 @@ export interface ProductWithRelations {
   sellerId: string
   status: 'pending' | 'active' | 'rejected' | 'archived'
   specifications: Record<string, string>
+  requireOrderRequest: boolean
+  showStock: boolean
   createdAt: string
   updatedAt: string
   images: ProductImageData[]
   category: CategoryData
   seller: SellerData
+  documents: ProductDocumentData[]
+}
+
+export interface ProductDocumentData {
+  id: string
+  name: string
+  url: string
+  fileType: 'pdf' | 'excel' | 'word' | 'other'
+  position: number
 }
 
 export interface ProductImageData {

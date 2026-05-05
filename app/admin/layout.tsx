@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       <aside className="w-64 shrink-0 bg-gray-900 flex flex-col">
         <div className="p-5 border-b border-gray-700">
           <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Admin Panel</p>

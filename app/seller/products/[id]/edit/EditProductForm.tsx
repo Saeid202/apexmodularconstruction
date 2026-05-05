@@ -7,9 +7,12 @@ import { uploadProductImage } from "@/lib/uploadProductImage";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { SellerProduct } from "@/app/actions/seller";
 import type { Category } from "@/types/database";
-import { X, Tag, DollarSign, Layers, Hash, FileText, ChevronDown } from "lucide-react";import { LuxuryButton } from "@/components/seller/LuxuryButton";
+import { X, Tag, DollarSign, Layers, Hash, FileText, ChevronDown, ToggleLeft } from "lucide-react";import { LuxuryButton } from "@/components/seller/LuxuryButton";
 import { DraggableVariantGrid, newSlot, type VariantSlot } from "@/components/seller/DraggableVariantGrid";
 import { SpecificationsEditor } from "@/components/seller/SpecificationsEditor";
+import { RichTextEditor } from "@/components/seller/RichTextEditor";
+import { ProductDocumentsEditor, type DocSlot } from "@/components/seller/ProductDocumentsEditor";
+import { saveProductDocuments } from "@/app/actions/product-documents";
 
 interface EditProductFormProps {
   product: SellerProduct;
@@ -59,6 +62,15 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [variants, setVariants] = useState<VariantSlot[]>([]);
   const [specs, setSpecs] = useState<{ key: string; value: string }[]>([]);
+  const [requireOrderRequest, setRequireOrderRequest] = useState<boolean>(
+    (product as any).require_order_request ?? false
+  );
+  const [showStock, setShowStock] = useState<boolean>(
+    (product as any).show_stock ?? true
+  );
+  const [descriptionHtml, setDescriptionHtml] = useState<string>(product.description ?? "");
+  const [docs, setDocs] = useState<DocSlot[]>([]);
+  const [userId, setUserId] = useState<string>("");
 
   useEffect(() => {
     if (product.product_images.length > 0) {
@@ -80,6 +92,29 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
     if (specObj && Object.keys(specObj).length > 0) {
       setSpecs(Object.entries(specObj).map(([key, value]) => ({ key, value })));
     }
+
+    // Load existing documents + current user id
+    const supabase = createBrowserClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) setUserId(user.id);
+    });
+    supabase
+      .from("product_documents")
+      .select("*")
+      .eq("product_id", product.id)
+      .order("position", { ascending: true })
+      .then(({ data }) => {
+        if (data) {
+          setDocs(data.map((d: any) => ({
+            id: d.id,
+            name: d.name,
+            url: d.url,
+            file_type: d.file_type,
+            storage_path: d.storage_path,
+            position: d.position,
+          })));
+        }
+      });
   }, []);
 
   const addSpec = () => setSpecs([...specs, { key: "", value: "" }]);
@@ -116,10 +151,18 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
       specs.forEach(({ key, value }) => { if (key && value) specObj[key] = value; });
       formData.set("specifications", JSON.stringify(specObj));
       formData.set("variantsJson", JSON.stringify(uploadedVariants));
+      formData.set("requireOrderRequest", requireOrderRequest ? "true" : "false");
+      formData.set("showStock", showStock ? "true" : "false");
+      formData.set("description", descriptionHtml);
 
       setLoadingMsg("Saving changes...");
       const result = await updateProduct(product.id, formData);
       if (result.error) { setError(result.error); setLoading(false); return; }
+
+      // Save documents
+      const readyDocs = docs.filter((d) => d.url && !d.uploading && !d.error);
+      await saveProductDocuments(product.id, readyDocs);
+
       router.push("/seller/products");
       router.refresh();
     } catch (err: any) {
@@ -154,7 +197,11 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
         <input id="name" name="name" type="text" required defaultValue={product.name} className={inputClass} />
       </Field>
       <Field label="Description" required icon={FileText}>
-        <textarea id="description" name="description" rows={4} required defaultValue={product.description ?? ""} className={`${inputClass} resize-none`} />
+        <RichTextEditor
+          value={descriptionHtml}
+          onChange={setDescriptionHtml}
+          placeholder="Describe your product — materials, dimensions, key features, use cases…"
+        />
       </Field>
 
       <Section title="Pricing & Inventory" />
@@ -173,6 +220,61 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">$</span>
             <input id="price" name="price" type="number" step="0.01" min="0" required defaultValue={product.price} className={`${inputClass} pl-7`} />
           </div>
+          {/* Require Order Request + Show Stock toggles */}
+          <div
+            className="flex items-center justify-between rounded-xl border px-3 py-2.5 mt-1"
+            style={{ borderColor: requireOrderRequest ? PURPLE : `${GOLD}44`, background: requireOrderRequest ? "#EDE9F6" : "#fdfbf7" }}
+          >
+            <div className="flex-1 pr-3">
+              <p className="text-xs font-semibold text-gray-800">Require Order Request</p>
+              <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+                Buyers must submit a request instead of buying directly.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={requireOrderRequest}
+              onClick={() => setRequireOrderRequest((v) => !v)}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+              style={{
+                backgroundColor: requireOrderRequest ? PURPLE : "#D1D5DB",
+                borderColor: requireOrderRequest ? PURPLE : "#D1D5DB",
+              }}
+            >
+              <span
+                className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+                style={{ transform: requireOrderRequest ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+              />
+            </button>
+          </div>
+          <div
+            className="flex items-center justify-between rounded-xl border px-3 py-2.5 mt-1"
+            style={{ borderColor: showStock ? `${GOLD}44` : "#E5E7EB", background: showStock ? "#fdfbf7" : "#F9FAFB" }}
+          >
+            <div className="flex-1 pr-3">
+              <p className="text-xs font-semibold text-gray-800">Show Stock Status</p>
+              <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+                Display "In Stock / Out of Stock" on the product page.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={showStock}
+              onClick={() => setShowStock((v) => !v)}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+              style={{
+                backgroundColor: showStock ? PURPLE : "#D1D5DB",
+                borderColor: showStock ? PURPLE : "#D1D5DB",
+              }}
+            >
+              <span
+                className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+                style={{ transform: showStock ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+              />
+            </button>
+          </div>
         </Field>
         <Field label="Compare at Price (CAD)" icon={DollarSign} hint="Original price — used to show a discount badge">
           <div className="relative">
@@ -187,6 +289,9 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
 
       <Section title="Specifications" />
       <SpecificationsEditor specs={specs} onChange={setSpecs} />
+
+      <Section title="Product Documents" />
+      <ProductDocumentsEditor userId={userId} docs={docs} onChange={setDocs} />
 
       <div className="flex gap-3 pt-4 border-t" style={{ borderColor: `${GOLD}44` }}>
         <LuxuryButton type="button" variant="outline" size="md" onClick={() => router.back()}>Cancel</LuxuryButton>

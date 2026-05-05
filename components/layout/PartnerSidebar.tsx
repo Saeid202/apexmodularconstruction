@@ -30,7 +30,7 @@ export default function PartnerSidebar({ children }: { children: React.ReactNode
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-950">
+    <div className="h-screen flex bg-gray-950 overflow-hidden">
 
       {/* Sidebar */}
       <aside className={`

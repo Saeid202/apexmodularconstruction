@@ -27,7 +27,7 @@ export default function SellerSidebar({ children }: SellerSidebarProps) {
   })();
 
   return (
-    <div className="min-h-screen flex bg-[#F5F4F7]">
+    <div className="h-screen flex bg-[#F5F4F7] overflow-hidden">
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 bg-[#4B1D8F] ${
