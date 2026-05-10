@@ -99,11 +99,11 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
         </div>
 
         {/* Image area: vertical thumbnail strip + main image side by side */}
-        <div className="flex items-stretch gap-3" style={{ height: 480 }}>
+        <div className="flex flex-col-reverse md:flex-row items-stretch gap-3 h-auto md:h-[480px]">
 
-          {/* Vertical thumbnail strip — only when there are multiple images */}
+          {/* Thumbnail strip — horizontal on mobile, vertical on desktop */}
           {allImages.length > 1 && (
-            <div className="flex flex-col gap-2 overflow-y-auto pr-0.5" style={{ width: 144, scrollbarWidth: "thin" }}>
+            <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 pr-0 md:pr-0.5 w-full md:w-[144px]" style={{ scrollbarWidth: "thin" }}>
               {allImages.map((img, idx) => {
                 const isActive = img.id === activeId;
                 const label = img.variantCode ? img.variantCode : `#${idx + 1}`;
@@ -117,7 +117,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                     aria-label={`Select image ${label}`}
                   >
                     <div
-                      className="h-32 w-32 overflow-hidden rounded-xl"
+                      className="h-20 w-20 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-xl"
                       style={{
                         border: isActive ? `2.5px solid ${GOLD}` : `2px solid ${PURPLE}44`,
                         boxShadow: isActive ? `0 0 0 2px ${PURPLE}` : "none",
@@ -129,7 +129,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                       <img src={img.url} alt={label} className="h-full w-full object-cover bg-white" />
                     </div>
                     <span
-                      className="max-w-[110px] truncate rounded-full px-2 py-0.5 text-[10px] font-bold text-center"
+                      className="max-w-[76px] md:max-w-[110px] truncate rounded-full px-2 py-0.5 text-[9px] md:text-[10px] font-bold text-center"
                       style={{
                         backgroundColor: isActive ? PURPLE : "#EDE9F6",
                         color: isActive ? "white" : PURPLE,
@@ -145,7 +145,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
 
           {/* Main image */}
           <div
-            className="relative flex-1 overflow-hidden rounded-2xl bg-white cursor-zoom-in group"
+            className="relative flex-1 overflow-hidden rounded-2xl bg-white cursor-zoom-in group w-full aspect-[4/3] md:aspect-auto"
             style={{
               boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
               minHeight: 0,
