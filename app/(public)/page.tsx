@@ -1,5 +1,4 @@
 import { HeroSlider } from "@/components/home/HeroSlider";
-import { ServicesSection } from "@/components/home/ServicesSection";
 import { ProductShowcaseWrapper } from "@/components/home/ProductShowcaseWrapper";
 import { getHeroSlides } from "@/app/actions/hero-slides";
 import { getProducts } from "@/app/actions/products";
@@ -99,7 +98,6 @@ export default async function HomePage() {
   return (
     <>
       <HeroSlider slides={heroSlides} />
-      <ServicesSection />
       <ProductShowcaseWrapper products={products} title="Featured Products" />
     </>
   );

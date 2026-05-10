@@ -90,9 +90,19 @@ export default async function ProductDetailPage({ params }: Props) {
 
   if (result.data) {
     product = transformProduct(result.data);
+  } else if (result.error === "timeout" || !result.data) {
+    // Fallback to mock data during development/latency
+    console.warn(`Product not found in DB or timed out (slug: ${slug}). Checking mock data...`);
+    const mock = mockProducts.find(p => p.slug === slug);
+    if (mock) {
+      product = mock;
+    }
   }
 
-  if (!product) notFound();
+  if (!product) {
+    console.error(`Product not found: ${slug}`);
+    notFound();
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
