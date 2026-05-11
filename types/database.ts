@@ -136,6 +136,7 @@ export interface Database {
           seller_id: string
           status: 'pending' | 'active' | 'rejected' | 'archived'
           specifications: Json
+          has_customization: boolean
           created_at: string
           updated_at: string
         }
@@ -151,6 +152,7 @@ export interface Database {
           seller_id: string
           status?: 'pending' | 'active' | 'rejected' | 'archived'
           specifications?: Json
+          has_customization?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -166,6 +168,7 @@ export interface Database {
           seller_id?: string
           status?: 'pending' | 'active' | 'rejected' | 'archived'
           specifications?: Json
+          has_customization?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -382,6 +385,73 @@ export interface Database {
           cta_link?: string | null
           position?: number
           is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      product_customization_groups: {
+        Row: {
+          id: string
+          product_id: string
+          name: string
+          description: string | null
+          is_required: boolean
+          display_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          name: string
+          description?: string | null
+          is_required?: boolean
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          name?: string
+          description?: string | null
+          is_required?: boolean
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      product_customization_options: {
+        Row: {
+          id: string
+          group_id: string
+          name: string
+          description: string | null
+          price_modifier: number
+          image_url: string | null
+          display_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          group_id: string
+          name: string
+          description?: string | null
+          price_modifier?: number
+          image_url?: string | null
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          group_id?: string
+          name?: string
+          description?: string | null
+          price_modifier?: number
+          image_url?: string | null
+          display_order?: number
           created_at?: string
           updated_at?: string
         }

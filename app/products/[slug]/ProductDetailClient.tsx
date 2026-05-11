@@ -2,13 +2,14 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink } from "lucide-react";
+import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink, Settings } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cartStore";
 import { OrderRequestModal } from "@/components/product/OrderRequestModal";
 import { WhatsAppLink } from "@/components/layout/WhatsAppLink";
 import { RichTextRenderer } from "@/components/product/RichTextRenderer";
-import type { ProductWithRelations, ProductImageData } from "@/types";
+import type { ProductWithRelations, ProductImageData, CustomizationOption } from "@/types";
 import { extractYouTubeId, getYouTubeEmbedUrl } from "@/lib/youtube";
+import { ProductCustomizer } from "@/components/product/ProductCustomizer";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -26,6 +27,8 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [requestSuccess, setRequestSuccess] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"ready" | "custom">("ready");
+  const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption>>({});
 
   const openLightbox = useCallback(() => {
     const idx = allImages.findIndex((img) => img.id === activeId);
@@ -62,13 +65,34 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
   const inStock = product.stockQuantity > 0;
   const hasVariants = variantImages.length > 0;
 
+  const totalCustomPrice = product.price + Object.values(customSelections).reduce((acc, opt) => acc + opt.price_modifier, 0);
+  const displayPrice = activeTab === "custom" ? totalCustomPrice : activePrice;
+
   function buildCartItem() {
+    const isCustom = activeTab === "custom";
+    
+    // Convert custom selections to cart metadata
+    const customizations: Record<string, { groupName: string; optionName: string; priceModifier: number }> = {};
+    if (isCustom) {
+      Object.entries(customSelections).forEach(([groupId, opt]) => {
+        const group = product.customizationGroups?.find(g => g.id === groupId);
+        if (group) {
+          customizations[groupId] = {
+            groupName: group.name,
+            optionName: opt.name,
+            priceModifier: opt.price_modifier
+          };
+        }
+      });
+    }
+
     return {
       productId: product.id,
-      variantCode: activeCode,
-      variantImageUrl: activeImage?.url ?? null,
+      variantCode: isCustom ? "Custom Build" : activeCode,
+      variantImageUrl: isCustom ? (Object.values(customSelections)[0]?.image_url ?? activeImage?.url ?? null) : (activeImage?.url ?? null),
       productName: product.name,
-      productPrice: activePrice,
+      productPrice: displayPrice,
+      customizations: isCustom ? customizations : undefined
     };
   }
 
@@ -98,7 +122,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           {product.requireOrderRequest ? (
             <span className="text-lg font-bold" style={{ color: GOLD }}>Request for a quote</span>
           ) : (
-            <span className="text-xl font-bold shrink-0" style={{ color: PURPLE }}>${activePrice.toFixed(2)} CAD</span>
+            <span className="text-xl font-bold shrink-0" style={{ color: PURPLE }}>${displayPrice.toFixed(2)} CAD</span>
           )}
         </div>
 
@@ -227,8 +251,8 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
               <span className="text-2xl font-bold" style={{ color: GOLD }}>Request for a quote</span>
             ) : (
               <>
-                <span className="text-2xl font-bold" style={{ color: PURPLE }}>${activePrice.toFixed(2)} CAD</span>
-                {hasDiscount && activeImage?.variantPrice == null && (
+                <span className="text-2xl font-bold" style={{ color: PURPLE }}>${displayPrice.toFixed(2)} CAD</span>
+                {hasDiscount && activeTab === "ready" && activeImage?.variantPrice == null && (
                   <span className="text-base text-gray-400 line-through">${product.compareAtPrice!.toFixed(2)}</span>
                 )}
               </>
@@ -259,20 +283,49 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           )}
         </div>
 
-        {/* Selected variant */}
-        {hasVariants && activeCode && (
-          <div className="mb-4 inline-flex items-center gap-2 self-start rounded-xl px-3 py-1.5 text-sm font-semibold" style={{ backgroundColor: "#EDE9F6", color: PURPLE }}>
-            <Tag className="h-3.5 w-3.5" />
-            Selected: <span style={{ color: GOLD }}>{activeCode}</span>
+        {/* TABS Switcher */}
+        {product.hasCustomization && (
+          <div className="flex p-1 bg-gray-100 rounded-2xl mb-8 border-2 border-gray-100 shadow-inner">
+            <button
+              onClick={() => setActiveTab("ready")}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                activeTab === "ready" 
+                ? "bg-white text-[#4B1D8F] shadow-lg scale-100" 
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50/50 scale-95 opacity-70"
+              }`}
+            >
+              <Zap className={`h-4 w-4 ${activeTab === "ready" ? "text-[#D4AF37]" : ""}`} />
+              Ready to Buy
+            </button>
+            <button
+              onClick={() => setActiveTab("custom")}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                activeTab === "custom" 
+                ? "bg-white text-[#4B1D8F] shadow-lg scale-100" 
+                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50/50 scale-95 opacity-70"
+              }`}
+            >
+              <Settings className={`h-4 w-4 ${activeTab === "custom" ? "text-[#D4AF37]" : ""}`} />
+              Customize Your Build
+            </button>
           </div>
         )}
 
-        {/* Description */}
-        {product.description && (
-          <div className="mb-5">
-            <h2 className="mb-3 font-bold text-gray-900">Description</h2>
-            <RichTextRenderer html={product.description} />
+        {activeTab === "ready" ? (
+          <div className="animate-in fade-in slide-in-from-left-4 duration-500">
+            {/* Description */}
+            {product.description && (
+              <div className="mb-5">
+                <h2 className="mb-3 font-bold text-gray-900">Description</h2>
+                <RichTextRenderer html={product.description} />
+              </div>
+            )}
           </div>
+        ) : (
+          <ProductCustomizer 
+            groups={product.customizationGroups ?? []} 
+            onSelectionChange={setCustomSelections} 
+          />
         )}
 
         {/* Parameters / Documents bar */}
@@ -429,8 +482,9 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           productId={product.id}
           sellerId={product.sellerId}
           productName={product.name}
-          productPrice={activePrice}
-          variantCode={activeCode}
+          productPrice={displayPrice}
+          variantCode={activeTab === "custom" ? "Custom Build" : activeCode}
+          customizations={activeTab === "custom" ? buildCartItem().customizations : undefined}
           onClose={() => setRequestModalOpen(false)}
           onSuccess={(rn) => {
             setRequestModalOpen(false);

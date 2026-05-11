@@ -6,7 +6,7 @@ import { createProduct } from "@/app/actions/seller";
 import { uploadProductImage } from "@/lib/uploadProductImage";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { Category } from "@/types/database";
-import { Tag, DollarSign, Layers, Hash, FileText, ChevronDown } from "lucide-react";
+import { Tag, DollarSign, Layers, Hash, FileText, ChevronDown, Sparkles, Wand2, RefreshCcw, Settings } from "lucide-react";
 import { LuxuryButton } from "@/components/seller/LuxuryButton";
 import { SpecificationsEditor } from "@/components/seller/SpecificationsEditor";
 import { DraggableVariantGrid, newSlot, type VariantSlot } from "@/components/seller/DraggableVariantGrid";
@@ -15,7 +15,7 @@ import { ProductDocumentsEditor, type DocSlot } from "@/components/seller/Produc
 import { extractYouTubeId, getYouTubeEmbedUrl, isValidYouTubeUrl } from "@/lib/youtube";
 import { saveProductDocuments } from "@/app/actions/product-documents";
 import { enrichProductFromImage } from "@/app/actions/product-enrichment";
-import { Sparkles, Wand2, RefreshCcw } from "lucide-react";
+import { CustomizationEditor, type CustomizationGroupInput } from "@/components/seller/CustomizationEditor";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -66,6 +66,8 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
   const [userId, setUserId] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [isScanning, setIsScanning] = useState(false);
+  const [hasCustomization, setHasCustomization] = useState(false);
+  const [customGroups, setCustomGroups] = useState<CustomizationGroupInput[]>([]);
 
   const handleAiScan = async () => {
     const mainImage = variants.find(v => v.file || v.existingUrl);
@@ -166,6 +168,10 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       formData.set("showStock", showStock ? "true" : "false");
       formData.set("description", descriptionHtml);
       formData.set("youtubeUrl", youtubeUrl.trim());
+      
+      if (hasCustomization && customGroups.length > 0) {
+        formData.set("customizationsJson", JSON.stringify(customGroups));
+      }
 
       const result = await createProduct(formData);
       if (result.error) throw new Error(result.error);
@@ -355,6 +361,46 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
           );
         })()}
       </Field>
+      
+      <Section title="Customization Options" />
+      <div
+        className="flex items-center justify-between rounded-xl border px-3 py-2.5 mb-4"
+        style={{ borderColor: hasCustomization ? PURPLE : `${GOLD}44`, background: hasCustomization ? "#EDE9F6" : "#fdfbf7" }}
+      >
+        <div className="flex-1 pr-3">
+          <div className="flex items-center gap-2">
+            <Settings className="h-4 w-4" style={{ color: hasCustomization ? PURPLE : GOLD }} />
+            <p className="text-xs font-bold text-gray-800">Enable Customization Suite</p>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+            Allow buyers to select custom doors, windows, flooring, etc. (Like topping on a pizza!)
+          </p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={hasCustomization}
+          onClick={() => setHasCustomization(!hasCustomization)}
+          className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+          style={{
+            backgroundColor: hasCustomization ? PURPLE : "#D1D5DB",
+            borderColor: hasCustomization ? PURPLE : "#D1D5DB",
+          }}
+        >
+          <span
+            className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+            style={{ transform: hasCustomization ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+          />
+        </button>
+      </div>
+
+      {hasCustomization && (
+        <CustomizationEditor
+          userId={userId}
+          groups={customGroups}
+          onChange={setCustomGroups}
+        />
+      )}
 
       {/* Publish status */}
       <div className="flex items-center justify-between rounded-xl border px-4 py-3" style={{ borderColor: `${GOLD}44`, background: "#fdfbf7" }}>

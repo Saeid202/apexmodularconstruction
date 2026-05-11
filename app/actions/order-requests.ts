@@ -22,6 +22,7 @@ export interface OrderRequestInput {
     postalCode: string;
     country: string;
   };
+  customizations?: any;
 }
 
 export interface OrderRequestRow {
@@ -40,6 +41,7 @@ export interface OrderRequestRow {
   product_name: string;
   product_price: number | null;
   variant_code: string | null;
+  customizations: Record<string, any> | null;
   created_at: string;
   updated_at: string;
 }
@@ -91,6 +93,7 @@ export async function submitOrderRequest(input: OrderRequestInput): Promise<{
         product_name: input.productName,
         product_price: input.productPrice,
         variant_code: input.variantCode,
+        customizations: input.customizations || null,
       })
       .select("id, request_number")
       .single();

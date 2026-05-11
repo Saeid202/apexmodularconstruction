@@ -42,6 +42,8 @@ export type {
   Tables,
   InsertTables,
   UpdateTables,
+  product_customization_groups as CustomizationGroup,
+  product_customization_options as CustomizationOption,
 } from './database'
 
 // Application-specific types that extend database types
@@ -70,6 +72,12 @@ export interface ProductWithRelations {
   category: CategoryData
   seller: SellerData
   documents: ProductDocumentData[]
+  hasCustomization: boolean
+  customizationGroups?: CustomizationGroupWithRelations[]
+}
+
+export interface CustomizationGroupWithRelations extends CustomizationGroup {
+  options: CustomizationOption[]
 }
 
 export interface ProductDocumentData {

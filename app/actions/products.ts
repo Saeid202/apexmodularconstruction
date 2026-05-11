@@ -95,7 +95,11 @@ export async function getProductBySlug(slug: string): Promise<{
         product_images (*),
         categories (*),
         sellers (*),
-        product_documents (*)
+        product_documents (*),
+        product_customization_groups (
+          *,
+          options:product_customization_options (*)
+        )
       `)
       .eq("slug", slug)
       .single();

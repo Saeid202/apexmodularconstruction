@@ -16,6 +16,7 @@ interface Props {
   productName: string;
   productPrice: number;
   variantCode: string | null;
+  customizations?: any;
   onClose: () => void;
   onSuccess: (requestNumber: string) => void;
 }
@@ -26,6 +27,7 @@ export function OrderRequestModal({
   productName,
   productPrice,
   variantCode,
+  customizations,
   onClose,
   onSuccess,
 }: Props) {
@@ -45,6 +47,7 @@ export function OrderRequestModal({
       productName,
       productPrice,
       variantCode,
+      customizations,
       quantity: parseInt(fd.get("quantity") as string) || 1,
       message: (fd.get("message") as string) ?? "",
       contactName: fd.get("contactName") as string,
@@ -133,6 +136,18 @@ export function OrderRequestModal({
                 />
               </div>
             </div>
+            {customizations && Object.entries(customizations).length > 0 && (
+              <div className="mt-3 pt-3 border-t border-purple-200/50">
+                <p className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-1.5">Customizations</p>
+                <div className="space-y-1">
+                  {Object.entries(customizations as Record<string, any>).map(([id, c]) => (
+                    <p key={id} className="text-xs text-purple-900">
+                      <span className="font-bold">{c.groupName}:</span> {c.optionName}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Message */}

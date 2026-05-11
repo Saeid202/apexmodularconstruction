@@ -27,9 +27,9 @@ function CartItemRow({ item }: { item: CartItem }) {
     if (newQty < 1 || isUpdating) return;
     setIsUpdating(true);
     // Optimistic update
-    updateQuantity(item.productId, item.variantCode, newQty);
+    updateQuantity(item.productId, item.variantCode, newQty, item.customizations);
     // Sync to server (best-effort, no rollback for now)
-    await updateCartItemQuantity(item.productId, item.variantCode, newQty);
+    await updateCartItemQuantity(item.productId, item.variantCode, newQty, item.customizations);
     setIsUpdating(false);
   }
 
@@ -37,9 +37,9 @@ function CartItemRow({ item }: { item: CartItem }) {
     if (isUpdating) return;
     setIsUpdating(true);
     // Optimistic update
-    removeItem(item.productId, item.variantCode);
+    removeItem(item.productId, item.variantCode, item.customizations);
     // Sync to server
-    await removeCartItem(item.productId, item.variantCode);
+    await removeCartItem(item.productId, item.variantCode, item.customizations);
     setIsUpdating(false);
   }
 
@@ -77,6 +77,15 @@ function CartItemRow({ item }: { item: CartItem }) {
           >
             {item.variantCode}
           </span>
+        )}
+        {item.customizations && Object.entries(item.customizations).length > 0 && (
+          <div className="mt-0.5 space-y-0.5">
+            {Object.entries(item.customizations).map(([groupId, cust]) => (
+              <p key={groupId} className="text-[10px] text-gray-500 leading-tight">
+                <span className="font-bold">{cust.groupName}:</span> {cust.optionName}
+              </p>
+            ))}
+          </div>
         )}
         <p className="text-sm font-semibold" style={{ color: PURPLE }}>
           {formatCAD(item.productPrice)}
@@ -163,7 +172,8 @@ export default function CartPage() {
                   variantCode: row.variant_code,
                   variantImageUrl: row.variant_image_url,
                   productName: row.products.name,
-                  productPrice: row.products.price,
+                  productPrice: (row as any).product_price ?? row.products.price,
+                  customizations: (row as any).customizations ?? undefined,
                 },
                 row.quantity
               );
@@ -265,7 +275,7 @@ export default function CartPage() {
           <div className="space-y-4">
             {items.map((item) => (
               <CartItemRow
-                key={`${item.productId}-${item.variantCode ?? "null"}`}
+                key={`${item.productId}-${item.variantCode ?? "null"}-${JSON.stringify(item.customizations ?? {})}`}
                 item={item}
               />
             ))}

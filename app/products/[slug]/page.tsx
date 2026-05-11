@@ -59,6 +59,32 @@ function transformProduct(
           status: dbProduct.sellers.status,
         }
       : { id: "", businessName: "Unknown Seller", businessEmail: "", logoUrl: null, status: "active" as const },
+    hasCustomization: dbProduct.has_customization ?? false,
+    customizationGroups: ((dbProduct as any).product_customization_groups ?? [])
+      .sort((a: any, b: any) => a.display_order - b.display_order)
+      .map((g: any) => ({
+        id: g.id,
+        product_id: g.product_id,
+        name: g.name,
+        description: g.description,
+        is_required: g.is_required,
+        display_order: g.display_order,
+        created_at: g.created_at,
+        updated_at: g.updated_at,
+        options: (g.options ?? [])
+          .sort((a: any, b: any) => a.display_order - b.display_order)
+          .map((o: any) => ({
+            id: o.id,
+            group_id: o.group_id,
+            name: o.name,
+            description: o.description,
+            price_modifier: o.price_modifier,
+            image_url: o.image_url,
+            display_order: o.display_order,
+            created_at: o.created_at,
+            updated_at: o.updated_at,
+          })),
+      })),
     documents: ((dbProduct as any).product_documents ?? [])
       .sort((a: any, b: any) => a.position - b.position)
       .map((d: any) => ({

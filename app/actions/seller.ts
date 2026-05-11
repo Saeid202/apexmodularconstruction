@@ -3,7 +3,7 @@
 import { createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
-import type { Product, ProductImage, Category, Seller } from "@/types/database";
+import type { Product, ProductImage, Category, Seller, CustomizationGroup, CustomizationOption } from "@/types/database";
 
 /** Generate a unique slug for a product, appending a random suffix on collision. */
 async function uniqueSlug(supabase: Awaited<ReturnType<typeof createServerClient>>, name: string, excludeId?: string): Promise<string> {
@@ -22,6 +22,9 @@ async function uniqueSlug(supabase: Awaited<ReturnType<typeof createServerClient
 export interface SellerProduct extends Product {
   product_images: ProductImage[];
   categories: Category | null;
+  product_customization_groups: (CustomizationGroup & {
+    options: CustomizationOption[];
+  })[];
 }
 
 // Combined function for dashboard - single auth call, parallel queries
@@ -46,7 +49,11 @@ export async function getSellerDashboardData(): Promise<{
         .select(`
           *,
           product_images (*),
-          categories (*)
+          categories (*),
+          product_customization_groups (
+            *,
+            options:product_customization_options (*)
+          )
         `)
         .eq("seller_id", user.id)
         .order("created_at", { ascending: false }),
@@ -120,7 +127,11 @@ export async function getSellerProducts(userId?: string): Promise<{
       .select(`
         *,
         product_images (*),
-        categories (*)
+        categories (*),
+        product_customization_groups (
+          *,
+          options:product_customization_options (*)
+        )
       `)
       .eq("seller_id", uid)
       .order("created_at", { ascending: false });
@@ -228,6 +239,44 @@ export async function createProduct(formData: FormData): Promise<{
       }));
       const { error: batchErr } = await supabase.from("product_images").insert(rows);
       if (batchErr) console.error("Batch image insert error:", batchErr.message);
+    }
+
+    // 4. Handle Customizations
+    const customizationsJson = formData.get("customizationsJson") as string | null;
+    if (customizationsJson) {
+      try {
+        const groups = JSON.parse(customizationsJson);
+        if (groups.length > 0) {
+          // Mark product as having customizations
+          await supabase.from("products").update({ has_customization: true }).eq("id", product.id);
+
+          for (let i = 0; i < groups.length; i++) {
+            const group = groups[i];
+            const { data: g, error: gErr } = await supabase
+              .from("product_customization_groups")
+              .insert({
+                product_id: product.id,
+                name: group.name,
+                display_order: i,
+              })
+              .select()
+              .single();
+
+            if (g && group.options?.length > 0) {
+              const optRows = group.options.map((o: any, idx: number) => ({
+                group_id: g.id,
+                name: o.name,
+                price_modifier: parseFloat(o.priceModifier || "0"),
+                image_url: o.imageUrl,
+                display_order: idx,
+              }));
+              await supabase.from("product_customization_options").insert(optRows);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error saving customizations:", err);
+      }
     }
 
     revalidatePath("/seller/products");
@@ -363,6 +412,49 @@ export async function updateProduct(productId: string, formData: FormData): Prom
       if (rows.length > 0) {
         const { error: batchErr } = await supabase.from("product_images").insert(rows);
         if (batchErr) console.error("Batch update image insert error:", batchErr.message);
+      }
+    }
+
+    // Handle Customizations Update
+    const customizationsJson = formData.get("customizationsJson") as string | null;
+    if (customizationsJson) {
+      try {
+        const groups = JSON.parse(customizationsJson);
+        
+        // Always clear old customizations first
+        await supabase.from("product_customization_groups").delete().eq("product_id", productId);
+        
+        if (groups.length > 0) {
+          await supabase.from("products").update({ has_customization: true }).eq("id", productId);
+
+          for (let i = 0; i < groups.length; i++) {
+            const group = groups[i];
+            const { data: g } = await supabase
+              .from("product_customization_groups")
+              .insert({
+                product_id: productId,
+                name: group.name,
+                display_order: i,
+              })
+              .select()
+              .single();
+
+            if (g && group.options?.length > 0) {
+              const optRows = group.options.map((o: any, idx: number) => ({
+                group_id: g.id,
+                name: o.name,
+                price_modifier: parseFloat(o.priceModifier || "0"),
+                image_url: o.imageUrl,
+                display_order: idx,
+              }));
+              await supabase.from("product_customization_options").insert(optRows);
+            }
+          }
+        } else {
+          await supabase.from("products").update({ has_customization: false }).eq("id", productId);
+        }
+      } catch (err) {
+        console.error("Error updating customizations:", err);
       }
     }
 

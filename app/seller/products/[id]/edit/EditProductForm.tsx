@@ -7,7 +7,9 @@ import { uploadProductImage } from "@/lib/uploadProductImage";
 import { createBrowserClient } from "@/lib/supabase/client";
 import type { SellerProduct } from "@/app/actions/seller";
 import type { Category } from "@/types/database";
-import { X, Tag, DollarSign, Layers, Hash, FileText, ChevronDown, ToggleLeft } from "lucide-react";import { LuxuryButton } from "@/components/seller/LuxuryButton";
+import { X, Tag, DollarSign, Layers, Hash, FileText, ChevronDown, ToggleLeft, Settings } from "lucide-react";
+import { LuxuryButton } from "@/components/seller/LuxuryButton";
+import { CustomizationEditor, type CustomizationGroupInput } from "@/components/seller/CustomizationEditor";
 import { DraggableVariantGrid, newSlot, type VariantSlot } from "@/components/seller/DraggableVariantGrid";
 import { SpecificationsEditor } from "@/components/seller/SpecificationsEditor";
 import { RichTextEditor } from "@/components/seller/RichTextEditor";
@@ -73,6 +75,8 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
   const [docs, setDocs] = useState<DocSlot[]>([]);
   const [userId, setUserId] = useState<string>("");
   const [youtubeUrl, setYoutubeUrl] = useState<string>((product as any).youtube_url ?? "");
+  const [hasCustomization, setHasCustomization] = useState<boolean>(product.has_customization ?? false);
+  const [customGroups, setCustomGroups] = useState<CustomizationGroupInput[]>([]);
 
   useEffect(() => {
     if (product.product_images.length > 0) {
@@ -93,6 +97,22 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
     const specObj = product.specifications as Record<string, string>;
     if (specObj && Object.keys(specObj).length > 0) {
       setSpecs(Object.entries(specObj).map(([key, value]) => ({ key, value })));
+    }
+
+    // Load existing customizations
+    if (product.product_customization_groups?.length > 0) {
+      setCustomGroups(
+        product.product_customization_groups.map((g) => ({
+          id: g.id,
+          name: g.name,
+          options: g.options.map((o) => ({
+            id: o.id,
+            name: o.name,
+            priceModifier: String(o.price_modifier),
+            imageUrl: o.image_url ?? "",
+          })),
+        }))
+      );
     }
 
     // Load existing documents + current user id
@@ -157,6 +177,12 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
       formData.set("showStock", showStock ? "true" : "false");
       formData.set("description", descriptionHtml);
       formData.set("youtubeUrl", youtubeUrl.trim());
+
+      if (hasCustomization && customGroups.length > 0) {
+        formData.set("customizationsJson", JSON.stringify(customGroups));
+      } else {
+        formData.set("customizationsJson", "[]");
+      }
 
       setLoadingMsg("Saving changes...");
       const result = await updateProduct(product.id, formData);
@@ -331,6 +357,46 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
           );
         })()}
       </Field>
+
+      <Section title="Customization Options" />
+      <div
+        className="flex items-center justify-between rounded-xl border px-3 py-2.5 mb-4"
+        style={{ borderColor: hasCustomization ? PURPLE : `${GOLD}44`, background: hasCustomization ? "#EDE9F6" : "#fdfbf7" }}
+      >
+        <div className="flex-1 pr-3">
+          <div className="flex items-center gap-2">
+            <Settings className="h-4 w-4" style={{ color: hasCustomization ? PURPLE : GOLD }} />
+            <p className="text-xs font-bold text-gray-800">Enable Customization Suite</p>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+            Allow buyers to select custom doors, windows, flooring, etc. (Like topping on a pizza!)
+          </p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={hasCustomization}
+          onClick={() => setHasCustomization(!hasCustomization)}
+          className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+          style={{
+            backgroundColor: hasCustomization ? PURPLE : "#D1D5DB",
+            borderColor: hasCustomization ? PURPLE : "#D1D5DB",
+          }}
+        >
+          <span
+            className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+            style={{ transform: hasCustomization ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+          />
+        </button>
+      </div>
+
+      {hasCustomization && (
+        <CustomizationEditor
+          userId={userId}
+          groups={customGroups}
+          onChange={setCustomGroups}
+        />
+      )}
 
       <div className="flex gap-3 pt-4 border-t" style={{ borderColor: `${GOLD}44` }}>
         <LuxuryButton type="button" variant="outline" size="md" onClick={() => router.back()}>Cancel</LuxuryButton>
