@@ -98,7 +98,6 @@ export async function getProductBySlug(slug: string): Promise<{
         product_documents (*)
       `)
       .eq("slug", slug)
-      .eq("status", "active")
       .single();
 
     // Race against a 3s timeout
@@ -117,7 +116,15 @@ export async function getProductBySlug(slug: string): Promise<{
       return { data: null, error: result.error.message };
     }
 
-    return { data: result.data as ProductWithRelations, error: null };
+    const product = result.data as ProductWithRelations;
+    
+    // Check status
+    if (product.status !== "active") {
+      console.warn(`Product found but status is ${product.status}: ${slug}`);
+      return { data: null, error: `Product is ${product.status}` };
+    }
+
+    return { data: product, error: null };
   } catch (err) {
     console.error("Unexpected error fetching product:", err);
     return { data: null, error: "Failed to fetch product" };

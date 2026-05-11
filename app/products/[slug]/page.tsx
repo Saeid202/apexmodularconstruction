@@ -100,7 +100,11 @@ export default async function ProductDetailPage({ params }: Props) {
   }
 
   if (!product) {
-    console.error(`Product not found: ${slug}`);
+    if (result.error?.includes("Product is")) {
+      console.error(`Product visibility issue: ${slug} is currently ${result.error.split(' ').pop()}`);
+    } else {
+      console.error(`Product not found: ${slug}`);
+    }
     notFound();
   }
 
