@@ -862,3 +862,136 @@ export function ProjectEstimateForm() {
     </form>
   );
 }
+
+/* ─── Light Steel Structure FAQ ─────────────────────────────────────────── */
+const LIGHT_STEEL_FAQS = [
+  {
+    q: "1. Are light steel structures suitable for the Canadian climate?",
+    a: "Yes. Light steel structures can be engineered for Canadian weather conditions including snow load, wind resistance, and insulation requirements. Many modern steel structure systems are designed specifically for cold climates and can be customized based on provincial building requirements.",
+  },
+  {
+    q: "2. Is it cheaper to import a light steel structure from China to Canada?",
+    a: "In many cases, importing from China can significantly reduce manufacturing costs compared to traditional local construction methods. The final cost depends on project size, customization, insulation specifications, shipping, installation requirements, and local permits and foundation work. Cargo Plus helps clients coordinate sourcing, shipping, and logistics to optimize overall project costs.",
+  },
+  {
+    q: "3. How long does it take to import a prefab steel structure to Canada?",
+    a: "Typical timelines range between 30–60 days depending on manufacturing schedule, customization level, shipping route, destination in Canada, and customs processing. Larger or more customized projects may require additional production time.",
+  },
+  {
+    q: "4. Can light steel structures be used for ADUs and garden suites in Ontario?",
+    a: "Yes. Light steel structure systems are commonly used for ADUs, garden suites, laneway homes, backyard offices, and modular residential units. However, every municipality has different zoning and permit requirements. Cargo Plus helps clients better understand the import and planning process before moving forward.",
+  },
+  {
+    q: "5. Do imported steel structures require permits in Canada?",
+    a: "Yes. Most permanent structures in Canada require permits and must comply with local building regulations. Requirements may include engineering approvals, foundation plans, zoning compliance, snow load calculations, and insulation standards. Permit requirements vary depending on municipality and intended use.",
+  },
+  {
+    q: "6. Are light steel structures durable compared to wood framing?",
+    a: "Light steel framing offers several advantages including resistance to pests and termites, reduced warping and shrinking, improved dimensional consistency, and long-term structural durability. Steel structures are widely used in modern modular and prefabricated construction projects around the world.",
+  },
+  {
+    q: "7. Can Cargo Plus handle the entire process from China to Canada?",
+    a: "Yes. Cargo Plus provides end-to-end coordination including factory sourcing, supplier communication, shipping logistics, import assistance, delivery coordination, and project support. Our goal is to simplify the process for Canadian clients importing prefabricated steel structure systems.",
+  },
+  {
+    q: "8. Can prefab steel structures be customized?",
+    a: "Yes. Most projects can be customized based on floor plan, dimensions, exterior finishes, insulation specifications, windows and doors, interior layout, and commercial or residential use. Customization options vary depending on the manufacturer and project scope.",
+  },
+  {
+    q: "9. What types of light steel structure projects are most popular in Canada?",
+    a: "Some of the most requested projects include ADUs, garden suites, tiny homes, modular offices, steel frame warehouses, workforce housing, and commercial modular units. Demand continues to grow as Canadians look for faster and more cost-efficient construction solutions.",
+  },
+  {
+    q: "10. Why are more developers and builders using light steel structure systems?",
+    a: "Light steel structure systems are becoming more popular because they offer faster construction timelines, factory precision manufacturing, reduced material waste, scalable modular solutions, efficient transportation, and modern architectural flexibility.",
+  },
+];
+
+export function LightSteelStructureFAQSection() {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <section
+      aria-labelledby="light-steel-faq-heading"
+      className="py-20 px-4"
+      style={{ backgroundColor: "#fff", fontFamily: "'Inter', sans-serif" }}
+    >
+      <div className="max-w-3xl mx-auto">
+        {/* Heading */}
+        <div className="text-center mb-12">
+          <p
+            className="text-xs font-bold uppercase tracking-[0.2em] mb-3"
+            style={{ color: GOLD }}
+          >
+            In-Depth Guide
+          </p>
+          <h2
+            id="light-steel-faq-heading"
+            className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight"
+          >
+            Frequently Asked Questions About Light Steel Structures
+          </h2>
+          <p className="mt-3 text-gray-500 text-base max-w-xl mx-auto leading-relaxed">
+            Everything you need to know about designing, importing, and building with light steel in Canada.
+          </p>
+        </div>
+
+        {/* Accordion items */}
+        <div className="space-y-4">
+          {LIGHT_STEEL_FAQS.map((faq, i) => {
+            const isOpen = open === i;
+            return (
+              <div
+                key={i}
+                className="rounded-2xl overflow-hidden transition-all duration-200"
+                style={{
+                  border: `1.5px solid ${isOpen ? GOLD : `${PURPLE}20`}`,
+                  boxShadow: isOpen
+                    ? `0 4px 20px rgba(75,29,143,0.10)`
+                    : `0 1px 4px rgba(75,29,143,0.05)`,
+                  backgroundColor: isOpen ? "#FAF9FF" : "#fff",
+                }}
+              >
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+                  aria-expanded={isOpen}
+                >
+                  <span
+                    className="font-bold text-gray-900 leading-snug"
+                    style={{ fontSize: "17px" }}
+                  >
+                    {faq.q}
+                  </span>
+                  <span
+                    className="shrink-0 flex items-center justify-center h-8 w-8 rounded-full transition-colors"
+                    style={{
+                      backgroundColor: isOpen ? GOLD : `${PURPLE}08`,
+                    }}
+                  >
+                    {isOpen ? (
+                      <ChevronUp className="h-4 w-4 text-white" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" style={{ color: PURPLE }} />
+                    )}
+                  </span>
+                </button>
+
+                {isOpen && (
+                  <div className="px-6 pb-6 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <p
+                      className="text-gray-700 leading-relaxed"
+                      style={{ fontSize: "16px", lineHeight: "1.7" }}
+                    >
+                      {faq.a}
+                    </p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

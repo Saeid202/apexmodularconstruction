@@ -6,7 +6,7 @@ import {
   Globe, DollarSign, Clock, ShieldCheck, Award,
   ClipboardList, Cog, Truck, HardHat, CheckCircle,
 } from "lucide-react";
-import { PrefabEPCFAQSection, ProjectEstimateForm } from "./ConstructionPageClient";
+import { PrefabEPCFAQSection, ProjectEstimateForm, LightSteelStructureFAQSection } from "./ConstructionPageClient";
 
 /* ─── SEO ─────────────────────────────────────────────────────────────────── */
 export const metadata: Metadata = {
@@ -399,6 +399,20 @@ export default function ConstructionSolutionsPage() {
                   ],
                   tagline: "Critical for approval and project success in Canada.",
                 },
+                {
+                  icon: Factory,
+                  number: "05",
+                  title: "Light Steel Structure Systems",
+                  description:
+                    "We design high-precision light steel structure systems in China and deliver them directly to Canada for rapid on-site assembly.",
+                  items: [
+                    "Custom architectural design",
+                    "Precision steel manufacturing",
+                    "Sea-freight logistics to Canada",
+                    "Major cost-efficiency optimization",
+                  ],
+                  tagline: "Cost: $700 CAD/SQM (China) vs $2000 CAD/SQM (Canada)",
+                },
               ].map(({ icon: Icon, number, title, description, items, tagline }) => (
                 <article
                   key={title}
@@ -568,6 +582,7 @@ export default function ConstructionSolutionsPage() {
                 { icon: Warehouse,  label: "Warehouses & Logistics Centers" },
                 { icon: LayoutGrid, label: "Modular Housing Developments" },
                 { icon: Landmark,   label: "Government & Infrastructure Projects" },
+                { icon: Building2,  label: "Light Steel Structures" },
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
@@ -640,24 +655,24 @@ export default function ConstructionSolutionsPage() {
                   color: "#EDE9F6",
                 },
                 {
-                  label: "Structural Steel",
-                  range: "$3,500 – $6,000",
-                  unit: "per tonne (delivered CA)",
-                  note: "Varies by grade, quantity, and shipping route",
+                  label: "Light Steel Structure",
+                  range: "$700 CAD",
+                  unit: "per SQM (Delivered)",
+                  note: "Directly from China vs. $2,000+ local cost. Includes design & sea-freight.",
                   color: "#FDF8EC",
-                },
-                {
-                  label: "China-Sourced Savings",
-                  range: "20% – 40%",
-                  unit: "vs. Canadian market",
-                  note: "On materials and prefab components when properly coordinated",
-                  color: "#EDE9F6",
                 },
                 {
                   label: "Typical Project Timeline",
                   range: "8 – 20 weeks",
                   unit: "design to delivery",
-                  note: "Includes manufacturing, shipping, customs, and site prep",
+                  note: "Includes manufacturing, shipping, customs, and site prep coordination.",
+                  color: "#EDE9F6",
+                },
+                {
+                  label: "China-Sourced Savings",
+                  range: "Up to 65%",
+                  unit: "vs. Local Contractors",
+                  note: "$700 CAD (China) vs. $2,000+ CAD (Local Canadian Contractor) per SQM.",
                   color: "#FDF8EC",
                 },
               ].map(({ label, range, unit, note, color }) => (
@@ -677,6 +692,32 @@ export default function ConstructionSolutionsPage() {
             <p className="text-center text-xs text-gray-400 mb-8">
               * All figures are estimates for planning purposes. Request a project-specific assessment for accurate budgeting.
             </p>
+
+            {/* Comparison Highlight */}
+            <div className="max-w-4xl mx-auto rounded-3xl p-8 md:p-12 text-center mb-16 shadow-2xl" style={{ backgroundColor: PURPLE }}>
+              <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-8">
+                The Real Price Gap: China vs. Canada
+              </h3>
+              <div className="grid md:grid-cols-2 gap-8 items-stretch">
+                <div className="p-8 rounded-2xl bg-white/10 border border-white/20 flex flex-col justify-center">
+                  <p className="text-xs font-black text-purple-200 uppercase mb-3 tracking-widest">Local Canadian Contractor</p>
+                  <p className="text-5xl font-black text-white">$2,000+</p>
+                  <p className="text-sm text-purple-200 mt-2 font-bold uppercase tracking-tighter">Average per SQM (CAD)</p>
+                </div>
+                <div className="p-8 rounded-2xl bg-yellow-400 flex flex-col justify-center transform md:scale-110 shadow-xl">
+                  <p className="text-xs font-black text-purple-900 uppercase mb-3 tracking-widest">CargoPlus (China Sourced)</p>
+                  <p className="text-6xl font-black text-purple-900">$700</p>
+                  <p className="text-sm text-purple-900 mt-2 font-black uppercase tracking-tighter">Delivered to Canada (CAD)</p>
+                </div>
+              </div>
+              <p className="mt-10 text-purple-100 text-sm font-medium max-w-2xl mx-auto leading-relaxed">
+                * Comparison based on light steel structure projects. CargoPlus pricing includes 
+                architectural design, precision engineering, factory fabrication, and sea-freight logistics.
+              </p>
+            </div>
+
+            {/* Light Steel Structure Specific FAQ */}
+            <LightSteelStructureFAQSection />
 
             {/* Mid-page CTA */}
             <div className="flex flex-wrap items-center justify-center gap-4">

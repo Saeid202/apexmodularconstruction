@@ -98,6 +98,17 @@ export function MobileMenu({
                 </Link>
               </li>
 
+              {/* Blog */}
+              <li>
+                <Link
+                  href="/blog"
+                  onClick={onClose}
+                  className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  Blog
+                </Link>
+              </li>
+
               {/* Services — expandable */}
               <li>
                 <button

@@ -65,6 +65,14 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
           </Link>
         </li>
 
+        {/* Blog */}
+        <li>
+          <Link href="/blog" onClick={() => onLinkClick?.()} className={linkClass}>
+            Blog
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+
         {/* Services dropdown */}
         <li ref={dropdownRef} className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
           <button
