@@ -46,6 +46,8 @@ import type {
   product_customization_options,
 } from './database'
 
+export * from './configurator'
+
 export type {
   Database,
   Json,
@@ -100,11 +102,13 @@ export interface ProductWithRelations {
   slug: string
   description: string | null
   price: number
+  priceType: 'unit' | 'sqm' | 'sqf'
   compareAtPrice: number | null
   stockQuantity: number
   categoryId: string
   sellerId: string
   status: 'pending' | 'active' | 'rejected' | 'archived'
+  configurator_type: 'house' | 'door' | 'window' | 'wall-material' | 'none'
   specifications: Record<string, string>
   requireOrderRequest: boolean
   showStock: boolean

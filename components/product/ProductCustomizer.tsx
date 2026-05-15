@@ -48,22 +48,24 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
             )}
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="flex flex-col gap-3">
             {group.options.map((option) => {
               const isSelected = selections[group.id]?.id === option.id;
               return (
                 <button
                   key={option.id}
                   onClick={() => handleSelect(group.id, option)}
-                  className="group relative flex flex-col items-stretch text-left transition-all duration-300 active:scale-95"
+                  className="group relative flex items-center gap-4 p-4 rounded-2xl border-2 transition-all duration-300 active:scale-[0.98] text-left"
+                  style={{ 
+                    borderColor: isSelected ? GOLD : "#E5E7EB",
+                    backgroundColor: isSelected ? `${PURPLE}08` : "white",
+                    boxShadow: isSelected ? `0 4px 20px ${PURPLE}15` : "none"
+                  }}
                 >
+                  {/* Image Frame */}
                   <div 
-                    className="relative aspect-square overflow-hidden rounded-2xl border-2 transition-all duration-300 group-hover:shadow-xl"
-                    style={{ 
-                      borderColor: isSelected ? GOLD : "#f3f4f6",
-                      boxShadow: isSelected ? `0 0 20px ${GOLD}33` : "none",
-                      transform: isSelected ? "scale(1.02)" : "scale(1)"
-                    }}
+                    className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2"
+                    style={{ borderColor: isSelected ? GOLD : "#F3F4F6" }}
                   >
                     {option.image_url ? (
                       <img 
@@ -77,39 +79,57 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
                       </div>
                     )}
                     
-                    {/* Selection Indicator */}
-                    <div 
-                      className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300"
-                      style={{ opacity: isSelected ? 1 : 0 }}
-                    />
-                    
                     {isSelected && (
                       <div 
-                        className="absolute right-2 top-2 rounded-full p-1 text-white shadow-lg"
-                        style={{ backgroundColor: PURPLE }}
+                        className="absolute inset-0 bg-black/10 flex items-center justify-center"
                       >
-                        <Check className="h-3.5 w-3.5" />
+                        <div className="rounded-full p-1 text-white shadow-lg" style={{ backgroundColor: PURPLE }}>
+                          <Check className="h-4 w-4" />
+                        </div>
                       </div>
                     )}
+                  </div>
 
-                    {/* Price Tag Overlay */}
-                    {option.price_modifier > 0 && (
-                      <div className="absolute bottom-2 left-2 rounded-lg bg-white/95 px-2 py-1 text-[10px] font-black shadow-sm" style={{ color: PURPLE }}>
-                        +${option.price_modifier.toLocaleString()}
+                  {/* Info Row */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <h4 className={`text-base font-black tracking-tight transition-colors ${isSelected ? "text-purple-900" : "text-gray-900"}`}>
+                          {option.name}
+                        </h4>
+                        {option.description && (
+                          <p className="text-xs text-gray-500 mt-0.5 line-clamp-2 font-medium">
+                            {option.description}
+                          </p>
+                        )}
                       </div>
-                    )}
+                      
+                      <div className="flex items-center gap-3 shrink-0">
+                        <div className="flex flex-col items-end">
+                          <span className="text-lg font-black" style={{ color: PURPLE }}>
+                            +${option.price_modifier.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </span>
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Additional Cost</span>
+                        </div>
+                        
+                        <div 
+                          className={`hidden sm:flex h-6 w-6 items-center justify-center rounded-full border-2 transition-all ${isSelected ? "bg-purple-700 border-purple-700" : "bg-transparent border-gray-200"}`}
+                          style={{ 
+                            backgroundColor: isSelected ? PURPLE : "transparent",
+                            borderColor: isSelected ? PURPLE : "#E5E7EB"
+                          }}
+                        >
+                          {isSelected && <Check className="h-3.5 w-3.5 text-white" />}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="mt-2 px-1">
-                    <p className={`text-xs font-black transition-colors ${isSelected ? "text-purple-900" : "text-gray-700"}`}>
-                      {option.name}
-                    </p>
-                    {option.description && (
-                      <p className="mt-0.5 text-[9px] leading-tight text-gray-400 line-clamp-2">
-                        {option.description}
-                      </p>
-                    )}
-                  </div>
+
+                  {/* Desktop Hover Highlight */}
+                  <div 
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 pointer-events-none border-2 border-transparent transition-opacity"
+                    style={{ borderColor: `${PURPLE}22` }}
+                  />
                 </button>
               );
             })}

@@ -15,7 +15,7 @@ import { ProductDocumentsEditor, type DocSlot } from "@/components/seller/Produc
 import { extractYouTubeId, getYouTubeEmbedUrl, isValidYouTubeUrl } from "@/lib/youtube";
 import { saveProductDocuments } from "@/app/actions/product-documents";
 import { enrichProductFromImage } from "@/app/actions/product-enrichment";
-import { CustomizationEditor, type CustomizationGroupInput } from "@/components/seller/CustomizationEditor";
+import { CustomizationSuiteSimple } from "@/components/seller/customization/CustomizationSuiteSimple";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -67,7 +67,8 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [isScanning, setIsScanning] = useState(false);
   const [hasCustomization, setHasCustomization] = useState(false);
-  const [customGroups, setCustomGroups] = useState<CustomizationGroupInput[]>([]);
+  const [customGroups, setCustomGroups] = useState<any[]>([]);
+  const [configuratorType, setConfiguratorType] = useState<'none' | 'house'>('none');
 
   const handleAiScan = async () => {
     const mainImage = variants.find(v => v.file || v.existingUrl);
@@ -168,6 +169,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       formData.set("showStock", showStock ? "true" : "false");
       formData.set("description", descriptionHtml);
       formData.set("youtubeUrl", youtubeUrl.trim());
+      formData.set("configuratorType", configuratorType);
       
       if (hasCustomization && customGroups.length > 0) {
         formData.set("customizationsJson", JSON.stringify(customGroups));
@@ -182,7 +184,12 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
         await saveProductDocuments(result.data.id, readyDocs);
       }
 
-      router.push("/seller/products");
+      // If it's a house, redirect to calibration instead of product list
+      if (configuratorType === 'house' && result.data) {
+        router.push(`/admin/configurator/calibrate/${result.data.id}`);
+      } else {
+        router.push("/seller/products");
+      }
     } catch (err: any) {
       setError(err.message ?? "Something went wrong");
       setLoading(false);
@@ -228,6 +235,17 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
           <div className="relative">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">$</span>
             <input name="price" type="number" step="0.01" min="0" required className={`${inputClass} pl-7`} placeholder="299.99" />
+          </div>
+          <div className="mt-3">
+            <label className="text-xs font-semibold text-gray-700 block mb-1.5">Price Type</label>
+            <div className="relative">
+              <select name="priceType" required className={`${inputClass} appearance-none pr-9 text-sm`}>
+                <option value="unit">per Unit</option>
+                <option value="sqm">per SQM (Square Meter)</option>
+                <option value="sqf">per SQF (Square Foot)</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            </div>
           </div>
           {/* Require Order Request + Show Stock toggles */}
           <div
@@ -395,12 +413,44 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       </div>
 
       {hasCustomization && (
-        <CustomizationEditor
+        <CustomizationSuiteSimple
+          productId="new"
           userId={userId}
-          groups={customGroups}
-          onChange={setCustomGroups}
+          initialEnabled={true}
         />
       )}
+
+      <Section title="Interactive Configurator" />
+      <div
+        className="flex items-center justify-between rounded-xl border px-3 py-2.5 mb-4"
+        style={{ borderColor: configuratorType === 'house' ? PURPLE : `${GOLD}44`, background: configuratorType === 'house' ? "#EDE9F6" : "#fdfbf7" }}
+      >
+        <div className="flex-1 pr-3">
+          <div className="flex items-center gap-2">
+            <Layers className="h-4 w-4" style={{ color: configuratorType === 'house' ? PURPLE : GOLD }} />
+            <p className="text-xs font-bold text-gray-800">Enable Interactive Building Engine</p>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+            Designate this product as a customizable prefab house. You will be asked to set up "anchors" (doors/windows) after saving.
+          </p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={configuratorType === 'house'}
+          onClick={() => setConfiguratorType(configuratorType === 'house' ? 'none' : 'house')}
+          className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+          style={{
+            backgroundColor: configuratorType === 'house' ? PURPLE : "#D1D5DB",
+            borderColor: configuratorType === 'house' ? PURPLE : "#D1D5DB",
+          }}
+        >
+          <span
+            className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+            style={{ transform: configuratorType === 'house' ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+          />
+        </button>
+      </div>
 
       {/* Publish status */}
       <div className="flex items-center justify-between rounded-xl border px-4 py-3" style={{ borderColor: `${GOLD}44`, background: "#fdfbf7" }}>

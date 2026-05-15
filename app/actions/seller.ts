@@ -148,6 +148,100 @@ export async function getSellerProducts(userId?: string): Promise<{
   }
 }
 
+// Get a single product by ID for editing
+export async function getSellerProductById(productId: string, userId?: string): Promise<{
+  data: SellerProduct | null;
+  error: string | null;
+}> {
+  try {
+    const supabase = await createServerClient();
+    
+    let uid = userId;
+    if (!uid) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return { data: null, error: "Not authenticated" };
+      uid = user.id;
+    }
+
+    const { data, error } = await supabase
+      .from("products")
+      .select(`
+        *,
+        product_images (*),
+        categories (*),
+        product_customization_groups (
+          *,
+          options:product_customization_options (*)
+        )
+      `)
+      .eq("id", productId)
+      .eq("seller_id", uid)
+      .single();
+
+    if (error) {
+      return { data: null, error: error.message };
+    }
+
+    return { data: data as SellerProduct, error: null };
+  } catch (err) {
+    console.error("Error fetching product by ID:", err);
+    return { data: null, error: "Failed to fetch product" };
+  }
+}
+
+// Get all data needed for the edit product page in one go
+export async function getEditProductData(productId: string): Promise<{
+  profile: Seller | null;
+  product: SellerProduct | null;
+  categories: Category[];
+  documents: any[];
+  error: string | null;
+}> {
+  try {
+    const supabase = await createServerClient();
+    
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return { profile: null, product: null, categories: [], error: "Not authenticated" };
+    }
+
+    const [profileResult, productResult, categoriesResult, documentsResult] = await Promise.all([
+      supabase.from("sellers").select("*").eq("id", user.id).single(),
+      supabase
+        .from("products")
+        .select(`
+          *,
+          product_images (*),
+          categories (*),
+          product_customization_groups (
+            *,
+            options:product_customization_options (*)
+          )
+        `)
+        .eq("id", productId)
+        .eq("seller_id", user.id)
+        .single(),
+      supabase.from("categories").select("*").order("name"),
+      supabase.from("product_documents").select("*").eq("product_id", productId).order("position"),
+    ]);
+
+    if (profileResult.error) {
+      return { profile: null, product: null, categories: [], documents: [], error: profileResult.error.message };
+    }
+
+    return {
+      profile: profileResult.data,
+      product: productResult.data as SellerProduct,
+      categories: categoriesResult.data || [],
+      documents: documentsResult.data || [],
+      error: null,
+    };
+  } catch (err) {
+    console.error("Error fetching edit product data:", err);
+    return { profile: null, product: null, categories: [], error: "Failed to fetch data" };
+  }
+}
+
 // Create a new product
 export async function createProduct(formData: FormData): Promise<{
   data: Product | null;
@@ -170,6 +264,7 @@ export async function createProduct(formData: FormData): Promise<{
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
     const price = parseFloat(formData.get("price") as string);
+    const priceType = (formData.get("priceType") as string) || "unit";
     const compareAtPrice = formData.get("compareAtPrice") ? parseFloat(formData.get("compareAtPrice") as string) : null;
     const stockQuantity = parseInt(formData.get("stockQuantity") as string);
     const categoryId = formData.get("categoryId") as string;
@@ -203,6 +298,7 @@ export async function createProduct(formData: FormData): Promise<{
         slug,
         description,
         price,
+        price_type: priceType,
         compare_at_price: compareAtPrice,
         stock_quantity: stockQuantity,
         category_id: categoryId,
@@ -212,6 +308,7 @@ export async function createProduct(formData: FormData): Promise<{
         show_stock: formData.get("showStock") !== "false",
         youtube_url: (formData.get("youtubeUrl") as string | null) || null,
         status: formData.get("publishStatus") === "draft" ? "pending" : "active",
+        configurator_type: (formData.get("configuratorType") as string | null) || "none",
       })
       .select()
       .single();
@@ -315,6 +412,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
     const name = formData.get("name") as string;
     const description = formData.get("description") as string;
     const price = parseFloat(formData.get("price") as string);
+    const priceType = (formData.get("priceType") as string) || "unit";
     const compareAtPrice = formData.get("compareAtPrice") ? parseFloat(formData.get("compareAtPrice") as string) : null;
     const stockQuantity = parseInt(formData.get("stockQuantity") as string);
     const categoryId = formData.get("categoryId") as string;
@@ -342,6 +440,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
     const requireOrderRequest = formData.get("requireOrderRequest") === "true";
     const showStock = formData.get("showStock") !== "false"; // default true
     const youtubeUrl = (formData.get("youtubeUrl") as string | null) || null;
+    const hasCustomization = formData.get("hasCustomization") === "true";
 
     const { data: product, error: productError } = await supabase
       .from("products")
@@ -350,6 +449,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
         slug,
         description,
         price,
+        price_type: priceType,
         compare_at_price: compareAtPrice,
         stock_quantity: stockQuantity,
         category_id: categoryId,
@@ -357,6 +457,8 @@ export async function updateProduct(productId: string, formData: FormData): Prom
         require_order_request: requireOrderRequest,
         show_stock: showStock,
         youtube_url: youtubeUrl,
+        has_customization: hasCustomization,
+        configurator_type: (formData.get("configuratorType") as string | null) || "none",
         updated_at: new Date().toISOString(),
       })
       .eq("id", productId)

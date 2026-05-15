@@ -9,6 +9,17 @@ interface ProductCardProps {
   product: ProductWithRelations;
 }
 
+function getPriceTypeLabel(priceType: string): string {
+  switch (priceType) {
+    case 'sqm':
+      return 'per SQM';
+    case 'sqf':
+      return 'per SQF';
+    default:
+      return 'per Unit';
+  }
+}
+
 export function ProductCard({ product }: ProductCardProps) {
   const image = product.images.find((img) => img.isMaster) ?? product.images[0];
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
@@ -110,15 +121,18 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.requireOrderRequest ? (
             <span className="text-sm font-bold text-secondary">Request for a quote</span>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-primary">
-                ${product.price.toFixed(2)} CAD
-              </span>
-              {hasDiscount && (
-                <span className="text-xs text-muted-foreground line-through">
-                  ${product.compareAtPrice!.toFixed(2)}
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-primary">
+                  ${product.price.toFixed(2)} CAD
                 </span>
-              )}
+                {hasDiscount && (
+                  <span className="text-xs text-muted-foreground line-through">
+                    ${product.compareAtPrice!.toFixed(2)}
+                  </span>
+                )}
+              </div>
+              <span className="text-xs text-muted-foreground">{getPriceTypeLabel(product.priceType)}</span>
             </div>
           )}
         </div>

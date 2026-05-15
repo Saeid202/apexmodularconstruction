@@ -8,8 +8,9 @@ import { createBrowserClient } from "@/lib/supabase/client";
 import type { SellerProduct } from "@/app/actions/seller";
 import type { Category } from "@/types/database";
 import { X, Tag, DollarSign, Layers, Hash, FileText, ChevronDown, ToggleLeft, Settings } from "lucide-react";
+import Link from "next/link";
 import { LuxuryButton } from "@/components/seller/LuxuryButton";
-import { CustomizationEditor, type CustomizationGroupInput } from "@/components/seller/CustomizationEditor";
+import { CustomizationSuiteSimple } from "@/components/seller/customization/CustomizationSuiteSimple";
 import { DraggableVariantGrid, newSlot, type VariantSlot } from "@/components/seller/DraggableVariantGrid";
 import { SpecificationsEditor } from "@/components/seller/SpecificationsEditor";
 import { RichTextEditor } from "@/components/seller/RichTextEditor";
@@ -58,7 +59,7 @@ function Section({ title }: { title: string }) {
 
 const inputClass = "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:border-transparent transition-shadow";
 
-export function EditProductForm({ product, categories }: EditProductFormProps) {
+export function EditProductForm({ product, categories, initialDocuments, userId: propUserId }: EditProductFormProps & { initialDocuments?: any[], userId?: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState("Saving Changes...");
@@ -73,10 +74,13 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
   );
   const [descriptionHtml, setDescriptionHtml] = useState<string>(product.description ?? "");
   const [docs, setDocs] = useState<DocSlot[]>([]);
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string>(propUserId || "");
   const [youtubeUrl, setYoutubeUrl] = useState<string>((product as any).youtube_url ?? "");
-  const [hasCustomization, setHasCustomization] = useState<boolean>(product.has_customization ?? false);
-  const [customGroups, setCustomGroups] = useState<CustomizationGroupInput[]>([]);
+  const [hasCustomization, setHasCustomization] = useState<boolean>(product.has_custom_customization ?? product.has_customization ?? false);
+  const [customGroups, setCustomGroups] = useState<any[]>([]);
+  const [configuratorType, setConfiguratorType] = useState<'none' | 'house'>(
+    ((product as any).configurator_type as string) === 'house' ? 'house' : 'none'
+  );
 
   useEffect(() => {
     if (product.product_images.length > 0) {
@@ -115,28 +119,17 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
       );
     }
 
-    // Load existing documents + current user id
-    const supabase = createBrowserClient();
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) setUserId(user.id);
-    });
-    supabase
-      .from("product_documents")
-      .select("*")
-      .eq("product_id", product.id)
-      .order("position", { ascending: true })
-      .then(({ data }) => {
-        if (data) {
-          setDocs(data.map((d: any) => ({
-            id: d.id,
-            name: d.name,
-            url: d.url,
-            file_type: d.file_type,
-            storage_path: d.storage_path,
-            position: d.position,
-          })));
-        }
-      });
+    // Load initial documents from props
+    if (initialDocuments) {
+      setDocs(initialDocuments.map((d: any) => ({
+        id: d.id,
+        name: d.name,
+        url: d.url,
+        file_type: d.file_type,
+        storage_path: d.storage_path,
+        position: d.position,
+      })));
+    }
   }, []);
 
   const addSpec = () => setSpecs([...specs, { key: "", value: "" }]);
@@ -152,50 +145,54 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
 
     // Capture form element immediately — before any await
     const formEl = e.currentTarget;
+    const formData = new FormData(formEl);
 
     try {
       const supabase = createBrowserClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setError("Not authenticated"); setLoading(false); return; }
 
-      const hasNewFiles = variants.some((v) => v.file);
-      if (hasNewFiles) setLoadingMsg("Uploading images...");
-      const uploadedVariants = await Promise.all(
-        variants.map(async (v, i) => {
-          let url = v.existingUrl ?? null;
-          if (v.file) url = await uploadProductImage(v.file, user.id, i);
-          return { url, code: v.code, price: v.price ? parseFloat(v.price) : null, isMaster: v.isMaster };
-        })
-      );
-
-      const formData = new FormData(formEl);
-      const specObj: Record<string, string> = {};
-      specs.forEach(({ key, value }) => { if (key && value) specObj[key] = value; });
-      formData.set("specifications", JSON.stringify(specObj));
-      formData.set("variantsJson", JSON.stringify(uploadedVariants));
-      formData.set("requireOrderRequest", requireOrderRequest ? "true" : "false");
-      formData.set("showStock", showStock ? "true" : "false");
-      formData.set("description", descriptionHtml);
-      formData.set("youtubeUrl", youtubeUrl.trim());
+      console.log('Starting product save process...');
+      console.log('hasCustomization:', hasCustomization);
+      console.log('customGroups length:', customGroups.length);
 
       if (hasCustomization && customGroups.length > 0) {
-        formData.set("customizationsJson", JSON.stringify(customGroups));
+        const customizationsJson = JSON.stringify(customGroups);
+        console.log('customizationsJson size:', customizationsJson.length);
+        formData.set("customizationsJson", customizationsJson);
       } else {
         formData.set("customizationsJson", "[]");
       }
 
+      formData.set("configuratorType", configuratorType);
+      console.log('Calling updateProduct...');
       setLoadingMsg("Saving changes...");
       const result = await updateProduct(product.id, formData);
-      if (result.error) { setError(result.error); setLoading(false); return; }
+      console.log('updateProduct result:', result);
 
+      if (result.error) { 
+        console.error('updateProduct error:', result.error);
+        setError(result.error); 
+        setLoading(false); 
+        return; 
+      }
+
+      console.log('Product updated successfully, saving documents...');
       // Save documents
       const readyDocs = docs.filter((d) => d.url && !d.uploading && !d.error);
       await saveProductDocuments(product.id, readyDocs);
+      console.log('Documents saved');
 
-      router.push("/seller/products");
-      router.refresh();
-    } catch (err: any) {
-      setError(err.message ?? "Upload failed");
+      console.log('Save process completed');
+      // If just enabled as interactive house, redirect to calibration tool
+      if (configuratorType === 'house') {
+        router.push(`/admin/configurator/calibrate/${product.id}`);
+      } else {
+        router.refresh();
+      }
+    } catch (error) {
+      console.error('Error during save:', error);
+      setError('An error occurred while saving. Please try again.');
       setLoading(false);
     }
   };
@@ -248,6 +245,17 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
           <div className="relative">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">$</span>
             <input id="price" name="price" type="number" step="0.01" min="0" required defaultValue={product.price} className={`${inputClass} pl-7`} />
+          </div>
+          <div className="mt-3">
+            <label className="text-xs font-semibold text-gray-700 block mb-1.5">Price Type</label>
+            <div className="relative">
+              <select id="priceType" name="priceType" required defaultValue={product.price_type || 'unit'} className={`${inputClass} appearance-none pr-9 text-sm`}>
+                <option value="unit">per Unit</option>
+                <option value="sqm">per SQM (Square Meter)</option>
+                <option value="sqf">per SQF (Square Foot)</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            </div>
           </div>
           {/* Require Order Request + Show Stock toggles */}
           <div
@@ -391,11 +399,55 @@ export function EditProductForm({ product, categories }: EditProductFormProps) {
       </div>
 
       {hasCustomization && (
-        <CustomizationEditor
-          userId={userId}
-          groups={customGroups}
-          onChange={setCustomGroups}
+        <CustomizationSuiteSimple 
+          productId={product.id} 
+          userId={userId} 
+          initialEnabled={true} 
+          customGroups={customGroups}
+          onCustomGroupsChange={setCustomGroups}
         />
+      )}
+
+      <Section title="Interactive Configurator" />
+      <div
+        className="flex items-center justify-between rounded-xl border px-3 py-2.5 mb-4"
+        style={{ borderColor: configuratorType === 'house' ? PURPLE : `${GOLD}44`, background: configuratorType === 'house' ? "#EDE9F6" : "#fdfbf7" }}
+      >
+        <div className="flex-1 pr-3">
+          <div className="flex items-center gap-2">
+            <Layers className="h-4 w-4" style={{ color: configuratorType === 'house' ? PURPLE : GOLD }} />
+            <p className="text-xs font-bold text-gray-800">Enable Interactive Building Engine</p>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+            Designate this product as a customizable prefab house. Saving will take you to the Calibration Tool.
+          </p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={configuratorType === 'house'}
+          onClick={() => setConfiguratorType(configuratorType === 'house' ? 'none' : 'house')}
+          className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+          style={{
+            backgroundColor: configuratorType === 'house' ? PURPLE : "#D1D5DB",
+            borderColor: configuratorType === 'house' ? PURPLE : "#D1D5DB",
+          }}
+        >
+          <span
+            className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+            style={{ transform: configuratorType === 'house' ? "translateX(19px)" : "translateX(1px)", marginTop: 1 }}
+          />
+        </button>
+      </div>
+      {configuratorType === 'house' && (
+        <Link
+          href={`/admin/configurator/calibrate/${product.id}`}
+          className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold transition-all hover:opacity-90 mb-4"
+          style={{ background: `linear-gradient(135deg, ${PURPLE}, #3a1570)`, color: 'white', border: `1.5px solid ${GOLD}` }}
+        >
+          <Layers className="h-4 w-4" />
+          Open Calibration Tool →
+        </Link>
       )}
 
       <div className="flex gap-3 pt-4 border-t" style={{ borderColor: `${GOLD}44` }}>

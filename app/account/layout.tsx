@@ -18,13 +18,17 @@ const navItems = [
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [user, setUser] = useState<{ email?: string; user_metadata?: { full_name?: string } } | null>(null);
+  const [user, setUser] = useState<{ email?: string; user_metadata?: { full_name?: string; role?: string } } | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = createBrowserClient();
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) window.location.href = "/";
-      else setUser(data.session.user);
+      else {
+        setUser(data.session.user);
+        setUserRole(data.session.user?.user_metadata?.role || null);
+      }
     });
   }, []);
 

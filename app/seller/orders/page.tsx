@@ -8,11 +8,14 @@ export const revalidate = 0;
 
 export default async function SellerOrdersPage() {
   const profileResult = await getSellerProfile();
+  
   if (!profileResult.data && profileResult.error === "Not authenticated") {
     redirect("/seller/login");
   }
 
-  const { data: requests, error } = await getSellerOrderRequests();
+  const userId = profileResult.data?.id;
+  const requestsResult = await getSellerOrderRequests(userId);
+  const { data: requests, error } = requestsResult;
 
   return <SellerOrdersClient requests={requests ?? []} fetchError={error} />;
 }

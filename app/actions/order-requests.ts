@@ -145,19 +145,24 @@ export async function getBuyerOrderRequests(): Promise<{
 }
 
 // ─── Fetch seller's order requests ────────────────────────────────────────────
-export async function getSellerOrderRequests(): Promise<{
+export async function getSellerOrderRequests(userId?: string): Promise<{
   data: OrderRequestRow[] | null;
   error: string | null;
 }> {
   try {
     const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { data: null, error: "Not authenticated" };
+    
+    let uid = userId;
+    if (!uid) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return { data: null, error: "Not authenticated" };
+      uid = user.id;
+    }
 
     const { data, error } = await supabase
       .from("order_requests")
       .select("*")
-      .eq("seller_id", user.id)
+      .eq("seller_id", uid)
       .order("created_at", { ascending: false });
 
     if (error) return { data: null, error: error.message };

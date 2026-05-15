@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink, Settings } from "lucide-react";
+import Link from "next/link";
+import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink, Settings, Layers } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cartStore";
 import { OrderRequestModal } from "@/components/product/OrderRequestModal";
 import { WhatsAppLink } from "@/components/layout/WhatsAppLink";
@@ -13,6 +14,17 @@ import { ProductCustomizer } from "@/components/product/ProductCustomizer";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
+
+function getPriceTypeLabel(priceType: string): string {
+  switch (priceType) {
+    case 'sqm':
+      return 'per SQM';
+    case 'sqf':
+      return 'per SQF';
+    default:
+      return 'per Unit';
+  }
+}
 
 export function ProductDetailClient({ product }: { product: ProductWithRelations }) {
   const router = useRouter();
@@ -122,7 +134,10 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
           {product.requireOrderRequest ? (
             <span className="text-lg font-bold" style={{ color: GOLD }}>Request for a quote</span>
           ) : (
-            <span className="text-xl font-bold shrink-0" style={{ color: PURPLE }}>${displayPrice.toFixed(2)} CAD</span>
+            <div className="flex flex-col items-end">
+              <span className="text-xl font-bold shrink-0" style={{ color: PURPLE }}>${displayPrice.toFixed(2)} CAD</span>
+              <span className="text-sm font-bold" style={{ color: GOLD, backgroundColor: `${GOLD}15`, padding: '2px 6px', borderRadius: '4px' }}>{getPriceTypeLabel(product.priceType)}</span>
+            </div>
           )}
         </div>
 
@@ -251,7 +266,10 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
               <span className="text-2xl font-bold" style={{ color: GOLD }}>Request for a quote</span>
             ) : (
               <>
-                <span className="text-2xl font-bold" style={{ color: PURPLE }}>${displayPrice.toFixed(2)} CAD</span>
+                <div className="flex flex-col">
+                  <span className="text-2xl font-bold" style={{ color: PURPLE }}>${displayPrice.toFixed(2)} CAD</span>
+                  <span className="text-sm font-bold" style={{ color: GOLD, backgroundColor: `${GOLD}15`, padding: '2px 6px', borderRadius: '4px' }}>{getPriceTypeLabel(product.priceType)}</span>
+                </div>
                 {hasDiscount && activeTab === "ready" && activeImage?.variantPrice == null && (
                   <span className="text-base text-gray-400 line-through">${product.compareAtPrice!.toFixed(2)}</span>
                 )}
@@ -337,18 +355,28 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                 : doc.fileType === "other" ? File
                 : FileText;
               return (
-                <a
+                <button
                   key={doc.id}
-                  href={doc.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  onClick={() => {
+                    const link = document.createElement('a');
+                    link.href = doc.url;
+                    link.download = doc.name;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
                   className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 text-base font-bold text-white transition-all hover:opacity-90"
                   style={{ backgroundColor: PURPLE, border: `2px solid ${GOLD}` }}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
-                  <span className="flex-1 truncate">{doc.name}</span>
-                  <ExternalLink className="h-4 w-4 shrink-0 opacity-70" />
-                </a>
+                  <span className="flex-1 truncate text-left">{doc.name}</span>
+                  <div className="flex items-center gap-1 text-xs">
+                    <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3M7 21l10-5M7 13l10 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span className="text-xs">Download</span>
+                  </div>
+                </button>
               );
             })}
           </div>
@@ -458,6 +486,21 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                   <Zap className="h-5 w-5" />
                   Buy Now
                 </button>
+              )}
+
+              {product.configurator_type === 'house' && (
+                <Link
+                  href={`/products/${product.slug}/configure`}
+                  className="flex min-h-[56px] w-full items-center justify-center gap-3 rounded-2xl text-lg font-black transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)`, 
+                    color: "white", 
+                    border: `2px solid ${GOLD}` 
+                  }}
+                >
+                  <Layers className="h-6 w-6 text-[#D4AF37] animate-pulse" />
+                  Interactive Configurator
+                </Link>
               )}
 
               {hasVariants && activeCode && (

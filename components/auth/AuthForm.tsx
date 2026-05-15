@@ -57,7 +57,7 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
 
       // Get role from auth metadata (no DB query needed)
       const userRole = data.user?.user_metadata?.role;
-      
+
       // Role-based redirect
       if (userRole === "seller") {
         window.location.href = "/seller/dashboard";

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getSellerProfile, getSellerProducts } from "@/app/actions/seller";
+import { getSellerDashboardData } from "@/app/actions/seller";
 import { Package, Plus, Sparkles } from "lucide-react";
 import { ProductActions } from "./ProductActions";
 import { LuxuryLinkButton } from "@/components/seller/LuxuryButton";
@@ -14,17 +14,12 @@ export const metadata: Metadata = {
 };
 
 export default async function SellerProductsPage() {
-  const [profileResult, productsResult] = await Promise.all([
-    getSellerProfile(),
-    getSellerProducts(),
-  ]);
+  const { profile, products, error } = await getSellerDashboardData();
 
   // Only redirect if not authenticated, not on DB errors
-  if (!profileResult.data && profileResult.error === "Not authenticated") {
+  if (!profile && error === "Not authenticated") {
     redirect("/seller/login");
   }
-
-  const products = productsResult.data || [];
 
   return (
     <div className="p-6">

@@ -132,6 +132,7 @@ export interface Database {
           price: number
           compare_at_price: number | null
           stock_quantity: number
+          price_type: 'unit' | 'sqm' | 'sqf'
           category_id: string
           seller_id: string
           status: 'pending' | 'active' | 'rejected' | 'archived'
@@ -148,6 +149,7 @@ export interface Database {
           price: number
           compare_at_price?: number | null
           stock_quantity?: number
+          price_type?: 'unit' | 'sqm' | 'sqf'
           category_id: string
           seller_id: string
           status?: 'pending' | 'active' | 'rejected' | 'archived'
@@ -164,6 +166,7 @@ export interface Database {
           price?: number
           compare_at_price?: number | null
           stock_quantity?: number
+          price_type?: 'unit' | 'sqm' | 'sqf'
           category_id?: string
           seller_id?: string
           status?: 'pending' | 'active' | 'rejected' | 'archived'
@@ -429,6 +432,9 @@ export interface Database {
           description: string | null
           price_modifier: number
           image_url: string | null
+          additional_images: string[] | null
+          stock_quantity: number | null
+          track_inventory: boolean
           display_order: number
           created_at: string
           updated_at: string
@@ -440,6 +446,9 @@ export interface Database {
           description?: string | null
           price_modifier?: number
           image_url?: string | null
+          additional_images?: string[] | null
+          stock_quantity?: number | null
+          track_inventory?: boolean
           display_order?: number
           created_at?: string
           updated_at?: string
@@ -451,6 +460,9 @@ export interface Database {
           description?: string | null
           price_modifier?: number
           image_url?: string | null
+          additional_images?: string[] | null
+          stock_quantity?: number | null
+          track_inventory?: boolean
           display_order?: number
           created_at?: string
           updated_at?: string
