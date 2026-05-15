@@ -63,3 +63,36 @@ export async function getHouseConfigurator(productId: string) {
 
   return { data: result, error: null };
 }
+
+/**
+ * Saves a user's house configuration
+ */
+export async function saveConfiguration(params: {
+  productId: string;
+  selections: Record<string, string>;
+  totalPrice: number;
+}) {
+  const supabase = await createClient();
+  
+  // Get current user
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) {
+    return { data: null, error: 'You must be logged in to save configurations' };
+  }
+
+  // Insert configuration
+  const { data, error } = await supabase
+    .from('house_configurations')
+    .insert({
+      user_id: user.id,
+      product_id: params.productId,
+      selections: params.selections,
+      total_price: params.totalPrice,
+    })
+    .select()
+    .single();
+
+  if (error) return { data: null, error: error.message };
+
+  return { data, error: null };
+}
