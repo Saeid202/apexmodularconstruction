@@ -46,6 +46,15 @@ export default async function HomePage() {
     ctaLink: slide.cta_link,
     position: slide.position,
     isActive: slide.is_active,
+    // New fields for enhanced hero section
+    headline: (slide as any).headline || null,
+    subtext: (slide as any).subtext || null,
+    benefits: (slide as any).benefits || [],
+    ctaSecondaryText: (slide as any).cta_secondary_text || null,
+    ctaSecondaryLink: (slide as any).cta_secondary_link || null,
+    layoutType: (slide as any).layout_type || 'split',
+    backgroundOverlay: (slide as any).background_overlay !== undefined ? (slide as any).background_overlay : true,
+    trustLine: (slide as any).trust_line || null,
   })) ?? [];
   const heroSlides: HeroSlideData[] = dbHeroSlides.length > 0 ? dbHeroSlides : mockHeroSlides;
 

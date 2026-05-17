@@ -271,4 +271,13 @@ export interface HeroSlideData {
   ctaLink: string | null
   position: number
   isActive: boolean
+  // New fields for enhanced hero section
+  headline?: string | null
+  subtext?: string | null
+  benefits?: string[]
+  ctaSecondaryText?: string | null
+  ctaSecondaryLink?: string | null
+  layoutType?: 'split' | 'centered' | 'image-only'
+  backgroundOverlay?: boolean
+  trustLine?: string | null
 }
