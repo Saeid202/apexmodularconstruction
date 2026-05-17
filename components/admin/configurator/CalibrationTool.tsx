@@ -162,11 +162,11 @@ export default function CalibrationTool({ product, initialSettings, mainImage }:
       {/* Sidebar - Controls */}
       <div className="w-80 border-r bg-background flex flex-col p-4 gap-6 overflow-y-auto">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/admin/configurator/calibrate">
+          <Link href="/admin/configurator/calibrate">
+            <Button variant="ghost" size="icon">
               <ChevronLeft className="h-4 w-4" />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
           <h2 className="font-bold truncate">{product.name}</h2>
         </div>
 
