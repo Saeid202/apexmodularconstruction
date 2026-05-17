@@ -34,6 +34,9 @@ export const metadata: Metadata = {
   creator: "CargoPlus",
   publisher: "CargoPlus",
   metadataBase: new URL("https://cargoplus.site"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_CA",

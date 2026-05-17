@@ -1,16 +1,23 @@
-import { HeroSlider } from "@/components/home/HeroSlider";
+import { PrefabHero } from "@/components/home/PrefabHero";
 import { ProductShowcaseWrapper } from "@/components/home/ProductShowcaseWrapper";
-import { getHeroSlides } from "@/app/actions/hero-slides";
 import { getProducts } from "@/app/actions/products";
-import { mockHeroSlides, mockProducts } from "@/lib/mock-data";
-import type { HeroSlideData, ProductWithRelations } from "@/types";
+import { mockProducts } from "@/lib/mock-data";
+import type { ProductWithRelations } from "@/types";
+import type { Metadata } from "next";
 
 // Always fetch fresh data
 export const revalidate = 0;
 
+export const metadata: Metadata = {
+  title: "CargoPlus - Prefabricated Modular Homes from China to Canada",
+  description: "Premium construction materials marketplace. Prefabricated modular homes, light steel structures, and building materials delivered from China to Canada with CSA compliance.",
+  alternates: {
+    canonical: "/",
+  },
+};
+
 export default async function HomePage() {
   // Try to fetch from Supabase with timeout protection, fall back to mock data
-  let heroResult: { data: any[] | null; error: string | null } = { data: null, error: "Using mock data" };
   let productsResult: { data: any[] | null; error: string | null } = { data: null, error: "Using mock data" };
   
   try {
@@ -19,44 +26,11 @@ export default async function HomePage() {
       setTimeout(() => reject(new Error("Database timeout")), 3000)
     );
     
-    const [heroData, productsData] = await Promise.allSettled([
-      Promise.race([getHeroSlides(), timeoutPromise]),
-      Promise.race([getProducts({ limit: 8 }), timeoutPromise]),
-    ]);
-    
-    if (heroData.status === 'fulfilled') {
-      heroResult = heroData.value as { data: any[] | null; error: string | null };
-    }
-    
-    if (productsData.status === 'fulfilled') {
-      productsResult = productsData.value as { data: any[] | null; error: string | null };
-    }
+    const productsData = await Promise.race([getProducts({ limit: 8 }), timeoutPromise]);
+    productsResult = productsData as { data: any[] | null; error: string | null };
   } catch (error) {
     console.log("Home page: Using mock data due to database issues");
   }
-
-  // Transform database results to application types or use mock data
-  const dbHeroSlides: HeroSlideData[] = heroResult.data?.map((slide) => ({
-    id: slide.id,
-    title: slide.title,
-    subtitle: slide.subtitle,
-    imageUrl: slide.image_url,
-    ctaEnabled: (slide as any).cta_enabled ?? false,
-    ctaText: slide.cta_text,
-    ctaLink: slide.cta_link,
-    position: slide.position,
-    isActive: slide.is_active,
-    // New fields for enhanced hero section
-    headline: (slide as any).headline || null,
-    subtext: (slide as any).subtext || null,
-    benefits: (slide as any).benefits || [],
-    ctaSecondaryText: (slide as any).cta_secondary_text || null,
-    ctaSecondaryLink: (slide as any).cta_secondary_link || null,
-    layoutType: (slide as any).layout_type || 'split',
-    backgroundOverlay: (slide as any).background_overlay !== undefined ? (slide as any).background_overlay : true,
-    trustLine: (slide as any).trust_line || null,
-  })) ?? [];
-  const heroSlides: HeroSlideData[] = dbHeroSlides.length > 0 ? dbHeroSlides : mockHeroSlides;
 
   const dbProducts: ProductWithRelations[] = productsResult.data?.map((product) => ({
     id: product.id,
@@ -64,11 +38,13 @@ export default async function HomePage() {
     slug: product.slug,
     description: product.description,
     price: product.price,
+    priceType: (product as any).price_type || 'unit',
     compareAtPrice: product.compare_at_price,
     stockQuantity: product.stock_quantity,
     categoryId: product.category_id,
     sellerId: product.seller_id,
     status: product.status,
+    configurator_type: (product as any).configurator_type || 'none',
     specifications: product.specifications as Record<string, string>,
     createdAt: product.created_at,
     updatedAt: product.updated_at,
@@ -107,7 +83,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSlider slides={heroSlides} />
+      <PrefabHero />
       <ProductShowcaseWrapper products={products} title="Featured Products" />
     </>
   );
