@@ -55,7 +55,17 @@ export function CustomizationSuiteSimpleWorking({ productId, userId, initialEnab
       const result = await getCustomizationGroups(productId);
       
       if (result.data && result.data.length > 0) {
-        setOptions(result.data);
+        // Transform database result to OptionRow format
+        const transformedOptions: OptionRow[] = result.data.map((group: any) => ({
+          id: group.id,
+          category: group.name || DEFAULT_CATEGORIES[0],
+          name: group.name || '',
+          code: '',
+          price: '',
+          images: [],
+          uploading: false,
+        }));
+        setOptions(transformedOptions);
       } else {
         setOptions([]);
       }
