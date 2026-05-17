@@ -76,7 +76,7 @@ export function EditProductForm({ product, categories, initialDocuments, userId:
   const [docs, setDocs] = useState<DocSlot[]>([]);
   const [userId, setUserId] = useState<string>(propUserId || "");
   const [youtubeUrl, setYoutubeUrl] = useState<string>((product as any).youtube_url ?? "");
-  const [hasCustomization, setHasCustomization] = useState<boolean>(product.has_custom_customization ?? product.has_customization ?? false);
+  const [hasCustomization, setHasCustomization] = useState<boolean>(product.has_customization ?? false);
   const [customGroups, setCustomGroups] = useState<any[]>([]);
   const [configuratorType, setConfiguratorType] = useState<'none' | 'house'>(
     ((product as any).configurator_type as string) === 'house' ? 'house' : 'none'
