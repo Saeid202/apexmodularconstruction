@@ -316,7 +316,8 @@ export function CustomizationSuiteSimpleWorking({ productId, userId, initialEnab
                         style={{ borderColor: `${PURPLE}44` }}
                       >
                         {option.uploading ? (
-                          <div className="animate-spin h-3 w-3 border border-gray-300 border-t-purple-600 rounded-full"></div>
+                          <>
+                            <div className="animate-spin h-3 w-3 border border-gray-300 border-t-purple-600 rounded-full"></div>
                             Uploading...
                           </>
                         ) : (
