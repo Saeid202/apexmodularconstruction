@@ -2,7 +2,7 @@
 
 ## Overview
 
-Add a `partner` user type to CargoPlus. Partners are Chinese engineering companies that log in via the existing auth modal, view all engineering project submissions, submit structured quotes, and message customers. The implementation follows the established seller/admin patterns throughout the codebase.
+Add a `partner` user type to Apex Modular Construction. Partners are Chinese engineering companies that log in via the existing auth modal, view all engineering project submissions, submit structured quotes, and message customers. The implementation follows the established seller/admin patterns throughout the codebase.
 
 ## Tasks
 

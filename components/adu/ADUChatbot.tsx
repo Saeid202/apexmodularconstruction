@@ -17,7 +17,7 @@ const AddressAutofill = dynamic(
   { ssr: false }
 );
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
-// CargoPlus Luxury Branding
+// Apex Modular Construction Luxury Branding
 const CP_PURPLE = "#4B1D8F"; 
 const CP_GOLD = "#D4AF37"; 
 
@@ -75,7 +75,7 @@ export function ADUChatbot() {
     setStep('chat');
     setChatMessages([{ 
       role: 'bot', 
-      text: `Welcome to CargoPlus! I'm your Technical Sales Specialist. ${welcomeText} How can I help you today?` 
+      text: `Welcome to Apex Modular Construction! I'm your Technical Sales Specialist. ${welcomeText} How can I help you today?` 
     }]);
   };
 
@@ -114,7 +114,7 @@ export function ADUChatbot() {
                <ShieldCheck className="w-5 h-5" />
              </div>
              <span className="text-xs font-black uppercase tracking-widest text-black">
-               {report ? "Active Feasibility" : "CargoPlus Assistant"}
+               {report ? "Active Feasibility" : "Apex Modular Construction Assistant"}
              </span>
           </div>
           <button onClick={resetSession} className="flex items-center space-x-2 px-4 py-2 border-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:bg-purple-50 group" style={{ color: CP_PURPLE, borderColor: `${CP_PURPLE}20` }}>
@@ -130,7 +130,7 @@ export function ADUChatbot() {
             <div className="space-y-4 text-center mb-12">
               <div className="inline-flex items-center space-x-3 px-6 py-2 rounded-full border shadow-sm" style={{ borderColor: CP_GOLD, backgroundColor: `${CP_GOLD}10` }}>
                 <Sparkles className="w-4 h-4" style={{ color: CP_GOLD }} />
-                <span className="text-[11px] font-[900] uppercase tracking-[0.3em]" style={{ color: CP_PURPLE }}>CargoPlus Royal Intelligence</span>
+                <span className="text-[11px] font-[900] uppercase tracking-[0.3em]" style={{ color: CP_PURPLE }}>Apex Modular Construction Royal Intelligence</span>
               </div>
               <h1 className="text-5xl md:text-7xl font-[1000] text-gray-900 tracking-tighter leading-tight">
                 Industrial Intelligence <span style={{ color: CP_PURPLE }}>Applied.</span>
@@ -326,7 +326,7 @@ export function ADUChatbot() {
                           <div className="space-y-10 pt-16 border-t border-gray-100">
                             <div className="flex items-center justify-between">
                               <div className="space-y-2">
-                                <h4 className="text-[14px] font-[1000] uppercase tracking-[0.6em]" style={{ color: CP_GOLD }}>Compatible CargoPlus Models</h4>
+                                <h4 className="text-[14px] font-[1000] uppercase tracking-[0.6em]" style={{ color: CP_GOLD }}>Compatible Apex Modular Construction Models</h4>
                                 <p className="text-gray-400 text-sm font-bold uppercase tracking-widest">Recommended Prefab Units for this lot</p>
                               </div>
                               <Home className="w-8 h-8 opacity-10" />

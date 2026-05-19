@@ -10,7 +10,7 @@ import { PrefabEPCFAQSection, ProjectEstimateForm, LightSteelStructureFAQSection
 
 /* ─── SEO ─────────────────────────────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: "Prefab Construction Cost in Canada (2026 Guide) | CargoPlus",
+  title: "Prefab Construction Cost in Canada (2026 Guide) | Apex Modular Construction",
   description:
     "Full cost breakdown of prefab and steel structure projects from China to Canada. EPC delivery, CSA compliance, and modular building solutions. Get a free project estimate.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     canonical: "https://cargoplus.site/services/construction-solutions",
   },
   openGraph: {
-    title: "Prefab Construction Cost in Canada (2026 Guide) | CargoPlus",
+    title: "Prefab Construction Cost in Canada (2026 Guide) | Apex Modular Construction",
     description:
       "Full cost breakdown of prefab and steel structure projects from China to Canada. EPC delivery, CSA compliance, and modular building solutions.",
     type: "article",
@@ -92,12 +92,12 @@ export default function ConstructionSolutionsPage() {
               "Full cost breakdown of prefab and steel structure projects from China to Canada. EPC delivery, CSA compliance, and modular building solutions.",
             author: {
               "@type": "Organization",
-              name: "CargoPlus",
+              name: "Apex Modular Construction",
               url: "https://cargoplus.site",
             },
             publisher: {
               "@type": "Organization",
-              name: "CargoPlus",
+              name: "Apex Modular Construction",
               url: "https://cargoplus.site",
             },
             datePublished: "2026-01-01",
@@ -286,7 +286,7 @@ export default function ConstructionSolutionsPage() {
                 </SectionHeading>
                 <div className="mt-6 space-y-4 text-gray-600 leading-relaxed">
                   <p>
-                    CargoPlus provides a fully integrated construction solution that connects
+                    Apex Modular Construction provides a fully integrated construction solution that connects
                     Chinese manufacturing capability with Canadian construction requirements.
                   </p>
                   <p>
@@ -533,7 +533,7 @@ export default function ConstructionSolutionsPage() {
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
-              <SectionLabel>Why CargoPlus</SectionLabel>
+              <SectionLabel>Why Apex Modular Construction</SectionLabel>
               <SectionHeading id="why-cargoplus">Why Clients Work With Us</SectionHeading>
             </div>
 
@@ -705,13 +705,13 @@ export default function ConstructionSolutionsPage() {
                   <p className="text-sm text-purple-200 mt-2 font-bold uppercase tracking-tighter">Average per SQM (CAD)</p>
                 </div>
                 <div className="p-8 rounded-2xl bg-yellow-400 flex flex-col justify-center transform md:scale-110 shadow-xl">
-                  <p className="text-xs font-black text-purple-900 uppercase mb-3 tracking-widest">CargoPlus (China Sourced)</p>
+                  <p className="text-xs font-black text-purple-900 uppercase mb-3 tracking-widest">Apex Modular Construction (China Sourced)</p>
                   <p className="text-6xl font-black text-purple-900">$700</p>
                   <p className="text-sm text-purple-900 mt-2 font-black uppercase tracking-tighter">Delivered to Canada (CAD)</p>
                 </div>
               </div>
               <p className="mt-10 text-purple-100 text-sm font-medium max-w-2xl mx-auto leading-relaxed">
-                * Comparison based on light steel structure projects. CargoPlus pricing includes 
+                * Comparison based on light steel structure projects. Apex Modular Construction pricing includes 
                 architectural design, precision engineering, factory fabrication, and sea-freight logistics.
               </p>
             </div>
@@ -906,7 +906,7 @@ export default function ConstructionSolutionsPage() {
             </div>
             <p className="text-lg text-purple-200 mb-10 leading-relaxed">
               Whether you&apos;re planning a prefab development or a full EPC industrial project,
-              CargoPlus connects China&apos;s manufacturing strength with Canada&apos;s construction
+              Apex Modular Construction connects China&apos;s manufacturing strength with Canada&apos;s construction
               standards.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">

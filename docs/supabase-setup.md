@@ -1,6 +1,6 @@
-# Supabase Setup Guide for CargoPlus E-Commerce Platform
+# Supabase Setup Guide for Apex Modular Construction E-Commerce Platform
 
-This guide walks you through creating and configuring a Supabase project for the CargoPlus e-commerce platform.
+This guide walks you through creating and configuring a Supabase project for the Apex Modular Construction e-commerce platform.
 
 ## Prerequisites
 

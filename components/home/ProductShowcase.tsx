@@ -10,7 +10,7 @@ interface ProductShowcaseProps {
   title?: string;
 }
 
-export function ProductShowcase({ products, title = "Featured Products" }: ProductShowcaseProps) {
+export function ProductShowcase({ products, title = "Projects" }: ProductShowcaseProps) {
   const [activeTab, setActiveTab] = useState<"Prefab" | "Robot">("Prefab");
 
   if (!products.length) return null;
@@ -29,7 +29,7 @@ export function ProductShowcase({ products, title = "Featured Products" }: Produ
 
   return (
     <section className="py-14 md:py-20 bg-white">
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
         <div className="mb-6 flex items-end justify-between">

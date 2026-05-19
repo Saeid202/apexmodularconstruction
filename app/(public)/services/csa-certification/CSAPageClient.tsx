@@ -9,7 +9,7 @@ const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
 const WHATSAPP_NUMBER = "16047128018";
 const WHATSAPP_MSG = encodeURIComponent(
-  "Hi CargoPlus! I have a question about CSA certification for my prefab construction project in Canada."
+  "Hi Apex Modular Construction! I have a question about CSA certification for my prefab construction project in Canada."
 );
 
 /* ─── CSA FAQ data ───────────────────────────────────────────────────────── */
@@ -71,8 +71,8 @@ const CSA_FAQS = [
     a: "Non-compliant materials can result in failed inspections, stop-work orders, required demolition and replacement, and significant cost overruns. This is why pre-shipment compliance verification is essential — it is far cheaper to address issues before materials leave the factory.",
   },
   {
-    q: "How does CargoPlus help with CSA compliance for imported construction projects?",
-    a: "CargoPlus coordinates the full compliance process: verifying factory certifications, arranging third-party testing where needed, preparing documentation packages, and working with your Canadian engineer of record. We act as the single point of contact between the Chinese manufacturer and Canadian compliance requirements.",
+    q: "How does Apex Modular Construction help with CSA compliance for imported construction projects?",
+    a: "Apex Modular Construction coordinates the full compliance process: verifying factory certifications, arranging third-party testing where needed, preparing documentation packages, and working with your Canadian engineer of record. We act as the single point of contact between the Chinese manufacturer and Canadian compliance requirements.",
   },
 ];
 

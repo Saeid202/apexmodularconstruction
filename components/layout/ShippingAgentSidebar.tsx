@@ -38,7 +38,7 @@ export default function ShippingAgentSidebar({ children }: { children: React.Rea
             <Zap className="h-4 w-4 text-yellow-300" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white tracking-tight">CargoPlus</p>
+            <p className="text-sm font-bold text-white tracking-tight">Apex Modular Construction</p>
             <p className="text-[10px] text-purple-300 font-semibold uppercase tracking-widest">Shipping Portal</p>
           </div>
           <button onClick={() => setOpen(false)} className="ml-auto lg:hidden text-white/50 hover:text-white">

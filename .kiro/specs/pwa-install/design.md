@@ -101,8 +101,8 @@ supabase/
 
 ```json
 {
-  "name": "CargoPlus",
-  "short_name": "CargoPlus",
+  "name": "Apex Modular Construction",
+  "short_name": "Apex Modular Construction",
   "description": "Construction materials & robots marketplace",
   "start_url": "/",
   "display": "standalone",
@@ -215,7 +215,7 @@ self.addEventListener('fetch', (event) => {
 **Push handler**:
 ```js
 self.addEventListener('push', (event) => {
-  let payload = { title: 'CargoPlus', body: 'You have a new update', icon: '/icons/icon-192.png', data: {} };
+  let payload = { title: 'Apex Modular Construction', body: 'You have a new update', icon: '/icons/icon-192.png', data: {} };
   try {
     const parsed = event.data?.json();
     payload = { ...payload, ...parsed, icon: parsed?.icon ?? '/icons/icon-192.png' };

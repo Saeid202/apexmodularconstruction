@@ -7,7 +7,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Get in touch with CargoPlus. We're here to help with your construction materials and robot sourcing needs.",
+  description: "Get in touch with Apex Modular Construction. We're here to help with your construction materials and robot sourcing needs.",
 };
 
 export default async function ContactPage() {

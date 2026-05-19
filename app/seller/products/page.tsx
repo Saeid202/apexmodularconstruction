@@ -10,7 +10,7 @@ export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "My Products",
-  description: "Manage your product listings on CargoPlus.",
+  description: "Manage your product listings on Apex Modular Construction.",
 };
 
 export default async function SellerProductsPage() {
@@ -49,7 +49,7 @@ export default async function SellerProductsPage() {
             <Package className="h-7 w-7" style={{ color: "#4B1D8F" }} />
           </div>
           <h2 className="text-lg font-bold text-gray-900 mb-1">No products yet</h2>
-          <p className="text-sm text-gray-500 mb-5">Start adding products to sell on CargoPlus.</p>
+          <p className="text-sm text-gray-500 mb-5">Start adding products to sell on Apex Modular Construction.</p>
           <LuxuryLinkButton href="/seller/products/new" size="md">
             <Plus className="h-4 w-4" />
             Add Your First Product

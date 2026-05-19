@@ -4,7 +4,7 @@ import { SellerLoginForm } from "./SellerLoginForm";
 
 export const metadata: Metadata = {
   title: "Seller Login",
-  description: "Login to your CargoPlus seller account to manage your products.",
+  description: "Login to your Apex Modular Construction seller account to manage your products.",
 };
 
 export default function SellerLoginPage() {

@@ -23,13 +23,13 @@ export const aduService = {
     const municipality = this.detectMunicipality(inputs.address);
     const reportId = `CP-ADU-${municipality.substring(0,3).toUpperCase()}-${Math.random().toString(36).substring(2,5).toUpperCase()}`;
 
-    // 1. Fetch relevant CargoPlus products
+    // 1. Fetch relevant Apex Modular Construction products
     const { data: products } = await getProducts({ categorySlug: 'pre-fabricated', limit: 10 });
     const productContext = products ? products.map(p => `- ${p.name}: ${p.description} (Specs: ${JSON.stringify(p.specifications)})`).join('\n') : "No specific products currently available.";
 
     const systemPrompt = `
-      You are a Senior Planning Navigator at CargoPlus. 
-      Your goal is to tell the user if they can build an ADU AND which CargoPlus products fit their site.
+      You are a Senior Planning Navigator at Apex Modular Construction. 
+      Your goal is to tell the user if they can build an ADU AND which Apex Modular Construction products fit their site.
       
       CARGOPLUS PRODUCT CATALOG:
       ${productContext}
@@ -39,7 +39,7 @@ export const aduService = {
       IF A DESIGN DRAWING IS PROVIDED:
       - Inspect the drawing for setbacks, lot coverage, and architectural fit.
       - Identify any obvious permitting hurdles based on the visual layout.
-      - Suggest if a CargoPlus model fits better than the drawn design.
+      - Suggest if a Apex Modular Construction model fits better than the drawn design.
 
       Structure:
       {
@@ -49,7 +49,7 @@ export const aduService = {
         "explanation": "One short sentence about prefab compatibility based on design drawing analysis if present",
         "requiredApprovals": ["Checklist of 3-4 items"],
         "nextSteps": ["3-4 clear action items"],
-        "recommendedModels": ["Exact names of 1-2 CargoPlus products from the catalog above that fit this site"]
+        "recommendedModels": ["Exact names of 1-2 Apex Modular Construction products from the catalog above that fit this site"]
       }
     `;
 
@@ -89,7 +89,7 @@ export const aduService = {
       const productContext = products ? products.map(p => `- ${p.name}: ${p.description} (Slug: ${p.slug}, Specs: ${JSON.stringify(p.specifications)})`).join('\n') : "No specific products currently available.";
 
       const systemPrompt = `
-        You are a CargoPlus Sales Specialist. 
+        You are a Apex Modular Construction Sales Specialist. 
         
         CARGOPLUS PRODUCT CATALOG:
         ${productContext}

@@ -12,7 +12,7 @@ const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
 const WHATSAPP_NUMBER = "16047128018"; // update to real number if different
 const WHATSAPP_MSG = encodeURIComponent(
-  "Hi CargoPlus! I have a construction project in Canada and would like a free consultation."
+  "Hi Apex Modular Construction! I have a construction project in Canada and would like a free consultation."
 );
 
 /* ─── Sticky bottom bar ──────────────────────────────────────────────────── */
@@ -271,7 +271,7 @@ const FAQS = [
   },
   {
     q: "Do I need to speak Mandarin or deal with Chinese factories directly?",
-    a: "Not at all. CargoPlus acts as your single point of contact. We handle all factory communication, negotiations, quality control, and documentation in both languages. You deal only with us, in English.",
+    a: "Not at all. Apex Modular Construction acts as your single point of contact. We handle all factory communication, negotiations, quality control, and documentation in both languages. You deal only with us, in English.",
   },
   {
     q: "How much can I actually save compared to buying locally in Canada?",
@@ -565,7 +565,7 @@ export function TrustStrip() {
           {[
             {
               quote:
-                "CargoPlus handled everything — factory sourcing, shipping, customs. Our prefab warehouse arrived on time and passed inspection first try.",
+                "Apex Modular Construction handled everything — factory sourcing, shipping, customs. Our prefab warehouse arrived on time and passed inspection first try.",
               author: "Project Manager, BC Industrial Developer",
             },
             {
@@ -575,7 +575,7 @@ export function TrustStrip() {
             },
             {
               quote:
-                "Communication was seamless. I never had to deal with the Chinese factory directly — CargoPlus was always the single point of contact.",
+                "Communication was seamless. I never had to deal with the Chinese factory directly — Apex Modular Construction was always the single point of contact.",
               author: "Developer, Ontario Modular Housing Project",
             },
           ].map(({ quote, author }) => (
@@ -669,7 +669,7 @@ export function ProjectEstimateForm() {
         <p className="text-sm text-gray-600 max-w-sm mx-auto">
           Our team typically responds within one business day. You can also{" "}
           <a
-            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi CargoPlus! I submitted a project estimate request and would like to follow up.")}`}
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi Apex Modular Construction! I submitted a project estimate request and would like to follow up.")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="font-bold underline"

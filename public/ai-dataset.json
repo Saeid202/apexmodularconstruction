@@ -1,7 +1,7 @@
 {
-  "name": "CargoPlus",
+  "name": "Apex Modular Construction",
   "description": "Premium construction materials marketplace connecting buyers and sellers worldwide",
-  "url": "https://cargoplus.site",
+  "url": "https://apexmodularconstruction.com",
   "version": "1.0.0",
   "language": "en",
   "last_updated": "2026-05-17",
@@ -18,7 +18,7 @@
   },
   "content": {
     "homepage": {
-      "title": "CargoPlus - Construction Materials Marketplace",
+      "title": "Apex Modular Construction - Construction Materials Marketplace",
       "description": "Premium construction materials marketplace connecting buyers and sellers worldwide. Specializing in prefabricated modular homes, light steel structures, and building materials delivered from China to Canada.",
       "keywords": [
         "construction materials",
@@ -43,11 +43,11 @@
       ]
     },
     "about": {
-      "title": "About CargoPlus",
-      "description": "Learn about CargoPlus and our mission to streamline construction material sourcing with quality assurance and reliable logistics."
+      "title": "About Apex Modular Construction",
+      "description": "Learn about Apex Modular Construction and our mission to streamline construction material sourcing with quality assurance and reliable logistics."
     },
     "contact": {
-      "title": "Contact CargoPlus",
+      "title": "Contact Apex Modular Construction",
       "description": "Get in touch with our team for quotes, inquiries, and support."
     }
   },
@@ -89,9 +89,9 @@
     ]
   },
   "seo": {
-    "sitemap": "https://cargoplus.site/sitemap.xml",
-    "robots": "https://cargoplus.site/robots.txt",
-    "llm_txt": "https://cargoplus.site/llm.txt",
-    "llms_txt": "https://cargoplus.site/llms.txt"
+    "sitemap": "https://apexmodularconstruction.com/sitemap.xml",
+    "robots": "https://apexmodularconstruction.com/robots.txt",
+    "llm_txt": "https://apexmodularconstruction.com/llm.txt",
+    "llms_txt": "https://apexmodularconstruction.com/llms.txt"
   }
 }

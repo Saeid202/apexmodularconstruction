@@ -5,7 +5,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Terms of Service for CargoPlus e-commerce platform. Read our terms and conditions for using our services.",
+  description: "Terms of Service for Apex Modular Construction e-commerce platform. Read our terms and conditions for using our services.",
 };
 
 export default async function TermsPage() {
@@ -44,12 +44,12 @@ function TermsPageStatic() {
       <div className="prose prose-lg max-w-3xl">
         <h2>1. Acceptance of Terms</h2>
         <p>
-          By accessing and using the CargoPlus website and services, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+          By accessing and using the Apex Modular Construction website and services, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
         </p>
 
         <h2>2. Description of Service</h2>
         <p>
-          CargoPlus is an e-commerce marketplace that connects Canadian customers with Chinese suppliers of construction materials and industrial robots. We facilitate the purchase, shipping, and delivery of products from verified sellers to customers in Canada.
+          Apex Modular Construction is an e-commerce marketplace that connects Canadian customers with Chinese suppliers of construction materials and industrial robots. We facilitate the purchase, shipping, and delivery of products from verified sellers to customers in Canada.
         </p>
 
         <h2>3. User Accounts</h2>
@@ -108,12 +108,12 @@ function TermsPageStatic() {
 
         <h2>9. Intellectual Property</h2>
         <p>
-          All content on the CargoPlus website, including text, graphics, logos, and software, is the property of CargoPlus or its content suppliers and is protected by Canadian and international copyright laws.
+          All content on the Apex Modular Construction website, including text, graphics, logos, and software, is the property of Apex Modular Construction or its content suppliers and is protected by Canadian and international copyright laws.
         </p>
 
         <h2>10. Limitation of Liability</h2>
         <p>
-          CargoPlus shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services. Our total liability shall not exceed the amount paid by you for the specific product or service giving rise to the claim.
+          Apex Modular Construction shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of our services. Our total liability shall not exceed the amount paid by you for the specific product or service giving rise to the claim.
         </p>
 
         <h2>11. Governing Law</h2>

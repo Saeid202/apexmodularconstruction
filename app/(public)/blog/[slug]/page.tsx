@@ -26,7 +26,7 @@ const POSTS_DATA = {
     category: "Construction",
     date: "May 12, 2026",
     readTime: "8 min read",
-    author: "CargoPlus Engineering Team",
+    author: "Apex Modular Construction Engineering Team",
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1200&q=80",
     content: `
       <p>The Canadian construction landscape is undergoing a massive shift. As labor costs rise and material availability fluctuates, developers are increasingly looking toward international sourcing to maintain margins. Among the most impactful solutions is <strong>Light Steel Structure (LSS)</strong> systems sourced from high-precision factories in China.</p>
@@ -39,7 +39,7 @@ const POSTS_DATA = {
       </blockquote>
 
       <h2>The Cost Breakdown: China vs. Canada</h2>
-      <p>The primary driver for importing is cost-efficiency. A local structural steel package for a mid-scale development in Ontario or BC can easily exceed $2,000 per SQM once fabrication and local delivery are factored in. When sourcing through CargoPlus, the same system—including architectural engineering, fabrication in China, and sea-freight to a Canadian port—typically lands at roughly $700 per SQM.</p>
+      <p>The primary driver for importing is cost-efficiency. A local structural steel package for a mid-scale development in Ontario or BC can easily exceed $2,000 per SQM once fabrication and local delivery are factored in. When sourcing through Apex Modular Construction, the same system—including architectural engineering, fabrication in China, and sea-freight to a Canadian port—typically lands at roughly $700 per SQM.</p>
 
       <h3>Key Savings Drivers:</h3>
       <ul>
@@ -49,7 +49,7 @@ const POSTS_DATA = {
       </ul>
 
       <h2>Navigating Compliance</h2>
-      <p>The most common concern for Canadian developers is compliance with the National Building Code (NBC) and CSA standards. It is critical to work with a partner that understands <strong>CSA A277</strong> and <strong>CSA Z240</strong> requirements. At CargoPlus, we ensure every structural plan is reviewed by a Canadian P.Eng (Professional Engineer) to ensure that the imported components meet or exceed local requirements.</p>
+      <p>The most common concern for Canadian developers is compliance with the National Building Code (NBC) and CSA standards. It is critical to work with a partner that understands <strong>CSA A277</strong> and <strong>CSA Z240</strong> requirements. At Apex Modular Construction, we ensure every structural plan is reviewed by a Canadian P.Eng (Professional Engineer) to ensure that the imported components meet or exceed local requirements.</p>
 
       <h2>Conclusion</h2>
       <p>Importing light steel structures isn't just about saving money—it's about building faster, more accurately, and with a more durable material. As the modular industry continues to grow, those who master the international supply chain will have a significant competitive advantage.</p>
@@ -125,7 +125,7 @@ export default function BlogPostPage() {
              </div>
              <div>
                 <p className="text-sm font-black text-gray-900 leading-none mb-1">{post.author}</p>
-                <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">CargoPlus Authority</p>
+                <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Apex Modular Construction Authority</p>
              </div>
              
              <div className="ml-auto flex items-center gap-2">

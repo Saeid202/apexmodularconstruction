@@ -2,7 +2,7 @@
  * Application Types
  * 
  * These types extend the database types with application-specific shapes
- * and are used throughout the CargoPlus platform.
+ * and are used throughout the Apex Modular Construction platform.
  */
 
 // Re-export database types

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Checkout feature delivers a complete purchase flow for CargoPlus — a B2C marketplace selling construction materials sourced from China to Canadian customers. It covers cart persistence (localStorage for guests, Supabase for authenticated users with merge-on-login), a three-step checkout wizard (contact/shipping → order review → Stripe payment), order creation on payment success, and admin order management.
+The Checkout feature delivers a complete purchase flow for Apex Modular Construction — a B2C marketplace selling construction materials sourced from China to Canadian customers. It covers cart persistence (localStorage for guests, Supabase for authenticated users with merge-on-login), a three-step checkout wizard (contact/shipping → order review → Stripe payment), order creation on payment success, and admin order management.
 
 All prices are in CAD. Tax is computed server-side per Canadian province. Shipping is flat-rate displayed as "To be confirmed". Authentication is required to complete checkout; unauthenticated users are redirected to `/auth/login` with a return URL.
 

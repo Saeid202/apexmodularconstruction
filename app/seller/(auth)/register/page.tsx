@@ -5,7 +5,7 @@ import { SellerRegisterForm } from "./SellerRegisterForm";
 
 export const metadata: Metadata = {
   title: "Become a Seller",
-  description: "Register as a seller on CargoPlus and start selling construction materials and robots to Canadian customers.",
+  description: "Register as a seller on Apex Modular Construction and start selling construction materials and robots to Canadian customers.",
 };
 
 const steps = [
@@ -35,7 +35,7 @@ export default function SellerRegisterPage() {
           >
             <Store className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-2xl font-extrabold text-white mb-3">Join CargoPlus</h2>
+          <h2 className="text-2xl font-extrabold text-white mb-3">Join Apex Modular Construction</h2>
           <p className="text-purple-200 text-sm leading-relaxed mb-8">
             Reach thousands of Canadian businesses looking for quality products from China.
           </p>
@@ -74,7 +74,7 @@ export default function SellerRegisterPage() {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
             <div className="mb-6">
               <h2 className="text-xl font-bold text-gray-900">Create your seller account</h2>
-              <p className="text-sm text-gray-500 mt-1">Join CargoPlus and reach Canadian customers</p>
+              <p className="text-sm text-gray-500 mt-1">Join Apex Modular Construction and reach Canadian customers</p>
             </div>
 
             <SellerRegisterForm />

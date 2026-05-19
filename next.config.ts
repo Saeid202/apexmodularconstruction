@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    const domain = process.env.NEXT_PUBLIC_DOMAIN || 'cargoplus.com';
+    const domain = process.env.NEXT_PUBLIC_DOMAIN || 'apexmodularconstruction.com';
     const preferWww = process.env.NEXT_PUBLIC_PREFER_WWW === 'true';
     
     if (preferWww) {

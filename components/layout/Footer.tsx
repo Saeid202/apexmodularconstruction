@@ -31,8 +31,11 @@ export function Footer() {
 
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="inline-block">
-              <img src="/logo.svg" alt="Shanghai Cargoplus" className="h-7 w-auto" />
+            <Link href="/" className="flex items-center gap-2 hover:opacity-85 transition-opacity">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white p-0.5 shadow-sm border border-purple-900/30 overflow-hidden">
+                <img src="/logo.jpg" alt="Apex Logo" className="h-full w-full object-contain" />
+              </div>
+              <img src="/logo.svg" alt="Apex Modular Construction" className="h-6 w-auto" />
             </Link>
             <p className="text-sm text-purple-200 max-w-xs leading-relaxed">
               Your trusted marketplace for quality construction materials and robots from China to Canada.
@@ -99,7 +102,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="mt-12 pt-6 border-t border-purple-800/50">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-purple-300">
-            <p>© {currentYear} Shanghai Cargoplus. All rights reserved.</p>
+            <p>© {currentYear} Apex Modular Construction. All rights reserved.</p>
             <p>Prices in CAD. HST/GST calculated at checkout.</p>
           </div>
         </div>

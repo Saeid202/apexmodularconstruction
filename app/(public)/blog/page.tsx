@@ -26,7 +26,7 @@ const BLOG_POSTS = [
     category: "Construction",
     date: "May 12, 2026",
     readTime: "8 min read",
-    author: "CargoPlus Engineering Team",
+    author: "Apex Modular Construction Engineering Team",
     image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80",
     featured: true
   },
@@ -80,7 +80,7 @@ export default function BlogHubPage() {
                 Knowledge Base & Insights
               </p>
               <h1 className="text-4xl md:text-6xl font-[1000] text-gray-900 tracking-tighter leading-tight">
-                The CargoPlus <span style={{ color: PURPLE }}>Journal</span>
+                The Apex Modular Construction <span style={{ color: PURPLE }}>Journal</span>
               </h1>
             </div>
             

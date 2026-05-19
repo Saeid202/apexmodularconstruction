@@ -127,7 +127,7 @@ export class LocationService implements LocationServiceType {
       url.searchParams.set('addressdetails', '1');
 
       const res = await fetch(url.toString(), {
-        headers: { 'User-Agent': 'CargoPlus/1.0' }
+        headers: { 'User-Agent': 'Apex Modular Construction/1.0' }
       });
       if (!res.ok) throw new Error(`Reverse geocode error: ${res.status}`);
 

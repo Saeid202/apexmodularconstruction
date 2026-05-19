@@ -31,7 +31,7 @@ export async function processCatalogFile(storagePath: string, fileName: string, 
     // 2. Prepare AI Parts
     let parts: any[] = [];
     const systemPrompt = `
-      You are a CargoPlus Catalog Ingestor. 
+      You are a Apex Modular Construction Catalog Ingestor. 
       Identify all products in the following data. 
       Extract: name, description, price (Numeric), specifications (JSON), category_slug, page_number, image_description.
       Return a JSON array of objects.

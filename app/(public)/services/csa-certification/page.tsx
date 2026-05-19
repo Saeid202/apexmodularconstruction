@@ -10,7 +10,7 @@ import { CSAFAQSection, ProjectEstimateForm } from "./CSAPageClient";
 
 /* ─── SEO ─────────────────────────────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: "CSA Certification for Prefab Buildings in Canada (2026 Guide) | CargoPlus",
+  title: "CSA Certification for Prefab Buildings in Canada (2026 Guide) | Apex Modular Construction",
   description:
     "Complete guide to CSA certification requirements for prefabricated buildings imported from China to Canada. When it's required, how to comply, common mistakes, costs, and the approval process.",
   keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     canonical: "https://cargoplus.site/services/csa-certification",
   },
   openGraph: {
-    title: "CSA Certification for Prefab Buildings in Canada (2026 Guide) | CargoPlus",
+    title: "CSA Certification for Prefab Buildings in Canada (2026 Guide) | Apex Modular Construction",
     description:
       "Complete guide to CSA certification requirements for prefabricated buildings imported from China to Canada. When it's required, how to comply, common mistakes, and costs.",
     type: "article",
@@ -101,8 +101,8 @@ export default function CSACertificationPage() {
             headline: "CSA Certification for Prefab Buildings in Canada (2026 Guide)",
             description:
               "Complete guide to CSA certification requirements for prefabricated buildings imported from China to Canada.",
-            author: { "@type": "Organization", name: "CargoPlus", url: "https://cargoplus.site" },
-            publisher: { "@type": "Organization", name: "CargoPlus", url: "https://cargoplus.site" },
+            author: { "@type": "Organization", name: "Apex Modular Construction", url: "https://cargoplus.site" },
+            publisher: { "@type": "Organization", name: "Apex Modular Construction", url: "https://cargoplus.site" },
             datePublished: "2026-01-01",
             dateModified: "2026-05-01",
             mainEntityOfPage: {
@@ -758,7 +758,7 @@ export default function CSACertificationPage() {
               Ready to Start Your Compliant Prefab Project?
             </h2>
             <p className="text-lg text-purple-200 mb-6 leading-relaxed">
-              CSA compliance is manageable when it&apos;s planned from the start. CargoPlus
+              CSA compliance is manageable when it&apos;s planned from the start. Apex Modular Construction
               coordinates the full process — from factory verification to permit-ready documentation.
             </p>
             <p className="text-sm text-purple-300 mb-10">

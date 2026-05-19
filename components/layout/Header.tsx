@@ -10,6 +10,7 @@ import { SellerAuthModal } from "@/components/auth/SellerAuthModal";
 import { HeaderAuth } from "./HeaderAuth";
 import { InstallButton } from "@/components/pwa/InstallButton";
 import { CartBadge } from "./CartBadge";
+import { getSiteSettings, type SiteSettings } from "@/app/actions/cms-settings";
 
 interface HeaderProps {
   cmsNav?: React.ReactNode;
@@ -17,14 +18,21 @@ interface HeaderProps {
 
 export function Header({ cmsNav }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [authModal, setAuthModal] = useState<{ open: boolean; mode: "login" | "register" }>({
     open: false,
     mode: "login",
   });
   const [sellerAuthModal, setSellerAuthModal] = useState<{ open: boolean; mode: "login" | "register" }>({
     open: false,
-    mode: "register", // Default to register for "Sell on CargoPlus"
+    mode: "register", // Default to register for "Sell on Apex Modular Construction"
   });
+
+  useEffect(() => {
+    getSiteSettings().then((data) => {
+      setSettings(data);
+    });
+  }, []);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -51,11 +59,32 @@ export function Header({ cmsNav }: HeaderProps) {
     <>
       <header className="w-full sticky top-0 z-30 border-b border-purple-900/50" style={{ backgroundColor: '#4B1D8F' }}>
         <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center gap-8">
+          <div className="flex h-20 items-center gap-8">
 
             {/* Logo */}
             <Link href="/" className="flex items-center shrink-0 hover:opacity-85 transition-opacity">
-              <img src="/logo.svg" alt="Shanghai Cargoplus" className="h-8 w-auto" />
+              {(!settings || settings.logo_style === "complete-banner") && (
+                <div className={`flex items-center bg-white px-4 py-1.5 rounded-xl shadow-md border border-purple-900/30 overflow-hidden transition-all ${
+                  settings?.logo_height === "h-12" ? "h-12" : settings?.logo_height === "h-20" ? "h-20" : "h-16"
+                }`}>
+                  <img src="/logo.png" alt="Apex Modular Construction" className="h-full w-auto object-contain" />
+                </div>
+              )}
+
+              {settings?.logo_style === "icon-and-text" && (
+                <div className="flex items-center gap-3">
+                  <div className={`flex items-center justify-center rounded-xl bg-white p-0.5 shadow-md border border-purple-900/30 overflow-hidden transition-all ${
+                    settings.logo_height === "h-12" ? "h-12 w-12" : settings.logo_height === "h-20" ? "h-20 w-20" : "h-16 w-16"
+                  }`}>
+                    <img src="/logo.jpg" alt="Apex Logo" className="h-full w-full object-contain" />
+                  </div>
+                  <img src="/logo.svg" alt="Apex Modular Construction" className="h-10 w-auto hidden sm:block" />
+                </div>
+              )}
+
+              {settings?.logo_style === "text-only" && (
+                <img src="/logo.svg" alt="Apex Modular Construction" className="h-12 w-auto animate-fade-in" />
+              )}
             </Link>
 
             {/* Desktop Navigation — LEFT side after logo */}

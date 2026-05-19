@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://cargoplus.site";
+const BASE_URL = "https://apexmodularconstruction.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

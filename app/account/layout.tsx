@@ -54,7 +54,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
             <Zap className="h-4 w-4 text-yellow-300" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white tracking-tight">CargoPlus</p>
+            <p className="text-sm font-bold text-white tracking-tight">Apex Modular Construction</p>
             <p className="text-[10px] text-purple-300 font-semibold uppercase tracking-widest">Buyer Portal</p>
           </div>
         </div>

@@ -1,10 +1,10 @@
-# CargoPlus - Construction Materials Platform
+# Apex Modular Construction - Construction Materials Platform
 # This file helps AI/LLM crawlers understand our website structure and content
 
 # Site Information
-name: CargoPlus
+name: Apex Modular Construction
 description: Premium construction materials marketplace connecting buyers and sellers worldwide. Specializing in prefabricated modular homes, light steel structures, and building materials delivered from China to Canada.
-url: https://cargoplus.site
+url: https://apexmodularconstruction.com
 language: en
 
 # Key Sections
@@ -14,13 +14,13 @@ sections:
   - path: /products
     description: Browse our catalog of construction materials, modular homes, and building supplies
   - path: /about
-    description: Learn about CargoPlus and our mission to streamline construction material sourcing
+    description: Learn about Apex Modular Construction and our mission to streamline construction material sourcing
   - path: /contact
     description: Get in touch with our team for quotes and inquiries
   - path: /auth/register
     description: Register as a buyer or seller on our platform
   - path: /auth/login
-    description: Login to your CargoPlus account
+    description: Login to your Apex Modular Construction account
 
 # Product Categories
 categories:
@@ -55,8 +55,8 @@ services:
   - Logistics coordination
 
 # Contact Information
-support: https://cargoplus.site/contact
-email: support@cargoplus.site
+support: https://apexmodularconstruction.com/contact
+email: support@apexmodularconstruction.com
 
 # Crawler Instructions
 crawl_delay: 1

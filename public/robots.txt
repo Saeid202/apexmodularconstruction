@@ -1,4 +1,4 @@
-# CargoPlus robots.txt
+# Apex Modular Construction robots.txt
 # This file tells search engine crawlers which pages they can and cannot access
 
 User-agent: *
@@ -20,7 +20,7 @@ Allow: /services
 Allow: /blog
 
 # Sitemap
-Sitemap: https://cargoplus.site/sitemap.xml
+Sitemap: https://apexmodularconstruction.com/sitemap.xml
 
 # Crawl delay (optional)
 Crawl-delay: 1

@@ -6,7 +6,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "About Us",
-  description: "Learn about CargoPlus - your trusted marketplace for construction materials and industrial robots from China to Canada.",
+  description: "Learn about Apex Modular Construction - your trusted marketplace for construction materials and industrial robots from China to Canada.",
 };
 
 const staticContent = `
@@ -14,8 +14,8 @@ const staticContent = `
   <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80" alt="Construction site" class="object-cover w-full h-full" />
 </div>
 <h2>Our Mission</h2>
-<p>CargoPlus is a B2C e-commerce marketplace that connects Canadian customers with trusted Chinese suppliers of construction materials and industrial robots.</p>
-<h2>Why Choose CargoPlus?</h2>
+<p>Apex Modular Construction is a B2C e-commerce marketplace that connects Canadian customers with trusted Chinese suppliers of construction materials and industrial robots.</p>
+<h2>Why Choose Apex Modular Construction?</h2>
 <ul>
   <li><strong>Quality Assurance:</strong> We partner with verified suppliers who meet international quality standards.</li>
   <li><strong>Competitive Pricing:</strong> Direct sourcing from manufacturers means better prices for you.</li>
@@ -44,7 +44,7 @@ export default async function AboutPage() {
   if (cmsContent) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-8">About CargoPlus</h1>
+        <h1 className="text-4xl font-bold mb-8">About Apex Modular Construction</h1>
         <div
           className="prose prose-lg max-w-3xl mx-auto"
           dangerouslySetInnerHTML={{ __html: cmsContent }}
@@ -56,7 +56,7 @@ export default async function AboutPage() {
   // Static fallback
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">About CargoPlus</h1>
+      <h1 className="text-4xl font-bold mb-8">About Apex Modular Construction</h1>
       <div className="prose prose-lg max-w-3xl mx-auto">
         <div className="relative aspect-video rounded-xl overflow-hidden mb-8">
           <Image
@@ -69,9 +69,9 @@ export default async function AboutPage() {
         </div>
         <h2>Our Mission</h2>
         <p>
-          CargoPlus is a B2C e-commerce marketplace that connects Canadian customers with trusted Chinese suppliers of construction materials and industrial robots.
+          Apex Modular Construction is a B2C e-commerce marketplace that connects Canadian customers with trusted Chinese suppliers of construction materials and industrial robots.
         </p>
-        <h2>Why Choose CargoPlus?</h2>
+        <h2>Why Choose Apex Modular Construction?</h2>
         <ul>
           <li><strong>Quality Assurance:</strong> We partner with verified suppliers who meet international quality standards.</li>
           <li><strong>Competitive Pricing:</strong> Direct sourcing from manufacturers means better prices for you.</li>

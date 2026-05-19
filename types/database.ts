@@ -1,7 +1,7 @@
 /**
  * Supabase Database Types
  * 
- * Generated from Supabase schema for CargoPlus E-Commerce Platform
+ * Generated from Supabase schema for Apex Modular Construction E-Commerce Platform
  * Requirements: 1.1
  * 
  * To regenerate these types:

@@ -36,7 +36,7 @@ export default function ServicesHubPage() {
             <span style={{ color: PURPLE }}>Construction Solutions</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            CargoPlus bridges the gap between high-scale Chinese manufacturing and the Canadian construction market. 
+            Apex Modular Construction bridges the gap between high-scale Chinese manufacturing and the Canadian construction market. 
             Explore our specialized services designed for developers, builders, and investors.
           </p>
         </div>

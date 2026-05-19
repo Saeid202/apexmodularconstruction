@@ -49,7 +49,7 @@ const services = [
 export function ServicesSection() {
   return (
     <section style={{ backgroundColor: "#F5F4F7" }} className="py-10 md:py-14">
-      <div className="container mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
         <div className="mb-12 flex justify-center">

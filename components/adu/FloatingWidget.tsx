@@ -12,9 +12,9 @@ export function FloatingWidget() {
 
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.location.href = "whatsapp://send?phone=14168825015&text=Hi%20CargoPlus%2C%20I%20have%20a%20question.";
+    window.location.href = "whatsapp://send?phone=14168825015&text=Hi%20Apex Modular Construction%2C%20I%20have%20a%20question.";
     setTimeout(() => {
-      window.open("https://wa.me/14168825015?text=Hi%20CargoPlus%2C%20I%20have%20a%20question.", "_blank");
+      window.open("https://wa.me/14168825015?text=Hi%20Apex Modular Construction%2C%20I%20have%20a%20question.", "_blank");
     }, 1000);
   };
 
@@ -42,7 +42,7 @@ export function FloatingWidget() {
                 <Bot className="w-6 h-6" style={{ color: "#4B1D8F" }} />
               </div>
               <div>
-                <h3 className="font-black text-base leading-tight tracking-tight text-white">CargoPlus AI</h3>
+                <h3 className="font-black text-base leading-tight tracking-tight text-white">Apex Modular Construction AI</h3>
                 <div className="flex items-center space-x-1.5">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest">System Online</span>

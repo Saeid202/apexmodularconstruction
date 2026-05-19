@@ -18,7 +18,7 @@ const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/about", label: "About Us" },
   { href: "/contact", label: "Contact Us" },
-  { href: "/seller/register", label: "Sell on CargoPlus" },
+  { href: "/seller/register", label: "Sell on Apex Modular Construction" },
 ];
 
 export function MobileMenu({
@@ -170,7 +170,7 @@ export function MobileMenu({
                 </Link>
               </li>
 
-              {/* Sell on CargoPlus */}
+              {/* Sell on Apex Modular Construction */}
               <li>
                 <button
                   onClick={() => {
@@ -179,7 +179,7 @@ export function MobileMenu({
                   }}
                   className="flex min-h-[44px] w-full items-center rounded-lg px-4 text-base font-medium text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700"
                 >
-                  Sell on CargoPlus
+                  Sell on Apex Modular Construction
                 </button>
               </li>
             </ul>

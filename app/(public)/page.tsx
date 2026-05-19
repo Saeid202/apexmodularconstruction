@@ -1,6 +1,8 @@
 import { PrefabHero } from "@/components/home/PrefabHero";
 import { ProductShowcaseWrapper } from "@/components/home/ProductShowcaseWrapper";
+import { ServicesSection } from "@/components/home/ServicesSection";
 import { getProducts } from "@/app/actions/products";
+import { getHeroSlides } from "@/app/actions/hero-slides";
 import { mockProducts } from "@/lib/mock-data";
 import type { ProductWithRelations } from "@/types";
 import type { Metadata } from "next";
@@ -9,7 +11,7 @@ import type { Metadata } from "next";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "CargoPlus - Prefabricated Modular Homes from China to Canada",
+  title: "Apex Modular Construction - Prefabricated Modular Homes from China to Canada",
   description: "Premium construction materials marketplace. Prefabricated modular homes, light steel structures, and building materials delivered from China to Canada with CSA compliance.",
   alternates: {
     canonical: "/",
@@ -17,6 +19,15 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
+  // Fetch active hero slides
+  let activeSlide: any = null;
+  try {
+    const { data: slides } = await getHeroSlides();
+    activeSlide = slides && slides.length > 0 ? slides[0] : null;
+  } catch (error) {
+    console.error("Failed to fetch active hero slide:", error);
+  }
+
   // Try to fetch from Supabase with timeout protection, fall back to mock data
   let productsResult: { data: any[] | null; error: string | null } = { data: null, error: "Using mock data" };
   
@@ -64,6 +75,7 @@ export default async function HomePage() {
       slug: product.categories.slug,
       description: product.categories.description,
       imageUrl: product.categories.image_url,
+      parentId: (product.categories as any).parent_id ?? null,
     } : { id: "", name: "Uncategorized", slug: "uncategorized", description: null, imageUrl: null },
     seller: product.sellers ? {
       id: product.sellers.id,
@@ -83,8 +95,9 @@ export default async function HomePage() {
 
   return (
     <>
-      <PrefabHero />
-      <ProductShowcaseWrapper products={products} title="Featured Products" />
+      <PrefabHero slide={activeSlide} />
+      <ServicesSection />
+      <ProductShowcaseWrapper products={products} title="Projects" />
     </>
   );
 }

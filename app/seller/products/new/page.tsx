@@ -7,7 +7,7 @@ import { ArrowLeft, Package } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Add New Product",
-  description: "Add a new product to your CargoPlus seller account.",
+  description: "Add a new product to your Apex Modular Construction seller account.",
 };
 
 export default async function NewProductPage() {

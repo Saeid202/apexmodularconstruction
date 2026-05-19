@@ -23,7 +23,7 @@ export async function enrichProductFromImage(imageInput: { url?: string, base64?
     }
 
     const prompt = `
-      You are a Technical Data Specialist for CargoPlus.
+      You are a Technical Data Specialist for Apex Modular Construction.
       Look at this product image or specification sheet and extract all technical data.
       FOCUS ON: Dimensions, sizes, weights, materials, and technical model numbers.
       

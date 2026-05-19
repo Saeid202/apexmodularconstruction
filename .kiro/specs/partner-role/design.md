@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Partner Role feature adds a new `partner` user type to the CargoPlus platform. Partners are Chinese engineering companies that receive all engineering project submissions, review them, and respond with structured quotes. This design extends the existing Supabase auth system, mirrors the established seller/admin patterns, and reuses the existing `ChatDrawer` component for messaging.
+The Partner Role feature adds a new `partner` user type to the Apex Modular Construction platform. Partners are Chinese engineering companies that receive all engineering project submissions, review them, and respond with structured quotes. This design extends the existing Supabase auth system, mirrors the established seller/admin patterns, and reuses the existing `ChatDrawer` component for messaging.
 
 The feature touches four layers:
 1. **Database** — two new tables (`partners`, `engineering_quotes`, `engineering_quote_files`), RLS policies, and a schema migration

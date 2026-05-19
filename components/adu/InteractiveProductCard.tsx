@@ -79,7 +79,7 @@ export function InteractiveProductCard({ slug }: ProductCardProps) {
                 <h3 className="text-2xl font-[1000] text-black tracking-tighter leading-none">{product.name}</h3>
                 <ExternalLink className="w-5 h-5 text-gray-200 group-hover:text-black transition-colors" />
               </div>
-              <p className="text-gray-400 font-bold text-sm uppercase tracking-widest">CargoPlus Engineered Modular Unit</p>
+              <p className="text-gray-400 font-bold text-sm uppercase tracking-widest">Apex Modular Construction Engineered Modular Unit</p>
             </div>
 
             <div className="mt-8 flex items-center justify-between">

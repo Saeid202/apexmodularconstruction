@@ -11,7 +11,7 @@ interface Props {
 
 export const metadata: Metadata = {
   title: "Edit Product",
-  description: "Edit your product listing on CargoPlus.",
+  description: "Edit your product listing on Apex Modular Construction.",
 };
 
 // Always fetch fresh — no stale cache

@@ -59,7 +59,7 @@ export default function BulkImportPage() {
       <div className="flex flex-col space-y-4 mb-12">
         <div className="inline-flex items-center space-x-3 px-6 py-2 rounded-full border shadow-sm w-fit" style={{ borderColor: CP_GOLD, backgroundColor: `${CP_GOLD}10` }}>
           <Sparkles className="w-4 h-4" style={{ color: CP_GOLD }} />
-          <span className="text-[11px] font-[900] uppercase tracking-[0.3em]" style={{ color: CP_PURPLE }}>CargoPlus Seller Intelligence</span>
+          <span className="text-[11px] font-[900] uppercase tracking-[0.3em]" style={{ color: CP_PURPLE }}>Apex Modular Construction Seller Intelligence</span>
         </div>
         <h1 className="text-5xl font-[1000] text-black tracking-tighter">Bulk Product <span style={{ color: CP_PURPLE }}>Ingestion.</span></h1>
         <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.4em]">Scan Catalogs • Extract Specs • Mass Publish</p>
