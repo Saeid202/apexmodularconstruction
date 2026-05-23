@@ -54,7 +54,15 @@ async function getCmsNavItems(): Promise<CmsNavItem[]> {
       open_in_new_tab: n.open_in_new_tab,
     }));
 
-    return [...pageNavItems, ...customNavItems];
+    // Filter out pages that are already hardcoded in Navigation.tsx to prevent duplication
+    const hardcodedHrefs = ["/about", "/products", "/blog", "/contact", "/services", "/"];
+    const filtered = [...pageNavItems, ...customNavItems].filter((item) => {
+      const href = item.href.toLowerCase().trim();
+      const normalizedHref = href.startsWith("/") ? href : `/${href}`;
+      return !hardcodedHrefs.includes(normalizedHref);
+    });
+
+    return filtered;
   } catch {
     return [];
   }

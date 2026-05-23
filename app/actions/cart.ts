@@ -9,6 +9,7 @@ export interface CartItemRow {
   variant_code: string | null;
   variant_image_url: string | null;
   quantity: number;
+  configuration_id: string | null;
   created_at: string;
   updated_at: string;
   products: {
@@ -18,6 +19,11 @@ export interface CartItemRow {
     slug: string;
     stock_quantity: number;
   } | null;
+  house_configurations?: {
+    id: string;
+    selections: any;
+    total_price: number;
+  } | null;
 }
 
 export interface GuestCartItem {
@@ -25,6 +31,8 @@ export interface GuestCartItem {
   variant_code: string | null;
   variant_image_url: string | null;
   quantity: number;
+  customizations?: any;
+  configuration_id?: string | null;
 }
 
 export async function addCartItem(
@@ -32,7 +40,8 @@ export async function addCartItem(
   variantCode: string | null,
   variantImageUrl: string | null,
   quantity: number,
-  customizations?: any
+  customizations?: any,
+  configurationId?: string | null
 ): Promise<{ error: string | null }> {
   try {
     const supabase = await createServerClient();
@@ -52,16 +61,17 @@ export async function addCartItem(
     if (productError || !product) return { error: "Product not found" };
     if (product.stock_quantity <= 0) return { error: "Out of stock" };
 
-    // Check if item already exists for this user/product/variant
+    // Check if item already exists for this user/product/variant/configuration
     const { data: existingItems } = await supabase
       .from("cart_items")
-      .select("id, quantity, customizations")
+      .select("id, quantity, customizations, configuration_id")
       .eq("user_id", user.id)
       .eq("product_id", productId)
       .is("variant_code", variantCode);
 
     const existing = existingItems?.find(i => 
-      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {})
+      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {}) &&
+      (i.configuration_id || null) === (configurationId || null)
     );
 
     if (existing) {
@@ -81,6 +91,7 @@ export async function addCartItem(
         variant_image_url: variantImageUrl,
         quantity,
         customizations: customizations || null,
+        configuration_id: configurationId || null,
       });
       if (insertError) return { error: insertError.message };
     }
@@ -95,7 +106,8 @@ export async function addCartItem(
 export async function removeCartItem(
   productId: string,
   variantCode: string | null,
-  customizations?: any
+  customizations?: any,
+  configurationId?: string | null
 ): Promise<{ error: string | null }> {
   try {
     const supabase = await createServerClient();
@@ -105,16 +117,17 @@ export async function removeCartItem(
     } = await supabase.auth.getUser();
     if (!user) return { error: "Not authenticated" };
 
-    // We must find the specific row to delete because of JSON customizations
+    // We must find the specific row to delete because of JSON customizations and configurationId
     const { data: items } = await supabase
       .from("cart_items")
-      .select("id, customizations")
+      .select("id, customizations, configuration_id")
       .eq("user_id", user.id)
       .eq("product_id", productId)
       .is("variant_code", variantCode);
 
     const target = items?.find(i => 
-      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {})
+      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {}) &&
+      (i.configuration_id || null) === (configurationId || null)
     );
 
     if (target) {
@@ -135,7 +148,8 @@ export async function updateCartItemQuantity(
   productId: string,
   variantCode: string | null,
   quantity: number,
-  customizations?: any
+  customizations?: any,
+  configurationId?: string | null
 ): Promise<{ error: string | null }> {
   try {
     const supabase = await createServerClient();
@@ -147,13 +161,14 @@ export async function updateCartItemQuantity(
 
     const { data: items } = await supabase
       .from("cart_items")
-      .select("id, customizations")
+      .select("id, customizations, configuration_id")
       .eq("user_id", user.id)
       .eq("product_id", productId)
       .is("variant_code", variantCode);
 
     const target = items?.find(i => 
-      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {})
+      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {}) &&
+      (i.configuration_id || null) === (configurationId || null)
     );
 
     if (target) {
@@ -193,6 +208,11 @@ export async function getCartItems(): Promise<{
           price,
           slug,
           stock_quantity
+        ),
+        house_configurations (
+          id,
+          selections,
+          total_price
         )
       `
       )
@@ -200,7 +220,7 @@ export async function getCartItems(): Promise<{
       .order("created_at", { ascending: true });
 
     if (error) return { data: null, error: error.message };
-    return { data: data as CartItemRow[], error: null };
+    return { data: data as unknown as CartItemRow[], error: null };
   } catch (err) {
     console.error("Error fetching cart items:", err);
     return { data: null, error: "Failed to fetch cart items" };
@@ -245,13 +265,14 @@ export async function mergeGuestCartItems(
     for (const item of guestItems) {
       const { data: existingItems } = await supabase
         .from("cart_items")
-        .select("id, quantity, customizations")
+        .select("id, quantity, customizations, configuration_id")
         .eq("user_id", user.id)
         .eq("product_id", item.product_id)
         .is("variant_code", item.variant_code);
 
       const existing = existingItems?.find(i => 
-        JSON.stringify(i.customizations || {}) === JSON.stringify((item as any).customizations || {})
+        JSON.stringify(i.customizations || {}) === JSON.stringify(item.customizations || {}) &&
+        (i.configuration_id || null) === (item.configuration_id || null)
       );
 
       if (existing) {
@@ -269,7 +290,8 @@ export async function mergeGuestCartItems(
           variant_code: item.variant_code,
           variant_image_url: item.variant_image_url,
           quantity: item.quantity,
-          customizations: (item as any).customizations || null,
+          customizations: item.customizations || null,
+          configuration_id: item.configuration_id || null,
         });
       }
     }

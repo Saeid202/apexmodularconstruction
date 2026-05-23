@@ -17,6 +17,8 @@ interface MobileMenuProps {
 const navLinks = [
   { href: "/products", label: "Products" },
   { href: "/about", label: "About Us" },
+  { href: "/3d-printer", label: "Construction 3D Printer" },
+  { href: "/video-centre", label: "Video Centre" },
   { href: "/contact", label: "Contact Us" },
   { href: "/seller/register", label: "Sell on Apex Modular Construction" },
 ];
@@ -156,6 +158,28 @@ export function MobileMenu({
                   className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                 >
                   About Us
+                </Link>
+              </li>
+
+              {/* Construction 3D Printer */}
+              <li>
+                <Link
+                  href="/3d-printer"
+                  onClick={onClose}
+                  className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  Construction 3D Printer
+                </Link>
+              </li>
+
+              {/* Video Centre */}
+              <li>
+                <Link
+                  href="/video-centre"
+                  onClick={onClose}
+                  className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  Video Centre
                 </Link>
               </li>
 

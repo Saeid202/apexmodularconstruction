@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/client";
-import { LayoutDashboard, Users, Package, MessageSquare, ShoppingBag, LogOut, ChevronRight, Store, Briefcase, Image, Menu, FileText, Truck, Settings } from "lucide-react";
+import { LayoutDashboard, Users, Package, MessageSquare, ShoppingBag, LogOut, ChevronRight, Store, Briefcase, Image, Menu, FileText, Truck, Settings, Video } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard",        label: "Dashboard",        icon: LayoutDashboard },
@@ -22,6 +22,7 @@ const contentNavItems = [
   { href: "/admin/cms/navigation", label: "Navigation", icon: Menu },
   { href: "/admin/cms/pages",      label: "Pages",      icon: FileText },
   { href: "/admin/cms/settings",   label: "Branding Settings", icon: Settings },
+  { href: "/admin/video-centre",   label: "Video Centre", icon: Video },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

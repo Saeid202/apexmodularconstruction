@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { saveConfiguration } from '@/app/actions/configurator';
+import { addCartItem } from '@/app/actions/cart';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -81,8 +82,19 @@ export default function ConfiguratorWorkspace({ product, configurator }: Props) 
 
       if (error) throw error;
 
-      // In a real flow, we'd add to cart or redirect to a "Request Quote" page
-      alert('Configuration saved to your account!');
+      // Add configured product to the user's cart in DB
+      const { error: cartError } = await addCartItem(
+        product.id,
+        null, // variantCode
+        (product as any).images?.[0]?.url || null, // variantImageUrl
+        1, // quantity
+        undefined, // customizations
+        data.id // configurationId
+      );
+
+      if (cartError) throw new Error(cartError);
+
+      alert('Configuration added to your cart!');
       router.push('/cart');
     } catch (error: any) {
       alert(error.message || 'Error saving configuration. Please ensure you are logged in.');

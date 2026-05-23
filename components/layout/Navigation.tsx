@@ -141,6 +141,22 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
           )}
         </li>
 
+        {/* Construction 3D Printer */}
+        <li>
+          <Link href="/3d-printer" onClick={() => onLinkClick?.()} className={linkClass}>
+            Construction 3D Printer
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+
+        {/* Video Centre */}
+        <li>
+          <Link href="/video-centre" onClick={() => onLinkClick?.()} className={linkClass}>
+            Video Centre
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-yellow-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+
         {/* Contact Us */}
         <li>
           <Link href="/contact" onClick={() => onLinkClick?.()} className={linkClass}>

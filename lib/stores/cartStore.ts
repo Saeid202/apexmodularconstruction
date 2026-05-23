@@ -9,13 +9,14 @@ export interface CartItem {
   productPrice: number
   quantity: number
   customizations?: Record<string, { groupName: string; optionName: string; priceModifier: number }>
+  configurationId?: string | null
 }
 
 interface CartStore {
   items: CartItem[]
   addItem: (item: Omit<CartItem, 'quantity'>, qty: number) => void
-  removeItem: (productId: string, variantCode: string | null, customizations?: CartItem['customizations']) => void
-  updateQuantity: (productId: string, variantCode: string | null, qty: number, customizations?: CartItem['customizations']) => void
+  removeItem: (productId: string, variantCode: string | null, customizations?: CartItem['customizations'], configurationId?: string | null) => void
+  updateQuantity: (productId: string, variantCode: string | null, qty: number, customizations?: CartItem['customizations'], configurationId?: string | null) => void
   clearCart: () => void
   loadFromLocalStorage: () => void
   syncToLocalStorage: () => void
@@ -25,8 +26,19 @@ interface CartStore {
 
 const CART_KEY = 'cargoplus_cart'
 
-function isSameItem(a: CartItem, b: { productId: string; variantCode: string | null; customizations?: CartItem['customizations'] }) {
-  const baseMatch = a.productId === b.productId && a.variantCode === b.variantCode;
+function isSameItem(
+  a: CartItem,
+  b: {
+    productId: string;
+    variantCode: string | null;
+    customizations?: CartItem['customizations'];
+    configurationId?: string | null;
+  }
+) {
+  const baseMatch =
+    a.productId === b.productId &&
+    a.variantCode === b.variantCode &&
+    (a.configurationId || null) === (b.configurationId || null);
   if (!baseMatch) return false;
   
   // Compare customizations
@@ -54,16 +66,16 @@ export const useCartStore = create<CartStore>()(
         })
       },
 
-      removeItem: (productId, variantCode, customizations) => {
+      removeItem: (productId, variantCode, customizations, configurationId) => {
         set((state) => ({
-          items: state.items.filter((i) => !isSameItem(i, { productId, variantCode, customizations })),
+          items: state.items.filter((i) => !isSameItem(i, { productId, variantCode, customizations, configurationId })),
         }))
       },
 
-      updateQuantity: (productId, variantCode, qty, customizations) => {
+      updateQuantity: (productId, variantCode, qty, customizations, configurationId) => {
         set((state) => ({
           items: state.items.map((i) =>
-            isSameItem(i, { productId, variantCode, customizations }) ? { ...i, quantity: qty } : i
+            isSameItem(i, { productId, variantCode, customizations, configurationId }) ? { ...i, quantity: qty } : i
           ),
         }))
       },
@@ -84,6 +96,7 @@ export const useCartStore = create<CartStore>()(
             productPrice: i.product_price as number,
             quantity: i.quantity as number,
             customizations: i.customizations as CartItem['customizations'],
+            configurationId: (i.configuration_id as string | null) ?? null,
           }))
           set({ items })
         } catch {
@@ -103,6 +116,7 @@ export const useCartStore = create<CartStore>()(
             product_price: i.productPrice,
             quantity: i.quantity,
             customizations: i.customizations,
+            configuration_id: i.configurationId || null,
           })),
         }
         window.localStorage.setItem(CART_KEY, JSON.stringify(payload))
