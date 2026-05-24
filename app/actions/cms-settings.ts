@@ -37,12 +37,19 @@ export async function uploadLogo(file: File): Promise<{ success: boolean; url?: 
   }
 }
 
+export interface SocialLink {
+  platform: string;
+  url: string;
+  enabled: boolean;
+}
+
 export interface SiteSettings {
   logo_style: "complete-banner" | "icon-and-text" | "text-only";
   logo_height: "h-12" | "h-16" | "h-20";
   logo_complete_banner_url?: string;
   logo_icon_url?: string;
   logo_text_url?: string;
+  social_links?: SocialLink[];
 }
 
 const DEFAULT_SETTINGS: SiteSettings = {

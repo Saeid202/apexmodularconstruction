@@ -1,8 +1,48 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { getSiteSettings, updateSiteSettings, uploadLogo, type SiteSettings } from "@/app/actions/cms-settings";
-import { Loader2, Save, Sparkles, Image, Menu, Type, Upload, X } from "lucide-react";
+import { getSiteSettings, updateSiteSettings, uploadLogo, type SiteSettings, type SocialLink } from "@/app/actions/cms-settings";
+import { Loader2, Save, Sparkles, Image, Menu, Type, Upload, X, Plus, Share2, Facebook, Instagram, Linkedin, Twitter, Youtube, Github, Globe } from "lucide-react";
+
+function RedditIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
+    </svg>
+  );
+}
+
+function GoogleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 1 1 0-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0 0 12.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.426-.013z" />
+    </svg>
+  );
+}
+
+const PLATFORM_OPTIONS = [
+  { value: "facebook",  label: "Facebook",    Icon: Facebook },
+  { value: "instagram", label: "Instagram",   Icon: Instagram },
+  { value: "linkedin",  label: "LinkedIn",    Icon: Linkedin },
+  { value: "twitter",   label: "Twitter / X", Icon: Twitter },
+  { value: "youtube",   label: "YouTube",     Icon: Youtube },
+  { value: "github",    label: "GitHub",      Icon: Github },
+  { value: "reddit",    label: "Reddit",      Icon: RedditIcon },
+  { value: "google",    label: "Google",      Icon: GoogleIcon },
+  { value: "tiktok",    label: "TikTok",      Icon: Globe },
+  { value: "whatsapp",  label: "WhatsApp",    Icon: Globe },
+  { value: "telegram",  label: "Telegram",    Icon: Globe },
+  { value: "pinterest", label: "Pinterest",   Icon: Globe },
+];
+
+function getPlatformLabel(platform: string) {
+  return PLATFORM_OPTIONS.find((p) => p.value === platform)?.label ?? platform;
+}
+
+function PlatformIcon({ platform }: { platform: string }) {
+  const Icon = PLATFORM_OPTIONS.find((p) => p.value === platform)?.Icon ?? Globe;
+  return <Icon className="h-4 w-4" />;
+}
 
 export default function BrandingSettingsPage() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -10,10 +50,42 @@ export default function BrandingSettingsPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState<string | null>(null);
-  
+  const [newPlatform, setNewPlatform] = useState("facebook");
+  const [newUrl, setNewUrl] = useState("");
+
   const completeBannerInputRef = useRef<HTMLInputElement>(null);
   const iconInputRef = useRef<HTMLInputElement>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
+
+  function addSocialLink() {
+    if (!settings || !newUrl.trim()) return;
+    const existing = settings.social_links ?? [];
+    if (existing.some((l) => l.platform === newPlatform)) return;
+    setSettings({
+      ...settings,
+      social_links: [...existing, { platform: newPlatform, url: newUrl.trim(), enabled: true }],
+    });
+    setNewUrl("");
+    setNewPlatform("facebook");
+  }
+
+  function removeSocialLink(platform: string) {
+    if (!settings) return;
+    setSettings({
+      ...settings,
+      social_links: (settings.social_links ?? []).filter((l) => l.platform !== platform),
+    });
+  }
+
+  function updateSocialLink(platform: string, patch: Partial<SocialLink>) {
+    if (!settings) return;
+    setSettings({
+      ...settings,
+      social_links: (settings.social_links ?? []).map((l) =>
+        l.platform === platform ? { ...l, ...patch } : l
+      ),
+    });
+  }
 
   useEffect(() => {
     getSiteSettings().then((data) => {
@@ -380,6 +452,90 @@ export default function BrandingSettingsPage() {
               )}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Social Media Links */}
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-6">
+        <div>
+          <h3 className="text-md font-semibold text-gray-900 flex items-center gap-2">
+            <Share2 className="h-5 w-5 text-purple-600" />
+            Social Media Links
+          </h3>
+          <p className="text-xs text-gray-500 mt-1">
+            Add your social media profiles. Enabled links will appear as icons in the footer.
+          </p>
+        </div>
+
+        {/* Existing links */}
+        <div className="space-y-3">
+          {(settings.social_links ?? []).length === 0 && (
+            <p className="text-sm text-gray-400 italic">No social links added yet.</p>
+          )}
+          {(settings.social_links ?? []).map((link) => (
+            <div key={link.platform} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 bg-gray-50">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-100 text-purple-700 shrink-0">
+                <PlatformIcon platform={link.platform} />
+              </div>
+              <span className="text-sm font-medium text-gray-700 w-24 shrink-0">
+                {getPlatformLabel(link.platform)}
+              </span>
+              <input
+                type="url"
+                value={link.url}
+                onChange={(e) => updateSocialLink(link.platform, { url: e.target.value })}
+                placeholder="https://..."
+                className="flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+              />
+              <label className="flex items-center gap-1.5 cursor-pointer shrink-0">
+                <input
+                  type="checkbox"
+                  checked={link.enabled}
+                  onChange={(e) => updateSocialLink(link.platform, { enabled: e.target.checked })}
+                  className="h-4 w-4 rounded text-purple-600 focus:ring-purple-500"
+                />
+                <span className="text-xs text-gray-600">Visible</span>
+              </label>
+              <button
+                onClick={() => removeSocialLink(link.platform)}
+                className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors shrink-0"
+                title="Remove"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Add new link */}
+        <div className="flex items-center gap-3 pt-2 border-t border-gray-100">
+          <select
+            value={newPlatform}
+            onChange={(e) => setNewPlatform(e.target.value)}
+            className="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+          >
+            {PLATFORM_OPTIONS.filter(
+              (p) => !(settings.social_links ?? []).some((l) => l.platform === p.value)
+            ).map((p) => (
+              <option key={p.value} value={p.value}>{p.label}</option>
+            ))}
+          </select>
+          <input
+            type="url"
+            value={newUrl}
+            onChange={(e) => setNewUrl(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addSocialLink()}
+            placeholder="https://..."
+            className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+          />
+          <button
+            onClick={addSocialLink}
+            disabled={!newUrl.trim()}
+            className="flex items-center gap-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 disabled:opacity-40 text-white text-sm font-medium px-4 py-2 transition-all shrink-0"
+          >
+            <Plus className="h-4 w-4" />
+            Add
+          </button>
         </div>
       </div>
 

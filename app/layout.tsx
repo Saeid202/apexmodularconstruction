@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConditionalShell } from "@/components/layout/ConditionalShell";
 import { CmsNavigation } from "@/components/layout/CmsNavigation";
+import { Footer } from "@/components/layout/Footer";
 import { ServiceWorkerRegistrar } from "@/components/pwa/ServiceWorkerRegistrar";
+import { getSiteSettings } from "@/app/actions/cms-settings";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -85,11 +87,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" className={`${inter.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col overflow-x-hidden" suppressHydrationWarning>
         <ServiceWorkerRegistrar />
-        <ConditionalShell cmsNav={<CmsNavigation />}>
+        <ConditionalShell
+          cmsNav={<CmsNavigation />}
+          footer={<Footer socialLinks={settings.social_links} />}
+        >
           <main className="flex-1">{children}</main>
         </ConditionalShell>
       </body>
