@@ -188,6 +188,7 @@ export function EditProductForm({ product, categories, initialDocuments, userId:
       if (configuratorType === 'house') {
         router.push(`/admin/configurator/calibrate/${product.id}`);
       } else {
+        setLoading(false);
         router.refresh();
       }
     } catch (error) {
