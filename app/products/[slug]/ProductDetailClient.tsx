@@ -3,8 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink, Settings, Layers, DoorOpen, Wind, Package } from "lucide-react";
-import type { AllowedProduct } from "@/types/configurator";
+import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink, Settings, Layers } from "lucide-react";
 import { useCartStore } from "@/lib/stores/cartStore";
 import { OrderRequestModal } from "@/components/product/OrderRequestModal";
 import { WhatsAppLink } from "@/components/layout/WhatsAppLink";
@@ -42,18 +41,6 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
   const [requestSuccess, setRequestSuccess] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"ready" | "custom">("ready");
   const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption>>({});
-  const [anchorSelections, setAnchorSelections] = useState<Record<string, AllowedProduct>>(() => {
-    if (!configurator) return {};
-    const initial: Record<string, AllowedProduct> = {};
-    configurator.anchors?.forEach((anchor: any) => {
-      const def = anchor.allowedProducts?.find((p: any) => p.is_default);
-      if (def) initial[anchor.id] = def;
-    });
-    return initial;
-  });
-  const [activeAnchorId, setActiveAnchorId] = useState<string | null>(
-    configurator?.anchors?.[0]?.id ?? null
-  );
 
   const openLightbox = useCallback(() => {
     const idx = allImages.findIndex((img) => img.id === activeId);
@@ -91,19 +78,24 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
   const hasVariants = variantImages.length > 0;
 
   const totalCustomPrice = product.price + Object.values(customSelections).reduce((acc, opt) => acc + opt.price_modifier, 0);
-  const configuratorPrice = product.price + Object.values(anchorSelections).reduce((sum, sel) => sum + (Number((sel as any).product?.price) || 0), 0);
-  const displayPrice = activeTab === "custom" ? (configurator ? configuratorPrice : totalCustomPrice) : activePrice;
+  const displayPrice = activeTab === "custom" ? totalCustomPrice : activePrice;
 
-  const viewerOptions = useMemo(() => {
-    const opts: Record<string, string> = {};
-    Object.entries(anchorSelections).forEach(([anchorId, sel]) => {
-      const url = (sel as any).product?.image_url;
-      if (url) opts[anchorId] = url;
+  // Match each selected customization option to a house anchor by group name === anchor label,
+  // then use the option's image_url as the overlay at that anchor's position.
+  const customizationOverlays = useMemo(() => {
+    if (!configurator?.anchors?.length) return {};
+    const overlays: Record<string, string> = {};
+    Object.entries(customSelections).forEach(([groupId, option]) => {
+      if (!option.image_url) return;
+      const group = product.customizationGroups?.find(g => g.id === groupId);
+      if (!group) return;
+      const anchor = configurator.anchors.find(
+        (a: any) => a.label.toLowerCase() === group.name.toLowerCase()
+      );
+      if (anchor?.id) overlays[anchor.id] = option.image_url;
     });
-    return opts;
-  }, [anchorSelections]);
-
-  const activeAnchor = configurator?.anchors?.find((a: any) => a.id === activeAnchorId);
+    return overlays;
+  }, [customSelections, configurator, product.customizationGroups]);
 
   function buildCartItem() {
     const isCustom = activeTab === "custom";
@@ -232,8 +224,8 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             )}
-            {/* Anchor overlays — shown when on custom tab with configurator selections */}
-            {activeTab === "custom" && Object.entries(viewerOptions).map(([anchorId, imgUrl]) => {
+            {/* Anchor overlays — option image placed at matching anchor position */}
+            {activeTab === "custom" && Object.entries(customizationOverlays).map(([anchorId, imgUrl]) => {
               const anchor = configurator?.anchors?.find((a: any) => a.id === anchorId);
               if (!anchor) return null;
               return (
@@ -382,78 +374,6 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
               <div className="mb-5">
                 <h2 className="mb-3 font-bold text-gray-900">Description</h2>
                 <RichTextRenderer html={product.description} />
-              </div>
-            )}
-          </div>
-        ) : configurator ? (
-          /* Anchor-based selector — drives HouseViewer overlays */
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-6">
-            {/* Anchor chips */}
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Select Component</p>
-              <div className="grid grid-cols-3 gap-2">
-                {configurator.anchors.map((anchor: any) => (
-                  <button
-                    key={anchor.id}
-                    onClick={() => setActiveAnchorId(anchor.id)}
-                    className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all gap-1.5 ${
-                      activeAnchorId === anchor.id
-                        ? "border-[#4B1D8F] bg-purple-50 text-[#4B1D8F] shadow-sm"
-                        : "border-gray-200 hover:border-gray-300 text-gray-500"
-                    }`}
-                  >
-                    {anchor.anchor_type === "door" && <DoorOpen className="h-4 w-4" />}
-                    {anchor.anchor_type === "window" && <Wind className="h-4 w-4" />}
-                    {anchor.anchor_type === "wall-mask" && <Package className="h-4 w-4" />}
-                    <span className="text-[10px] font-bold uppercase truncate w-full text-center">{anchor.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Options for active anchor */}
-            {activeAnchor && (
-              <div className="space-y-3">
-                <h3 className="font-bold text-gray-900">{activeAnchor.label} Options</h3>
-                <div className="flex flex-col gap-3 max-h-72 overflow-y-auto pr-1" style={{ scrollbarWidth: "thin" }}>
-                  {activeAnchor.allowedProducts.map((ap: any) => {
-                    const isSelected = anchorSelections[activeAnchor.id]?.id === ap.id;
-                    return (
-                      <button
-                        key={ap.id}
-                        onClick={() => setAnchorSelections(prev => ({ ...prev, [activeAnchor.id]: ap }))}
-                        className="group relative flex items-center gap-4 p-4 rounded-2xl border-2 transition-all duration-300 text-left active:scale-[0.98]"
-                        style={{
-                          borderColor: isSelected ? GOLD : "#E5E7EB",
-                          backgroundColor: isSelected ? `${PURPLE}08` : "white",
-                          boxShadow: isSelected ? `0 4px 20px ${PURPLE}15` : "none",
-                        }}
-                      >
-                        <div
-                          className="h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2"
-                          style={{ borderColor: isSelected ? GOLD : "#F3F4F6" }}
-                        >
-                          {ap.product?.image_url ? (
-                            <img src={ap.product.image_url} alt={ap.product.name} className="h-full w-full object-cover" />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center bg-gray-50 text-[10px] text-gray-300">No img</div>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-bold text-gray-900 truncate">{ap.product?.name}</h4>
-                          <span className="text-sm font-bold" style={{ color: PURPLE }}>
-                            +${Number(ap.product?.price ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                          </span>
-                        </div>
-                        {isSelected && (
-                          <div className="h-6 w-6 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: PURPLE }}>
-                            <Check className="h-3.5 w-3.5 text-white" />
-                          </div>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
               </div>
             )}
           </div>
