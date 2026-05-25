@@ -158,78 +158,26 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
           )}
         </div>
 
-        {/* Image area: vertical thumbnail strip + main image side by side */}
-        <div className="flex flex-col-reverse md:flex-row items-stretch gap-3 h-auto md:h-[480px]">
-
-          {/* Thumbnail strip — horizontal on mobile, vertical on desktop */}
-          {allImages.length > 1 && (
-            <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 pr-0 md:pr-0.5 w-full md:w-[144px]" style={{ scrollbarWidth: "thin" }}>
-              {allImages.map((img, idx) => {
-                const isActive = img.id === activeId;
-                const label = img.variantCode ? img.variantCode : `#${idx + 1}`;
-                return (
-                  <button
-                    key={img.id}
-                    type="button"
-                    onClick={() => setActiveId(img.id)}
-                    className="flex shrink-0 flex-col items-center gap-1"
-                    style={{ WebkitTapHighlightColor: "transparent" }}
-                    aria-label={`Select image ${label}`}
-                  >
-                    <div
-                      className="h-20 w-20 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-xl"
-                      style={{
-                        border: isActive ? `2.5px solid ${GOLD}` : `2px solid ${PURPLE}44`,
-                        boxShadow: isActive ? `0 0 0 2px ${PURPLE}` : "none",
-                        transform: isActive ? "scale(1.06)" : "scale(1)",
-                        transition: "all 0.15s",
-                      }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={img.url} alt={label} className="h-full w-full object-cover bg-white" />
-                    </div>
-                    <span
-                      className="max-w-[76px] md:max-w-[110px] truncate rounded-full px-2 py-0.5 text-[9px] md:text-[10px] font-bold text-center"
-                      style={{
-                        backgroundColor: isActive ? PURPLE : "#EDE9F6",
-                        color: isActive ? "white" : PURPLE,
-                      }}
-                    >
-                      {label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Main image */}
+        {/* Image area */}
+        {activeTab === "custom" && configurator ? (
+          /* Custom tab: identical layout to the calibration tool (aspect-[16/9] + object-contain)
+             so anchor percentages align pixel-perfectly with what the admin drew */
           <div
-            className="relative flex-1 overflow-hidden rounded-2xl bg-white cursor-zoom-in group w-full aspect-[4/3] md:aspect-auto"
-            style={{
-              boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
-              minHeight: 0,
-            }}
-            onClick={openLightbox}
-            role="button"
-            aria-label="Enlarge image"
-            tabIndex={0}
-            onKeyDown={(e) => e.key === "Enter" && openLightbox()}
+            className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-white"
+            style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}` }}
           >
             {activeImage && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={activeImage.url}
                 alt={activeImage.altText ?? product.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                className="absolute inset-0 w-full h-full object-contain"
               />
             )}
-            {/* Anchor overlays — option image placed at matching anchor position */}
-            {activeTab === "custom" && Object.entries(customizationOverlays).map(([anchorId, imgUrl]) => {
+            {Object.entries(customizationOverlays).map(([anchorId, imgUrl]) => {
               const anchor = configurator?.anchors?.find((a: any) => a.id === anchorId);
               if (!anchor) return null;
               return (
-                // eslint-disable-next-line @next/next/no-img-element
                 <div
                   key={anchorId}
                   className="absolute pointer-events-none transition-all duration-500 ease-in-out"
@@ -241,24 +189,94 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
                     zIndex: anchor.z_index ?? 10,
                   }}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={imgUrl} alt={anchor.label} className="w-full h-full object-contain drop-shadow-md" />
                 </div>
               );
             })}
-            {/* Zoom hint overlay */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-              <div className="rounded-full p-3" style={{ backgroundColor: "rgba(75,29,143,0.7)" }}>
-                <ZoomIn className="h-7 w-7 text-white" />
-              </div>
-            </div>
-            {activeCode && (
-              <span className="absolute bottom-3 right-3 rounded-lg px-2.5 py-1 text-xs font-bold text-white" style={{ backgroundColor: "rgba(75,29,143,0.85)" }}>
-                {activeCode}
-              </span>
-            )}
           </div>
+        ) : (
+          /* Ready tab: original gallery unchanged */
+          <div className="flex flex-col-reverse md:flex-row items-stretch gap-3 h-auto md:h-[480px]">
 
-        </div>
+            {/* Thumbnail strip */}
+            {allImages.length > 1 && (
+              <div className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 pr-0 md:pr-0.5 w-full md:w-[144px]" style={{ scrollbarWidth: "thin" }}>
+                {allImages.map((img, idx) => {
+                  const isActive = img.id === activeId;
+                  const label = img.variantCode ? img.variantCode : `#${idx + 1}`;
+                  return (
+                    <button
+                      key={img.id}
+                      type="button"
+                      onClick={() => setActiveId(img.id)}
+                      className="flex shrink-0 flex-col items-center gap-1"
+                      style={{ WebkitTapHighlightColor: "transparent" }}
+                      aria-label={`Select image ${label}`}
+                    >
+                      <div
+                        className="h-20 w-20 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-xl"
+                        style={{
+                          border: isActive ? `2.5px solid ${GOLD}` : `2px solid ${PURPLE}44`,
+                          boxShadow: isActive ? `0 0 0 2px ${PURPLE}` : "none",
+                          transform: isActive ? "scale(1.06)" : "scale(1)",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img.url} alt={label} className="h-full w-full object-cover bg-white" />
+                      </div>
+                      <span
+                        className="max-w-[76px] md:max-w-[110px] truncate rounded-full px-2 py-0.5 text-[9px] md:text-[10px] font-bold text-center"
+                        style={{
+                          backgroundColor: isActive ? PURPLE : "#EDE9F6",
+                          color: isActive ? "white" : PURPLE,
+                        }}
+                      >
+                        {label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Main image */}
+            <div
+              className="relative flex-1 overflow-hidden rounded-2xl bg-white cursor-zoom-in group w-full aspect-[4/3] md:aspect-auto"
+              style={{
+                boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
+                minHeight: 0,
+              }}
+              onClick={openLightbox}
+              role="button"
+              aria-label="Enlarge image"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && openLightbox()}
+            >
+              {activeImage && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={activeImage.url}
+                  alt={activeImage.altText ?? product.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              )}
+              {/* Zoom hint */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                <div className="rounded-full p-3" style={{ backgroundColor: "rgba(75,29,143,0.7)" }}>
+                  <ZoomIn className="h-7 w-7 text-white" />
+                </div>
+              </div>
+              {activeCode && (
+                <span className="absolute bottom-3 right-3 rounded-lg px-2.5 py-1 text-xs font-bold text-white" style={{ backgroundColor: "rgba(75,29,143,0.85)" }}>
+                  {activeCode}
+                </span>
+              )}
+            </div>
+
+          </div>
+        )}
 
         {/* YouTube video — shown below image gallery if present */}
         {product.youtubeUrl && (() => {
