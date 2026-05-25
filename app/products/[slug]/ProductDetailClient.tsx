@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ShoppingCart, Check, MessageSquare, Tag, Zap, X, ZoomIn, ChevronLeft, ChevronRight, Send, FileText, FileSpreadsheet, File, ExternalLink, Settings, Layers, DoorOpen, Wind, Package } from "lucide-react";
-import HouseViewer from "@/components/products/configurator/HouseViewer";
 import type { AllowedProduct } from "@/types/configurator";
 import { useCartStore } from "@/lib/stores/cartStore";
 import { OrderRequestModal } from "@/components/product/OrderRequestModal";
@@ -167,22 +166,8 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
           )}
         </div>
 
-        {/* Image area: HouseViewer when on custom tab with configurator, else static gallery */}
-        {activeTab === "custom" && configurator ? (
-          <div
-            className="relative w-full overflow-hidden rounded-2xl"
-            style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}` }}
-          >
-            <HouseViewer
-              settings={configurator}
-              selectedOptions={viewerOptions}
-              className="rounded-2xl"
-              onAnchorClick={(anchor) => setActiveAnchorId(anchor.id!)}
-            />
-          </div>
-        ) : null}
-
-        <div className={`flex flex-col-reverse md:flex-row items-stretch gap-3 h-auto md:h-[480px]${activeTab === "custom" && configurator ? " hidden" : ""}`}>
+        {/* Image area: vertical thumbnail strip + main image side by side */}
+        <div className="flex flex-col-reverse md:flex-row items-stretch gap-3 h-auto md:h-[480px]">
 
           {/* Thumbnail strip — horizontal on mobile, vertical on desktop */}
           {allImages.length > 1 && (
@@ -247,6 +232,27 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             )}
+            {/* Anchor overlays — shown when on custom tab with configurator selections */}
+            {activeTab === "custom" && Object.entries(viewerOptions).map(([anchorId, imgUrl]) => {
+              const anchor = configurator?.anchors?.find((a: any) => a.id === anchorId);
+              if (!anchor) return null;
+              return (
+                // eslint-disable-next-line @next/next/no-img-element
+                <div
+                  key={anchorId}
+                  className="absolute pointer-events-none transition-all duration-500 ease-in-out"
+                  style={{
+                    left: `${anchor.x_pos}%`,
+                    top: `${anchor.y_pos}%`,
+                    width: `${anchor.width}%`,
+                    height: `${anchor.height}%`,
+                    zIndex: anchor.z_index ?? 10,
+                  }}
+                >
+                  <img src={imgUrl} alt={anchor.label} className="w-full h-full object-contain drop-shadow-md" />
+                </div>
+              );
+            })}
             {/* Zoom hint overlay */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
               <div className="rounded-full p-3" style={{ backgroundColor: "rgba(75,29,143,0.7)" }}>
