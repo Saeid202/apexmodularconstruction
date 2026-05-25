@@ -574,6 +574,52 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
         />
       )}
 
+      {/* ── DEBUG PANEL (remove once working) ── */}
+      <details className="mt-8 rounded-xl border-2 border-dashed border-red-300 bg-red-50 p-4 text-xs font-mono">
+        <summary className="cursor-pointer font-bold text-red-700 mb-2">🐛 Debug Info (temporary)</summary>
+        <div className="space-y-3 text-gray-800">
+          <div>
+            <strong>hasCustomization:</strong> {String(product.hasCustomization)}
+          </div>
+          <div>
+            <strong>activeTab:</strong> {activeTab}
+          </div>
+          <div>
+            <strong>configurator loaded:</strong> {configurator ? "YES" : "NO (null)"}
+          </div>
+          {configurator && (
+            <div>
+              <strong>anchors ({configurator.anchors?.length ?? 0}):</strong>
+              <ul className="ml-4 list-disc">
+                {configurator.anchors?.map((a: any) => (
+                  <li key={a.id}>{a.label} — type: {a.anchor_type} — pos: {a.x_pos}%,{a.y_pos}% size: {a.width}%×{a.height}%</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div>
+            <strong>customizationGroups ({product.customizationGroups?.length ?? 0}):</strong>
+            <ul className="ml-4 list-disc">
+              {product.customizationGroups?.map(g => (
+                <li key={g.id}>{g.name} — {g.options?.length ?? 0} options
+                  <ul className="ml-4 list-disc">
+                    {g.options?.map((o: any) => (
+                      <li key={o.id}>{o.name} — image: {o.image_url ? "✅ " + o.image_url.slice(0, 40) + "…" : "❌ none"}</li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <strong>customSelections:</strong> {JSON.stringify(Object.keys(customSelections))}
+          </div>
+          <div>
+            <strong>customizationOverlays:</strong> {JSON.stringify(customizationOverlays)}
+          </div>
+        </div>
+      </details>
+
       {/* Lightbox */}
       {lightboxOpen && (
         <div
