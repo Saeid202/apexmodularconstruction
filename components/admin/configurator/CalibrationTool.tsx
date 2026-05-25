@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import { createBrowserClient } from '@/lib/supabase/client';
+import React, { useState, useRef } from 'react';
 import { HouseAnchor, AnchorType } from '@/types/configurator';
+import { saveCalibration } from '@/app/actions/calibration';
 import { 
   Save, 
   Trash2, 
@@ -41,7 +41,6 @@ export default function CalibrationTool({ product, initialSettings, mainImage }:
   const [isSaving, setIsSaving] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const supabase = createBrowserClient();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -108,52 +107,17 @@ export default function CalibrationTool({ product, initialSettings, mainImage }:
 
   const handleSave = async () => {
     setIsSaving(true);
-    try {
-      let settingsId = initialSettings?.id;
-
-      // 1. Ensure settings exist
-      if (!settingsId) {
-        const { data: newSettings, error: sError } = await supabase
-          .from('house_configurator_settings')
-          .insert({
-            product_id: product.id,
-            base_image_url: mainImage,
-            lighting_metadata: { sun_direction: 'top-left', ambient: 'balanced' }
-          })
-          .select()
-          .single();
-        
-        if (sError) throw sError;
-        settingsId = newSettings.id;
-      }
-
-      // 2. Clear old anchors and insert new ones
-      // In a real app, we might want to reconcile, but for a tool, clear & replace is safer for V1
-      const { error: dError } = await supabase
-        .from('house_anchors')
-        .delete()
-        .eq('house_id', settingsId);
-      
-      if (dError) throw dError;
-
-      const anchorsToInsert = anchors.map(a => ({
-        ...a,
-        house_id: settingsId
-      }));
-
-      if (anchorsToInsert.length > 0) {
-        const { error: iError } = await supabase
-          .from('house_anchors')
-          .insert(anchorsToInsert);
-        if (iError) throw iError;
-      }
-
+    const { error } = await saveCalibration({
+      productId: product.id,
+      mainImage,
+      existingSettingsId: initialSettings?.id,
+      anchors,
+    });
+    setIsSaving(false);
+    if (error) {
+      alert('Error saving calibration: ' + error);
+    } else {
       alert('Calibration saved successfully!');
-    } catch (error: any) {
-      console.error(error);
-      alert('Error saving calibration: ' + error.message);
-    } finally {
-      setIsSaving(false);
     }
   };
 
