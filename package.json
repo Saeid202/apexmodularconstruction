@@ -39,6 +39,7 @@
     "jspdf": "^4.2.1",
     "lucide-react": "^1.8.0",
     "mammoth": "^1.12.0",
+    "motion": "^12.40.0",
     "next": "16.2.4",
     "pdf-export-images": "^1.2.0",
     "pdf-image": "^2.0.0",
