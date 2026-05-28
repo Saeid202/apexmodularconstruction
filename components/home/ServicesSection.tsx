@@ -62,9 +62,9 @@ export function ServicesSection() {
             <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a2e] max-w-2xl leading-tight">
               Our <span style={{ color: '#4B1D8F' }}>Services</span>
             </h2>
-            <div className="mt-4 flex items-start gap-3 max-w-md">
-              <div className="mt-[0.45rem] h-0.5 w-6 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
-              <p className="text-sm text-gray-500 leading-relaxed">
+            <div className="mt-4 flex items-center gap-3">
+              <div className="h-0.5 w-6 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
+              <p className="text-base text-gray-500">
                 From procurement to engineering, we connect Canadian businesses with trusted partners in China.
               </p>
             </div>
@@ -132,8 +132,7 @@ export function ServicesSection() {
                   <div className="mt-auto">
                     <Link
                       href={service.href}
-                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold shadow-soft transition-all duration-300 hover:brightness-110 hover:scale-[1.02] active:scale-[0.98]"
-                      style={{ background: '#D4AF37', color: '#3b0764' }}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-primary px-5 py-3 text-sm font-semibold text-white shadow-soft transition-all duration-300 hover:shadow-glow hover:scale-[1.02] active:scale-[0.98]"
                     >
                       {service.cta}
                       <ArrowUpRight className="h-4 w-4" />

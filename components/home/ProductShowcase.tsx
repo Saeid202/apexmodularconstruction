@@ -15,12 +15,6 @@ type Tab = "Prefab" | "Robot";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-function getSpanClass(index: number): string {
-  if (index === 0) return "md:row-span-2";
-  if (index === 3) return "md:col-span-2";
-  return "";
-}
-
 function filterProducts(products: ProductWithRelations[], tab: Tab) {
   return products.filter((p) => {
     const slug = p.category.slug.toLowerCase();
@@ -34,10 +28,10 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
 
   if (!products.length) return null;
 
-  const filtered = filterProducts(products, activeTab).slice(0, 4);
+  const filtered = filterProducts(products, activeTab);
 
   return (
-    <section id="products" className="relative py-32 bg-white">
+    <section id="products" className="relative py-32 bg-secondary/10">
       <div className="container mx-auto px-6">
 
         {/* Header row */}
@@ -49,9 +43,9 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
             <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a2e] leading-tight max-w-2xl">
               Our <span style={{ color: '#4B1D8F' }}>{title}</span>
             </h2>
-            <div className="mt-4 flex items-start gap-3 max-w-md">
-              <div className="mt-[0.45rem] h-0.5 w-6 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
-              <p className="text-sm text-gray-500 leading-relaxed">
+            <div className="mt-4 flex items-center gap-3">
+              <div className="h-0.5 w-6 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
+              <p className="text-base text-gray-500">
                 Browse our curated selection of prefabricated structures and industrial solutions.
               </p>
             </div>
@@ -87,7 +81,7 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
           ))}
         </div>
 
-        {/* Bento grid */}
+        {/* Uniform 3-col grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -95,7 +89,7 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-5 auto-rows-[280px]"
+            className="grid grid-cols-1 md:grid-cols-3 gap-5"
           >
             {filtered.length === 0 ? (
               <div className="col-span-1 md:col-span-3 flex items-center justify-center py-20 text-muted-foreground text-sm">
@@ -107,13 +101,12 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
                 const priceLabel = product.requireOrderRequest
                   ? "Request a quote"
                   : `From $${product.price.toLocaleString("en-CA", { minimumFractionDigits: 0 })} CAD`;
-                const spanClass = getSpanClass(i);
 
                 return (
                   <motion.a
                     key={product.id}
                     href={`/products/${product.slug}`}
-                    className={`group relative overflow-hidden rounded-3xl shadow-soft hover:shadow-elegant transition-all duration-500 ${spanClass}`}
+                    className="group relative aspect-[4/3] overflow-hidden rounded-3xl shadow-soft hover:shadow-elegant transition-all duration-500 block"
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-50px" }}
@@ -128,18 +121,17 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
                         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (
-                      <div className="absolute inset-0 bg-muted" />
+                      <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground text-sm">
+                        No image
+                      </div>
                     )}
 
-                    {/* Gradient scrim */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#3a1570]/90 via-[#3a1570]/20 to-transparent" />
+                    {/* Dark gradient scrim */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-                    {/* Gold category chip */}
+                    {/* Category chip */}
                     <div className="absolute top-5 left-5">
-                      <span
-                        className="rounded-full backdrop-blur-md border px-3 py-1 text-[10px] uppercase tracking-wider font-bold"
-                        style={{ background: 'rgba(212,175,55,0.2)', borderColor: 'rgba(212,175,55,0.5)', color: '#D4AF37' }}
-                      >
+                      <span className="rounded-full bg-white/15 backdrop-blur-md border border-white/20 px-3 py-1 text-[10px] uppercase tracking-wider text-white font-medium">
                         {product.category.name}
                       </span>
                     </div>
@@ -150,14 +142,9 @@ export function ProductShowcase({ products, title = "Projects" }: ProductShowcas
                         <h3 className="text-xl font-semibold text-white leading-snug line-clamp-2">
                           {product.name}
                         </h3>
-                        <p className="text-sm mt-1" style={{ color: 'rgba(212,175,55,0.9)' }}>
-                          {priceLabel}
-                        </p>
+                        <p className="text-sm text-white/70 mt-1">{priceLabel}</p>
                       </div>
-                      <div
-                        className="h-11 w-11 shrink-0 rounded-full grid place-items-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"
-                        style={{ background: 'rgba(212,175,55,0.2)', backdropFilter: 'blur(8px)', border: '1px solid rgba(212,175,55,0.45)', color: '#D4AF37' }}
-                      >
+                      <div className="h-11 w-11 shrink-0 rounded-full bg-white/10 backdrop-blur-md border border-white/20 grid place-items-center text-white opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                         <ArrowUpRight className="h-4 w-4" />
                       </div>
                     </div>

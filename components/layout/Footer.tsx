@@ -138,11 +138,11 @@ export function Footer({ socialLinks = [] }: FooterProps) {
             </Link>
             <div className="flex items-start gap-3 max-w-xs">
               <div className="mt-[0.45rem] h-0.5 w-5 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
-              <p className="text-sm text-white/60 leading-relaxed">
+              <p className="text-sm text-white/85 leading-relaxed">
                 Your trusted marketplace for quality construction materials and prefabricated structures from China to Canada.
               </p>
             </div>
-            <div className="space-y-2.5 text-sm text-white/60">
+            <div className="space-y-2.5 text-sm text-white/85">
               <div className="flex items-start gap-2.5">
                 <MapPin className="h-4 w-4 text-[#D4AF37] shrink-0 mt-0.5" />
                 <span>9131 Keele Street, Vaughan, Ontario, L4K 0G7</span>
@@ -186,7 +186,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                 <li key={link.href + link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 hover:text-[#D4AF37] transition-colors"
+                    className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -203,7 +203,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                 <li key={link.href + link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 hover:text-[#D4AF37] transition-colors"
+                    className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -220,7 +220,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 hover:text-[#D4AF37] transition-colors"
+                    className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -233,7 +233,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="container mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/30">
+        <div className="container mx-auto px-6 py-5 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/60">
           <p>© {currentYear} Apex Modular Construction. All rights reserved.</p>
           <p>Prices in CAD. HST/GST calculated at checkout.</p>
         </div>
