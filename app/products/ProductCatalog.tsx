@@ -31,19 +31,19 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
 
   return (
     <div>
-      {/* Page banner */}
-      <div className="bg-gradient-primary">
-        <div className="container mx-auto px-6 py-16 md:py-20">
-          <p className="text-xs uppercase tracking-[0.3em] font-bold mb-3" style={{ color: '#D4AF37' }}>
+      {/* Page header */}
+      <div className="bg-white border-b border-border">
+        <div className="container mx-auto px-6 py-10">
+          <p className="text-xs uppercase tracking-[0.3em] font-bold mb-2" style={{ color: '#D4AF37' }}>
             Catalog
           </p>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight">
-            Our <span style={{ color: '#D4AF37' }}>Products</span>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-[#1a1a2e] leading-tight">
+            Our <span style={{ color: '#4B1D8F' }}>Products</span>
           </h1>
-          <div className="mt-4 flex items-center gap-3 max-w-xl">
+          <div className="mt-3 flex items-center gap-3">
             <div className="h-0.5 w-6 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
-            <p className="text-base text-white/80">
-              Quality construction materials and industrial equipment from trusted suppliers, shipped directly to Canada.
+            <p className="text-sm text-gray-500">
+              Quality construction materials shipped directly from China to Canada.
             </p>
           </div>
         </div>
