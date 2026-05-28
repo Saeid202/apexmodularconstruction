@@ -50,11 +50,13 @@ export interface SiteSettings {
   logo_icon_url?: string;
   logo_text_url?: string;
   social_links?: SocialLink[];
+  homepage_products_limit?: number | null;
 }
 
 const DEFAULT_SETTINGS: SiteSettings = {
   logo_style: "complete-banner",
   logo_height: "h-16",
+  homepage_products_limit: null,
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {

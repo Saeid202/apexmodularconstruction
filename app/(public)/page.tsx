@@ -3,6 +3,7 @@ import { ProductShowcaseWrapper } from "@/components/home/ProductShowcaseWrapper
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { getProducts } from "@/app/actions/products";
 import { getHeroSlides } from "@/app/actions/hero-slides";
+import { getSiteSettings } from "@/app/actions/cms-settings";
 import { mockProducts } from "@/lib/mock-data";
 import type { ProductWithRelations } from "@/types";
 import type { Metadata } from "next";
@@ -19,13 +20,18 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  // Fetch active hero slides
+  // Fetch active hero slides and site settings in parallel
   let activeSlide: any = null;
+  let productsLimit: number | null = null;
   try {
-    const { data: slides } = await getHeroSlides();
-    activeSlide = slides && slides.length > 0 ? slides[0] : null;
+    const [slidesResult, siteSettings] = await Promise.all([
+      getHeroSlides(),
+      getSiteSettings(),
+    ]);
+    activeSlide = slidesResult.data && slidesResult.data.length > 0 ? slidesResult.data[0] : null;
+    productsLimit = siteSettings.homepage_products_limit ?? null;
   } catch (error) {
-    console.error("Failed to fetch active hero slide:", error);
+    console.error("Failed to fetch hero slide or settings:", error);
   }
 
   // Try to fetch from Supabase with timeout protection, fall back to mock data
@@ -97,7 +103,7 @@ export default async function HomePage() {
     <>
       <PrefabHero slide={activeSlide} />
       <ServicesSection />
-      <ProductShowcaseWrapper products={products} title="Projects" />
+      <ProductShowcaseWrapper products={products} title="Projects" limit={productsLimit} />
     </>
   );
 }

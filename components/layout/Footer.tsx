@@ -136,8 +136,13 @@ export function Footer({ socialLinks = [] }: FooterProps) {
 
           {/* Brand — wider column */}
           <div className="space-y-6 lg:col-span-5">
-            <Link href="/" className="inline-flex items-center bg-white rounded-xl px-3 py-2 hover:opacity-85 transition-opacity">
-              <img src="/logo.png" alt="Apex Modular Construction" className="h-9 w-auto object-contain" />
+            <Link href="/" className="inline-flex items-center gap-3 hover:opacity-85 transition-opacity">
+              <div className="bg-white rounded-xl px-3 py-2">
+                <img src="/logo.png" alt="Apex Modular Construction" className="h-9 w-auto object-contain" />
+              </div>
+              <span className="text-white font-bold text-base leading-tight">
+                Apex Modular<br />Construction
+              </span>
             </Link>
             <p className="text-sm text-white/85 leading-relaxed max-w-sm">
               Your trusted partner for quality prefabricated structures and construction solutions — direct from factory to your Canadian site.

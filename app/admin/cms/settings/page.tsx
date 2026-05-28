@@ -593,6 +593,51 @@ export default function BrandingSettingsPage() {
         </div>
       </div>
 
+      {/* Homepage Projects Section */}
+      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-4">
+        <div>
+          <h3 className="text-md font-semibold text-gray-900">Homepage Projects Section</h3>
+          <p className="text-xs text-gray-500 mt-1">
+            Control how many products appear in the "Our Projects" section on the homepage. Leave blank to show all products.
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-gray-700">Max products to display</label>
+            <div className="flex items-center gap-3">
+              <input
+                type="number"
+                min={1}
+                max={100}
+                placeholder="All"
+                value={settings.homepage_products_limit ?? ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSettings({
+                    ...settings,
+                    homepage_products_limit: val === "" ? null : Math.max(1, parseInt(val) || 1),
+                  });
+                }}
+                className="w-28 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+              />
+              {settings.homepage_products_limit && (
+                <button
+                  onClick={() => setSettings({ ...settings, homepage_products_limit: null })}
+                  className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                >
+                  Clear (show all)
+                </button>
+              )}
+            </div>
+            <p className="text-xs text-gray-400">
+              {settings.homepage_products_limit
+                ? `Showing up to ${settings.homepage_products_limit} product${settings.homepage_products_limit === 1 ? "" : "s"} per tab`
+                : "Showing all products"}
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div className="flex justify-end pt-4">
         <button
           onClick={handleSave}

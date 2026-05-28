@@ -9,6 +9,7 @@ import type { ProductWithRelations } from "@/types";
 interface ProductShowcaseProps {
   products: ProductWithRelations[];
   title?: string;
+  limit?: number | null;
 }
 
 type Tab = "Prefab" | "Robot";
@@ -23,12 +24,13 @@ function filterProducts(products: ProductWithRelations[], tab: Tab) {
   });
 }
 
-export function ProductShowcase({ products, title = "Projects" }: ProductShowcaseProps) {
+export function ProductShowcase({ products, title = "Projects", limit }: ProductShowcaseProps) {
   const [activeTab, setActiveTab] = useState<Tab>("Prefab");
 
   if (!products.length) return null;
 
-  const filtered = filterProducts(products, activeTab);
+  const all = filterProducts(products, activeTab);
+  const filtered = limit && limit > 0 ? all.slice(0, limit) : all;
 
   return (
     <section id="products" className="relative py-16 bg-secondary/10">
