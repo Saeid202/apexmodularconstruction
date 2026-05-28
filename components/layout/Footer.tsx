@@ -166,10 +166,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border text-white/70 transition-all duration-200 hover:text-[#3b0764] hover:border-[#D4AF37]"
-                    style={{ background: 'rgba(255,255,255,0.08)', borderColor: 'rgba(255,255,255,0.15)' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#D4AF37')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white/70 hover:bg-[#D4AF37] hover:text-[#3b0764] hover:border-[#D4AF37] transition-all duration-200"
                   >
                     <SocialIcon platform={link.platform} />
                   </a>
