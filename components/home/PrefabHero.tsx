@@ -49,16 +49,14 @@ export function PrefabHero({ slides = [], autoplay = false, autoplayInterval = 5
   const allSlides = slides.length > 0 ? slides : slide ? [slide] : [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [fading, setFading] = useState(false);
+
+  // Use a ref so the interval callback always has the latest slide count
+  const slidesLengthRef = useRef(allSlides.length);
+  slidesLengthRef.current = allSlides.length;
 
   const advance = useCallback(() => {
-    if (allSlides.length <= 1) return;
-    setFading(true);
-    setTimeout(() => {
-      setCurrentIndex((i) => (i + 1) % allSlides.length);
-      setFading(false);
-    }, 400);
-  }, [allSlides.length]);
+    setCurrentIndex((i) => (i + 1) % slidesLengthRef.current);
+  }, []);
 
   useEffect(() => {
     if (!autoplay || allSlides.length <= 1) return;
@@ -126,17 +124,27 @@ export function PrefabHero({ slides = [], autoplay = false, autoplayInterval = 5
         })
       }} />
 
-      {/* Background image with parallax */}
+      {/* Background images — all kept in DOM so they preload; crossfade between them */}
       <motion.div
         className="absolute inset-0 w-full h-full"
         style={{ y: bgY, scale: bgScale }}
       >
-        <img
-          src={imageUrl}
-          alt="Apex Modular Construction project"
-          className={`w-full h-full object-cover transition-opacity duration-400 ${fading ? "opacity-0" : "opacity-100"}`}
-          itemProp="image"
-        />
+        {allSlides.length > 0 ? allSlides.map((s, i) => (
+          <img
+            key={i}
+            src={s.image_url || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop"}
+            alt="Apex Modular Construction project"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === currentIndex ? "opacity-100" : "opacity-0"}`}
+            itemProp={i === 0 ? "image" : undefined}
+          />
+        )) : (
+          <img
+            src={imageUrl}
+            alt="Apex Modular Construction project"
+            className="absolute inset-0 w-full h-full object-cover"
+            itemProp="image"
+          />
+        )}
       </motion.div>
 
       {/* Gradient overlays */}
@@ -232,7 +240,7 @@ export function PrefabHero({ slides = [], autoplay = false, autoplayInterval = 5
           {allSlides.map((_, i) => (
             <button
               key={i}
-              onClick={() => { setFading(true); setTimeout(() => { setCurrentIndex(i); setFading(false); }, 400); }}
+              onClick={() => setCurrentIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? "w-6 bg-white" : "w-2 bg-white/40 hover:bg-white/70"}`}
             />
