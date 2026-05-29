@@ -54,7 +54,7 @@ export default function Construction3DPrinterPage() {
       />
 
       {/* Intro Overview Section */}
-      <section className="container mx-auto px-6 -mt-10 relative z-10 max-w-6xl">
+      <section className="container mx-auto px-6 mt-8 relative z-10 max-w-6xl">
         <div className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8 md:p-12">
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             
@@ -94,9 +94,9 @@ export default function Construction3DPrinterPage() {
       </section>
 
       {/* System 1 Showcase Section: Gantry Printer (2.0) */}
-      <section className="container mx-auto px-6 mt-24 max-w-7xl relative z-10">
-        
-        <div className="border-b border-gray-200 pb-6 mb-16">
+      <section className="container mx-auto px-6 mt-12 max-w-7xl relative z-10">
+
+        <div className="border-b border-gray-200 pb-4 mb-8">
           <span className="text-xs font-black uppercase tracking-widest text-[#D4AF37] mb-2 block">System Type 01</span>
           <h2 className="text-3xl font-black text-gray-900 tracking-tight">1. Gantry Printer (2.0)</h2>
           <p className="text-sm text-gray-400 mt-1">High-volume static structural manufacturing.</p>
@@ -106,13 +106,13 @@ export default function Construction3DPrinterPage() {
           
           {/* Left Column: Image on a premium dark pedestal */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-md aspect-[3/4] rounded-3xl bg-gradient-to-b from-[#130728] to-[#25104a] p-8 border border-white/10 shadow-2xl flex flex-col justify-between overflow-hidden group">
-              
+            <div className="relative w-full max-w-sm aspect-[4/5] rounded-3xl bg-gradient-to-b from-[#130728] to-[#25104a] p-6 border border-white/10 shadow-2xl flex flex-col justify-between overflow-hidden group">
+
               {/* Neon Background Glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-blue-500/10 blur-[100px] pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-blue-500/10 blur-[100px] pointer-events-none" />
 
               {/* Pedestal Shadow */}
-              <div className="absolute bottom-16 left-1/2 -translate-x-1/2 w-48 h-6 rounded-full bg-black/40 blur-md" />
+              <div className="absolute bottom-14 left-1/2 -translate-x-1/2 w-36 h-5 rounded-full bg-black/40 blur-md" />
 
               <div className="z-10 flex justify-between items-start w-full">
                 <span className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
@@ -126,7 +126,7 @@ export default function Construction3DPrinterPage() {
                 <img
                   src="/gaudi-3d-printer.png"
                   alt="GAUDI Gantry 3D Printer 2.0"
-                  className="max-h-[350px] w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+                  className="max-h-[220px] w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
                 />
               </div>
 
@@ -216,9 +216,9 @@ export default function Construction3DPrinterPage() {
       </section>
 
       {/* System 2 Showcase Section: Mobile Folding Printer (3.0) */}
-      <section className="container mx-auto px-6 mt-32 max-w-7xl relative z-10">
-        
-        <div className="border-b border-gray-200 pb-6 mb-16">
+      <section className="container mx-auto px-6 mt-16 max-w-7xl relative z-10">
+
+        <div className="border-b border-gray-200 pb-4 mb-8">
           <span className="text-xs font-black uppercase tracking-widest text-[#D4AF37] mb-2 block">System Type 02</span>
           <h2 className="text-3xl font-black text-gray-900 tracking-tight">2. Mobile Folding Printer (3.0)</h2>
           <p className="text-sm text-gray-400 mt-1">Decentralized, rapid-response modular construction.</p>
@@ -296,13 +296,13 @@ export default function Construction3DPrinterPage() {
 
           {/* Right Column: Mobile Folding Printer Image */}
           <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
-            <div className="relative w-full max-w-md aspect-[3/4] rounded-3xl bg-gradient-to-b from-gray-900 to-[#120524] p-8 border border-white/5 shadow-2xl flex flex-col justify-between overflow-hidden group">
-              
+            <div className="relative w-full max-w-sm aspect-[4/5] rounded-3xl bg-gradient-to-b from-gray-900 to-[#120524] p-6 border border-white/5 shadow-2xl flex flex-col justify-between overflow-hidden group">
+
               {/* Neon Ambient Background Glow */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-purple-500/5 blur-[80px] pointer-events-none" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-purple-500/5 blur-[80px] pointer-events-none" />
 
               {/* Pedestal Shadow */}
-              <div className="absolute bottom-16 left-1/2 -translate-x-1/2 w-48 h-6 rounded-full bg-black/45 blur-md" />
+              <div className="absolute bottom-14 left-1/2 -translate-x-1/2 w-36 h-5 rounded-full bg-black/45 blur-md" />
 
               <div className="z-10 flex justify-between items-start w-full">
                 <span className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
@@ -316,7 +316,7 @@ export default function Construction3DPrinterPage() {
                 <img
                   src="/gaudi-mobile-printer.png"
                   alt="GAUDI Mobile Folding Printer 3.0"
-                  className="max-h-[350px] w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
+                  className="max-h-[220px] w-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
                 />
               </div>
 
@@ -336,9 +336,9 @@ export default function Construction3DPrinterPage() {
       </section>
 
       {/* Use Cases & Sector Applications Section */}
-      <section className="container mx-auto px-6 mt-32 max-w-7xl relative z-10">
-        
-        <div className="border-b border-gray-200 pb-6 mb-16 text-center max-w-3xl mx-auto">
+      <section className="container mx-auto px-6 mt-16 max-w-7xl relative z-10">
+
+        <div className="border-b border-gray-200 pb-4 mb-8 text-center max-w-3xl mx-auto">
           <span className="text-xs font-black uppercase tracking-widest text-[#D4AF37] mb-2 block">Global Deployment</span>
           <h2 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">Use Cases & Sector Applications</h2>
           <p className="text-sm text-gray-500 mt-3 leading-relaxed">
@@ -487,7 +487,7 @@ export default function Construction3DPrinterPage() {
       </section>
 
       {/* Global B2B Sourcing Call to Action */}
-      <section className="container mx-auto px-6 mt-32 max-w-4xl text-center">
+      <section className="container mx-auto px-6 mt-16 max-w-4xl text-center">
         <div className="bg-white rounded-3xl border border-gray-100 shadow-xl p-8 md:p-12 relative overflow-hidden">
           
           <div className="absolute -top-24 -left-24 w-48 h-48 rounded-full bg-purple-500/5 blur-3xl pointer-events-none" />
