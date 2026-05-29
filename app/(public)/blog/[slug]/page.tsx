@@ -95,7 +95,7 @@ export default function BlogPostPage() {
       <div className="fixed top-0 left-0 h-1 bg-[#D4AF37] z-50 w-1/3" />
 
       {/* Article Header */}
-      <header className="pt-24 pb-12 px-6 bg-[#F8F6FC]">
+      <header className="pt-24 pb-8 px-6 bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto">
           <Link href="/blog" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-purple-700 transition-colors mb-12">
             <ArrowLeft className="w-4 h-4" />
@@ -115,7 +115,7 @@ export default function BlogPostPage() {
              </div>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-[1000] text-gray-900 tracking-tighter leading-tight mb-8">
+          <h1 className="text-2xl md:text-4xl font-black text-gray-900 tracking-tight leading-tight mb-6">
             {post.title}
           </h1>
           
@@ -138,11 +138,11 @@ export default function BlogPostPage() {
       </header>
 
       {/* Hero Image */}
-      <div className="px-6 -mt-8">
-        <div className="max-w-6xl mx-auto h-[400px] md:h-[600px] rounded-[48px] overflow-hidden shadow-2xl">
-          <img 
-            src={post.image} 
-            alt={post.title} 
+      <div className="px-6 -mt-4">
+        <div className="max-w-4xl mx-auto h-[220px] md:h-[340px] rounded-2xl overflow-hidden shadow-lg">
+          <img
+            src={post.image}
+            alt={post.title}
             className="w-full h-full object-cover"
           />
         </div>
