@@ -21,15 +21,19 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // Fetch active hero slides and site settings in parallel
-  let activeSlide: any = null;
+  let activeSlides: any[] = [];
+  let heroAutoplay = false;
+  let heroAutoplayInterval = 5;
   let productsLimit: number | null = null;
   try {
     const [slidesResult, siteSettings] = await Promise.all([
       getHeroSlides(),
       getSiteSettings(),
     ]);
-    activeSlide = slidesResult.data && slidesResult.data.length > 0 ? slidesResult.data[0] : null;
+    activeSlides = slidesResult.data ?? [];
     productsLimit = siteSettings.homepage_products_limit ?? null;
+    heroAutoplay = siteSettings.hero_autoplay ?? false;
+    heroAutoplayInterval = siteSettings.hero_autoplay_interval ?? 5;
   } catch (error) {
     console.error("Failed to fetch hero slide or settings:", error);
   }
@@ -101,7 +105,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <PrefabHero slide={activeSlide} />
+      <PrefabHero slides={activeSlides} autoplay={heroAutoplay} autoplayInterval={heroAutoplayInterval} />
       <ServicesSection />
       <ProductShowcaseWrapper products={products} title="Projects" limit={productsLimit} />
     </>

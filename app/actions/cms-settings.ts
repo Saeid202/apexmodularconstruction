@@ -51,12 +51,16 @@ export interface SiteSettings {
   logo_text_url?: string;
   social_links?: SocialLink[];
   homepage_products_limit?: number | null;
+  hero_autoplay?: boolean;
+  hero_autoplay_interval?: number;
 }
 
 const DEFAULT_SETTINGS: SiteSettings = {
   logo_style: "complete-banner",
   logo_height: "h-16",
   homepage_products_limit: null,
+  hero_autoplay: false,
+  hero_autoplay_interval: 5,
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {

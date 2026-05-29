@@ -2,24 +2,30 @@
 
 import Link from "next/link";
 import { ArrowRight, ArrowDown, MessageCircle } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
+type SlideData = {
+  title?: string;
+  subtitle?: string | null;
+  image_url?: string;
+  cta_text?: string | null;
+  cta_link?: string | null;
+  cta_enabled?: boolean;
+  headline?: string | null;
+  subtext?: string | null;
+  benefits?: string[] | null;
+  cta_secondary_text?: string | null;
+  cta_secondary_link?: string | null;
+  trust_line?: string | null;
+};
+
 interface PrefabHeroProps {
-  slide?: {
-    title?: string;
-    subtitle?: string | null;
-    image_url?: string;
-    cta_text?: string | null;
-    cta_link?: string | null;
-    cta_enabled?: boolean;
-    headline?: string | null;
-    subtext?: string | null;
-    benefits?: string[] | null;
-    cta_secondary_text?: string | null;
-    cta_secondary_link?: string | null;
-    trust_line?: string | null;
-  } | null;
+  slides?: SlideData[];
+  autoplay?: boolean;
+  autoplayInterval?: number;
+  /** @deprecated pass slides array instead */
+  slide?: SlideData | null;
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -36,27 +42,50 @@ function FadeUp({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-export function PrefabHero({ slide }: PrefabHeroProps) {
+export function PrefabHero({ slides = [], autoplay = false, autoplayInterval = 5, slide }: PrefabHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
-  const headline = slide?.headline || slide?.title || "Prefabricated Modular Homes from China to Canada";
-  const subtext = slide?.subtext || slide?.subtitle || "End-to-end design, manufacturing, and installation of certified modular buildings delivered across Canada. CSA-compliant, climate-ready, and built to last.";
-  const imageUrl = slide?.image_url || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop";
+  // Normalise: support legacy single-slide prop
+  const allSlides = slides.length > 0 ? slides : slide ? [slide] : [];
 
-  const ctaText = slide?.cta_text || "Get a Quote";
-  const ctaLink = slide?.cta_link || "/contact";
-  const ctaEnabled = slide?.cta_enabled ?? true;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [fading, setFading] = useState(false);
 
-  const ctaSecondaryText = slide?.cta_secondary_text || "View Products";
-  const ctaSecondaryLink = slide?.cta_secondary_link || "/products";
+  const advance = useCallback(() => {
+    if (allSlides.length <= 1) return;
+    setFading(true);
+    setTimeout(() => {
+      setCurrentIndex((i) => (i + 1) % allSlides.length);
+      setFading(false);
+    }, 400);
+  }, [allSlides.length]);
+
+  useEffect(() => {
+    if (!autoplay || allSlides.length <= 1) return;
+    const t = setInterval(advance, autoplayInterval * 1000);
+    return () => clearInterval(t);
+  }, [autoplay, autoplayInterval, advance, allSlides.length]);
+
+  const activeSlide = allSlides[currentIndex] ?? null;
+
+  const headline = activeSlide?.headline || activeSlide?.title || "Prefabricated Modular Homes from China to Canada";
+  const subtext = activeSlide?.subtext || activeSlide?.subtitle || "End-to-end design, manufacturing, and installation of certified modular buildings delivered across Canada. CSA-compliant, climate-ready, and built to last.";
+  const imageUrl = activeSlide?.image_url || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop";
+
+  const ctaText = activeSlide?.cta_text || "Get a Quote";
+  const ctaLink = activeSlide?.cta_link || "/contact";
+  const ctaEnabled = activeSlide?.cta_enabled ?? true;
+
+  const ctaSecondaryText = activeSlide?.cta_secondary_text || "View Products";
+  const ctaSecondaryLink = activeSlide?.cta_secondary_link || "/products";
 
   const defaultBenefits = [
     "Factory-built precision compliant with Canadian standards",
     "Faster construction with reduced cost and on-site time",
     "Full-service delivery from design to installation",
   ];
-  const benefits = slide?.benefits && Array.isArray(slide.benefits) && slide.benefits.length > 0
-    ? slide.benefits
+  const benefits = activeSlide?.benefits && Array.isArray(activeSlide.benefits) && activeSlide.benefits.length > 0
+    ? activeSlide.benefits
     : defaultBenefits;
 
   // Parallax
@@ -105,7 +134,7 @@ export function PrefabHero({ slide }: PrefabHeroProps) {
         <img
           src={imageUrl}
           alt="Apex Modular Construction project"
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-opacity duration-400 ${fading ? "opacity-0" : "opacity-100"}`}
           itemProp="image"
         />
       </motion.div>
@@ -196,6 +225,20 @@ export function PrefabHero({ slide }: PrefabHeroProps) {
           </div>
         </FadeUp>
       </motion.div>
+
+      {/* Slide indicator dots */}
+      {allSlides.length > 1 && (
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {allSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => { setFading(true); setTimeout(() => { setCurrentIndex(i); setFading(false); }, 400); }}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ${i === currentIndex ? "w-6 bg-white" : "w-2 bg-white/40 hover:bg-white/70"}`}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Scroll indicator */}
       <motion.div
