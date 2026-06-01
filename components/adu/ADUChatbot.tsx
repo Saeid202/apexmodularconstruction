@@ -433,8 +433,7 @@ export function ADUChatbot() {
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent pt-12 pb-10 z-50">
           <div className="max-w-4xl mx-auto px-6">
             <div className="relative group">
-              <div className="absolute -inset-0.5 rounded-[32px] opacity-10 group-focus-within:opacity-40 transition duration-500 blur-md" style={{ backgroundColor: CP_GOLD }}></div>
-              <div className="relative flex items-center bg-white border-2 rounded-[32px] shadow-2xl transition-all p-2 pl-8 pr-3" style={{ borderColor: CP_PURPLE }}>
+              <div className="relative flex items-center bg-white border-2 rounded-[32px] transition-all p-2 pl-8 pr-3" style={{ borderColor: CP_PURPLE }}>
                 <input type="text" placeholder="Ask follow-up questions..." className="flex-1 bg-transparent border-none py-5 text-xl font-bold text-black focus:ring-0 placeholder:text-gray-300" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendChat()} />
                 <button onClick={() => handleSendChat()} disabled={isChatLoading || !chatInput.trim()} className="p-5 rounded-[24px] shadow-lg transition-all active:scale-95 disabled:opacity-20 border" style={{ backgroundColor: CP_PURPLE, borderColor: CP_GOLD }}>
                   <Send className="w-6 h-6" style={{ color: CP_GOLD }} />
