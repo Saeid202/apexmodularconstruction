@@ -56,7 +56,7 @@ export function InteractiveProductCard({ slug }: ProductCardProps) {
         href={`/products/${slug}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-white border-2 rounded-[40px] overflow-hidden shadow-sm transition-all hover:shadow-2xl hover:-translate-y-1"
+        className="block bg-white border-2 rounded-[40px] overflow-hidden shadow-sm transition-shadow"
         style={{ borderColor: `${CP_PURPLE}15` }}
       >
         <div className="flex flex-col md:flex-row">
@@ -65,7 +65,7 @@ export function InteractiveProductCard({ slug }: ProductCardProps) {
             <img 
               src={imageUrl} 
               alt={product.name}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-[10px] font-black uppercase tracking-widest shadow-sm" style={{ color: CP_PURPLE }}>
               Prefab Model
@@ -90,7 +90,7 @@ export function InteractiveProductCard({ slug }: ProductCardProps) {
                 </div>
               </div>
               
-              <div className="flex items-center space-x-3 px-6 py-3 rounded-2xl text-white text-xs font-black uppercase tracking-widest shadow-xl transition-all group-hover:scale-105" style={{ backgroundColor: CP_PURPLE }}>
+              <div className="flex items-center space-x-3 px-6 py-3 rounded-2xl text-white text-xs font-black uppercase tracking-widest shadow-xl transition-colors" style={{ backgroundColor: CP_PURPLE }}>
                 <span>View Details</span>
                 <ArrowRight className="w-4 h-4" />
               </div>

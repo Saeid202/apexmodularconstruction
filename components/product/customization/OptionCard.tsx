@@ -29,6 +29,9 @@ export function OptionCard({ option, isSelected, onSelect, disabled = false }: O
 
   const hasMultipleImages = allImages.length > 1;
   const isOutOfStock = option.track_inventory && option.stock_quantity !== null && option.stock_quantity <= 0;
+  const colorValue = option.description && /^#([0-9A-F]{6}|[0-9A-F]{3})$/i.test(option.description)
+    ? option.description
+    : null;
 
   const handleSelect = () => {
     if (!disabled && !isOutOfStock) {
@@ -135,6 +138,16 @@ export function OptionCard({ option, isSelected, onSelect, disabled = false }: O
                     </div>
                   </>
                 )}
+
+                    {colorValue && (
+                      <div className="absolute left-2 bottom-2 flex items-center gap-2 rounded-full bg-white/90 px-2 py-1 shadow-sm">
+                        <span
+                          className="h-3.5 w-3.5 rounded-full border"
+                          style={{ backgroundColor: colorValue, borderColor: `${PURPLE}22` }}
+                        />
+                        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-gray-600">Color</span>
+                      </div>
+                    )}
               </>
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-100">
@@ -150,9 +163,17 @@ export function OptionCard({ option, isSelected, onSelect, disabled = false }: O
             <div className="flex-1 min-w-0">
               <h4 className="font-semibold text-gray-900 truncate">{option.name}</h4>
               
-              {option.description && (
+              {colorValue ? (
+                <div className="flex items-center gap-2 mt-2 text-sm text-gray-600">
+                  <span
+                    className="inline-flex h-3 w-3 rounded-full border"
+                    style={{ backgroundColor: colorValue, borderColor: `${PURPLE}22` }}
+                  />
+                  <span>Color: {colorValue}</span>
+                </div>
+              ) : option.description ? (
                 <p className="text-sm text-gray-600 mt-1 line-clamp-2">{option.description}</p>
-              )}
+              ) : null}
 
               {/* Price modifier */}
               {option.price_modifier !== 0 && (

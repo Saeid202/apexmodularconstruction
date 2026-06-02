@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { getProductBySlug } from "@/app/actions/products";
-import { getHouseConfigurator } from "@/app/actions/configurator";
+import { getHouseConfigurator, ensureHouseConfigurator } from "@/app/actions/configurator";
 import { mockProducts } from "@/lib/mock-data";
 import type { ProductWithRelations } from "@/types";
 import { ProductDetailWrapper } from "./ProductDetailWrapper";
@@ -137,7 +137,18 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
-  const { data: configurator } = await getHouseConfigurator(product.id);
+  let { data: configurator } = await getHouseConfigurator(product.id);
+
+  if (!configurator && product.configurator_type === 'house') {
+    const baseImageUrl = product.images?.[0]?.url ?? null;
+    if (baseImageUrl) {
+      const { data: ensured, error: ensureError } = await ensureHouseConfigurator(product.id, baseImageUrl);
+      if (ensureError) {
+        console.error('Unable to ensure house configurator:', ensureError);
+      }
+      configurator = ensured ?? null;
+    }
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

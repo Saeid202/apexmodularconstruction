@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
 import type { Product, ProductImage, Category, Seller } from "@/types/database";
 import type { CustomizationGroup, CustomizationOption } from "@/types";
 
+const DEFAULT_WALL_MASK_URL = `data:image/svg+xml;base64,${Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/></svg>').toString('base64')}`;
+
 /** Generate a unique slug for a product, appending a random suffix on collision. */
 async function uniqueSlug(supabase: Awaited<ReturnType<typeof createServerClient>>, name: string, excludeId?: string): Promise<string> {
   const base = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -18,6 +20,69 @@ async function uniqueSlug(supabase: Awaited<ReturnType<typeof createServerClient
     slug = `${base}-${Math.random().toString(36).slice(2, 6)}`;
   }
   return slug;
+}
+
+async function ensureHouseConfiguratorSettings(
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
+  productId: string,
+  baseImageUrl: string
+) {
+  if (!baseImageUrl) return;
+
+  const { data: existing } = await supabase
+    .from("house_configurator_settings")
+    .select("id")
+    .eq("product_id", productId)
+    .maybeSingle();
+
+  let settingsId: string;
+  if (existing?.id) {
+    settingsId = existing.id;
+    await supabase
+      .from("house_configurator_settings")
+      .update({ base_image_url: baseImageUrl })
+      .eq("id", settingsId);
+  } else {
+    const { data, error } = await supabase.from("house_configurator_settings").insert({
+      product_id: productId,
+      base_image_url: baseImageUrl,
+      lighting_metadata: { sun_direction: "top-left", ambient: "balanced" },
+    }).select("id").single();
+
+    if (error || !data?.id) return;
+    settingsId = data.id;
+  }
+
+  const { data: anchors } = await supabase
+    .from("house_anchors")
+    .select("id, anchor_type, mask_url")
+    .eq("house_id", settingsId);
+
+  const wallMaskAnchor = anchors?.find((anchor: any) => anchor.anchor_type === "wall-mask");
+  if (wallMaskAnchor) {
+    if (!wallMaskAnchor.mask_url) {
+      await supabase.from("house_anchors").update({ mask_url: DEFAULT_WALL_MASK_URL }).eq("id", wallMaskAnchor.id);
+    }
+  } else {
+    await supabase.from("house_anchors").insert({
+      house_id: settingsId,
+      anchor_type: "wall-mask",
+      label: "Wall Color",
+      x_pos: 0,
+      y_pos: 0,
+      width: 100,
+      height: 100,
+      z_index: 10,
+      mask_url: DEFAULT_WALL_MASK_URL,
+    });
+  }
+}
+
+async function removeHouseConfiguratorSettings(
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
+  productId: string
+) {
+  await supabase.from("house_configurator_settings").delete().eq("product_id", productId);
 }
 
 export interface SellerProduct extends Product {
@@ -291,6 +356,8 @@ export async function createProduct(formData: FormData): Promise<{
     }
 
     // Create product
+    const configuratorType = (formData.get("configuratorType") as string | null) || "none";
+
     const { data: product, error: productError } = await supabase
       .from("products")
       .insert({
@@ -308,7 +375,7 @@ export async function createProduct(formData: FormData): Promise<{
         show_stock: formData.get("showStock") !== "false",
         youtube_url: (formData.get("youtubeUrl") as string | null) || null,
         status: formData.get("publishStatus") === "draft" ? "pending" : "active",
-        configurator_type: (formData.get("configuratorType") as string | null) || "none",
+        configurator_type: configuratorType,
       })
       .select()
       .single();
@@ -337,6 +404,13 @@ export async function createProduct(formData: FormData): Promise<{
       }));
       const { error: batchErr } = await supabase.from("product_images").insert(rows);
       if (batchErr) console.error("Batch image insert error:", batchErr.message);
+
+      if (configuratorType === 'house') {
+        const baseImageUrl = rows.find((row) => row.is_master)?.url ?? rows[0]?.url ?? null;
+        if (baseImageUrl) {
+          await ensureHouseConfiguratorSettings(supabase, product.id, baseImageUrl);
+        }
+      }
     }
 
     // 4. Handle Customizations
@@ -472,6 +546,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
     // Images are uploaded client-side before this action is called.
     // variantsJson contains { url, code, price, isMaster, existingUrl } for each variant.
     const variantsJson = formData.get("variantsJson") as string | null;
+    const configuratorType = (formData.get("configuratorType") as string | null) || "none";
     let variants: { url?: string; code: string; price?: number | null; isMaster: boolean; existingUrl?: string }[] = [];
     try {
       if (variantsJson) variants = JSON.parse(variantsJson);
@@ -519,7 +594,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
             url: resolvedUrl,
             alt_text: v.code || name,
             position: i,
-            variant_code: v.code || null,
+            variant_code: v.code ?? null,
             variant_price: v.price ?? null,
             is_master: v.isMaster,
           };
@@ -530,6 +605,21 @@ export async function updateProduct(productId: string, formData: FormData): Prom
         const { error: batchErr } = await supabase.from("product_images").insert(rows);
         if (batchErr) console.error("Batch update image insert error:", batchErr.message);
       }
+    }
+
+    if (configuratorType === 'house') {
+      const { data: imageRecords } = await supabase
+        .from("product_images")
+        .select("url,is_master")
+        .eq("product_id", productId)
+        .order("position", { ascending: true });
+
+      const baseImageUrl = imageRecords?.find((img: any) => img.is_master)?.url ?? imageRecords?.[0]?.url ?? null;
+      if (baseImageUrl) {
+        await ensureHouseConfiguratorSettings(supabase, productId, baseImageUrl);
+      }
+    } else {
+      await removeHouseConfiguratorSettings(supabase, productId);
     }
 
     // Handle Customizations Update
@@ -560,6 +650,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
               const optRows = group.options.map((o: any, idx: number) => ({
                 group_id: g.id,
                 name: o.name,
+                description: o.description ?? null,
                 price_modifier: parseFloat(o.priceModifier || "0"),
                 image_url: o.imageUrl,
                 display_order: idx,

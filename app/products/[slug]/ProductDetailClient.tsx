@@ -40,7 +40,7 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [requestSuccess, setRequestSuccess] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"ready" | "custom">("ready");
-  const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption>>({});
+  const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption[]>>({});
 
   const openLightbox = useCallback(() => {
     const idx = allImages.findIndex((img) => img.id === activeId);
@@ -76,26 +76,80 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const inStock = product.stockQuantity > 0;
   const hasVariants = variantImages.length > 0;
+  const hasConfigurator = Boolean(configurator);
 
-  const totalCustomPrice = product.price + Object.values(customSelections).reduce((acc, opt) => acc + opt.price_modifier, 0);
+  const totalCustomPrice = product.price + Object.values(customSelections).flat().reduce((acc, opt) => acc + opt.price_modifier, 0);
   const displayPrice = activeTab === "custom" ? totalCustomPrice : activePrice;
 
-  // Match each selected customization option to a house anchor by group name === anchor label,
-  // then use the option's image_url as the overlay at that anchor's position.
+  const normalizeLabel = (value?: string | null) =>
+    value?.trim().toLowerCase().replace(/[^a-z0-9]+/g, " ") ?? "";
+
+  const labelsMatch = (a?: string | null, b?: string | null) => {
+    const normalizedA = normalizeLabel(a);
+    const normalizedB = normalizeLabel(b);
+    if (!normalizedA || !normalizedB) return false;
+    if (normalizedA === normalizedB) return true;
+    if (normalizedA.includes(normalizedB) || normalizedB.includes(normalizedA)) return true;
+    const wordsA = new Set(normalizedA.split(" ").filter(Boolean));
+    const wordsB = new Set(normalizedB.split(" ").filter(Boolean));
+    const intersection = [...wordsA].filter((word) => wordsB.has(word));
+    return intersection.length >= 1;
+  };
+
+  const findMatchingAnchor = (groupName: string, optionName: string, optionDescription?: string) => {
+    const matchedAnchor = configurator.anchors.find((a: any) =>
+      labelsMatch(a.label, groupName)
+      || labelsMatch(a.label, optionName)
+      || labelsMatch(a.label, optionDescription)
+    );
+
+    if (matchedAnchor) return matchedAnchor;
+
+    const normalizedContext = normalizeLabel(`${groupName} ${optionName}`);
+    const isColorGroup = /(?:\bcolor\b|\bcolors\b|\bpaint\b|\bwall\b|\bcladding\b|\bfinish\b|\bfacade\b|\bfaçade\b)/i.test(normalizedContext);
+    if (!isColorGroup) return undefined;
+
+    return configurator.anchors.find((a: any) => a.anchor_type === 'wall-mask');
+  };
+
   const customizationOverlays = useMemo(() => {
     if (!configurator?.anchors?.length) return {};
-    const overlays: Record<string, string> = {};
-    Object.entries(customSelections).forEach(([groupId, option]) => {
-      if (!option.image_url) return;
-      const group = product.customizationGroups?.find(g => g.id === groupId);
+    type OverlayValue = { imageUrl?: string; color?: string };
+    const overlays: Record<string, OverlayValue> = {};
+
+    Object.entries(customSelections).forEach(([groupId, options]) => {
+      const group = product.customizationGroups?.find((g) => g.id === groupId);
       if (!group) return;
-      const anchor = configurator.anchors.find(
-        (a: any) => a.label.toLowerCase() === group.name.toLowerCase()
-      );
-      if (anchor?.id) overlays[anchor.id] = option.image_url;
+
+      options.forEach((option) => {
+        const anchor = findMatchingAnchor(group.name, option.name, option.description);
+        if (!anchor?.id) return;
+
+        const colorValue = option.description && /^#([0-9A-F]{6}|[0-9A-F]{3})$/i.test(option.description)
+          ? option.description
+          : undefined;
+
+        const isMaskableWall = anchor.anchor_type === 'wall-mask';
+        if (isMaskableWall && !anchor.mask_url) return;
+
+        if (option.image_url) {
+          overlays[anchor.id] = { imageUrl: option.image_url };
+        } else if (colorValue) {
+          overlays[anchor.id] = { color: colorValue };
+        }
+      });
     });
+
     return overlays;
   }, [customSelections, configurator, product.customizationGroups]);
+
+  const hasWallMaskAnchor = useMemo(() => {
+    return Boolean(configurator?.anchors?.some((a: any) => a.anchor_type === 'wall-mask'));
+  }, [configurator]);
+
+  const hasColorOverlay = useMemo(() => {
+    return Object.values(customizationOverlays).some((overlay) => Boolean(overlay.color || overlay.imageUrl));
+  }, [customizationOverlays]);
 
   function buildCartItem() {
     const isCustom = activeTab === "custom";
@@ -103,13 +157,15 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
     // Convert custom selections to cart metadata
     const customizations: Record<string, { groupName: string; optionName: string; priceModifier: number }> = {};
     if (isCustom) {
-      Object.entries(customSelections).forEach(([groupId, opt]) => {
+      Object.entries(customSelections).forEach(([groupId, options]) => {
         const group = product.customizationGroups?.find(g => g.id === groupId);
         if (group) {
+          const optionNames = options.map((opt) => opt.name).join(', ');
+          const totalPriceModifier = options.reduce((sum, opt) => sum + opt.price_modifier, 0);
           customizations[groupId] = {
             groupName: group.name,
-            optionName: opt.name,
-            priceModifier: opt.price_modifier
+            optionName: optionNames,
+            priceModifier: totalPriceModifier
           };
         }
       });
@@ -118,7 +174,7 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
     return {
       productId: product.id,
       variantCode: isCustom ? "Custom Build" : activeCode,
-      variantImageUrl: isCustom ? (Object.values(customSelections)[0]?.image_url ?? activeImage?.url ?? null) : (activeImage?.url ?? null),
+      variantImageUrl: isCustom ? (Object.values(customSelections).flat()[0]?.image_url ?? activeImage?.url ?? null) : (activeImage?.url ?? null),
       productName: product.name,
       productPrice: displayPrice,
       customizations: isCustom ? customizations : undefined
@@ -159,7 +215,7 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
         </div>
 
         {/* Image area */}
-        {activeTab === "custom" && configurator ? (
+        {activeTab === "custom" ? (
           /* Custom tab: identical layout to the calibration tool (aspect-[16/9] + object-contain)
              so anchor percentages align pixel-perfectly with what the admin drew */
           <div
@@ -174,26 +230,58 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
                 className="absolute inset-0 w-full h-full object-contain"
               />
             )}
-            {Object.entries(customizationOverlays).map(([anchorId, imgUrl]) => {
-              const anchor = configurator?.anchors?.find((a: any) => a.id === anchorId);
-              if (!anchor) return null;
-              return (
-                <div
-                  key={anchorId}
-                  className="absolute pointer-events-none transition-all duration-500 ease-in-out"
-                  style={{
-                    left: `${anchor.x_pos}%`,
-                    top: `${anchor.y_pos}%`,
-                    width: `${anchor.width}%`,
-                    height: `${anchor.height}%`,
-                    zIndex: anchor.z_index ?? 10,
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={imgUrl} alt={anchor.label} className="w-full h-full object-contain drop-shadow-md" />
-                </div>
-              );
-            })}
+
+            {configurator ? (
+              Object.entries(customizationOverlays).map(([anchorId, overlay]) => {
+                const anchor = configurator?.anchors?.find((a: any) => a.id === anchorId);
+                if (!anchor) return null;
+                return (
+                  <div
+                    key={anchorId}
+                    className="absolute pointer-events-none transition-all duration-500 ease-in-out"
+                    style={{
+                      left: `${anchor.x_pos}%`,
+                      top: `${anchor.y_pos}%`,
+                      width: `${anchor.width}%`,
+                      height: `${anchor.height}%`,
+                      zIndex: anchor.z_index ?? 10,
+                    }}
+                  >
+                    {overlay.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={overlay.imageUrl} alt={anchor.label} className="w-full h-full object-contain drop-shadow-md" />
+                    ) : overlay.color ? (
+                      <div
+                        className="w-full h-full"
+                        style={{
+                          backgroundColor: overlay.color,
+                          ...(anchor.mask_url ? {
+                            WebkitMaskImage: `url(${anchor.mask_url})`,
+                            maskImage: `url(${anchor.mask_url})`,
+                            WebkitMaskSize: '100% 100%',
+                            maskSize: '100% 100%',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center',
+                          } : {}),
+                        }}
+                      />
+                    ) : null}
+                  </div>
+                );
+              })
+            ) : null}
+
+            {Object.keys(customSelections).length > 0 && !configurator && (
+              <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/90 px-3 py-1 text-xs font-bold text-slate-900 shadow-sm">
+                House configurator is not configured for this product yet.
+              </div>
+            )}
+
+            {configurator && Object.keys(customSelections).length > 0 && !hasColorOverlay && (
+              <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/90 px-3 py-1 text-xs font-bold text-slate-900 shadow-sm">
+                House configurator is enabled, but the wall-mask mask is not yet configured. Add or update the mask URL for the red wall region.
+              </div>
+            )}
           </div>
         ) : (
           /* Ready tab: original gallery unchanged */
@@ -544,7 +632,7 @@ export function ProductDetailClient({ product, configurator }: { product: Produc
                 </button>
               )}
 
-              {product.configurator_type === 'house' && (
+              {hasConfigurator && (
                 <Link
                   href={`/products/${product.slug}/configure`}
                   className="flex min-h-[56px] w-full items-center justify-center gap-3 rounded-2xl text-lg font-black transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl"

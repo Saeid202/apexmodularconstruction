@@ -333,7 +333,7 @@ export function ADUChatbot() {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                               {report.recommendedModels.map((model, i) => (
-                                <div key={i} className="group relative overflow-hidden bg-white border-2 rounded-[40px] p-8 shadow-sm transition-all hover:shadow-2xl hover:-translate-y-1 cursor-pointer" style={{ borderColor: `${CP_PURPLE}15` }}>
+                                <div key={i} className="group relative overflow-hidden bg-white border-2 rounded-[40px] p-8 shadow-sm transition-shadow hover:shadow-2xl cursor-pointer" style={{ borderColor: `${CP_PURPLE}15` }}>
                                   <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity"><Sparkles className="w-12 h-12" /></div>
                                   <div className="space-y-4">
                                     <div className="inline-block px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-white shadow-lg" style={{ backgroundColor: CP_PURPLE }}>Best Fit Model</div>

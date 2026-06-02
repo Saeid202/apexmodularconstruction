@@ -391,7 +391,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
             <p className="text-xs font-bold text-gray-800">Enable Customization Suite</p>
           </div>
           <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
-            Allow buyers to select custom doors, windows, flooring, etc. (Like topping on a pizza!)
+            Allow buyers to select custom doors, windows, flooring, colors, etc. (Like topping on a pizza!)
           </p>
         </div>
         <button

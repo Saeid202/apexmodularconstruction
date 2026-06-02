@@ -9,22 +9,35 @@ const GOLD = "#D4AF37";
 
 interface Props {
   groups: CustomizationGroupWithRelations[];
-  onSelectionChange: (selections: Record<string, CustomizationOption>) => void;
+  onSelectionChange: (selections: Record<string, CustomizationOption[]>) => void;
 }
 
 export function ProductCustomizer({ groups, onSelectionChange }: Props) {
-  const [selections, setSelections] = useState<Record<string, CustomizationOption>>({});
+  const [selections, setSelections] = useState<Record<string, CustomizationOption[]>>({});
 
-  const handleSelect = (groupId: string, option: CustomizationOption) => {
-    const isCurrentlySelected = selections[groupId]?.id === option.id;
+  const handleSelect = (groupId: string, option: CustomizationOption, isMulti: boolean) => {
+    const current = selections[groupId] ?? [];
+    const alreadySelected = current.some((existing) => existing.id === option.id);
     const newSelections = { ...selections };
-    
-    if (isCurrentlySelected) {
-      delete newSelections[groupId];
+
+    if (isMulti) {
+      const updated = alreadySelected
+        ? current.filter((existing) => existing.id !== option.id)
+        : [...current, option];
+
+      if (updated.length > 0) {
+        newSelections[groupId] = updated;
+      } else {
+        delete newSelections[groupId];
+      }
     } else {
-      newSelections[groupId] = option;
+      if (alreadySelected) {
+        delete newSelections[groupId];
+      } else {
+        newSelections[groupId] = [option];
+      }
     }
-    
+
     setSelections(newSelections);
     onSelectionChange(newSelections);
   };
@@ -37,7 +50,12 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
             <span className="flex h-7 w-7 items-center justify-center rounded-lg text-xs font-black text-white shadow-lg" style={{ backgroundColor: PURPLE }}>
               {(group.display_order ?? idx) + 1}
             </span>
-            <h3 className="text-lg font-black tracking-tight text-gray-900 uppercase">{group.name}</h3>
+            <div className="flex flex-col gap-1">
+              <h3 className="text-lg font-black tracking-tight text-gray-900 uppercase">{group.name}</h3>
+              {group.name.toLowerCase().includes('color') && (
+                <span className="text-xs uppercase tracking-wider text-gray-500">Multi-select colors</span>
+              )}
+            </div>
             {group.description && (
               <div className="relative group/info">
                 <Info className="h-4 w-4 text-gray-400 cursor-help" />
@@ -50,11 +68,23 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
 
           <div className="flex flex-col gap-3">
             {group.options.map((option) => {
-              const isSelected = selections[group.id]?.id === option.id;
+              const isMultiSelect = group.name.toLowerCase().includes('color');
+              const selectedOptions = selections[group.id] ?? [];
+              const isSelected = selectedOptions.some((selected) => selected.id === option.id);
+              const colorValue = option.description && /^#([0-9A-F]{6}|[0-9A-F]{3})$/i.test(option.description)
+                ? option.description
+                : null;
+              
+              // Extract color name from option name (e.g., "Red (#FF0000)" -> "Red")
+              const colorNameMatch = isMultiSelect && colorValue 
+                ? option.name.match(/^(.+?)\s*\(#[0-9A-Fa-f]{6}\)$/)
+                : null;
+              const displayName = colorNameMatch ? colorNameMatch[1] : option.name;
+              
               return (
                 <button
                   key={option.id}
-                  onClick={() => handleSelect(group.id, option)}
+                  onClick={() => handleSelect(group.id, option, isMultiSelect)}
                   className="group relative flex items-center gap-4 p-4 rounded-2xl border-2 transition-all duration-300 active:scale-[0.98] text-left"
                   style={{ 
                     borderColor: isSelected ? GOLD : "#E5E7EB",
@@ -72,6 +102,12 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
                         src={option.image_url} 
                         alt={option.name} 
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      />
+                    ) : colorValue ? (
+                      <div 
+                        className="h-full w-full transition-transform duration-500 group-hover:scale-110" 
+                        style={{ backgroundColor: colorValue }}
+                        title={`Color: ${colorValue}`}
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-gray-50 text-gray-300">
@@ -95,13 +131,21 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div className="min-w-0">
                         <h4 className={`text-base font-black tracking-tight transition-colors ${isSelected ? "text-purple-900" : "text-gray-900"}`}>
-                          {option.name}
+                          {displayName}
                         </h4>
-                        {option.description && (
+                        {colorValue ? (
+                          <div className="flex items-center gap-2 mt-0.5 text-xs text-gray-500 font-medium">
+                            <span
+                              className="h-3.5 w-3.5 rounded-full border"
+                              style={{ backgroundColor: colorValue, borderColor: `${PURPLE}22` }}
+                            />
+                            <span>Color: {colorValue}</span>
+                          </div>
+                        ) : option.description ? (
                           <p className="text-xs text-gray-500 mt-0.5 line-clamp-2 font-medium">
                             {option.description}
                           </p>
-                        )}
+                        ) : null}
                       </div>
                       
                       <div className="flex items-center gap-3 shrink-0">
@@ -143,7 +187,7 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
             <Info className="h-10 w-10 text-gray-300" />
           </div>
           <h3 className="text-lg font-bold text-gray-900">No Customizations Available</h3>
-          <p className="text-sm text-gray-500 max-w-xs mx-auto">This product doesn't have any specific customization options yet.</p>
+          <p className="text-sm text-gray-500 max-w-xs mx-auto">This product does not have any specific customization options yet.</p>
         </div>
       )}
     </div>
