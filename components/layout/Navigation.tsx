@@ -1,52 +1,52 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Wrench, ShieldCheck } from "lucide-react";
+import Link from 'next/link'
+import { useState, useRef, useEffect } from 'react'
+import { ChevronDown, Wrench, ShieldCheck } from 'lucide-react'
 
-const PURPLE = "#4B1D8F";
-const GOLD = "#D4AF37";
+const PURPLE = '#4B1D8F'
+const GOLD = '#D4AF37'
 
 interface NavigationProps {
-  className?: string;
-  onLinkClick?: () => void;
-  onOpenSellerAuth?: (mode: "login" | "register") => void;
-  scrolled?: boolean;
+  className?: string
+  onLinkClick?: () => void
+  onOpenSellerAuth?: (mode: 'login' | 'register') => void
+  scrolled?: boolean
 }
 
 const services = [
   {
-    href: "/services/construction-solutions",
-    label: "Construction Solutions",
+    href: '/services/construction-solutions',
+    label: 'Construction Solutions',
     icon: Wrench,
-    description: "Prefab buildings, steel structures & more",
+    description: 'Prefab buildings, steel structures & more',
   },
   {
-    href: "/services/csa-certification",
-    label: "CSA Certification Guide",
+    href: '/services/csa-certification',
+    label: 'CSA Certification Guide',
     icon: ShieldCheck,
-    description: "Compliance for prefab buildings in Canada",
+    description: 'Compliance for prefab buildings in Canada',
   },
-];
+]
 
 export function Navigation({ className, onLinkClick, scrolled = true }: NavigationProps) {
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const dropdownRef = useRef<HTMLLIElement>(null);
+  const [servicesOpen, setServicesOpen] = useState(false)
+  const dropdownRef = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setServicesOpen(false);
+        setServicesOpen(false)
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
 
   // Both states are dark backgrounds (purple or transparent over dark hero)
   const linkClass = scrolled
-    ? "relative text-sm font-semibold text-purple-100 transition-all hover:text-yellow-300 whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group"
-    : "relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group";
+    ? 'relative text-sm font-semibold text-purple-100 transition-all hover:text-yellow-300 whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
+    : 'relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
 
   return (
     <nav className={className}>
@@ -75,8 +75,13 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
           </Link>
         </li>
 
-        {/* Services dropdown */}
-        <li ref={dropdownRef} className="relative" onMouseEnter={() => setServicesOpen(true)} onMouseLeave={() => setServicesOpen(false)}>
+        {/* Services */}
+        <li
+          ref={dropdownRef}
+          className="relative"
+          onMouseEnter={() => setServicesOpen(true)}
+          onMouseLeave={() => setServicesOpen(false)}
+        >
           <button
             type="button"
             onClick={() => setServicesOpen((v) => !v)}
@@ -87,7 +92,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
             Services
             <ChevronDown
               className="h-3.5 w-3.5 transition-transform duration-200"
-              style={{ transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+              style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
             />
             <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </button>
@@ -98,7 +103,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
               className="absolute left-0 top-full mt-1 w-64 rounded-2xl overflow-hidden shadow-xl z-50"
               style={{
                 border: `1px solid ${GOLD}44`,
-                background: "white",
+                background: 'white',
                 boxShadow: `0 8px 32px rgba(75,29,143,0.15), 0 0 0 1px ${PURPLE}22`,
               }}
             >
@@ -115,12 +120,15 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
               {/* Items */}
               <div className="p-2">
                 {services.map((s) => {
-                  const Icon = s.icon;
+                  const Icon = s.icon
                   return (
                     <Link
                       key={s.href}
                       href={s.href}
-                      onClick={() => { setServicesOpen(false); onLinkClick?.(); }}
+                      onClick={() => {
+                        setServicesOpen(false)
+                        onLinkClick?.()
+                      }}
                       className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[#EDE9F6] group/item"
                     >
                       <span
@@ -136,7 +144,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
                         <p className="text-[11px] text-gray-500 mt-0.5">{s.description}</p>
                       </div>
                     </Link>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -168,5 +176,5 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
         </li>
       </ul>
     </nav>
-  );
+  )
 }

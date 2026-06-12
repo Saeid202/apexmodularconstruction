@@ -1,25 +1,37 @@
-"use server";
+'use server'
 
-import { createServerClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { revalidatePath } from "next/cache";
-import type { Product, ProductImage, Category, Seller } from "@/types/database";
-import type { CustomizationGroup, CustomizationOption } from "@/types";
+import { createServerClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { revalidatePath } from 'next/cache'
+import type { Product, ProductImage, Category, Seller } from '@/types/database'
+import type { CustomizationGroup, CustomizationOption } from '@/types'
 
-const DEFAULT_WALL_MASK_URL = `data:image/svg+xml;base64,${Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/></svg>').toString('base64')}`;
+const DEFAULT_WALL_MASK_URL = `data:image/svg+xml;base64,${Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/></svg>').toString('base64')}`
+
+function isMissingMaskUrlColumnError(error: { message?: string } | null | undefined) {
+  const message = error?.message?.toLowerCase() ?? ''
+  return message.includes('house_anchors.mask_url') && message.includes('does not exist')
+}
 
 /** Generate a unique slug for a product, appending a random suffix on collision. */
-async function uniqueSlug(supabase: Awaited<ReturnType<typeof createServerClient>>, name: string, excludeId?: string): Promise<string> {
-  const base = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  let slug = base;
+async function uniqueSlug(
+  supabase: Awaited<ReturnType<typeof createServerClient>>,
+  name: string,
+  excludeId?: string
+): Promise<string> {
+  const base = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+  let slug = base
   for (let i = 0; i < 5; i++) {
-    let q = supabase.from("products").select("id").eq("slug", slug);
-    if (excludeId) q = q.neq("id", excludeId);
-    const { data } = await q.maybeSingle();
-    if (!data) return slug;
-    slug = `${base}-${Math.random().toString(36).slice(2, 6)}`;
+    let q = supabase.from('products').select('id').eq('slug', slug)
+    if (excludeId) q = q.neq('id', excludeId)
+    const { data } = await q.maybeSingle()
+    if (!data) return slug
+    slug = `${base}-${Math.random().toString(36).slice(2, 6)}`
   }
-  return slug;
+  return slug
 }
 
 async function ensureHouseConfiguratorSettings(
@@ -27,54 +39,92 @@ async function ensureHouseConfiguratorSettings(
   productId: string,
   baseImageUrl: string
 ) {
-  if (!baseImageUrl) return;
+  if (!baseImageUrl) return
 
   const { data: existing } = await supabase
-    .from("house_configurator_settings")
-    .select("id")
-    .eq("product_id", productId)
-    .maybeSingle();
+    .from('house_configurator_settings')
+    .select('id')
+    .eq('product_id', productId)
+    .maybeSingle()
 
-  let settingsId: string;
+  let settingsId: string
   if (existing?.id) {
-    settingsId = existing.id;
+    settingsId = existing.id
     await supabase
-      .from("house_configurator_settings")
+      .from('house_configurator_settings')
       .update({ base_image_url: baseImageUrl })
-      .eq("id", settingsId);
+      .eq('id', settingsId)
   } else {
-    const { data, error } = await supabase.from("house_configurator_settings").insert({
-      product_id: productId,
-      base_image_url: baseImageUrl,
-      lighting_metadata: { sun_direction: "top-left", ambient: "balanced" },
-    }).select("id").single();
+    const { data, error } = await supabase
+      .from('house_configurator_settings')
+      .insert({
+        product_id: productId,
+        base_image_url: baseImageUrl,
+        lighting_metadata: { sun_direction: 'top-left', ambient: 'balanced' },
+      })
+      .select('id')
+      .single()
 
-    if (error || !data?.id) return;
-    settingsId = data.id;
+    if (error || !data?.id) return
+    settingsId = data.id
   }
 
-  const { data: anchors } = await supabase
-    .from("house_anchors")
-    .select("id, anchor_type, mask_url")
-    .eq("house_id", settingsId);
+  const { data: anchors, error: anchorsError } = await supabase
+    .from('house_anchors')
+    .select('id, anchor_type, mask_url')
+    .eq('house_id', settingsId)
 
-  const wallMaskAnchor = anchors?.find((anchor: any) => anchor.anchor_type === "wall-mask");
+  if (anchorsError && !isMissingMaskUrlColumnError(anchorsError)) return
+
+  if (isMissingMaskUrlColumnError(anchorsError)) {
+    const { data: legacyAnchors } = await supabase
+      .from('house_anchors')
+      .select('id, anchor_type')
+      .eq('house_id', settingsId)
+
+    const legacyWallMaskAnchor = legacyAnchors?.find(
+      (anchor: { id?: string; anchor_type: string }) => anchor.anchor_type === 'wall-mask'
+    )
+
+    if (!legacyWallMaskAnchor) {
+      await supabase.from('house_anchors').insert({
+        house_id: settingsId,
+        anchor_type: 'wall-mask',
+        label: 'Wall Color',
+        x_pos: 0,
+        y_pos: 0,
+        width: 100,
+        height: 100,
+        z_index: 10,
+      })
+    }
+
+    return
+  }
+
+  const wallMaskAnchor = anchors?.find(
+    (anchor: { id?: string; anchor_type: string; mask_url?: string | null }) =>
+      anchor.anchor_type === 'wall-mask'
+  )
   if (wallMaskAnchor) {
     if (!wallMaskAnchor.mask_url) {
-      await supabase.from("house_anchors").update({ mask_url: DEFAULT_WALL_MASK_URL }).eq("id", wallMaskAnchor.id);
+      await supabase
+        .from('house_anchors')
+        .update({ mask_url: DEFAULT_WALL_MASK_URL })
+        .eq('id', wallMaskAnchor.id)
     }
   } else {
-    await supabase.from("house_anchors").insert({
+    await supabase.from('house_anchors').insert({
       house_id: settingsId,
-      anchor_type: "wall-mask",
-      label: "Wall Color",
+      anchor_type: 'wall-mask',
+      label: 'Wall Color',
       x_pos: 0,
       y_pos: 0,
       width: 100,
       height: 100,
       z_index: 10,
       mask_url: DEFAULT_WALL_MASK_URL,
-    });
+    })
   }
 }
 
@@ -82,37 +132,40 @@ async function removeHouseConfiguratorSettings(
   supabase: Awaited<ReturnType<typeof createServerClient>>,
   productId: string
 ) {
-  await supabase.from("house_configurator_settings").delete().eq("product_id", productId);
+  await supabase.from('house_configurator_settings').delete().eq('product_id', productId)
 }
 
 export interface SellerProduct extends Product {
-  product_images: ProductImage[];
-  categories: Category | null;
+  product_images: ProductImage[]
+  categories: Category | null
   product_customization_groups: (CustomizationGroup & {
-    options: CustomizationOption[];
-  })[];
+    options: CustomizationOption[]
+  })[]
 }
 
 // Combined function for dashboard - single auth call, parallel queries
 export async function getSellerDashboardData(): Promise<{
-  profile: Seller | null;
-  products: SellerProduct[];
-  error: string | null;
+  profile: Seller | null
+  products: SellerProduct[]
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
-      return { profile: null, products: [], error: "Not authenticated" };
+      return { profile: null, products: [], error: 'Not authenticated' }
     }
 
     // Parallel queries - only one auth call above
     const [profileResult, productsResult] = await Promise.all([
-      supabase.from("sellers").select("*").eq("id", user.id).single(),
+      supabase.from('sellers').select('*').eq('id', user.id).single(),
       supabase
-        .from("products")
-        .select(`
+        .from('products')
+        .select(
+          `
           *,
           product_images (*),
           categories (*),
@@ -120,77 +173,79 @@ export async function getSellerDashboardData(): Promise<{
             *,
             options:product_customization_options (*)
           )
-        `)
-        .eq("seller_id", user.id)
-        .order("created_at", { ascending: false }),
-    ]);
+        `
+        )
+        .eq('seller_id', user.id)
+        .order('created_at', { ascending: false }),
+    ])
 
     if (profileResult.error) {
-      return { profile: null, products: [], error: profileResult.error.message };
+      return { profile: null, products: [], error: profileResult.error.message }
     }
 
     return {
       profile: profileResult.data,
       products: (productsResult.data as SellerProduct[]) || [],
       error: null,
-    };
+    }
   } catch (err) {
-    console.error("Error fetching seller dashboard data:", err);
-    return { profile: null, products: [], error: "Failed to fetch data" };
+    console.error('Error fetching seller dashboard data:', err)
+    return { profile: null, products: [], error: 'Failed to fetch data' }
   }
 }
 
 // Get current seller profile
 export async function getSellerProfile(): Promise<{
-  data: Seller | null;
-  error: string | null;
+  data: Seller | null
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
-      return { data: null, error: "Not authenticated" };
+      return { data: null, error: 'Not authenticated' }
     }
 
-    const { data, error } = await supabase
-      .from("sellers")
-      .select("*")
-      .eq("id", user.id)
-      .single();
+    const { data, error } = await supabase.from('sellers').select('*').eq('id', user.id).single()
 
     if (error) {
-      return { data: null, error: error.message };
+      return { data: null, error: error.message }
     }
 
-    return { data, error: null };
+    return { data, error: null }
   } catch (err) {
-    console.error("Error fetching seller profile:", err);
-    return { data: null, error: "Failed to fetch seller profile" };
+    console.error('Error fetching seller profile:', err)
+    return { data: null, error: 'Failed to fetch seller profile' }
   }
 }
 
 // Get seller's products - optimized to accept optional userId
 export async function getSellerProducts(userId?: string): Promise<{
-  data: SellerProduct[] | null;
-  error: string | null;
+  data: SellerProduct[] | null
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
+    const supabase = await createServerClient()
+
     // Use provided userId or fetch user
-    let uid = userId;
+    let uid = userId
     if (!uid) {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       if (!user) {
-        return { data: null, error: "Not authenticated" };
+        return { data: null, error: 'Not authenticated' }
       }
-      uid = user.id;
+      uid = user.id
     }
 
     const { data, error } = await supabase
-      .from("products")
-      .select(`
+      .from('products')
+      .select(
+        `
         *,
         product_images (*),
         categories (*),
@@ -198,39 +253,46 @@ export async function getSellerProducts(userId?: string): Promise<{
           *,
           options:product_customization_options (*)
         )
-      `)
-      .eq("seller_id", uid)
-      .order("created_at", { ascending: false });
+      `
+      )
+      .eq('seller_id', uid)
+      .order('created_at', { ascending: false })
 
     if (error) {
-      return { data: null, error: error.message };
+      return { data: null, error: error.message }
     }
 
-    return { data: data as SellerProduct[], error: null };
+    return { data: data as SellerProduct[], error: null }
   } catch (err) {
-    console.error("Error fetching seller products:", err);
-    return { data: null, error: "Failed to fetch products" };
+    console.error('Error fetching seller products:', err)
+    return { data: null, error: 'Failed to fetch products' }
   }
 }
 
 // Get a single product by ID for editing
-export async function getSellerProductById(productId: string, userId?: string): Promise<{
-  data: SellerProduct | null;
-  error: string | null;
+export async function getSellerProductById(
+  productId: string,
+  userId?: string
+): Promise<{
+  data: SellerProduct | null
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    let uid = userId;
+    const supabase = await createServerClient()
+
+    let uid = userId
     if (!uid) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return { data: null, error: "Not authenticated" };
-      uid = user.id;
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return { data: null, error: 'Not authenticated' }
+      uid = user.id
     }
 
     const { data, error } = await supabase
-      .from("products")
-      .select(`
+      .from('products')
+      .select(
+        `
         *,
         product_images (*),
         categories (*),
@@ -238,43 +300,53 @@ export async function getSellerProductById(productId: string, userId?: string): 
           *,
           options:product_customization_options (*)
         )
-      `)
-      .eq("id", productId)
-      .eq("seller_id", uid)
-      .single();
+      `
+      )
+      .eq('id', productId)
+      .eq('seller_id', uid)
+      .single()
 
     if (error) {
-      return { data: null, error: error.message };
+      return { data: null, error: error.message }
     }
 
-    return { data: data as SellerProduct, error: null };
+    return { data: data as SellerProduct, error: null }
   } catch (err) {
-    console.error("Error fetching product by ID:", err);
-    return { data: null, error: "Failed to fetch product" };
+    console.error('Error fetching product by ID:', err)
+    return { data: null, error: 'Failed to fetch product' }
   }
 }
 
 // Get all data needed for the edit product page in one go
 export async function getEditProductData(productId: string): Promise<{
-  profile: Seller | null;
-  product: SellerProduct | null;
-  categories: Category[];
-  documents: any[];
-  error: string | null;
+  profile: Seller | null
+  product: SellerProduct | null
+  categories: Category[]
+  documents: any[]
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
-      return { profile: null, product: null, categories: [], documents: [], error: "Not authenticated" };
+      return {
+        profile: null,
+        product: null,
+        categories: [],
+        documents: [],
+        error: 'Not authenticated',
+      }
     }
 
     const [profileResult, productResult, categoriesResult, documentsResult] = await Promise.all([
-      supabase.from("sellers").select("*").eq("id", user.id).single(),
+      supabase.from('sellers').select('*').eq('id', user.id).single(),
       supabase
-        .from("products")
-        .select(`
+        .from('products')
+        .select(
+          `
           *,
           product_images (*),
           categories (*),
@@ -282,16 +354,23 @@ export async function getEditProductData(productId: string): Promise<{
             *,
             options:product_customization_options (*)
           )
-        `)
-        .eq("id", productId)
-        .eq("seller_id", user.id)
+        `
+        )
+        .eq('id', productId)
+        .eq('seller_id', user.id)
         .single(),
-      supabase.from("categories").select("*").order("name"),
-      supabase.from("product_documents").select("*").eq("product_id", productId).order("position"),
-    ]);
+      supabase.from('categories').select('*').order('name'),
+      supabase.from('product_documents').select('*').eq('product_id', productId).order('position'),
+    ])
 
     if (profileResult.error) {
-      return { profile: null, product: null, categories: [], documents: [], error: profileResult.error.message };
+      return {
+        profile: null,
+        product: null,
+        categories: [],
+        documents: [],
+        error: profileResult.error.message,
+      }
     }
 
     return {
@@ -300,66 +379,76 @@ export async function getEditProductData(productId: string): Promise<{
       categories: categoriesResult.data || [],
       documents: documentsResult.data || [],
       error: null,
-    };
+    }
   } catch (err) {
-    console.error("Error fetching edit product data:", err);
-    return { profile: null, product: null, categories: [], documents: [], error: "Failed to fetch data" };
+    console.error('Error fetching edit product data:', err)
+    return {
+      profile: null,
+      product: null,
+      categories: [],
+      documents: [],
+      error: 'Failed to fetch data',
+    }
   }
 }
 
 // Create a new product
 export async function createProduct(formData: FormData): Promise<{
-  data: Product | null;
-  error: string | null;
+  data: Product | null
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
-      return { data: null, error: "Not authenticated" };
+      return { data: null, error: 'Not authenticated' }
     }
 
     // Verify user is a seller via auth metadata (faster than a DB query)
-    const role = user.user_metadata?.role;
-    if (role !== "seller") {
-      return { data: null, error: "Not a seller account" };
+    const role = user.user_metadata?.role
+    if (role !== 'seller') {
+      return { data: null, error: 'Not a seller account' }
     }
 
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const price = parseFloat(formData.get("price") as string);
-    const priceType = (formData.get("priceType") as string) || "unit";
-    const compareAtPrice = formData.get("compareAtPrice") ? parseFloat(formData.get("compareAtPrice") as string) : null;
-    const stockQuantity = parseInt(formData.get("stockQuantity") as string);
-    const categoryId = formData.get("categoryId") as string;
-    const specificationsStr = formData.get("specifications") as string;
-    
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const price = parseFloat(formData.get('price') as string)
+    const priceType = (formData.get('priceType') as string) || 'unit'
+    const compareAtPrice = formData.get('compareAtPrice')
+      ? parseFloat(formData.get('compareAtPrice') as string)
+      : null
+    const stockQuantity = parseInt(formData.get('stockQuantity') as string)
+    const categoryId = formData.get('categoryId') as string
+    const specificationsStr = formData.get('specifications') as string
+
     // Generate unique slug
-    const slug = await uniqueSlug(supabase, name);
+    const slug = await uniqueSlug(supabase, name)
 
     // Parse specifications JSON
-    let specifications = {};
+    let specifications = {}
     try {
       if (specificationsStr) {
-        specifications = JSON.parse(specificationsStr);
+        specifications = JSON.parse(specificationsStr)
       }
     } catch {
       // If not valid JSON, try key=value format
-      const lines = specificationsStr.split("\n").filter(Boolean);
+      const lines = specificationsStr.split('\n').filter(Boolean)
       for (const line of lines) {
-        const [key, value] = line.split(":").map(s => s.trim());
+        const [key, value] = line.split(':').map((s) => s.trim())
         if (key && value) {
-          specifications[key] = value;
+          specifications[key] = value
         }
       }
     }
 
     // Create product
-    const configuratorType = (formData.get("configuratorType") as string | null) || "none";
+    const configuratorType = (formData.get('configuratorType') as string | null) || 'none'
 
     const { data: product, error: productError } = await supabase
-      .from("products")
+      .from('products')
       .insert({
         name,
         slug,
@@ -371,26 +460,28 @@ export async function createProduct(formData: FormData): Promise<{
         category_id: categoryId,
         seller_id: user.id,
         specifications,
-        require_order_request: formData.get("requireOrderRequest") === "true",
-        show_stock: formData.get("showStock") !== "false",
-        youtube_url: (formData.get("youtubeUrl") as string | null) || null,
-        status: formData.get("publishStatus") === "draft" ? "pending" : "active",
+        require_order_request: formData.get('requireOrderRequest') === 'true',
+        show_stock: formData.get('showStock') !== 'false',
+        youtube_url: (formData.get('youtubeUrl') as string | null) || null,
+        status: formData.get('publishStatus') === 'draft' ? 'pending' : 'active',
         configurator_type: configuratorType,
       })
       .select()
-      .single();
+      .single()
 
     if (productError) {
-      return { data: null, error: productError.message };
+      return { data: null, error: productError.message }
     }
 
     // Images are uploaded client-side before this action is called.
     // variantsJson contains { url, code, price, isMaster } for each variant.
-    const variantsJson = formData.get("variantsJson") as string | null;
-    let variants: { url: string; code: string; price?: number | null; isMaster: boolean }[] = [];
+    const variantsJson = formData.get('variantsJson') as string | null
+    let variants: { url: string; code: string; price?: number | null; isMaster: boolean }[] = []
     try {
-      if (variantsJson) variants = JSON.parse(variantsJson);
-    } catch { /* ignore */ }
+      if (variantsJson) variants = JSON.parse(variantsJson)
+    } catch {
+      /* ignore */
+    }
 
     if (variants.length > 0) {
       const rows = variants.map((v, i) => ({
@@ -401,123 +492,134 @@ export async function createProduct(formData: FormData): Promise<{
         variant_code: v.code || null,
         variant_price: v.price ?? null,
         is_master: v.isMaster,
-      }));
-      const { error: batchErr } = await supabase.from("product_images").insert(rows);
-      if (batchErr) console.error("Batch image insert error:", batchErr.message);
+      }))
+      const { error: batchErr } = await supabase.from('product_images').insert(rows)
+      if (batchErr) console.error('Batch image insert error:', batchErr.message)
 
       if (configuratorType === 'house') {
-        const baseImageUrl = rows.find((row) => row.is_master)?.url ?? rows[0]?.url ?? null;
+        const baseImageUrl = rows.find((row) => row.is_master)?.url ?? rows[0]?.url ?? null
         if (baseImageUrl) {
-          await ensureHouseConfiguratorSettings(supabase, product.id, baseImageUrl);
+          await ensureHouseConfiguratorSettings(supabase, product.id, baseImageUrl)
         }
       }
     }
 
     // 4. Handle Customizations
-    const customizationsJson = formData.get("customizationsJson") as string | null;
+    const customizationsJson = formData.get('customizationsJson') as string | null
     if (customizationsJson) {
       try {
-        const groups = JSON.parse(customizationsJson);
+        const groups = JSON.parse(customizationsJson)
         if (groups.length > 0) {
           // Mark product as having customizations
-          await supabase.from("products").update({ has_customization: true }).eq("id", product.id);
+          await supabase.from('products').update({ has_customization: true }).eq('id', product.id)
 
           for (let i = 0; i < groups.length; i++) {
-            const group = groups[i];
+            const group = groups[i]
             const { data: g, error: gErr } = await supabase
-              .from("product_customization_groups")
+              .from('product_customization_groups')
               .insert({
                 product_id: product.id,
                 name: group.name,
                 display_order: i,
+                visual_type: group.visualType ?? 'generic',
+                target_anchor_id: group.targetAnchorId ?? null,
               })
               .select()
-              .single();
+              .single()
 
             if (g && group.options?.length > 0) {
               const optRows = group.options.map((o: any, idx: number) => ({
                 group_id: g.id,
                 name: o.name,
-                price_modifier: parseFloat(o.priceModifier || "0"),
+                description: o.description ?? null,
+                price_modifier: parseFloat(o.priceModifier || '0'),
                 image_url: o.imageUrl,
+                color_hex: o.colorHex ?? null,
                 display_order: idx,
-              }));
-              await supabase.from("product_customization_options").insert(optRows);
+              }))
+              await supabase.from('product_customization_options').insert(optRows)
             }
           }
         }
       } catch (err) {
-        console.error("Error saving customizations:", err);
+        console.error('Error saving customizations:', err)
       }
     }
 
-    revalidatePath("/seller/products");
-    return { data: product, error: null };
+    revalidatePath('/seller/products')
+    return { data: product, error: null }
   } catch (err) {
-    console.error("Error creating product:", err);
-    return { data: null, error: "Failed to create product" };
+    console.error('Error creating product:', err)
+    return { data: null, error: 'Failed to create product' }
   }
 }
 
 // Update an existing product
-export async function updateProduct(productId: string, formData: FormData): Promise<{
-  data: Product | null;
-  error: string | null;
+export async function updateProduct(
+  productId: string,
+  formData: FormData
+): Promise<{
+  data: Product | null
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
-      return { data: null, error: "Not authenticated" };
+      return { data: null, error: 'Not authenticated' }
     }
 
     // Verify ownership
     const { data: existingProduct } = await supabase
-      .from("products")
-      .select("seller_id")
-      .eq("id", productId)
-      .single();
+      .from('products')
+      .select('seller_id')
+      .eq('id', productId)
+      .single()
 
     if (!existingProduct || existingProduct.seller_id !== user.id) {
-      return { data: null, error: "Product not found or access denied" };
+      return { data: null, error: 'Product not found or access denied' }
     }
 
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const price = parseFloat(formData.get("price") as string);
-    const priceType = (formData.get("priceType") as string) || "unit";
-    const compareAtPrice = formData.get("compareAtPrice") ? parseFloat(formData.get("compareAtPrice") as string) : null;
-    const stockQuantity = parseInt(formData.get("stockQuantity") as string);
-    const categoryId = formData.get("categoryId") as string;
-    const specificationsStr = formData.get("specifications") as string;
-    
+    const name = formData.get('name') as string
+    const description = formData.get('description') as string
+    const price = parseFloat(formData.get('price') as string)
+    const priceType = (formData.get('priceType') as string) || 'unit'
+    const compareAtPrice = formData.get('compareAtPrice')
+      ? parseFloat(formData.get('compareAtPrice') as string)
+      : null
+    const stockQuantity = parseInt(formData.get('stockQuantity') as string)
+    const categoryId = formData.get('categoryId') as string
+    const specificationsStr = formData.get('specifications') as string
+
     // Generate unique slug (exclude current product to allow same name on update)
-    const slug = await uniqueSlug(supabase, name, productId);
+    const slug = await uniqueSlug(supabase, name, productId)
 
     // Parse specifications
-    let specifications = {};
+    let specifications = {}
     try {
       if (specificationsStr) {
-        specifications = JSON.parse(specificationsStr);
+        specifications = JSON.parse(specificationsStr)
       }
     } catch {
-      const lines = specificationsStr.split("\n").filter(Boolean);
+      const lines = specificationsStr.split('\n').filter(Boolean)
       for (const line of lines) {
-        const [key, value] = line.split(":").map(s => s.trim());
+        const [key, value] = line.split(':').map((s) => s.trim())
         if (key && value) {
-          specifications[key] = value;
+          specifications[key] = value
         }
       }
     }
 
-    const requireOrderRequest = formData.get("requireOrderRequest") === "true";
-    const showStock = formData.get("showStock") !== "false"; // default true
-    const youtubeUrl = (formData.get("youtubeUrl") as string | null) || null;
-    const hasCustomization = formData.get("hasCustomization") === "true";
+    const requireOrderRequest = formData.get('requireOrderRequest') === 'true'
+    const showStock = formData.get('showStock') !== 'false' // default true
+    const youtubeUrl = (formData.get('youtubeUrl') as string | null) || null
+    const hasCustomization = formData.get('hasCustomization') === 'true'
 
     const { data: product, error: productError } = await supabase
-      .from("products")
+      .from('products')
       .update({
         name,
         slug,
@@ -532,63 +634,71 @@ export async function updateProduct(productId: string, formData: FormData): Prom
         show_stock: showStock,
         youtube_url: youtubeUrl,
         has_customization: hasCustomization,
-        configurator_type: (formData.get("configuratorType") as string | null) || "none",
+        configurator_type: (formData.get('configuratorType') as string | null) || 'none',
         updated_at: new Date().toISOString(),
       })
-      .eq("id", productId)
+      .eq('id', productId)
       .select()
-      .single();
+      .single()
 
     if (productError) {
-      return { data: null, error: productError.message };
+      return { data: null, error: productError.message }
     }
 
     // Images are uploaded client-side before this action is called.
     // variantsJson contains { url, code, price, isMaster, existingUrl } for each variant.
-    const variantsJson = formData.get("variantsJson") as string | null;
-    const configuratorType = (formData.get("configuratorType") as string | null) || "none";
-    let variants: { url?: string; code: string; price?: number | null; isMaster: boolean; existingUrl?: string }[] = [];
+    const variantsJson = formData.get('variantsJson') as string | null
+    const configuratorType = (formData.get('configuratorType') as string | null) || 'none'
+    let variants: {
+      url?: string
+      code: string
+      price?: number | null
+      isMaster: boolean
+      existingUrl?: string
+    }[] = []
     try {
-      if (variantsJson) variants = JSON.parse(variantsJson);
-    } catch { /* ignore */ }
+      if (variantsJson) variants = JSON.parse(variantsJson)
+    } catch {
+      /* ignore */
+    }
 
-    const storageClient = createAdminClient() || supabase;
+    const storageClient = createAdminClient() || supabase
 
     if (variantsJson) {
       // 1. Fetch current images from DB to see what might need storage cleanup
       const { data: oldImages } = await supabase
-        .from("product_images")
-        .select("url")
-        .eq("product_id", productId);
+        .from('product_images')
+        .select('url')
+        .eq('product_id', productId)
 
       if (oldImages && oldImages.length > 0) {
         // Get the storage paths of all NEW images we want to keep
         const newPaths = new Set(
           variants
-            .map(v => (v.url || v.existingUrl)?.split("/product-images/")[1])
+            .map((v) => (v.url || v.existingUrl)?.split('/product-images/')[1])
             .filter(Boolean)
-        );
+        )
 
         // Get the storage paths of OLD images that are no longer in the new set
         const pathsToDelete = oldImages
-          .map(img => img.url.split("/product-images/")[1])
-          .filter(path => path && !newPaths.has(path)) as string[];
+          .map((img) => img.url.split('/product-images/')[1])
+          .filter((path) => path && !newPaths.has(path)) as string[]
 
         // Only remove if we have something to delete
         if (pathsToDelete.length > 0) {
           // Safety: Don't delete anything that was just uploaded in this request
           // (This is redundant if newPaths is correct, but good for peace of mind)
-          await storageClient.storage.from("product-images").remove(pathsToDelete);
+          await storageClient.storage.from('product-images').remove(pathsToDelete)
         }
       }
 
       // 2. Refresh the database rows
-      await supabase.from("product_images").delete().eq("product_id", productId);
+      await supabase.from('product_images').delete().eq('product_id', productId)
 
       const rows = variants
         .map((v, i) => {
-          const resolvedUrl = v.url ?? v.existingUrl ?? null;
-          if (!resolvedUrl) return null;
+          const resolvedUrl = v.url ?? v.existingUrl ?? null
+          if (!resolvedUrl) return null
           return {
             product_id: productId,
             url: resolvedUrl,
@@ -597,171 +707,194 @@ export async function updateProduct(productId: string, formData: FormData): Prom
             variant_code: v.code ?? null,
             variant_price: v.price ?? null,
             is_master: v.isMaster,
-          };
+          }
         })
-        .filter(Boolean) as any[];
+        .filter(Boolean) as any[]
 
       if (rows.length > 0) {
-        const { error: batchErr } = await supabase.from("product_images").insert(rows);
-        if (batchErr) console.error("Batch update image insert error:", batchErr.message);
+        console.log('🖼️ Inserting image records:', rows.length, 'rows')
+        console.log('🖼️ Image rows to insert:', JSON.stringify(rows, null, 2))
+        const { error: batchErr } = await supabase.from('product_images').insert(rows)
+        if (batchErr) {
+          console.error(
+            '❌ Batch update image insert error:',
+            batchErr.message,
+            batchErr.details,
+            batchErr.code
+          )
+          return {
+            data: null,
+            error: `Failed to save product images: ${batchErr.message}. Images uploaded to storage but database insert failed.`,
+          }
+        } else {
+          console.log('✅ Image records inserted successfully')
+        }
       }
     }
 
     if (configuratorType === 'house') {
       const { data: imageRecords } = await supabase
-        .from("product_images")
-        .select("url,is_master")
-        .eq("product_id", productId)
-        .order("position", { ascending: true });
+        .from('product_images')
+        .select('url,is_master')
+        .eq('product_id', productId)
+        .order('position', { ascending: true })
 
-      const baseImageUrl = imageRecords?.find((img: any) => img.is_master)?.url ?? imageRecords?.[0]?.url ?? null;
+      const baseImageUrl =
+        imageRecords?.find((img: any) => img.is_master)?.url ?? imageRecords?.[0]?.url ?? null
       if (baseImageUrl) {
-        await ensureHouseConfiguratorSettings(supabase, productId, baseImageUrl);
+        await ensureHouseConfiguratorSettings(supabase, productId, baseImageUrl)
       }
     } else {
-      await removeHouseConfiguratorSettings(supabase, productId);
+      await removeHouseConfiguratorSettings(supabase, productId)
     }
 
     // Handle Customizations Update
-    const customizationsJson = formData.get("customizationsJson") as string | null;
+    const customizationsJson = formData.get('customizationsJson') as string | null
     if (customizationsJson) {
       try {
-        const groups = JSON.parse(customizationsJson);
-        
+        const groups = JSON.parse(customizationsJson)
+
         // Always clear old customizations first
-        await supabase.from("product_customization_groups").delete().eq("product_id", productId);
-        
+        await supabase.from('product_customization_groups').delete().eq('product_id', productId)
+
         if (groups.length > 0) {
-          await supabase.from("products").update({ has_customization: true }).eq("id", productId);
+          await supabase.from('products').update({ has_customization: true }).eq('id', productId)
 
           for (let i = 0; i < groups.length; i++) {
-            const group = groups[i];
+            const group = groups[i]
             const { data: g } = await supabase
-              .from("product_customization_groups")
+              .from('product_customization_groups')
               .insert({
                 product_id: productId,
                 name: group.name,
                 display_order: i,
+                visual_type: group.visualType ?? 'generic',
+                target_anchor_id: group.targetAnchorId ?? null,
               })
               .select()
-              .single();
+              .single()
 
             if (g && group.options?.length > 0) {
               const optRows = group.options.map((o: any, idx: number) => ({
                 group_id: g.id,
                 name: o.name,
                 description: o.description ?? null,
-                price_modifier: parseFloat(o.priceModifier || "0"),
+                price_modifier: parseFloat(o.priceModifier || '0'),
                 image_url: o.imageUrl,
+                color_hex: o.colorHex ?? null,
                 display_order: idx,
-              }));
-              await supabase.from("product_customization_options").insert(optRows);
+              }))
+              await supabase.from('product_customization_options').insert(optRows)
             }
           }
         } else {
-          await supabase.from("products").update({ has_customization: false }).eq("id", productId);
+          await supabase.from('products').update({ has_customization: false }).eq('id', productId)
         }
       } catch (err) {
-        console.error("Error updating customizations:", err);
+        console.error('Error updating customizations:', err)
       }
     }
 
-    revalidatePath("/seller/products");
-    return { data: product, error: null };
+    revalidatePath('/seller/products')
+    return { data: product, error: null }
   } catch (err) {
-    console.error("Error updating product:", err);
-    return { data: null, error: "Failed to update product" };
+    console.error('Error updating product:', err)
+    return { data: null, error: 'Failed to update product' }
   }
 }
 
 // Toggle product status between active and pending (draft)
-export async function toggleProductStatus(productId: string, newStatus: "active" | "pending"): Promise<{
-  error: string | null;
+export async function toggleProductStatus(
+  productId: string,
+  newStatus: 'active' | 'pending'
+): Promise<{
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { error: "Not authenticated" };
+    const supabase = await createServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) return { error: 'Not authenticated' }
 
     const { error } = await supabase
-      .from("products")
+      .from('products')
       .update({ status: newStatus })
-      .eq("id", productId)
-      .eq("seller_id", user.id);
+      .eq('id', productId)
+      .eq('seller_id', user.id)
 
-    if (error) return { error: error.message };
-    revalidatePath("/seller/products");
-    return { error: null };
+    if (error) return { error: error.message }
+    revalidatePath('/seller/products')
+    return { error: null }
   } catch {
-    return { error: "Failed to update status" };
+    return { error: 'Failed to update status' }
   }
 }
 
 // Delete a product
 export async function deleteProduct(productId: string): Promise<{
-  success: boolean;
-  error: string | null;
+  success: boolean
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createServerClient()
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
     if (!user) {
-      return { success: false, error: "Not authenticated" };
+      return { success: false, error: 'Not authenticated' }
     }
 
     // Verify ownership + fetch images in one query
     const { data: product } = await supabase
-      .from("products")
-      .select("seller_id, product_images(url)")
-      .eq("id", productId)
-      .single();
+      .from('products')
+      .select('seller_id, product_images(url)')
+      .eq('id', productId)
+      .single()
 
     if (!product || product.seller_id !== user.id) {
-      return { success: false, error: "Product not found or access denied" };
+      return { success: false, error: 'Product not found or access denied' }
     }
 
     // Delete all storage images in parallel (one batch call)
     const paths = (product.product_images ?? [])
-      .map((img: any) => img.url.split("/product-images/")[1])
-      .filter(Boolean);
+      .map((img: any) => img.url.split('/product-images/')[1])
+      .filter(Boolean)
 
     if (paths.length > 0) {
-      await supabase.storage.from("product-images").remove(paths);
+      await supabase.storage.from('product-images').remove(paths)
     }
 
     // Delete product (cascade will delete images rows)
-    const { error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id", productId);
+    const { error } = await supabase.from('products').delete().eq('id', productId)
 
     if (error) {
-      return { success: false, error: error.message };
+      return { success: false, error: error.message }
     }
 
-    revalidatePath("/seller/products");
-    return { success: true, error: null };
+    revalidatePath('/seller/products')
+    return { success: true, error: null }
   } catch (err) {
-    console.error("Error deleting product:", err);
-    return { success: false, error: "Failed to delete product" };
+    console.error('Error deleting product:', err)
+    return { success: false, error: 'Failed to delete product' }
   }
 }
 
 // Register as a seller
 export async function registerSeller(formData: FormData): Promise<{
-  success: boolean;
-  error: string | null;
+  success: boolean
+  error: string | null
 }> {
   try {
-    const supabase = await createServerClient();
-    
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-    const businessName = formData.get("businessName") as string;
-    const businessPhone = formData.get("businessPhone") as string;
-    const businessAddress = formData.get("businessAddress") as string;
-    const description = formData.get("description") as string;
+    const supabase = await createServerClient()
+
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    const businessName = formData.get('businessName') as string
+    const businessPhone = formData.get('businessPhone') as string
+    const businessAddress = formData.get('businessAddress') as string
+    const description = formData.get('description') as string
 
     // Create auth user
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -769,88 +902,90 @@ export async function registerSeller(formData: FormData): Promise<{
       password,
       options: {
         data: {
-          role: "seller",
+          role: 'seller',
         },
       },
-    });
+    })
 
     if (authError) {
-      return { success: false, error: authError.message };
+      return { success: false, error: authError.message }
     }
 
     if (!authData.user) {
-      return { success: false, error: "Failed to create account" };
+      return { success: false, error: 'Failed to create account' }
     }
 
     // Create profile
-    await supabase.from("profiles").insert({
+    await supabase.from('profiles').insert({
       id: authData.user.id,
       email,
-      role: "seller",
-    });
+      role: 'seller',
+    })
 
     // Create seller profile
-    const { error: sellerError } = await supabase.from("sellers").insert({
+    const { error: sellerError } = await supabase.from('sellers').insert({
       id: authData.user.id,
       business_name: businessName,
       business_email: email,
       business_phone: businessPhone || null,
       business_address: businessAddress || null,
       description: description || null,
-      status: "active", // Auto-approved, no admin review needed
-    });
-    
-    return { success: true, error: null };
+      status: 'active', // Auto-approved, no admin review needed
+    })
+
+    return { success: true, error: null }
   } catch (err) {
-    console.error("Error registering seller:", err);
-    return { success: false, error: "Failed to register seller" };
+    console.error('Error registering seller:', err)
+    return { success: false, error: 'Failed to register seller' }
   }
 }
 
 // Update seller profile
 export async function updateSellerProfile(data: {
-  business_name: string;
-  business_email: string;
-  business_phone: string;
-  business_address: string;
-  description: string;
+  business_name: string
+  business_email: string
+  business_phone: string
+  business_address: string
+  description: string
 }): Promise<{ success: boolean; error: string | null }> {
   try {
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { success: false, error: "Not authenticated" };
+    const supabase = await createServerClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) return { success: false, error: 'Not authenticated' }
 
     const { error } = await supabase
-      .from("sellers")
+      .from('sellers')
       .update({ ...data, updated_at: new Date().toISOString() })
-      .eq("id", user.id);
+      .eq('id', user.id)
 
-    if (error) return { success: false, error: error.message };
+    if (error) return { success: false, error: error.message }
 
-    revalidatePath("/seller/profile");
-    return { success: true, error: null };
+    revalidatePath('/seller/profile')
+    return { success: true, error: null }
   } catch (err) {
-    console.error("Error updating seller profile:", err);
-    return { success: false, error: "Failed to update profile" };
+    console.error('Error updating seller profile:', err)
+    return { success: false, error: 'Failed to update profile' }
   }
 }
 
 // Get categories for product form
 export async function getCategories() {
   try {
-    const supabase = await createServerClient();
+    const supabase = await createServerClient()
     const { data, error } = await supabase
-      .from("categories")
-      .select("id, name, slug, description, image_url, parent_id, created_at")
-      .order("name");
-    
+      .from('categories')
+      .select('id, name, slug, description, image_url, parent_id, created_at')
+      .order('name')
+
     if (error) {
-      throw error;
+      throw error
     }
-    
-    return data;
+
+    return data
   } catch (error) {
-    console.error("Error fetching categories:", error);
-    return [];
+    console.error('Error fetching categories:', error)
+    return []
   }
 }

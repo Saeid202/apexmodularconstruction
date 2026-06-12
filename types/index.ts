@@ -1,6 +1,6 @@
 /**
  * Application Types
- * 
+ *
  * These types extend the database types with application-specific shapes
  * and are used throughout the Apex Modular Construction platform.
  */
@@ -88,8 +88,8 @@ export type {
   product_customization_options,
 }
 
-export type CustomizationGroup = product_customization_groups;
-export type CustomizationOption = product_customization_options;
+export type CustomizationGroup = product_customization_groups
+export type CustomizationOption = product_customization_options
 
 // Application-specific types that extend database types
 
@@ -123,8 +123,12 @@ export interface ProductWithRelations {
   customizationGroups?: CustomizationGroupWithRelations[]
 }
 
+// CustomizationGroup already contains target_anchor_id and visual_type from the DB type.
+// We re-declare them here only to ensure TypeScript resolves them as part of this interface.
 export interface CustomizationGroupWithRelations extends CustomizationGroup {
   options: CustomizationOption[]
+  target_anchor_id: string | null
+  visual_type: 'door' | 'window' | 'wall-color' | 'generic' | null
 }
 
 export interface ProductDocumentData {
