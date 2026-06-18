@@ -114,7 +114,7 @@ export function ADUChatbot() {
                <ShieldCheck className="w-5 h-5" />
              </div>
              <span className="text-xs font-black uppercase tracking-widest text-black">
-               {report ? "Active Feasibility" : "Apex Modular Construction Assistant"}
+               {report ? "Property Feasibility Report" : "Property Feasibility Analysis"}
              </span>
           </div>
           <button onClick={resetSession} className="flex items-center space-x-2 px-4 py-2 border-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:bg-purple-50 group" style={{ color: CP_PURPLE, borderColor: `${CP_PURPLE}20` }}>
@@ -130,38 +130,21 @@ export function ADUChatbot() {
             <div className="space-y-4 text-center mb-12">
               <div className="inline-flex items-center space-x-3 px-6 py-2 rounded-full border shadow-sm" style={{ borderColor: CP_GOLD, backgroundColor: `${CP_GOLD}10` }}>
                 <Sparkles className="w-4 h-4" style={{ color: CP_GOLD }} />
-                <span className="text-[11px] font-[900] uppercase tracking-[0.3em]" style={{ color: CP_PURPLE }}>Apex Modular Construction Royal Intelligence</span>
+                <span className="text-[11px] font-[900] uppercase tracking-[0.3em]" style={{ color: CP_PURPLE }}>Property Feasibility Analysis</span>
               </div>
-              <h1 className="text-5xl md:text-7xl font-[1000] text-gray-900 tracking-tighter leading-tight">
-                Industrial Intelligence <span style={{ color: CP_PURPLE }}>Applied.</span>
+              <h1 className="text-4xl md:text-5xl font-[1000] text-gray-900 tracking-tighter leading-tight">
+                Analyze Your Property
               </h1>
-              <p className="text-gray-400 font-bold uppercase text-[10px] tracking-[0.4em]">Planning • Precision • Prefab Performance</p>
+              <p className="text-gray-600 font-semibold text-base tracking-normal max-w-2xl mx-auto">
+                Check zoning regulations, permits, and feasibility for modular construction on your site
+              </p>
             </div>
 
             {!showAddressForm ? (
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl mb-12 animate-in fade-in zoom-in duration-700">
-                 {[
-                   { label: "General Inquiry", icon: MessageSquare, welcome: "I can help you with general questions about building an ADU or modular units." },
-                   { label: "Our Models", icon: LayoutGrid, welcome: "I have our full catalog of prefab models ready. Just tell me what size you are looking for." },
-                   { label: "Technical Process", icon: Info, welcome: "I can explain our technical feasibility and construction process step-by-step." }
-                 ].map((action, i) => (
-                   <button 
-                      key={i}
-                      onClick={() => startGeneralChat(action.welcome)}
-                      className="flex flex-col items-start p-6 rounded-[32px] border-2 bg-white transition-all hover:shadow-xl hover:-translate-y-1 text-left group shadow-sm hover:border-purple-200"
-                      style={{ borderColor: `${CP_PURPLE}10` }}
-                   >
-                     <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors group-hover:bg-purple-100" style={{ backgroundColor: `${CP_PURPLE}08` }}>
-                       <action.icon className="w-5 h-5" style={{ color: CP_PURPLE }} />
-                     </div>
-                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Interactive AI</span>
-                     <span className="text-sm font-[1000] text-black">{action.label}</span>
-                   </button>
-                 ))}
-                 
-                 <button 
+              <div className="w-full max-w-2xl mt-8">
+                <button 
                     onClick={() => setShowAddressForm(true)}
-                    className="sm:col-span-3 mt-4 flex items-center justify-between p-8 rounded-[40px] border-4 border-dashed bg-gray-50/50 hover:bg-white hover:border-solid transition-all group"
+                    className="w-full flex items-center justify-between p-8 rounded-[40px] border-4 border-dashed bg-gray-50/50 hover:bg-white hover:border-solid transition-all group shadow-sm"
                     style={{ borderColor: `${CP_GOLD}44` }}
                  >
                     <div className="flex items-center space-x-6">
@@ -169,11 +152,11 @@ export function ADUChatbot() {
                         <MapPin className="w-7 h-7" />
                       </div>
                       <div className="text-left">
-                        <p className="text-2xl font-[1000] text-black tracking-tight">Analyze My Property Feasibility</p>
-                        <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Zoning, Bylaws & Site Capacity</p>
+                        <p className="text-xl font-[1000] text-black tracking-tight">Start Analysis</p>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Enter your property details</p>
                       </div>
                     </div>
-                    <ArrowRight className="w-8 h-8 text-gray-300 group-hover:text-black group-hover:translate-x-2 transition-all" />
+                    <ArrowRight className="w-6 h-6 text-gray-300 group-hover:text-black group-hover:translate-x-2 transition-all" />
                  </button>
               </div>
             ) : (
@@ -181,9 +164,9 @@ export function ADUChatbot() {
                 <div className="flex items-center justify-between mb-8">
                   <button onClick={() => setShowAddressForm(false)} className="flex items-center space-x-2 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-black transition-colors">
                     <ArrowRight className="w-4 h-4 rotate-180" />
-                    <span>Back to Quick Actions</span>
+                    <span>Back</span>
                   </button>
-                  <div className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border" style={{ borderColor: CP_GOLD, color: CP_GOLD }}>Feasibility Mode</div>
+                  <div className="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border" style={{ borderColor: CP_GOLD, color: CP_GOLD }}>Property Analysis</div>
                 </div>
 
                 <div className="relative group space-y-6">

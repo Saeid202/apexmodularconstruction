@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getVideos } from "@/app/actions/video-centre";
 import { VideoCentreClient } from "./VideoCentreClient";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
 export const metadata: Metadata = {

@@ -11,10 +11,7 @@ const quickLinks = [
   { href: '/contact', label: 'Contact Us' },
 ]
 
-const partnerLinks = [
-  { href: '/contractor/signup', label: 'Join Our Network' },
-  { href: '/find-installers', label: 'Find Local Installers' },
-]
+const partnerLinks: { href: string; label: string }[] = []
 
 const customerServiceLinks = [
   { href: '/shipping', label: 'Shipping Policy' },
@@ -237,16 +234,20 @@ export function Footer({ socialLinks = [] }: FooterProps) {
             <div>
               <ColHeading>Partners</ColHeading>
               <ul className="space-y-3">
-                {partnerLinks.map((link) => (
-                  <li key={link.href + link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
+                {partnerLinks.length > 0 ? (
+                  partnerLinks.map((link) => (
+                    <li key={link.href + link.label}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-sm text-white/60">Coming soon</li>
+                )}
               </ul>
             </div>
 

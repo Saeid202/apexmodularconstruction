@@ -5,6 +5,8 @@ import { getSellerProfile, getCategories } from "@/app/actions/seller";
 import { NewProductForm } from "./NewProductForm";
 import { ArrowLeft, Package } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Add New Product",
   description: "Add a new product to your Apex Modular Construction seller account.",

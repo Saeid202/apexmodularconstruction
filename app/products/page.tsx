@@ -4,6 +4,7 @@ import { getProducts, getCategories } from "@/app/actions/products";
 import { mockProducts } from "@/lib/mock-data";
 import type { ProductWithRelations, CategoryData } from "@/types";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 60;
 
 export const metadata: Metadata = {

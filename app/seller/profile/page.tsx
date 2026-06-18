@@ -1,6 +1,8 @@
 import { getSellerProfile } from "@/app/actions/seller";
 import { SellerProfileClient } from "./SellerProfileClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function SellerProfilePage() {
   const { data: profile } = await getSellerProfile();
 

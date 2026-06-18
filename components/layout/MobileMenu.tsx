@@ -21,8 +21,6 @@ const navLinks = [
   { href: '/3d-printer', label: 'Construction 3D Printer' },
   { href: '/video-centre', label: 'Video Centre' },
   { href: '/contact', label: 'Contact Us' },
-  { href: '/find-installers', label: 'Find Local Installers' },
-  { href: '/contractor/signup', label: 'Become a Partner' },
   { href: '/seller/register', label: 'Sell on Apex Modular Construction' },
 ]
 
@@ -111,17 +109,6 @@ export function MobileMenu({
                       className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                     >
                       Products
-                    </Link>
-                  </li>
-
-                  {/* Blog */}
-                  <li>
-                    <Link
-                      href="/blog"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Blog
                     </Link>
                   </li>
 

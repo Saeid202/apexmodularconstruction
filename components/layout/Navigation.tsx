@@ -67,14 +67,6 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
           </Link>
         </li>
 
-        {/* Blog */}
-        <li>
-          <Link href="/blog" onClick={() => onLinkClick?.()} className={linkClass}>
-            Blog
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
-          </Link>
-        </li>
-
         {/* Services */}
         <li
           ref={dropdownRef}
@@ -171,14 +163,6 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
         <li>
           <Link href="/contact" onClick={() => onLinkClick?.()} className={linkClass}>
             Contact Us
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
-          </Link>
-        </li>
-
-        {/* Become a Partner */}
-        <li>
-          <Link href="/contractor/signup" onClick={() => onLinkClick?.()} className={linkClass}>
-            Become a Partner
             <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
