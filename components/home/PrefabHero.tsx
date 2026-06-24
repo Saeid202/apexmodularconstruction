@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, MessageCircle, Check } from 'lucide-react'
+import { ArrowRight, MessageCircle } from 'lucide-react'
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion } from 'motion/react'
 
@@ -97,7 +97,7 @@ export function PrefabHero({
         }}
       />
 
-      {/* Background Image - Modern Modular House */}
+      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <img
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop&q=80"
@@ -106,11 +106,8 @@ export function PrefabHero({
         />
       </div>
 
-      {/* Dark Overlay (40-50%) */}
-      <div className="absolute inset-0 bg-black/45" />
-
-      {/* Gradient Overlay (purple to transparent) */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-950/60 via-transparent to-transparent" />
+      {/* Left panel: fully opaque warm beige so text is always readable */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#FAF7F0] from-40% via-[#FAF7F0]/70 via-60% to-transparent" />
 
       {/* Content - Left Aligned */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 py-20">
@@ -120,10 +117,10 @@ export function PrefabHero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-8 w-fit"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/30 mb-8 w-fit shadow-sm"
           >
             <span className="w-2 h-2 bg-amber-400 rounded-full" />
-            <span className="text-sm font-semibold text-white tracking-wide">
+            <span className="text-sm font-semibold text-gray-800 tracking-wide">
               Industry Leading Partner
             </span>
           </motion.div>
@@ -133,7 +130,7 @@ export function PrefabHero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-white mb-6 leading-[1.1]"
+            className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-gray-900 mb-6 leading-[1.1]"
             itemProp="name"
           >
             {headline}
@@ -144,7 +141,7 @@ export function PrefabHero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-100 max-w-xl mb-12 leading-relaxed font-light"
+            className="text-lg md:text-xl text-gray-700 max-w-xl mb-12 leading-relaxed font-light"
             itemProp="description"
           >
             {subtext}
@@ -160,7 +157,7 @@ export function PrefabHero({
             {ctaEnabled && (
               <Link
                 href={ctaLink}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-slate-950 font-bold rounded-lg transition-all duration-300 hover:bg-gray-100 hover:shadow-2xl active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-lg transition-all duration-300 hover:bg-gray-800 hover:shadow-xl active:scale-95"
                 data-ai-cta="primary"
               >
                 {ctaText}
@@ -171,7 +168,7 @@ export function PrefabHero({
               href={`https://wa.me/16047128018?text=${encodeURIComponent('Hi Apex Modular Construction! I have a construction project in Canada and would like a free consultation.')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-white text-white font-bold rounded-lg transition-all duration-300 hover:bg-white/10 active:scale-95"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-gray-800 text-gray-900 font-bold rounded-lg bg-white/50 backdrop-blur-sm transition-all duration-300 hover:bg-white/70 active:scale-95"
               data-ai-cta="whatsapp"
             >
               <MessageCircle className="h-5 w-5" />
@@ -184,12 +181,12 @@ export function PrefabHero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="grid grid-cols-3 gap-8 max-w-xl border-t border-white/20 pt-8"
+            className="grid grid-cols-3 gap-8 max-w-xl border-t border-gray-400/40 pt-8"
           >
             {trustStats.map((stat, i) => (
               <div key={i}>
-                <div className="text-3xl font-black text-white mb-2">{stat.number}</div>
-                <p className="text-sm text-gray-200 font-medium">{stat.label}</p>
+                <div className="text-3xl font-black text-gray-900 mb-2">{stat.number}</div>
+                <p className="text-sm text-gray-600 font-medium">{stat.label}</p>
               </div>
             ))}
           </motion.div>
@@ -202,9 +199,9 @@ export function PrefabHero({
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
-        <span className="text-xs text-white/70 font-medium tracking-widest uppercase">Scroll</span>
+        <span className="text-xs text-gray-600 font-medium tracking-widest uppercase">Scroll</span>
         <svg
-          className="h-5 w-5 text-white/70"
+          className="h-5 w-5 text-gray-600"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -227,7 +224,7 @@ export function PrefabHero({
               onClick={() => setCurrentIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
               className={`transition-all duration-300 h-1 rounded-full ${
-                i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                i === currentIndex ? 'w-8 bg-gray-900' : 'w-2 bg-gray-500 hover:bg-gray-700'
               }`}
             />
           ))}

@@ -14,8 +14,6 @@ interface ProductShowcaseProps {
 
 type Tab = "Prefab" | "Robot";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
-
 function filterProducts(products: ProductWithRelations[], tab: Tab) {
   return products.filter((p) => {
     const slug = p.category.slug.toLowerCase();
@@ -108,21 +106,17 @@ export function ProductShowcase({ products, title = "Projects", limit }: Product
                 No products in this category yet.
               </div>
             ) : (
-              filtered.map((product, i) => {
+              filtered.map((product) => {
                 const image = product.images.find((img) => img.isMaster) ?? product.images[0];
                 const priceLabel = product.requireOrderRequest
                   ? "Request a quote"
                   : `From $${product.price.toLocaleString("en-CA", { minimumFractionDigits: 0 })} CAD`;
 
                 return (
-                  <motion.a
+                  <a
                     key={product.id}
                     href={`/products/${product.slug}`}
-                    className="group relative aspect-[4/3] overflow-hidden rounded-3xl shadow-soft hover:shadow-elegant transition-all duration-500 block"
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
+                    className="group relative aspect-[4/3] overflow-hidden rounded-3xl shadow-soft hover:shadow-elegant transition-shadow duration-500 block"
                   >
                     {/* Image */}
                     {image?.url ? (
@@ -131,6 +125,7 @@ export function ProductShowcase({ products, title = "Projects", limit }: Product
                         alt={product.name}
                         loading="lazy"
                         className="absolute inset-0 h-full w-full object-cover"
+                        style={{ transform: 'none', transition: 'none' }}
                       />
                     ) : (
                       <div className="absolute inset-0 bg-muted flex items-center justify-center text-muted-foreground text-sm">
@@ -160,7 +155,7 @@ export function ProductShowcase({ products, title = "Projects", limit }: Product
                         <ArrowUpRight className="h-4 w-4" />
                       </div>
                     </div>
-                  </motion.a>
+                  </a>
                 );
               })
             )}
