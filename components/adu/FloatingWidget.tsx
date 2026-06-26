@@ -71,10 +71,9 @@ export function FloatingWidget() {
           onClick={toggleOpen}
           className="group relative"
         >
-          <div className="absolute -inset-3 bg-purple-600 rounded-full blur-lg opacity-40 group-hover:opacity-80 transition duration-500 animate-pulse"></div>
-          <div className="relative text-white h-16 w-16 sm:h-20 sm:w-20 rounded-[2rem] shadow-2xl flex flex-col items-center justify-center transform group-hover:-translate-y-2 transition-all duration-500 border border-white/10 group-active:scale-90" style={{ backgroundColor: "#4B1D8F" }}>
+          <div className="relative text-white h-16 w-16 sm:h-20 sm:w-20 rounded-[2rem] flex flex-col items-center justify-center transform group-hover:-translate-y-2 transition-all duration-500 border border-white/10 group-active:scale-90" style={{ backgroundColor: "#4B1D8F" }}>
              <Bot className="w-8 h-8 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-500" />
-             <div className="absolute -top-1 -right-1 w-6 h-6 border-4 rounded-full shadow-lg" style={{ backgroundColor: "#4B1D8F", borderColor: "#4B1D8F" }}></div>
+             <div className="absolute -top-1 -right-1 w-6 h-6 border-4 rounded-full" style={{ backgroundColor: "#4B1D8F", borderColor: "#4B1D8F" }}></div>
           </div>
         </button>
       )}
