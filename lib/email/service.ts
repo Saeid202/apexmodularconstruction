@@ -1,7 +1,5 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export interface EmailOptions {
   to: string
   subject: string
@@ -14,6 +12,13 @@ export interface EmailOptions {
  */
 export async function sendEmail(options: EmailOptions): Promise<void> {
   try {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      console.warn('RESEND_API_KEY is not set — skipping email send')
+      return
+    }
+
+    const resend = new Resend(apiKey)
     const fromEmail = process.env.FROM_EMAIL || 'noreply@cargoplus.com'
 
     await resend.emails.send({
