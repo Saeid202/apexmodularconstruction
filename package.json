@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "clean": "Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue",
+    "build:clean": "npm run clean && npm run build",
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
