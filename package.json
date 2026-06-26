@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "clean": "Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue",
+    "clean": "rmdir /s /q .next 2>nul || true",
     "build:clean": "npm run clean && npm run build",
     "start": "next start",
     "lint": "eslint",
