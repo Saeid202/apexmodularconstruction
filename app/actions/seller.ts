@@ -444,6 +444,32 @@ export async function createProduct(formData: FormData): Promise<{
       }
     }
 
+    // Parse what_is_included and certificates_standards from form data
+    let whatIsIncluded: string[] = []
+    const whatIsIncludedStr = formData.get('whatIsIncluded') as string | null
+    if (whatIsIncludedStr) {
+      try {
+        whatIsIncluded = JSON.parse(whatIsIncludedStr)
+      } catch {
+        /* ignore */
+      }
+    }
+
+    let certificatesStandards: Array<{
+      id: string
+      title: string
+      description: string
+      file_url: string | null
+    }> = []
+    const certificatesStr = formData.get('certificatesStandards') as string | null
+    if (certificatesStr) {
+      try {
+        certificatesStandards = JSON.parse(certificatesStr)
+      } catch {
+        /* ignore */
+      }
+    }
+
     // Create product
     const configuratorType = (formData.get('configuratorType') as string | null) || 'none'
 
@@ -465,6 +491,8 @@ export async function createProduct(formData: FormData): Promise<{
         youtube_url: (formData.get('youtubeUrl') as string | null) || null,
         status: formData.get('publishStatus') === 'draft' ? 'pending' : 'active',
         configurator_type: configuratorType,
+        what_is_included: whatIsIncluded,
+        certificates_standards: certificatesStandards,
       })
       .select()
       .single()

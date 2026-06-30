@@ -10,8 +10,8 @@ interface Category {
 
 interface ProductFiltersProps {
   categories: Category[];
-  selectedCategory: string | null;
-  onCategoryChange: (category: string | null) => void;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
   priceRange: [number, number];
   onPriceChange: (range: [number, number]) => void;
 }
@@ -34,7 +34,7 @@ export function ProductFilters({
   priceRange,
   onPriceChange,
 }: ProductFiltersProps) {
-  const isFiltered = selectedCategory !== null || priceRange[0] > 0 || priceRange[1] < 50000;
+  const isFiltered = selectedCategory !== "pre-fabricated" || priceRange[0] > 0 || priceRange[1] < 50000;
 
   return (
     <div className="bg-white rounded-2xl border border-border shadow-soft p-6 sticky top-24 space-y-7">
@@ -43,19 +43,6 @@ export function ProductFilters({
       <div>
         <FilterHeading>Categories</FilterHeading>
         <ul className="space-y-1">
-          <li>
-            <button
-              onClick={() => onCategoryChange(null)}
-              className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedCategory === null
-                  ? "text-white shadow-soft"
-                  : "text-foreground/70 hover:text-primary hover:bg-primary/5"
-              }`}
-              style={selectedCategory === null ? { background: 'linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)' } : {}}
-            >
-              All Categories
-            </button>
-          </li>
           {categories.map((cat) => (
             <li key={cat.slug}>
               <button
@@ -109,7 +96,7 @@ export function ProductFilters({
       {/* Clear filters */}
       {isFiltered && (
         <button
-          onClick={() => { onCategoryChange(null); onPriceChange([0, 50000]); }}
+          onClick={() => { onCategoryChange("pre-fabricated"); onPriceChange([0, 50000]); }}
           className="w-full text-sm font-semibold py-2.5 rounded-xl border transition-all hover:bg-[#D4AF37]/5"
           style={{ borderColor: 'rgba(212,175,55,0.5)', color: '#D4AF37' }}
         >

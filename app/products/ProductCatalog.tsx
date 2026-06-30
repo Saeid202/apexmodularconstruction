@@ -11,27 +11,55 @@ interface ProductCatalogProps {
 }
 
 export function ProductCatalog({ initialProducts, categories }: ProductCatalogProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
+  const virtualCategories = useMemo(() => {
+    const prefabCount = initialProducts.filter(
+      (p) => p.category?.slug === "pre-fabricated" || p.category?.slug === "prefabricated"
+    ).length;
+    const robotCount = initialProducts.filter(
+      (p) => p.category?.slug === "robots" || p.category?.slug === "robot"
+    ).length;
+    const otherCount = initialProducts.length - prefabCount - robotCount;
 
-  const categoriesWithCount = useMemo(() => {
-    return categories.map((cat) => ({
-      ...cat,
-      count: initialProducts.filter((p) => p.category.slug === cat.slug).length,
-    }));
-  }, [categories, initialProducts]);
+    return [
+      {
+        name: "Prefabricated",
+        slug: "pre-fabricated",
+        count: prefabCount,
+      },
+      {
+        name: "Robot",
+        slug: "robots",
+        count: robotCount,
+      },
+      {
+        name: "Other",
+        slug: "other",
+        count: otherCount,
+      },
+    ];
+  }, [initialProducts]);
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("pre-fabricated");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
 
   const filteredProducts = useMemo(() => {
     return initialProducts.filter((p) => {
-      if (selectedCategory && p.category.slug !== selectedCategory) return false;
+      const slug = p.category?.slug;
+      if (selectedCategory === "pre-fabricated") {
+        if (slug !== "pre-fabricated" && slug !== "prefabricated") return false;
+      } else if (selectedCategory === "robots") {
+        if (slug !== "robots" && slug !== "robot") return false;
+      } else if (selectedCategory === "other") {
+        if (slug === "pre-fabricated" || slug === "prefabricated" || slug === "robots" || slug === "robot") return false;
+      }
       if (p.price < priceRange[0] || p.price > priceRange[1]) return false;
       return true;
     });
   }, [selectedCategory, priceRange, initialProducts]);
 
   const selectedCategoryData = useMemo(() =>
-    categoriesWithCount.find((c) => c.slug === selectedCategory) ?? null,
-  [categoriesWithCount, selectedCategory]);
+    virtualCategories.find((c) => c.slug === selectedCategory) ?? null,
+  [virtualCategories, selectedCategory]);
 
   const isPriceFiltered = priceRange[0] > 0 || priceRange[1] < 50000;
 
@@ -63,7 +91,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
             {/* Filters sidebar */}
             <aside className="lg:w-72 shrink-0">
               <ProductFilters
-                categories={categoriesWithCount}
+                categories={virtualCategories}
                 selectedCategory={selectedCategory}
                 onCategoryChange={setSelectedCategory}
                 priceRange={priceRange}
@@ -113,7 +141,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
                   <p className="text-lg font-semibold text-gray-700 mb-1">No products match your filters</p>
                   <p className="text-sm text-gray-400 mb-6">Try adjusting the category or price range</p>
                   <button
-                    onClick={() => { setSelectedCategory(null); setPriceRange([0, 50000]); }}
+                    onClick={() => { setSelectedCategory("pre-fabricated"); setPriceRange([0, 50000]); }}
                     className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110"
                     style={{ background: '#4B1D8F' }}
                   >

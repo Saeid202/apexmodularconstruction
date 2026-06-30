@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
@@ -25,17 +25,13 @@ function filterProducts(products: ProductWithRelations[], tab: Tab) {
 const LOAD_MORE_STEP = 6;
 
 export function ProductShowcase({ products, title = "Projects", limit }: ProductShowcaseProps) {
-  const [activeTab, setActiveTab] = useState<Tab>("Prefab");
+  const activeTab: Tab = "Prefab";
 
   if (!products.length) return null;
 
   const all = filterProducts(products, activeTab);
   const initialCount = limit && limit > 0 ? limit : Math.min(LOAD_MORE_STEP, all.length);
   const [visibleCount, setVisibleCount] = useState(initialCount);
-
-  useEffect(() => {
-    setVisibleCount(limit && limit > 0 ? limit : Math.min(LOAD_MORE_STEP, all.length));
-  }, [activeTab]);
 
   const filtered = all.slice(0, visibleCount);
   const hasMore = visibleCount < all.length;
@@ -69,27 +65,6 @@ export function ProductShowcase({ products, title = "Projects", limit }: Product
           </Link>
         </div>
 
-        {/* Tabs */}
-        <div className="flex items-center gap-2 mb-10">
-          {(["Prefab", "Robot"] as Tab[]).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`relative px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                activeTab === tab ? "text-white" : "text-foreground/60 hover:text-foreground"
-              }`}
-            >
-              {activeTab === tab && (
-                <motion.span
-                  layoutId="tab-pill"
-                  className="absolute inset-0 rounded-full bg-primary"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
-                />
-              )}
-              <span className="relative z-10">{tab}</span>
-            </button>
-          ))}
-        </div>
 
         {/* Uniform 3-col grid */}
         <AnimatePresence mode="wait">

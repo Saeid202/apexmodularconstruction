@@ -69,7 +69,7 @@ export default async function NewProductPage() {
         </div>
 
         {/* Form body */}
-        <div className="bg-white px-8 py-8">
+        <div className="bg-[#FAF9FC] p-6 sm:p-8">
           <NewProductForm categories={categories} />
         </div>
       </div>

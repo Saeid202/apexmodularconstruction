@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { Product, ProductImage, Category, Seller } from "@/types/database";
 
 export interface ProductWithRelations extends Product {
@@ -22,7 +22,7 @@ export async function getProducts(options: GetProductsOptions = {}): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
     const { limit = 20, categorySlug, minPrice, maxPrice, searchQuery } = options;
 
     let query = supabase
@@ -69,7 +69,12 @@ export async function getProducts(options: GetProductsOptions = {}): Promise<{
     ]);
 
     if (result.error) {
-      console.error("Error fetching products:", result.error);
+      console.error("Error fetching products:", {
+        message: result.error.message,
+        code: (result.error as any).code,
+        details: (result.error as any).details,
+        hint: (result.error as any).hint
+      });
       return { data: null, error: result.error.message };
     }
 
@@ -85,7 +90,7 @@ export async function getProductBySlug(slug: string): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
     if (!supabase) return { data: null, error: "Supabase not configured" };
 
     const query = supabase
@@ -140,7 +145,7 @@ export async function getCategories(): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
     if (!supabase) return { data: null, error: "Supabase not configured" };
 
     const result = await Promise.race([

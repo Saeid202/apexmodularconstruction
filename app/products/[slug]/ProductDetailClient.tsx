@@ -503,6 +503,7 @@ export function ProductDetailClient({
           <ProductInclusionsPanel
             whatIsIncluded={product.whatIsIncluded}
             certificatesStandards={product.certificatesStandards}
+            specifications={product.specifications}
           />
         </div>
 
@@ -677,47 +678,7 @@ export function ProductDetailClient({
             </div>
           )}
 
-          {/* Specifications */}
-          {Object.entries(product.specifications as Record<string, string>).filter(([, v]) => v)
-            .length > 0 && (
-            <div className="mb-5">
-              <h2 className="mb-3 font-bold text-gray-900">Specifications</h2>
-              <div
-                className="grid grid-cols-1 sm:grid-cols-2 overflow-hidden rounded-xl border-2"
-                style={{ borderColor: `${PURPLE}33` }}
-              >
-                {Object.entries(product.specifications as Record<string, string>)
-                  .filter(([, v]) => v)
-                  .map(([key, value], idx) => (
-                    <div
-                      key={key}
-                      className="flex items-center border-b last:border-b-0 sm:border-b-0 sm:even:border-l"
-                      style={{ borderColor: `${PURPLE}15` }}
-                    >
-                      <div
-                        className="flex w-full items-center justify-between gap-3 px-4 py-3 min-w-0"
-                        style={{
-                          backgroundColor: idx % 4 === 0 || idx % 4 === 3 ? '#F0EBF9' : 'white',
-                        }}
-                      >
-                        <span
-                          className="text-[10px] font-black uppercase tracking-widest shrink-0"
-                          style={{ color: PURPLE }}
-                        >
-                          {key.replace(/_/g, ' ')}
-                        </span>
-                        <span
-                          className="text-sm font-black text-right break-words"
-                          style={{ color: GOLD }}
-                        >
-                          {value}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
+
 
           {/* Variants table */}
           {hasVariants && (

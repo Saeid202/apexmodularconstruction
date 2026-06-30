@@ -88,7 +88,11 @@ export default async function SellerProductsPage() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-gray-600">{product.categories?.name || "Uncategorized"}</td>
+                    <td className="px-4 py-3 text-gray-600">
+                      {product.categories?.slug === 'pre-fabricated'
+                        ? 'Prefabricated Houses'
+                        : (product.categories?.name || 'Uncategorized')}
+                    </td>
                     <td className="px-4 py-3 font-semibold text-gray-900">${product.price.toFixed(2)}</td>
                     <td className="px-4 py-3">
                       <span className={product.stock_quantity < 10 ? "text-red-600 font-semibold" : "text-gray-600"}>
