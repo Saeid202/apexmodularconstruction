@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Bell, Shield, CreditCard, Globe, Smartphone, Mail, Save, Eye, EyeOff } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Bell, Shield, CreditCard, Globe, Smartphone, Mail, Save, Eye, EyeOff, Loader2 } from "lucide-react";
+import { createBrowserClient } from "@/lib/supabase/client";
 import { LuxuryButton } from "@/components/seller/LuxuryButton";
 
 const PURPLE = "#4B1D8F";
@@ -53,14 +54,82 @@ function ToggleRow({
 
 export default function SellerSettingsPage() {
   const [activeTab, setActiveTab] = useState("general");
+  const [accountEmail, setAccountEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [passwordSaving, setPasswordSaving] = useState(false);
   const [notifications, setNotifications] = useState({
     emailOrders: true, emailCustomers: true, emailMarketing: false,
     pushOrders: true, pushCustomers: false,
   });
 
+  useEffect(() => {
+    const supabase = createBrowserClient();
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user?.email) {
+        setAccountEmail(data.session.user.email);
+      }
+    });
+  }, []);
+
   const toggle = (key: keyof typeof notifications) =>
     setNotifications((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  async function handlePasswordChange(e: React.FormEvent) {
+    e.preventDefault();
+    setPasswordError(null);
+    setPasswordSuccess(false);
+
+    if (!currentPassword) {
+      setPasswordError("Please enter your current password.");
+      return;
+    }
+    if (!newPassword) {
+      setPasswordError("Please enter a new password.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordError("New passwords do not match.");
+      return;
+    }
+    if (!accountEmail) {
+      setPasswordError("Unable to determine account email.");
+      return;
+    }
+
+    setPasswordSaving(true);
+    const supabase = createBrowserClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: accountEmail,
+      password: currentPassword,
+    });
+
+    if (signInError) {
+      setPasswordSaving(false);
+      setPasswordError(signInError.message);
+      return;
+    }
+
+    const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+    setPasswordSaving(false);
+
+    if (updateError) {
+      setPasswordError(updateError.message);
+      return;
+    }
+
+    setPasswordSuccess(true);
+    setCurrentPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  }
 
   return (
     <div className="p-6">
@@ -87,16 +156,18 @@ export default function SellerSettingsPage() {
             <>
               <SectionTitle>Store Information</SectionTitle>
               <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  { label: "Store Name", type: "text", defaultValue: "My Store" },
-                  { label: "Store Email", type: "email", defaultValue: "store@example.com" },
-                  { label: "Phone Number", type: "tel", defaultValue: "+1 234 567 8900" },
-                ].map(({ label, type, defaultValue }) => (
-                  <div key={label}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
-                    <input type={type} defaultValue={defaultValue} className={inputClass} />
-                  </div>
-                ))}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Store Name</label>
+                  <input type="text" defaultValue="My Store" className={inputClass} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Account Email</label>
+                  <input type="email" value={accountEmail} disabled className={`${inputClass} bg-gray-50 cursor-not-allowed`} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
+                  <input type="tel" defaultValue="+1 234 567 8900" className={inputClass} />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Currency</label>
                   <select className={inputClass}>
@@ -137,11 +208,26 @@ export default function SellerSettingsPage() {
           {activeTab === "security" && (
             <>
               <SectionTitle>Change Password</SectionTitle>
-              <div className="space-y-4">
+              {passwordSuccess && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-sm text-emerald-700">
+                  Password changed successfully.
+                </div>
+              )}
+              {passwordError && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">
+                  {passwordError}
+                </div>
+              )}
+              <form onSubmit={handlePasswordChange} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Current Password</label>
                   <div className="relative">
-                    <input type={showPassword ? "text" : "password"} className={`${inputClass} pr-10`} />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className={`${inputClass} pr-10`}
+                    />
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -149,13 +235,41 @@ export default function SellerSettingsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">New Password</label>
-                  <input type="password" className={inputClass} />
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className={`${inputClass} pr-10`}
+                    />
+                    <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm New Password</label>
-                  <input type="password" className={inputClass} />
+                  <div className="relative">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className={`${inputClass} pr-10`}
+                    />
+                    <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
                 </div>
-              </div>
+                <button
+                  type="submit"
+                  disabled={passwordSaving}
+                  className="flex items-center gap-2 px-5 py-2 bg-[#4B1D8F] text-white text-sm font-semibold rounded-xl hover:bg-[#3e176f] disabled:opacity-60 transition-colors"
+                >
+                  {passwordSaving && <Loader2 className="h-4 w-4 animate-spin" />}
+                  Update Password
+                </button>
+              </form>
               <SectionTitle>Two-Factor Authentication</SectionTitle>
               <div className="flex items-center justify-between p-4 rounded-xl border border-gray-100">
                 <div>
@@ -205,7 +319,7 @@ export default function SellerSettingsPage() {
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-gray-100" style={{ backgroundColor: "#F5F4F7" }}>
-        <LuxuryButton size="md">
+          <LuxuryButton size="md">
             <Save className="h-4 w-4" /> Save Changes
           </LuxuryButton>
         </div>

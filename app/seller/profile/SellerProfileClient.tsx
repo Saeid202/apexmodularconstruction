@@ -82,7 +82,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
               className="text-2xl font-bold tracking-wide drop-shadow-md"
               style={{ color: GOLD, fontFamily: "Georgia, 'Times New Roman', serif", textShadow: "0 1px 8px rgba(212,175,55,0.4)" }}
             >
-              Shanghai CargoPlus
+              Shanghai Apex Modular Construction
             </p>
           </div>
         </div>

@@ -2,18 +2,24 @@
 
 import { useState, useCallback } from "react";
 import { DragDropContext, Droppable, Draggable, DropResult } from "@hello-pangea/dnd";
-import { Plus } from "lucide-react";
+import { Plus, Play, Pause, Clock } from "lucide-react";
 import { SlideCard } from "./SlideCard";
 import { SlideForm } from "./SlideForm";
 import { reorderSlides } from "@/app/actions/cms-sliders";
+import { getSiteSettings, updateSiteSettings } from "@/app/actions/cms-settings";
 import type { HeroSlideRow } from "@/types/cms";
 
 interface SliderListProps {
   initialSlides: HeroSlideRow[];
+  autoplay: boolean;
+  autoplayInterval: number;
 }
 
-export function SliderList({ initialSlides }: SliderListProps) {
+export function SliderList({ initialSlides, autoplay: initialAutoplay, autoplayInterval: initialInterval }: SliderListProps) {
   const [slides, setSlides] = useState<HeroSlideRow[]>(initialSlides);
+  const [autoplay, setAutoplay] = useState(initialAutoplay);
+  const [autoplayInterval, setAutoplayInterval] = useState(initialInterval);
+  const [savingAutoplay, setSavingAutoplay] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [editingSlide, setEditingSlide] = useState<HeroSlideRow | null>(null);
 
@@ -49,8 +55,68 @@ export function SliderList({ initialSlides }: SliderListProps) {
 
   const activeCount = slides.filter((s) => s.is_active).length;
 
+  async function handleAutoplayToggle(enabled: boolean) {
+    setSavingAutoplay(true);
+    setAutoplay(enabled);
+    const current = await getSiteSettings();
+    await updateSiteSettings({ ...current, hero_autoplay: enabled, hero_autoplay_interval: autoplayInterval });
+    setSavingAutoplay(false);
+  }
+
+  async function handleIntervalChange(seconds: number) {
+    setAutoplayInterval(seconds);
+    const current = await getSiteSettings();
+    await updateSiteSettings({ ...current, hero_autoplay: autoplay, hero_autoplay_interval: seconds });
+  }
+
   return (
     <div>
+      {/* Autoplay settings card */}
+      <div className="mb-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {autoplay ? (
+              <Play className="h-5 w-5 text-blue-600" />
+            ) : (
+              <Pause className="h-5 w-5 text-gray-400" />
+            )}
+            <div>
+              <p className="text-sm font-semibold text-gray-900">Autoplay Slides</p>
+              <p className="text-xs text-gray-500">Automatically cycle through active slides on the homepage</p>
+            </div>
+          </div>
+          <button
+            onClick={() => handleAutoplayToggle(!autoplay)}
+            disabled={savingAutoplay}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+              autoplay ? "bg-blue-600" : "bg-gray-200"
+            } ${savingAutoplay ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                autoplay ? "translate-x-6" : "translate-x-1"
+              }`}
+            />
+          </button>
+        </div>
+
+        {autoplay && (
+          <div className="mt-4 flex items-center gap-3 border-t border-gray-100 pt-4">
+            <Clock className="h-4 w-4 text-gray-400 flex-shrink-0" />
+            <label className="text-sm text-gray-600 whitespace-nowrap">Interval (seconds)</label>
+            <input
+              type="number"
+              min={2}
+              max={30}
+              value={autoplayInterval}
+              onChange={(e) => handleIntervalChange(Math.max(2, Math.min(30, Number(e.target.value))))}
+              className="w-20 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+            <span className="text-xs text-gray-400">between 2 and 30 seconds</span>
+          </div>
+        )}
+      </div>
+
       {/* Summary bar */}
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3 text-sm text-gray-600">

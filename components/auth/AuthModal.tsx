@@ -98,7 +98,7 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
 
           {/* Title */}
           <h2 className="text-xl font-bold text-gray-900 mb-1">
-            {mode === "login" ? "Welcome back" : "Join CargoPlus"}
+            {mode === "login" ? "Welcome back" : "Join Apex Modular Construction"}
           </h2>
           <p className="text-sm text-gray-500 mb-6">
             {mode === "login"
@@ -122,7 +122,7 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
 
           {mode === "register" && (
             <div className="mt-4 border-t border-gray-100 pt-4 text-center text-xs text-gray-500">
-              Want to sell on CargoPlus?{" "}
+              Want to sell on Apex Modular Construction?{" "}
               <Link
                 href="/seller/register"
                 onClick={onClose}

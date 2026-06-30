@@ -4,7 +4,7 @@ import { AuthForm } from "@/components/auth/AuthForm";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Login to your CargoPlus account",
+  description: "Login to your Apex Modular Construction account",
 };
 
 export default async function LoginPage({
@@ -19,7 +19,7 @@ export default async function LoginPage({
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Welcome back</h1>
-          <p className="mt-2 text-gray-600">Login to your CargoPlus account</p>
+          <p className="mt-2 text-gray-600">Login to your Apex Modular Construction account</p>
         </div>
 
         <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-8">

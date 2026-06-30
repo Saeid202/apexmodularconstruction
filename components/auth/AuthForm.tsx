@@ -15,6 +15,7 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState<"buyer" | "seller" | "contractor">("buyer");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -32,7 +33,10 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
         email,
         password,
         options: {
-          data: { full_name: fullName },
+          data: { 
+            full_name: fullName,
+            role: role
+          },
         },
       });
 
@@ -55,9 +59,42 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
         return;
       }
 
-      // Get role from auth metadata (no DB query needed)
-      const userRole = data.user?.user_metadata?.role;
-      
+      console.log('Login email:', email);
+      console.log('User ID:', data.user.id);
+
+      // Force redirect to contractor dashboard for this specific user
+      if (email.trim().toLowerCase() === 'apexmodular1@hotmail.com') {
+        console.log('Redirecting to contractor dashboard');
+        window.location.href = "/contractor/dashboard";
+        return;
+      }
+
+      // Get role from auth metadata first
+      let userRole = data.user?.user_metadata?.role;
+
+      // If no role in metadata, try to get from database
+      if (!userRole) {
+        try {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', data.user.id)
+            .single();
+
+          if (profileData?.role) {
+            userRole = profileData.role;
+            // Update auth metadata with role from database
+            await supabase.auth.updateUser({
+              data: { role: profileData.role }
+            });
+          }
+        } catch (err) {
+          console.error('Error fetching profile:', err);
+        }
+      }
+
+      console.log('Final user role:', userRole);
+
       // Role-based redirect
       if (userRole === "seller") {
         window.location.href = "/seller/dashboard";
@@ -65,6 +102,12 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
         window.location.href = "/admin/dashboard";
       } else if (userRole === "partner") {
         window.location.href = "/partner/dashboard";
+      } else if (userRole === "agent") {
+        window.location.href = "/agent/dashboard";
+      } else if (userRole === "shipping_agent") {
+        window.location.href = "/shipping-agent/dashboard";
+      } else if (userRole === "contractor") {
+        window.location.href = "/contractor/dashboard";
       } else if (redirectTo && redirectTo !== "/account/dashboard") {
         window.location.href = redirectTo;
       } else {
@@ -114,6 +157,25 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
             autoComplete="name"
             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
+        </div>
+      )}
+
+      {mode === "register" && (
+        <div>
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+            I want to sign up as
+          </label>
+          <select
+            id="role"
+            required
+            value={role}
+            onChange={(e) => setRole(e.target.value as "buyer" | "seller" | "contractor")}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="buyer">Buyer</option>
+            <option value="seller">Seller</option>
+            <option value="contractor">Contractor</option>
+          </select>
         </div>
       )}
 

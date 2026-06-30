@@ -1,25 +1,19 @@
 /**
  * Supabase Database Types
- * 
- * Generated from Supabase schema for CargoPlus E-Commerce Platform
+ *
+ * Generated from Supabase schema for Apex Modular Construction E-Commerce Platform
  * Requirements: 1.1
- * 
+ *
  * To regenerate these types:
  * 1. Install Supabase CLI: `npm install -g supabase`
  * 2. Run: `npm run types:generate`
- * 
+ *
  * Or generate from the Supabase Dashboard:
  * 1. Go to your project settings > API
  * 2. Click "Generate TypeScript types"
  */
 
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export interface Database {
   public: {
@@ -132,10 +126,12 @@ export interface Database {
           price: number
           compare_at_price: number | null
           stock_quantity: number
+          price_type: 'unit' | 'sqm' | 'sqf'
           category_id: string
           seller_id: string
           status: 'pending' | 'active' | 'rejected' | 'archived'
           specifications: Json
+          has_customization: boolean
           created_at: string
           updated_at: string
         }
@@ -147,10 +143,12 @@ export interface Database {
           price: number
           compare_at_price?: number | null
           stock_quantity?: number
+          price_type?: 'unit' | 'sqm' | 'sqf'
           category_id: string
           seller_id: string
           status?: 'pending' | 'active' | 'rejected' | 'archived'
           specifications?: Json
+          has_customization?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -162,10 +160,12 @@ export interface Database {
           price?: number
           compare_at_price?: number | null
           stock_quantity?: number
+          price_type?: 'unit' | 'sqm' | 'sqf'
           category_id?: string
           seller_id?: string
           status?: 'pending' | 'active' | 'rejected' | 'archived'
           specifications?: Json
+          has_customization?: boolean
           created_at?: string
           updated_at?: string
         }
@@ -386,6 +386,91 @@ export interface Database {
           updated_at?: string
         }
       }
+      product_customization_groups: {
+        Row: {
+          id: string
+          product_id: string
+          name: string
+          description: string | null
+          is_required: boolean
+          display_order: number
+          target_anchor_id: string | null
+          visual_type: 'door' | 'window' | 'wall-color' | 'generic' | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          name: string
+          description?: string | null
+          is_required?: boolean
+          display_order?: number
+          target_anchor_id?: string | null
+          visual_type?: 'door' | 'window' | 'wall-color' | 'generic' | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          name?: string
+          description?: string | null
+          is_required?: boolean
+          display_order?: number
+          target_anchor_id?: string | null
+          visual_type?: 'door' | 'window' | 'wall-color' | 'generic' | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      product_customization_options: {
+        Row: {
+          id: string
+          group_id: string
+          name: string
+          description: string | null
+          price_modifier: number
+          image_url: string | null
+          color_hex: string | null
+          additional_images: string[] | null
+          stock_quantity: number | null
+          track_inventory: boolean
+          display_order: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          group_id: string
+          name: string
+          description?: string | null
+          price_modifier?: number
+          image_url?: string | null
+          color_hex?: string | null
+          additional_images?: string[] | null
+          stock_quantity?: number | null
+          track_inventory?: boolean
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          group_id?: string
+          name?: string
+          description?: string | null
+          price_modifier?: number
+          image_url?: string | null
+          color_hex?: string | null
+          additional_images?: string[] | null
+          stock_quantity?: number | null
+          track_inventory?: boolean
+          display_order?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -410,6 +495,10 @@ export type Order = Database['public']['Tables']['orders']['Row']
 export type OrderItem = Database['public']['Tables']['order_items']['Row']
 export type Inquiry = Database['public']['Tables']['inquiries']['Row']
 export type HeroSlide = Database['public']['Tables']['hero_slides']['Row']
+export type product_customization_groups =
+  Database['public']['Tables']['product_customization_groups']['Row']
+export type product_customization_options =
+  Database['public']['Tables']['product_customization_options']['Row']
 
 // Insert types
 export type InsertProfile = Database['public']['Tables']['profiles']['Insert']
@@ -447,66 +536,66 @@ export type UpdateTables<T extends keyof Database['public']['Tables']> =
 
 // Partner types
 export interface Partner {
-  id: string;
-  company_name: string;
-  contact_name: string;
-  email: string;
-  phone: string | null;
-  country: string;
-  status: 'active' | 'suspended';
-  created_at: string;
+  id: string
+  company_name: string
+  contact_name: string
+  email: string
+  phone: string | null
+  country: string
+  status: 'active' | 'suspended'
+  created_at: string
 }
 
 export interface EngineeringQuote {
-  id: string;
-  project_id: string;
-  partner_id: string;
-  price_cad: number;
-  timeline_weeks: number;
-  validity_days: number;
-  notes: string | null;
-  status: string;
-  created_at: string;
+  id: string
+  project_id: string
+  partner_id: string
+  price_cad: number
+  timeline_weeks: number
+  validity_days: number
+  notes: string | null
+  status: string
+  created_at: string
 }
 
 export interface EngineeringQuoteFile {
-  id: string;
-  quote_id: string;
-  file_name: string;
-  storage_path: string;
-  uploaded_at: string;
+  id: string
+  quote_id: string
+  file_name: string
+  storage_path: string
+  uploaded_at: string
 }
 
 // Engineering types
 export interface EngineeringProject {
-  id: string;
-  user_id: string | null;
-  project_name: string;
-  project_location_city: string;
-  project_location_province: string;
-  project_type: "residential" | "commercial" | "industrial";
-  total_area: number;
-  number_of_floors: number;
-  building_length: number;
-  building_width: number;
-  building_height: number | null;
-  structure_type: string;
-  no_drawings_flag: boolean;
-  delivery_location: string;
-  budget_range: "under_100k" | "100k_300k" | "300k_plus";
-  full_name: string;
-  company_name: string;
-  email: string;
-  phone: string;
-  project_description: string | null;
-  status: string;
-  created_at: string;
+  id: string
+  user_id: string | null
+  project_name: string
+  project_location_city: string
+  project_location_province: string
+  project_type: 'residential' | 'commercial' | 'industrial'
+  total_area: number
+  number_of_floors: number
+  building_length: number
+  building_width: number
+  building_height: number | null
+  structure_type: string
+  no_drawings_flag: boolean
+  delivery_location: string
+  budget_range: 'under_100k' | '100k_300k' | '300k_plus'
+  full_name: string
+  company_name: string
+  email: string
+  phone: string
+  project_description: string | null
+  status: string
+  created_at: string
 }
 
 export interface EngineeringProjectDrawing {
-  id: string;
-  project_id: string;
-  file_name: string;
-  storage_path: string;
-  uploaded_at: string;
+  id: string
+  project_id: string
+  file_name: string
+  storage_path: string
+  uploaded_at: string
 }

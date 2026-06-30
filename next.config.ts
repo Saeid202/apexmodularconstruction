@@ -23,6 +23,42 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    const domain = process.env.NEXT_PUBLIC_DOMAIN || 'apexmodularconstruction.com';
+    const preferWww = process.env.NEXT_PUBLIC_PREFER_WWW === 'true';
+    
+    if (preferWww) {
+      // Redirect non-www to www
+      return [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: domain,
+            },
+          ],
+          destination: `https://www.${domain}/:path*`,
+          permanent: true,
+        },
+      ];
+    } else {
+      // Redirect www to non-www
+      return [
+        {
+          source: '/:path*',
+          has: [
+            {
+              type: 'host',
+              value: `www.${domain}`,
+            },
+          ],
+          destination: `https://${domain}/:path*`,
+          permanent: true,
+        },
+      ];
+    }
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 3600, // cache optimized images for 1 hour

@@ -5,9 +5,11 @@ import { getSellerProfile, getCategories } from "@/app/actions/seller";
 import { NewProductForm } from "./NewProductForm";
 import { ArrowLeft, Package } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Add New Product",
-  description: "Add a new product to your CargoPlus seller account.",
+  description: "Add a new product to your Apex Modular Construction seller account.",
 };
 
 export default async function NewProductPage() {
@@ -67,7 +69,7 @@ export default async function NewProductPage() {
         </div>
 
         {/* Form body */}
-        <div className="bg-white px-8 py-8">
+        <div className="bg-[#FAF9FC] p-6 sm:p-8">
           <NewProductForm categories={categories} />
         </div>
       </div>

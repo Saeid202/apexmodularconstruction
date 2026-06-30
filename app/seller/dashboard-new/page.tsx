@@ -71,7 +71,7 @@ export default function SellerDashboardNewPage() {
       {/* Sidebar */}
       <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">CargoPlus</h2>
+          <h2 className="text-lg font-semibold text-gray-900">Apex Modular Construction</h2>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"

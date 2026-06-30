@@ -1,5 +1,5 @@
 -- ============================================
--- CargoPlus E-Commerce Platform
+-- Apex Modular Construction E-Commerce Platform
 -- Storage Buckets Migration
 -- ============================================
 -- Requirements: 1.1

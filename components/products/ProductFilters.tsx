@@ -10,10 +10,21 @@ interface Category {
 
 interface ProductFiltersProps {
   categories: Category[];
-  selectedCategory: string | null;
-  onCategoryChange: (category: string | null) => void;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
   priceRange: [number, number];
   onPriceChange: (range: [number, number]) => void;
+}
+
+function FilterHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-4">
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2" style={{ color: '#D4AF37' }}>
+        {children}
+      </p>
+      <div className="h-px w-8 rounded-full" style={{ background: 'rgba(212,175,55,0.4)' }} />
+    </div>
+  );
 }
 
 export function ProductFilters({
@@ -23,37 +34,36 @@ export function ProductFilters({
   priceRange,
   onPriceChange,
 }: ProductFiltersProps) {
+  const isFiltered = selectedCategory !== "pre-fabricated" || priceRange[0] > 0 || priceRange[1] < 50000;
+
   return (
-    <div className="space-y-6">
+    <div className="bg-white rounded-2xl border border-border shadow-soft p-6 sticky top-24 space-y-7">
+
       {/* Categories */}
       <div>
-        <h3 className="font-semibold mb-3">Categories</h3>
+        <FilterHeading>Categories</FilterHeading>
         <ul className="space-y-1">
-          <li>
-            <button
-              onClick={() => onCategoryChange(null)}
-              className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                selectedCategory === null
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted"
-              }`}
-            >
-              All Categories
-            </button>
-          </li>
           {categories.map((cat) => (
             <li key={cat.slug}>
               <button
                 onClick={() => onCategoryChange(cat.slug)}
-                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex justify-between ${
+                className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition-all flex justify-between items-center gap-2 ${
                   selectedCategory === cat.slug
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-muted"
+                    ? "text-white shadow-soft"
+                    : "text-foreground/70 hover:text-primary hover:bg-primary/5"
                 }`}
+                style={selectedCategory === cat.slug ? { background: 'linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)' } : {}}
               >
-                <span>{cat.name}</span>
-                <span className={selectedCategory === cat.slug ? "text-primary-foreground/70" : "text-muted-foreground"}>
-                  ({cat.count})
+                <span className="truncate">{cat.name}</span>
+                <span
+                  className="shrink-0 text-[11px] font-bold px-1.5 py-0.5 rounded-full"
+                  style={
+                    selectedCategory === cat.slug
+                      ? { background: 'rgba(255,255,255,0.2)', color: 'white' }
+                      : { background: 'rgba(75,29,143,0.08)', color: '#4B1D8F' }
+                  }
+                >
+                  {cat.count}
                 </span>
               </button>
             </li>
@@ -63,8 +73,8 @@ export function ProductFilters({
 
       {/* Price Range */}
       <div>
-        <h3 className="font-semibold mb-3">Price Range</h3>
-        <div className="px-3">
+        <FilterHeading>Price Range</FilterHeading>
+        <div className="px-1">
           <Slider
             min={0}
             max={50000}
@@ -72,12 +82,27 @@ export function ProductFilters({
             value={[priceRange[0], priceRange[1]]}
             onValueChange={(vals) => onPriceChange([vals[0], vals[1]])}
           />
-          <div className="flex justify-between mt-2 text-sm text-muted-foreground">
-            <span>${priceRange[0].toLocaleString()}</span>
-            <span>${priceRange[1].toLocaleString()}</span>
+          <div className="flex justify-between mt-3">
+            <span className="text-sm font-semibold" style={{ color: '#4B1D8F' }}>
+              ${priceRange[0].toLocaleString()} CAD
+            </span>
+            <span className="text-sm font-semibold" style={{ color: '#4B1D8F' }}>
+              ${priceRange[1].toLocaleString()} CAD
+            </span>
           </div>
         </div>
       </div>
+
+      {/* Clear filters */}
+      {isFiltered && (
+        <button
+          onClick={() => { onCategoryChange("pre-fabricated"); onPriceChange([0, 50000]); }}
+          className="w-full text-sm font-semibold py-2.5 rounded-xl border transition-all hover:bg-[#D4AF37]/5"
+          style={{ borderColor: 'rgba(212,175,55,0.5)', color: '#D4AF37' }}
+        >
+          Clear all filters
+        </button>
+      )}
     </div>
   );
 }

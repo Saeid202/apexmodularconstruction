@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" width="280" height="48">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 56" width="520" height="56">
   <defs>
     <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
@@ -9,13 +9,13 @@
   <!-- Text -->
   <text
     x="0"
-    y="34"
+    y="38"
     font-family="'Segoe UI', Arial, sans-serif"
-    font-size="28"
-    font-weight="600"
+    font-size="34"
+    font-weight="800"
     fill="url(#goldGrad)"
     letter-spacing="0.5"
-  >Shanghai Cargoplus</text>
+  >Apex Modular Construction</text>
   <!-- Gold underline -->
-  <line x1="0" y1="42" x2="278" y2="42" stroke="url(#goldGrad)" stroke-width="2"/>
+  <line x1="0" y1="48" x2="518" y2="48" stroke="url(#goldGrad)" stroke-width="2.5"/>
 </svg>

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { getSellerProfile, getSellerProducts, getCategories } from "@/app/actions/seller";
+import { getEditProductData } from "@/app/actions/seller";
 import { EditProductForm } from "./EditProductForm";
 import { ArrowLeft, Pencil } from "lucide-react";
 
@@ -11,7 +11,7 @@ interface Props {
 
 export const metadata: Metadata = {
   title: "Edit Product",
-  description: "Edit your product listing on CargoPlus.",
+  description: "Edit your product listing on Apex Modular Construction.",
 };
 
 // Always fetch fresh — no stale cache
@@ -21,21 +21,13 @@ export const revalidate = 0;
 export default async function EditProductPage({ params }: Props) {
   const { id } = await params;
 
-  const [profileResult, productsResult, categoriesResult] = await Promise.all([
-    getSellerProfile(),
-    getSellerProducts(),
-    getCategories(),
-  ]);
+  const { profile, product, categories, documents, error } = await getEditProductData(id);
 
-  if (!profileResult.data && profileResult.error === "Not authenticated") {
+  if (!profile && error === "Not authenticated") {
     redirect("/seller/login");
   }
 
-  const products = productsResult.data || [];
-  const product = products.find((p) => p.id === id);
   if (!product) notFound();
-
-  const categories = categoriesResult || [];
 
   return (
     <div className="min-h-full py-8 px-4" style={{ backgroundColor: "#F5F4F7" }}>
@@ -86,8 +78,13 @@ export default async function EditProductPage({ params }: Props) {
         </div>
 
         {/* Form body */}
-        <div className="bg-white px-8 py-8">
-          <EditProductForm product={product!} categories={categories} />
+        <div className="bg-[#FAF9FC] p-6 sm:p-8">
+          <EditProductForm 
+            product={product!} 
+            categories={categories} 
+            initialDocuments={documents}
+            userId={profile?.id || ""} 
+          />
         </div>
       </div>
     </div>

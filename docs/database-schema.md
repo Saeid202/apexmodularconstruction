@@ -1,6 +1,6 @@
-# CargoPlus Database Schema Documentation
+# Apex Modular Construction Database Schema Documentation
 
-This document describes the complete database schema for the CargoPlus e-commerce platform.
+This document describes the complete database schema for the Apex Modular Construction e-commerce platform.
 
 ## Overview
 

@@ -14,7 +14,7 @@ export default function AdminDashboardPage() {
     <div className="p-8 space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage your CargoPlus platform</p>
+        <p className="text-sm text-gray-500 mt-1">Manage your Apex Modular Construction platform</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

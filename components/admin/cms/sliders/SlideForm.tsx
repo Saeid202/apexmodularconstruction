@@ -29,10 +29,20 @@ export function SlideForm({ slide, nextPosition, onClose, onSaved }: SlideFormPr
     title: slide?.title ?? "",
     subtitle: slide?.subtitle ?? "",
     image_url: slide?.image_url ?? "",
+    cta_enabled: slide?.cta_enabled ?? false,
     cta_text: slide?.cta_text ?? "",
     cta_link: slide?.cta_link ?? "",
     position: slide?.position ?? nextPosition,
     is_active: slide?.is_active ?? true,
+    // New fields for enhanced hero section
+    headline: slide?.headline ?? "",
+    subtext: slide?.subtext ?? "",
+    benefits: slide?.benefits ?? [],
+    cta_secondary_text: slide?.cta_secondary_text ?? "",
+    cta_secondary_link: slide?.cta_secondary_link ?? "",
+    layout_type: slide?.layout_type ?? "split",
+    background_overlay: slide?.background_overlay ?? true,
+    trust_line: slide?.trust_line ?? "",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof SlideFormData, string>>>({});
   const [saving, setSaving] = useState(false);
@@ -43,7 +53,7 @@ export function SlideForm({ slide, nextPosition, onClose, onSaved }: SlideFormPr
 
   const debouncedImageUrl = useDebounce(form.image_url, 500);
 
-  const set = (key: keyof SlideFormData, value: string | number | boolean) =>
+  const set = (key: keyof SlideFormData, value: string | number | boolean | string[]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -139,16 +149,88 @@ export function SlideForm({ slide, nextPosition, onClose, onSaved }: SlideFormPr
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          {/* CTA toggle + conditional fields */}
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+            <Toggle checked={form.cta_enabled} onChange={(v) => set("cta_enabled", v)} label="Enable Call-to-Action button" />
+            {form.cta_enabled && (
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Button Label <span className="text-red-500">*</span></label>
+                  <input value={form.cta_text} onChange={(e) => set("cta_text", e.target.value)}
+                    placeholder="e.g. Contact Us"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Button Link <span className="text-red-500">*</span></label>
+                  <input value={form.cta_link} onChange={(e) => set("cta_link", e.target.value)}
+                    placeholder="/contact or /auth/register"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Enhanced Hero Section Fields */}
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900">Enhanced Hero Section</h3>
+            
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">CTA Text</label>
-              <input value={form.cta_text} onChange={(e) => set("cta_text", e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Headline (H1)</label>
+              <input value={form.headline} onChange={(e) => set("headline", e.target.value)}
+                placeholder="Prefabricated Modular Homes & Light Steel Structures from China to Canada"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">CTA Link</label>
-              <input value={form.cta_link} onChange={(e) => set("cta_link", e.target.value)}
-                placeholder="/products"
+              <label className="block text-sm font-medium text-gray-700 mb-1">Subtext</label>
+              <textarea value={form.subtext} onChange={(e) => set("subtext", e.target.value)}
+                placeholder="End-to-end design, manufacturing, and installation of certified modular buildings delivered across Canada."
+                rows={2}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Key Benefits (one per line, max 3)</label>
+              <textarea value={form.benefits.join('\n')} onChange={(e) => set("benefits", e.target.value.split('\n').filter(b => b.trim()))}
+                placeholder="Factory-built precision compliant with Canadian standards&#10;Faster construction with reduced cost and on-site time&#10;Full-service delivery from design to installation"
+                rows={3}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Secondary CTA Label</label>
+                <input value={form.cta_secondary_text} onChange={(e) => set("cta_secondary_text", e.target.value)}
+                  placeholder="View Projects"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Secondary CTA Link</label>
+                <input value={form.cta_secondary_link} onChange={(e) => set("cta_secondary_link", e.target.value)}
+                  placeholder="/projects"
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Layout Type</label>
+              <select value={form.layout_type} onChange={(e) => set("layout_type", e.target.value)}
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="split">Split (Two-column)</option>
+                <option value="centered">Centered Overlay</option>
+                <option value="image-only">Image Only</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Toggle checked={form.background_overlay} onChange={(v) => set("background_overlay", v)} label="Background Overlay" />
+              <span className="text-xs text-gray-500">Dark overlay for text readability</span>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Trust Line</label>
+              <input value={form.trust_line} onChange={(e) => set("trust_line", e.target.value)}
+                placeholder="Engineered for Canadian climate • Direct factory supply • Turnkey delivery"
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
           </div>

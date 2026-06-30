@@ -27,7 +27,7 @@ Add a full PWA layer to the Next.js 16 / TypeScript / Tailwind / Supabase platfo
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
 - [x] 4. Create `public/offline.html`
-  - Write a minimal HTML page showing the CargoPlus logo and a "You are offline" message, styled with inline CSS using the brand colour `#4B1D8F`
+  - Write a minimal HTML page showing the Apex Modular Construction logo and a "You are offline" message, styled with inline CSS using the brand colour `#4B1D8F`
   - _Requirements: 3.4_
 
 - [x] 5. Create `public/sw.js` — Service Worker

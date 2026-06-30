@@ -1,24 +1,28 @@
 "use client";
+import { MessageSquare } from "lucide-react";
 
 const WA_NUMBER = "14168825015";
-const WA_TEXT = "Hi%20CargoPlus%2C%20I%20have%20a%20question.";
+const DEFAULT_TEXT = "Hi Apex Modular Construction, I have a question.";
 
-export function WhatsAppLink({ className, style, children }: {
+export function WhatsAppLink({ className, style, children, text = DEFAULT_TEXT }: {
   className?: string;
   style?: React.CSSProperties;
   children: React.ReactNode;
+  text?: string;
 }) {
+  const encodedText = encodeURIComponent(text);
+  
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
-    window.location.href = `whatsapp://send?phone=${WA_NUMBER}&text=${WA_TEXT}`;
+    window.location.href = `whatsapp://send?phone=${WA_NUMBER}&text=${encodedText}`;
     setTimeout(() => {
-      window.open(`https://wa.me/${WA_NUMBER}?text=${WA_TEXT}`, "_blank");
+      window.open(`https://wa.me/${WA_NUMBER}?text=${encodedText}`, "_blank");
     }, 1000);
   }
 
   return (
     <a
-      href={`whatsapp://send?phone=${WA_NUMBER}&text=${WA_TEXT}`}
+      href={`whatsapp://send?phone=${WA_NUMBER}&text=${encodedText}`}
       onClick={handleClick}
       aria-label="Chat with us on WhatsApp"
       className={className}

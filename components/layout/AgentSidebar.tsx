@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, LayoutDashboard, ClipboardList, User, ChevronRight, LogOut, Briefcase } from "lucide-react";
+import { Menu, X, LayoutDashboard, ClipboardList, User, ChevronRight, LogOut, Zap } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { FloatingMessenger } from "@/components/messenger/FloatingMessenger";
 
 const menuItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/agent/dashboard", color: "from-blue-500 to-indigo-600" },
-  { id: "orders",    label: "Orders",    icon: ClipboardList,   href: "/agent/orders",    color: "from-orange-500 to-rose-500" },
-  { id: "profile",   label: "Profile",   icon: User,            href: "/agent/profile",   color: "from-violet-500 to-purple-600" },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/agent/dashboard", color: "from-blue-400 to-indigo-500" },
+  { id: "orders",    label: "Orders",    icon: ClipboardList,   href: "/agent/orders",    color: "from-orange-400 to-rose-500" },
+  { id: "profile",   label: "Profile",   icon: User,            href: "/agent/profile",   color: "from-violet-400 to-purple-500" },
 ];
 
 export default function AgentSidebar({ children }: { children: React.ReactNode }) {
@@ -26,25 +26,21 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
+    <div className="h-screen flex bg-gray-50 overflow-hidden">
 
       {/* Sidebar */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 flex flex-col
-        bg-gradient-to-b from-orange-900 via-rose-900 to-red-950
-        border-r border-white/5
-        transform transition-transform duration-300 ease-in-out
-        lg:translate-x-0 lg:static lg:inset-0
-        ${open ? "translate-x-0" : "-translate-x-full"}
-      `}>
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col border-r border-purple-900/40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        style={{ background: "linear-gradient(180deg, #2d0f6b 0%, #1e0a4a 60%, #150736 100%)" }}
+      >
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-white/10">
+        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-purple-800/50">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 shadow-md">
-            <Briefcase className="h-4 w-4 text-orange-300" />
+            <Zap className="h-4 w-4 text-yellow-300" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white tracking-tight">CargoPlus</p>
-            <p className="text-[10px] text-orange-300 font-semibold uppercase tracking-widest">Agent Portal</p>
+            <p className="text-sm font-bold text-white tracking-tight">Apex Modular Construction</p>
+            <p className="text-[10px] text-purple-300 font-semibold uppercase tracking-widest">Agent Portal</p>
           </div>
           <button onClick={() => setOpen(false)} className="ml-auto lg:hidden text-white/50 hover:text-white">
             <X className="h-5 w-5" />
@@ -52,16 +48,18 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-0.5">
           {menuItems.map((item) => {
             const active = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link key={item.id} href={item.href} onClick={() => setOpen(false)}
-                className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  active ? "bg-white/15 text-white border border-white/15 shadow-sm" : "text-orange-100 hover:text-white hover:bg-white/10"
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                  active
+                    ? "bg-white/15 text-white border border-white/15 shadow-sm"
+                    : "text-purple-200 hover:text-white hover:bg-white/8"
                 }`}>
-                <div className={`flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br ${item.color} shadow-sm shrink-0 ${active ? "" : "opacity-70 group-hover:opacity-100"}`}>
-                  <item.icon className="h-3.5 w-3.5 text-white" />
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${item.color} shadow-sm shrink-0 ${active ? "" : "opacity-70 group-hover:opacity-100"}`}>
+                  <item.icon className="h-4 w-4 text-white" />
                 </div>
                 <span className="flex-1">{item.label}</span>
                 {active && <ChevronRight className="h-3.5 w-3.5 text-white/50" />}
@@ -71,9 +69,9 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
         </nav>
 
         {/* Logout */}
-        <div className="px-3 pb-4 border-t border-white/10 pt-3">
+        <div className="px-3 pb-4 border-t border-purple-800/50 pt-3">
           <button onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-orange-200 hover:text-red-400 hover:bg-red-500/10 transition-all">
+            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-purple-300 hover:text-red-400 hover:bg-red-500/10 transition-all">
             <LogOut className="h-4 w-4" /> Logout
           </button>
         </div>
@@ -95,7 +93,7 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-orange-400 animate-pulse" />
+            <div className="h-2 w-2 rounded-full animate-pulse" style={{ backgroundColor: "#D4AF37" }} />
             <span className="text-xs text-gray-400 font-medium">Online</span>
           </div>
         </header>

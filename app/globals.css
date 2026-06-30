@@ -134,6 +134,35 @@
   100% { transform: translateX(200%); }
 }
 
+/* ─── Hero section design tokens ─────────────────────────────────────────── */
+:root {
+  --gradient-hero: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
+  --gradient-radial: radial-gradient(ellipse at 20% 10%, rgba(75,29,143,0.5) 0%, transparent 55%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #f5e08a 40%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 40px rgba(75,29,143,0.5), 0 8px 32px rgba(75,29,143,0.35);
+}
+
+.shadow-soft {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.shadow-elegant {
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.12);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -148,4 +177,196 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+
+/* ─── Product description rich text renderer ─────────────────────────────── */
+.product-description {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.product-description h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #4B1D8F;
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid #D4AF3755;
+  letter-spacing: -0.01em;
+}
+
+.product-description h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.product-description p {
+  margin-bottom: 0.6rem;
+}
+
+.product-description strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+.product-description em {
+  font-style: italic;
+}
+
+.product-description u {
+  text-decoration: underline;
+  text-decoration-color: #D4AF37;
+  text-underline-offset: 2px;
+}
+
+.product-description s,
+.product-description del {
+  text-decoration: line-through;
+  color: #9CA3AF;
+}
+
+.product-description ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+
+.product-description ul li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.product-description ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #4B1D8F;
+}
+
+.product-description ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.product-description ol li {
+  margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
+}
+
+.product-description ol li::marker {
+  color: #4B1D8F;
+  font-weight: 700;
+}
+
+.product-description a {
+  color: #4B1D8F;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.product-description a:hover {
+  color: #D4AF37;
+}
+
+/* ─── Tiptap editor content styles (mirrors renderer) ─────────────────────── */
+.ProseMirror h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #4B1D8F;
+  margin-top: 1rem;
+  margin-bottom: 0.3rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid #D4AF3755;
+}
+
+.ProseMirror h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.ProseMirror p {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.ProseMirror ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.5rem;
+}
+
+.ProseMirror ul li {
+  position: relative;
+  padding-left: 1.25rem;
+  margin-bottom: 0.2rem;
+}
+
+.ProseMirror ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #4B1D8F;
+}
+
+.ProseMirror ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.ProseMirror ol li::marker {
+  color: #4B1D8F;
+  font-weight: 700;
+}
+
+.ProseMirror a {
+  color: #4B1D8F;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9CA3AF;
+  pointer-events: none;
+  height: 0;
+}
+@keyframes progress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
+.animate-progress {
+  animation: progress 2s ease-in-out infinite;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -30,7 +30,7 @@ export default function PartnerSidebar({ children }: { children: React.ReactNode
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-950">
+    <div className="h-screen flex bg-gray-950 overflow-hidden">
 
       {/* Sidebar */}
       <aside className={`
@@ -48,7 +48,7 @@ export default function PartnerSidebar({ children }: { children: React.ReactNode
             <Zap className="h-4 w-4 text-white" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white tracking-tight">CargoPlus</p>
+            <p className="text-sm font-bold text-white tracking-tight">Apex Modular Construction</p>
             <p className="text-[10px] text-blue-400 font-medium uppercase tracking-widest">Partner Portal</p>
           </div>
           <button onClick={() => setOpen(false)} className="ml-auto lg:hidden text-gray-500 hover:text-white">

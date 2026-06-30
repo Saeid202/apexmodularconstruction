@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { HeroSlide } from "@/types/database";
 
 export async function getHeroSlides(): Promise<{
@@ -8,7 +8,7 @@ export async function getHeroSlides(): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
 
     const result = await Promise.race([
       supabase.from("hero_slides").select("*").eq("is_active", true).order("position", { ascending: true }),
@@ -18,7 +18,12 @@ export async function getHeroSlides(): Promise<{
     ]);
 
     if (result.error) {
-      console.error("Error fetching hero slides:", result.error);
+      console.error("Error fetching hero slides:", {
+        message: result.error.message,
+        code: (result.error as any).code,
+        details: (result.error as any).details,
+        hint: (result.error as any).hint
+      });
       return { data: null, error: result.error.message };
     }
 
