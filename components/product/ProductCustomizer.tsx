@@ -9,12 +9,11 @@ const GOLD = '#D4AF37'
 
 interface Props {
   groups: CustomizationGroupWithRelations[]
+  selections: Record<string, CustomizationOption[]>
   onSelectionChange: (selections: Record<string, CustomizationOption[]>) => void
 }
 
-export function ProductCustomizer({ groups, onSelectionChange }: Props) {
-  const [selections, setSelections] = useState<Record<string, CustomizationOption[]>>({})
-
+export function ProductCustomizer({ groups, selections, onSelectionChange }: Props) {
   const handleSelect = (groupId: string, option: CustomizationOption, isMulti: boolean) => {
     const current = selections[groupId] ?? []
     const alreadySelected = current.some((existing) => existing.id === option.id)
@@ -38,7 +37,6 @@ export function ProductCustomizer({ groups, onSelectionChange }: Props) {
       }
     }
 
-    setSelections(newSelections)
     onSelectionChange(newSelections)
   }
 

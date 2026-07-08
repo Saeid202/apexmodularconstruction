@@ -9,21 +9,19 @@ export async function getHeroSlides(): Promise<{
 }> {
   try {
     const supabase = createPublicClient();
+    if (!supabase) {
+      return { data: null, error: "Supabase client not initialized" };
+    }
 
     const result = await Promise.race([
       supabase.from("hero_slides").select("*").eq("is_active", true).order("position", { ascending: true }),
       new Promise<{ data: null; error: { message: string } }>((resolve) =>
-        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
+        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 10000)
       ),
     ]);
 
     if (result.error) {
-      console.error("Error fetching hero slides:", {
-        message: result.error.message,
-        code: (result.error as any).code,
-        details: (result.error as any).details,
-        hint: (result.error as any).hint
-      });
+      console.error("Error fetching hero slides:", result.error);
       return { data: null, error: result.error.message };
     }
 

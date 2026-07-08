@@ -75,9 +75,9 @@ export async function createCustomizationGroup(groupData: InsertCustomizationGro
       .eq("id", groupData.product_id);
 
     return { data, error: null };
-  } catch (error) {
+  } catch (error: any) {
     console.error("createCustomizationGroup error:", error);
-    return { data: null, error: "Failed to create customization group" };
+    return { data: null, error: error?.message || String(error) || "Failed to create customization group" };
   }
 }
 

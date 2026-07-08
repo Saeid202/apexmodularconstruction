@@ -23,6 +23,9 @@ export async function getProducts(options: GetProductsOptions = {}): Promise<{
 }> {
   try {
     const supabase = createPublicClient();
+    if (!supabase) {
+      return { data: null, error: "Supabase client not initialized" };
+    }
     const { limit = 20, categorySlug, minPrice, maxPrice, searchQuery } = options;
 
     let query = supabase
@@ -60,21 +63,16 @@ export async function getProducts(options: GetProductsOptions = {}): Promise<{
       query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
     }
 
-    // Race against a 3s timeout so we fail fast and fall back to mock data
+    // Race against a 10s timeout so we fail fast and fall back to mock data
     const result = await Promise.race([
       query,
       new Promise<{ data: null; error: { message: string } }>((resolve) =>
-        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
+        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 10000)
       ),
     ]);
 
     if (result.error) {
-      console.error("Error fetching products:", {
-        message: result.error.message,
-        code: (result.error as any).code,
-        details: (result.error as any).details,
-        hint: (result.error as any).hint
-      });
+      console.error("Error fetching products:", result.error);
       return { data: null, error: result.error.message };
     }
 
@@ -104,7 +102,8 @@ export async function getProductBySlug(slug: string): Promise<{
         product_customization_groups (
           *,
           options:product_customization_options (*)
-        )
+        ),
+        product_customization_zones (*)
       `)
       .eq("slug", slug)
       .single();

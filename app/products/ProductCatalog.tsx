@@ -18,7 +18,10 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
     const robotCount = initialProducts.filter(
       (p) => p.category?.slug === "robots" || p.category?.slug === "robot"
     ).length;
-    const otherCount = initialProducts.length - prefabCount - robotCount;
+    const sofaCount = initialProducts.filter(
+      (p) => p.category?.slug === "sofas" || p.category?.slug === "sofa"
+    ).length;
+    const otherCount = initialProducts.length - prefabCount - robotCount - sofaCount;
 
     return [
       {
@@ -30,6 +33,11 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
         name: "Robot",
         slug: "robots",
         count: robotCount,
+      },
+      {
+        name: "Sofa",
+        slug: "sofas",
+        count: sofaCount,
       },
       {
         name: "Other",
@@ -49,8 +57,17 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
         if (slug !== "pre-fabricated" && slug !== "prefabricated") return false;
       } else if (selectedCategory === "robots") {
         if (slug !== "robots" && slug !== "robot") return false;
+      } else if (selectedCategory === "sofas") {
+        if (slug !== "sofas" && slug !== "sofa") return false;
       } else if (selectedCategory === "other") {
-        if (slug === "pre-fabricated" || slug === "prefabricated" || slug === "robots" || slug === "robot") return false;
+        if (
+          slug === "pre-fabricated" || 
+          slug === "prefabricated" || 
+          slug === "robots" || 
+          slug === "robot" ||
+          slug === "sofas" ||
+          slug === "sofa"
+        ) return false;
       }
       if (p.price < priceRange[0] || p.price > priceRange[1]) return false;
       return true;

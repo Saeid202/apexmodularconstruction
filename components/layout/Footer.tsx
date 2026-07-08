@@ -177,7 +177,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
             <div className="space-y-2.5 text-sm text-white/85">
               <div className="flex items-start gap-3">
                 <MapPin className="h-4 w-4 shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
-                <span>9131 Keele Street, Vaughan, Ontario, L4K 0G7</span>
+                <span>1050 King St W 1st Floor, Toronto, ON M6K 0C7</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
@@ -187,8 +187,8 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
-                <a href="mailto:info@cargoplus.site" className="hover:text-white transition-colors">
-                  info@cargoplus.site
+                <a href="mailto:shabani_saeid@hotmail.com" className="hover:text-white transition-colors">
+                  shabani_saeid@hotmail.com
                 </a>
               </div>
             </div>

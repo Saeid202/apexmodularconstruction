@@ -118,7 +118,7 @@ export default async function ContactPage() {
                     Dedicated desk for real estate developers, EPC contractors, and bulk procurement inquiries. Tailored pricing strategies for major structural orders and customized modular blueprints.
                   </p>
                   <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-xs font-semibold text-gray-700">
-                    <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-gray-400" /> info@cargoplus.site</span>
+                    <span className="flex items-center gap-1.5"><Mail className="h-3.5 w-3.5 text-gray-400" /> shabani_saeid@hotmail.com</span>
                     <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-gray-400" /> +1 416 882 5015</span>
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export default async function ContactPage() {
                   <div>
                     <p className="text-xs font-bold text-purple-200 uppercase tracking-wider">Canadian Corporate HQ</p>
                     <p className="text-sm font-semibold mt-1">
-                      9131 Keele Street, Vaughan, Ontario, L4K 0G7, Canada
+                      1050 King St W 1st Floor, Toronto, ON M6K 0C7, Canada
                     </p>
                   </div>
                 </li>
@@ -235,7 +235,7 @@ export default async function ContactPage() {
               <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm border border-gray-100 text-sm font-black text-[#4B1D8F] mb-4">01</span>
               <h3 className="text-lg font-black text-gray-900 tracking-tight">North American Sourcing Desk</h3>
               <p className="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest flex items-center gap-1">
-                <MapPin className="h-3 w-3" /> Vaughan, Ontario, Canada
+                <MapPin className="h-3 w-3" /> Toronto, Ontario, Canada
               </p>
               <p className="text-xs text-gray-500 mt-4 leading-relaxed">
                 Acts as our executive project hub. Spearheads structural configuration modeling, investor relations, client consultations, local compliance reviews, and final over-the-road freight.

@@ -1,5 +1,6 @@
 'use server'
 
+import crypto from 'crypto'
 import { createServerClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
@@ -11,6 +12,27 @@ const DEFAULT_WALL_MASK_URL = `data:image/svg+xml;base64,${Buffer.from('<svg xml
 function isMissingMaskUrlColumnError(error: { message?: string } | null | undefined) {
   const message = error?.message?.toLowerCase() ?? ''
   return message.includes('house_anchors.mask_url') && message.includes('does not exist')
+}
+
+function decodeAnchor(anchor: any) {
+  if (anchor && anchor.label && anchor.label.includes('|mask:')) {
+    const [label, maskPart] = anchor.label.split('|mask:')
+    return {
+      ...anchor,
+      label,
+      mask_url: maskPart,
+    }
+  }
+  return anchor
+}
+
+function encodeAnchorForLegacy(anchor: any) {
+  const enc = { ...anchor }
+  if (enc.mask_url) {
+    enc.label = `${enc.label || 'Wall Color'}|mask:${enc.mask_url}`
+    delete enc.mask_url
+  }
+  return enc
 }
 
 /** Generate a unique slug for a product, appending a random suffix on collision. */
@@ -34,106 +56,7 @@ async function uniqueSlug(
   return slug
 }
 
-async function ensureHouseConfiguratorSettings(
-  supabase: Awaited<ReturnType<typeof createServerClient>>,
-  productId: string,
-  baseImageUrl: string
-) {
-  if (!baseImageUrl) return
 
-  const { data: existing } = await supabase
-    .from('house_configurator_settings')
-    .select('id')
-    .eq('product_id', productId)
-    .maybeSingle()
-
-  let settingsId: string
-  if (existing?.id) {
-    settingsId = existing.id
-    await supabase
-      .from('house_configurator_settings')
-      .update({ base_image_url: baseImageUrl })
-      .eq('id', settingsId)
-  } else {
-    const { data, error } = await supabase
-      .from('house_configurator_settings')
-      .insert({
-        product_id: productId,
-        base_image_url: baseImageUrl,
-        lighting_metadata: { sun_direction: 'top-left', ambient: 'balanced' },
-      })
-      .select('id')
-      .single()
-
-    if (error || !data?.id) return
-    settingsId = data.id
-  }
-
-  const { data: anchors, error: anchorsError } = await supabase
-    .from('house_anchors')
-    .select('id, anchor_type, mask_url')
-    .eq('house_id', settingsId)
-
-  if (anchorsError && !isMissingMaskUrlColumnError(anchorsError)) return
-
-  if (isMissingMaskUrlColumnError(anchorsError)) {
-    const { data: legacyAnchors } = await supabase
-      .from('house_anchors')
-      .select('id, anchor_type')
-      .eq('house_id', settingsId)
-
-    const legacyWallMaskAnchor = legacyAnchors?.find(
-      (anchor: { id?: string; anchor_type: string }) => anchor.anchor_type === 'wall-mask'
-    )
-
-    if (!legacyWallMaskAnchor) {
-      await supabase.from('house_anchors').insert({
-        house_id: settingsId,
-        anchor_type: 'wall-mask',
-        label: 'Wall Color',
-        x_pos: 0,
-        y_pos: 0,
-        width: 100,
-        height: 100,
-        z_index: 10,
-      })
-    }
-
-    return
-  }
-
-  const wallMaskAnchor = anchors?.find(
-    (anchor: { id?: string; anchor_type: string; mask_url?: string | null }) =>
-      anchor.anchor_type === 'wall-mask'
-  )
-  if (wallMaskAnchor) {
-    if (!wallMaskAnchor.mask_url) {
-      await supabase
-        .from('house_anchors')
-        .update({ mask_url: DEFAULT_WALL_MASK_URL })
-        .eq('id', wallMaskAnchor.id)
-    }
-  } else {
-    await supabase.from('house_anchors').insert({
-      house_id: settingsId,
-      anchor_type: 'wall-mask',
-      label: 'Wall Color',
-      x_pos: 0,
-      y_pos: 0,
-      width: 100,
-      height: 100,
-      z_index: 10,
-      mask_url: DEFAULT_WALL_MASK_URL,
-    })
-  }
-}
-
-async function removeHouseConfiguratorSettings(
-  supabase: Awaited<ReturnType<typeof createServerClient>>,
-  productId: string
-) {
-  await supabase.from('house_configurator_settings').delete().eq('product_id', productId)
-}
 
 export interface SellerProduct extends Product {
   product_images: ProductImage[]
@@ -471,29 +394,36 @@ export async function createProduct(formData: FormData): Promise<{
     }
 
     // Create product
-    const configuratorType = (formData.get('configuratorType') as string | null) || 'none'
+    const configuratorType = 'none'
+    const id = formData.get('id') as string | null
+
+    const insertData: any = {
+      name,
+      slug,
+      description,
+      price,
+      price_type: priceType,
+      compare_at_price: compareAtPrice,
+      stock_quantity: stockQuantity,
+      category_id: categoryId,
+      seller_id: user.id,
+      specifications,
+      require_order_request: formData.get('requireOrderRequest') === 'true',
+      show_stock: formData.get('showStock') !== 'false',
+      youtube_url: (formData.get('youtubeUrl') as string | null) || null,
+      status: formData.get('publishStatus') === 'draft' ? 'pending' : 'active',
+      configurator_type: configuratorType,
+      what_is_included: whatIsIncluded,
+      certificates_standards: certificatesStandards,
+    }
+
+    if (id) {
+      insertData.id = id
+    }
 
     const { data: product, error: productError } = await supabase
       .from('products')
-      .insert({
-        name,
-        slug,
-        description,
-        price,
-        price_type: priceType,
-        compare_at_price: compareAtPrice,
-        stock_quantity: stockQuantity,
-        category_id: categoryId,
-        seller_id: user.id,
-        specifications,
-        require_order_request: formData.get('requireOrderRequest') === 'true',
-        show_stock: formData.get('showStock') !== 'false',
-        youtube_url: (formData.get('youtubeUrl') as string | null) || null,
-        status: formData.get('publishStatus') === 'draft' ? 'pending' : 'active',
-        configurator_type: configuratorType,
-        what_is_included: whatIsIncluded,
-        certificates_standards: certificatesStandards,
-      })
+      .insert(insertData)
       .select()
       .single()
 
@@ -524,12 +454,7 @@ export async function createProduct(formData: FormData): Promise<{
       const { error: batchErr } = await supabase.from('product_images').insert(rows)
       if (batchErr) console.error('Batch image insert error:', batchErr.message)
 
-      if (configuratorType === 'house') {
-        const baseImageUrl = rows.find((row) => row.is_master)?.url ?? rows[0]?.url ?? null
-        if (baseImageUrl) {
-          await ensureHouseConfiguratorSettings(supabase, product.id, baseImageUrl)
-        }
-      }
+
     }
 
     // 4. Handle Customizations
@@ -543,6 +468,27 @@ export async function createProduct(formData: FormData): Promise<{
 
           for (let i = 0; i < groups.length; i++) {
             const group = groups[i]
+            
+            let zoneId = null
+            if (group.maskUrl) {
+              const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(group.targetZoneId || '')
+              const targetId = isUuid ? group.targetZoneId : crypto.randomUUID()
+              
+              const { error: zErr } = await supabase
+                .from('product_customization_zones')
+                .insert({
+                  id: targetId,
+                  product_id: product.id,
+                  name: group.name,
+                  mask_url: group.maskUrl
+                })
+              if (!zErr) {
+                zoneId = targetId
+              } else {
+                console.error('Error inserting zone:', zErr)
+              }
+            }
+
             const { data: g, error: gErr } = await supabase
               .from('product_customization_groups')
               .insert({
@@ -550,7 +496,7 @@ export async function createProduct(formData: FormData): Promise<{
                 name: group.name,
                 display_order: i,
                 visual_type: group.visualType ?? 'generic',
-                target_anchor_id: group.targetAnchorId ?? null,
+                target_zone_id: zoneId,
               })
               .select()
               .single()
@@ -688,7 +634,7 @@ export async function updateProduct(
         show_stock: showStock,
         youtube_url: youtubeUrl,
         has_customization: hasCustomization,
-        configurator_type: (formData.get('configuratorType') as string | null) || 'none',
+        configurator_type: 'none',
         what_is_included: whatIsIncluded,
         certificates_standards: certificatesStandards,
         updated_at: new Date().toISOString(),
@@ -704,7 +650,7 @@ export async function updateProduct(
     // Images are uploaded client-side before this action is called.
     // variantsJson contains { url, code, price, isMaster, existingUrl } for each variant.
     const variantsJson = formData.get('variantsJson') as string | null
-    const configuratorType = (formData.get('configuratorType') as string | null) || 'none'
+    const configuratorType = 'none'
     let variants: {
       url?: string
       code: string
@@ -788,21 +734,7 @@ export async function updateProduct(
       }
     }
 
-    if (configuratorType === 'house') {
-      const { data: imageRecords } = await supabase
-        .from('product_images')
-        .select('url,is_master')
-        .eq('product_id', productId)
-        .order('position', { ascending: true })
 
-      const baseImageUrl =
-        imageRecords?.find((img: any) => img.is_master)?.url ?? imageRecords?.[0]?.url ?? null
-      if (baseImageUrl) {
-        await ensureHouseConfiguratorSettings(supabase, productId, baseImageUrl)
-      }
-    } else {
-      await removeHouseConfiguratorSettings(supabase, productId)
-    }
 
     // Handle Customizations Update
     const customizationsJson = formData.get('customizationsJson') as string | null
@@ -812,12 +744,34 @@ export async function updateProduct(
 
         // Always clear old customizations first
         await supabase.from('product_customization_groups').delete().eq('product_id', productId)
+        await supabase.from('product_customization_zones').delete().eq('product_id', productId)
 
         if (groups.length > 0) {
           await supabase.from('products').update({ has_customization: true }).eq('id', productId)
 
           for (let i = 0; i < groups.length; i++) {
             const group = groups[i]
+
+            let zoneId = null
+            if (group.maskUrl) {
+              const isUuid = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(group.targetZoneId || '')
+              const targetId = isUuid ? group.targetZoneId : crypto.randomUUID()
+
+              const { error: zErr } = await supabase
+                .from('product_customization_zones')
+                .insert({
+                  id: targetId,
+                  product_id: productId,
+                  name: group.name,
+                  mask_url: group.maskUrl
+                })
+              if (!zErr) {
+                zoneId = targetId
+              } else {
+                console.error('Error inserting zone in update:', zErr)
+              }
+            }
+
             const { data: g } = await supabase
               .from('product_customization_groups')
               .insert({
@@ -825,7 +779,7 @@ export async function updateProduct(
                 name: group.name,
                 display_order: i,
                 visual_type: group.visualType ?? 'generic',
-                target_anchor_id: group.targetAnchorId ?? null,
+                target_zone_id: zoneId,
               })
               .select()
               .single()

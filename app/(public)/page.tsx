@@ -44,7 +44,7 @@ export default async function HomePage() {
   try {
     // Add timeout protection to prevent hanging
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Database timeout')), 3000)
+      setTimeout(() => reject(new Error('Database timeout')), 10000)
     )
 
     const productsData = await Promise.race([getProducts({ limit: 100 }), timeoutPromise])

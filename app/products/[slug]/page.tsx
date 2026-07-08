@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { getProductBySlug } from '@/app/actions/products'
-import { getHouseConfigurator, ensureHouseConfigurator } from '@/app/actions/configurator'
+
 import { mockProducts } from '@/lib/mock-data'
 import type { ProductWithRelations } from '@/types'
 import { ProductDetailWrapper } from './ProductDetailWrapper'
@@ -68,6 +68,14 @@ type ProductDetailDbProduct = NonNullable<Awaited<ReturnType<typeof getProductBy
     description: string
     file_url?: string
   }> | null
+  product_customization_zones?: Array<{
+    id: string
+    product_id: string
+    name: string
+    mask_url: string | null
+    created_at: string
+    updated_at: string
+  }>
 }
 
 function transformProduct(
@@ -138,8 +146,9 @@ function transformProduct(
         description: g.description,
         is_required: g.is_required,
         display_order: g.display_order,
-        target_anchor_id: g.target_anchor_id ?? null,
-        visual_type: g.visual_type ?? 'generic',
+        target_zone_id: (g as any).target_zone_id ?? null,
+        target_anchor_id: null,
+        visual_type: (g as any).visual_type ?? 'generic',
         created_at: g.created_at,
         updated_at: g.updated_at,
         options: (g.options ?? [])
@@ -160,6 +169,14 @@ function transformProduct(
             updated_at: o.updated_at,
           })),
       })),
+    customizationZones: (detailProduct.product_customization_zones ?? []).map((z) => ({
+      id: z.id,
+      product_id: z.product_id,
+      name: z.name,
+      mask_url: z.mask_url,
+      created_at: z.created_at,
+      updated_at: z.updated_at,
+    })),
     documents: (detailProduct.product_documents ?? [])
       .sort((a, b) => a.position - b.position)
       .map((d) => ({
@@ -218,21 +235,7 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound()
   }
 
-  let { data: configurator } = await getHouseConfigurator(product.id)
 
-  if (!configurator && product.configurator_type === 'house') {
-    const baseImageUrl = product.images?.[0]?.url ?? null
-    if (baseImageUrl) {
-      const { data: ensured, error: ensureError } = await ensureHouseConfigurator(
-        product.id,
-        baseImageUrl
-      )
-      if (ensureError) {
-        console.error('Unable to ensure house configurator:', ensureError)
-      }
-      configurator = ensured ?? null
-    }
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -242,7 +245,7 @@ export default async function ProductDetailPage({ params }: Props) {
       >
         <ArrowLeft className="h-4 w-4" /> Back to Products
       </Link>
-      <ProductDetailWrapper product={product} configurator={configurator ?? null} />
+      <ProductDetailWrapper product={product} />
     </div>
   )
 }

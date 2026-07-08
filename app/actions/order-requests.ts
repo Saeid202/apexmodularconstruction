@@ -220,7 +220,7 @@ async function notifySellerNewRequest(
 
   const vapidPublic = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const vapidPrivate = process.env.VAPID_PRIVATE_KEY;
-  const vapidEmail = process.env.VAPID_EMAIL ?? "mailto:info@cargoplus.site";
+  const vapidEmail = process.env.VAPID_EMAIL ?? "mailto:shabani_saeid@hotmail.com";
 
   if (!vapidPublic || !vapidPrivate) {
     console.warn("VAPID keys not configured — skipping push notification");

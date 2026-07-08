@@ -126,9 +126,8 @@ export function EditProductForm({
     product.has_customization ?? false
   )
   const [customGroups, setCustomGroups] = useState<any[]>([])
-  const [configuratorType, setConfiguratorType] = useState<'none' | 'house'>(
-    ((product as any).configurator_type as string) === 'house' ? 'house' : 'none'
-  )
+
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(product.category_id)
   const [whatIsIncluded, setWhatIsIncluded] = useState<string[]>([])
   const [certificatesStandards, setCertificatesStandards] = useState<
     Array<{ id: string; title: string; description: string; file_url: string | null; file?: File }>
@@ -380,8 +379,11 @@ export function EditProductForm({
         formData.set('certificatesStandards', JSON.stringify([]))
       }
 
+      const selectedCategory = categories.find((c) => c.id === selectedCategoryId)
+      const isPrefab = selectedCategory?.slug === 'pre-fabricated'
+
       formData.set('variantsJson', JSON.stringify(uploadedVariants))
-      formData.set('configuratorType', configuratorType)
+      formData.set('configuratorType', 'none')
       console.log('💾 Calling updateProduct with variants:', uploadedVariants.length)
       setLoadingMsg('Saving changes...')
       const result = await updateProduct(product.id, formData)
@@ -441,10 +443,63 @@ export function EditProductForm({
         <DraggableVariantGrid variants={variants} onChange={setVariants} />
       </div>
 
-      {/* Card 2: Details */}
+      {/* Card 2: Customization Options */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="2. Product Details" />
-        <Field label="2.1 Product Name" required icon={Tag}>
+        <Section title="2. Customization Options" />
+        <div
+          className="flex items-center justify-between rounded-xl border px-3 py-2.5"
+          style={{
+            borderColor: hasCustomization ? PURPLE : `${GOLD}44`,
+            background: hasCustomization ? '#EDE9F6' : '#fdfbf7',
+          }}
+        >
+          <div className="flex-1 pr-3">
+            <div className="flex items-center gap-2">
+              <Settings className="h-4 w-4" style={{ color: hasCustomization ? PURPLE : GOLD }} />
+              <p className="text-xs font-bold text-gray-800">2.1 Enable Customization Suite</p>
+            </div>
+            <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+              Allow buyers to select custom doors, windows, flooring, colors, etc. (Like topping on a
+              pizza!)
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={hasCustomization}
+            onClick={() => setHasCustomization(!hasCustomization)}
+            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+            style={{
+              backgroundColor: hasCustomization ? PURPLE : '#D1D5DB',
+              borderColor: hasCustomization ? PURPLE : '#D1D5DB',
+            }}
+          >
+            <span
+              className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+              style={{
+                transform: hasCustomization ? 'translateX(19px)' : 'translateX(1px)',
+                marginTop: 1,
+              }}
+            />
+          </button>
+        </div>
+
+        {hasCustomization && (
+          <CustomizationSuiteSimple
+            productId={product.id}
+            userId={userId}
+            initialEnabled={true}
+            customGroups={customGroups}
+            onCustomGroupsChange={setCustomGroups}
+            variants={variants}
+          />
+        )}
+      </div>
+
+      {/* Card 3: Details */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+        <Section title="3. Product Details" />
+        <Field label="3.1 Product Name" required icon={Tag}>
           <input
             id="name"
             name="name"
@@ -454,7 +509,7 @@ export function EditProductForm({
             className={inputClass}
           />
         </Field>
-        <Field label="2.2 Description" required icon={FileText}>
+        <Field label="3.2 Description" required icon={FileText}>
           <RichTextEditor
             value={descriptionHtml}
             onChange={setDescriptionHtml}
@@ -463,22 +518,28 @@ export function EditProductForm({
         </Field>
       </div>
 
-      {/* Card 3: Pricing & Inventory */}
+      {/* Card 4: Pricing & Inventory */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="3. Pricing & Inventory" />
+        <Section title="4. Pricing & Inventory" />
         <div className="grid sm:grid-cols-2 gap-5">
-          <Field label="3.1 Category" required icon={Layers}>
+          <Field label="4.1 Category" required icon={Layers}>
             <div className="relative">
               <select
                 id="categoryId"
                 name="categoryId"
                 required
-                defaultValue={product.category_id}
+                value={selectedCategoryId}
+                onChange={(e) => setSelectedCategoryId(e.target.value)}
                 className={`${inputClass} appearance-none pr-9`}
               >
                 <option value="">Select a category</option>
                 {categories
-                  .filter((cat) => cat.slug === 'pre-fabricated' || cat.id === product.category_id)
+                  .filter((cat) => 
+                    cat.slug === 'pre-fabricated' || 
+                    cat.slug === 'robots' || 
+                    cat.slug === 'sofas' || 
+                    cat.id === product.category_id
+                  )
                   .map((cat) => (
                     <option key={cat.id} value={cat.id}>
                       {cat.slug === 'pre-fabricated' ? 'Prefabricated Houses' : cat.name}
@@ -488,7 +549,7 @@ export function EditProductForm({
               <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
           </Field>
-          <Field label="3.2 Master Price (CAD)" required icon={DollarSign}>
+          <Field label="4.2 Master Price (CAD)" required icon={DollarSign}>
             <div className="relative">
               <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">
                 $
@@ -590,7 +651,7 @@ export function EditProductForm({
             </div>
           </Field>
           <Field
-            label="3.3 Compare at Price (CAD)"
+            label="4.3 Compare at Price (CAD)"
             icon={DollarSign}
             hint="Original price — used to show a discount badge"
           >
@@ -609,7 +670,7 @@ export function EditProductForm({
               />
             </div>
           </Field>
-          <Field label="3.4 Stock Quantity" required icon={Hash}>
+          <Field label="4.4 Stock Quantity" required icon={Hash}>
             <input
               id="stockQuantity"
               name="stockQuantity"
@@ -623,17 +684,17 @@ export function EditProductForm({
         </div>
       </div>
 
-      {/* Card 4: Documents */}
+      {/* Card 5: Documents */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="4. Product Documents" />
+        <Section title="5. Product Documents" />
         <ProductDocumentsEditor userId={userId} docs={docs} onChange={setDocs} />
       </div>
 
-      {/* Card 5: Video */}
+      {/* Card 6: Video */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="5. Product Video" />
+        <Section title="6. Product Video" />
         <Field
-          label="5.1 YouTube Video URL"
+          label="6.1 YouTube Video URL"
           hint="Paste any YouTube link — watch, youtu.be, or Shorts. The video is hosted on YouTube, not uploaded here."
         >
           <input
@@ -680,10 +741,10 @@ export function EditProductForm({
         </Field>
       </div>
 
-      {/* Card 6: What's Included */}
+      {/* Card 7: What's Included */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="6. What's Included" />
-        <Field label="6.1 Inclusions Bullet Points" hint="List what's included with your product.">
+        <Section title="7. What's Included" />
+        <Field label="7.1 Inclusions Bullet Points" hint="List what's included with your product.">
           <div className="space-y-2">
             {whatIsIncluded.map((item, idx) => (
               <div key={idx} className="flex gap-2">
@@ -724,10 +785,10 @@ export function EditProductForm({
         </Field>
       </div>
 
-      {/* Card 7: Certificates & Standards */}
+      {/* Card 8: Certificates & Standards */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="7. Certificates & Standards" />
-        <Field label="7.1 Certificates & Standards" hint="Add certifications and standards your product meets.">
+        <Section title="8. Certificates & Standards" />
+        <Field label="8.1 Certificates & Standards" hint="Add certifications and standards your product meets.">
           <div className="space-y-4">
             {certificatesStandards.length > 0 && (
               <div className="overflow-x-auto">
@@ -868,14 +929,14 @@ export function EditProductForm({
         </Field>
       </div>
 
-      {/* Card 8: Specifications */}
+      {/* Card 9: Specifications */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="8. Specifications" />
-        <Field label="8.1 Technical Specifications" hint="Add structured key-value specifications (e.g., Width: 3m, Height: 2.8m).">
+        <Section title="9. Specifications" />
+        <Field label="9.1 Technical Specifications" hint="Add structured key-value specifications (e.g., Width: 3m, Height: 2.8m).">
           <SpecificationsEditor specs={specs} onChange={setSpecs} />
         </Field>
         
-        <Field label="8.2 Specifications Detail" hint="Write a freeform description of specifications (materials, finishes, layout, etc.).">
+        <Field label="9.2 Specifications Detail" hint="Write a freeform description of specifications (materials, finishes, layout, etc.).">
           <RichTextEditor
             value={specText}
             onChange={setSpecText}
@@ -883,7 +944,7 @@ export function EditProductForm({
           />
         </Field>
 
-        <Field label="8.3 Specification Sheet (PDF/Doc)" hint="Upload a specification document for the buyer to download.">
+        <Field label="9.3 Specification Sheet (PDF/Doc)" hint="Upload a specification document for the buyer to download.">
           <div className="flex items-center gap-3 p-4 rounded-xl border border-dashed" style={{ borderColor: `${GOLD}66`, backgroundColor: '#FDFBF7' }}>
             <div className="flex-1">
               {specFile.name ? (
@@ -939,116 +1000,7 @@ export function EditProductForm({
         </Field>
       </div>
 
-      {/* Card 9: Customization Options */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="9. Customization Options" />
-        <div
-          className="flex items-center justify-between rounded-xl border px-3 py-2.5"
-          style={{
-            borderColor: hasCustomization ? PURPLE : `${GOLD}44`,
-            background: hasCustomization ? '#EDE9F6' : '#fdfbf7',
-          }}
-        >
-          <div className="flex-1 pr-3">
-            <div className="flex items-center gap-2">
-              <Settings className="h-4 w-4" style={{ color: hasCustomization ? PURPLE : GOLD }} />
-              <p className="text-xs font-bold text-gray-800">9.1 Enable Customization Suite</p>
-            </div>
-            <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
-              Allow buyers to select custom doors, windows, flooring, colors, etc. (Like topping on a
-              pizza!)
-            </p>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={hasCustomization}
-            onClick={() => setHasCustomization(!hasCustomization)}
-            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
-            style={{
-              backgroundColor: hasCustomization ? PURPLE : '#D1D5DB',
-              borderColor: hasCustomization ? PURPLE : '#D1D5DB',
-            }}
-          >
-            <span
-              className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
-              style={{
-                transform: hasCustomization ? 'translateX(19px)' : 'translateX(1px)',
-                marginTop: 1,
-              }}
-            />
-          </button>
-        </div>
 
-        {hasCustomization && (
-          <CustomizationSuiteSimple
-            productId={product.id}
-            userId={userId}
-            initialEnabled={true}
-            customGroups={customGroups}
-            onCustomGroupsChange={setCustomGroups}
-          />
-        )}
-      </div>
-
-      {/* Card 10: Interactive Configurator */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-        <Section title="10. Interactive Configurator" />
-        <div
-          className="flex items-center justify-between rounded-xl border px-3 py-2.5"
-          style={{
-            borderColor: configuratorType === 'house' ? PURPLE : `${GOLD}44`,
-            background: configuratorType === 'house' ? '#EDE9F6' : '#fdfbf7',
-          }}
-        >
-          <div className="flex-1 pr-3">
-            <div className="flex items-center gap-2">
-              <Layers
-                className="h-4 w-4"
-                style={{ color: configuratorType === 'house' ? PURPLE : GOLD }}
-              />
-              <p className="text-xs font-bold text-gray-800">10.1 Enable Interactive Building Engine</p>
-            </div>
-            <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
-              Designate this product as a customizable prefab house. After saving, sellers can define
-              visual anchors and wall masks.
-            </p>
-          </div>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={configuratorType === 'house'}
-            onClick={() => setConfiguratorType(configuratorType === 'house' ? 'none' : 'house')}
-            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
-            style={{
-              backgroundColor: configuratorType === 'house' ? PURPLE : '#D1D5DB',
-              borderColor: configuratorType === 'house' ? PURPLE : '#D1D5DB',
-            }}
-          >
-            <span
-              className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
-              style={{
-                transform: configuratorType === 'house' ? 'translateX(19px)' : 'translateX(1px)',
-                marginTop: 1,
-              }}
-            />
-          </button>
-        </div>
-        {configuratorType === 'house' && (
-          <Link
-            href={`/seller/products/${product.id}/visual-configurator`}
-            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-bold transition-all hover:opacity-90"
-            style={{
-              background: `linear-gradient(135deg, ${PURPLE}, #3a1570)`,
-              color: 'white',
-              border: `1.5px solid ${GOLD}`,
-            }}
-          >
-            <Layers className="h-4 w-4" />
-            Open Visual Configurator →
-          </Link>
-        )}
-      </div>
 
       <div className="flex gap-3 pt-4 border-t" style={{ borderColor: `${GOLD}44` }}>
         <LuxuryButton type="button" variant="outline" size="md" onClick={() => router.back()}>

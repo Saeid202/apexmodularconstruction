@@ -27,9 +27,24 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  let user: any = null
+  try {
+    const { data, error: authError } = await supabase.auth.getUser()
+    user = data?.user ?? null
+
+    if (authError && authError.message.toLowerCase().includes('refresh token')) {
+      const allCookies = request.cookies.getAll()
+      const response = NextResponse.redirect(new URL(request.url))
+      allCookies.forEach((cookie) => {
+        if (cookie.name.startsWith('sb-') || cookie.name.includes('auth-token')) {
+          response.cookies.delete(cookie.name)
+        }
+      })
+      return response
+    }
+  } catch (err) {
+    console.error('Middleware auth error:', err)
+  }
 
   const { pathname } = request.nextUrl
 

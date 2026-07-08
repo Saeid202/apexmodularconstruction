@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { 
   ArrowRight, CheckCircle2, MapPin, 
   Send, Bot, User, RefreshCcw, Download, Sparkles,
@@ -10,7 +11,7 @@ import {
   Info, LayoutGrid, Zap, X, Upload, FileText, Image as ImageIcon
 } from 'lucide-react';
 import { aduService, ADUCheckInputs, ADUReportData } from '@/lib/services/aduService';
-import { InteractiveProductCard } from './InteractiveProductCard';
+
 
 const AddressAutofill = dynamic(
   () => import('@mapbox/search-js-react').then((mod) => mod.AddressAutofill),
@@ -384,7 +385,18 @@ export function ADUChatbot() {
                         {msg.text?.split(/(\[PRODUCT: [a-z0-9-]+\])/g).map((part, i) => {
                           const match = part.match(/\[PRODUCT: ([a-z0-9-]+)\]/);
                           if (match) {
-                            return <InteractiveProductCard key={i} slug={match[1]} />;
+                            return (
+                              <Link
+                                key={i}
+                                href={`/products/${match[1]}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-2 my-2 rounded-xl border font-bold text-sm transition-all hover:bg-gray-50 bg-white"
+                                style={{ borderColor: `${CP_PURPLE}44`, color: CP_PURPLE }}
+                              >
+                                View {match[1].replace(/-/g, ' ')} <ArrowRight className="w-4 h-4" />
+                              </Link>
+                            );
                           }
                           return <span key={i}>{part}</span>;
                         })}

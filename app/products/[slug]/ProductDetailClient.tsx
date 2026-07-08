@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import {
   ShoppingCart,
   Check,
@@ -23,35 +24,14 @@ import { OrderRequestModal } from '@/components/product/OrderRequestModal'
 import { WhatsAppLink } from '@/components/layout/WhatsAppLink'
 import { RichTextRenderer } from '@/components/product/RichTextRenderer'
 import { ProductInclusionsPanel } from '@/components/ProductInclusionsPanel'
-import type { ProductWithRelations, CustomizationOption, HouseAnchor } from '@/types'
-import { extractYouTubeId, getYouTubeEmbedUrl } from '@/lib/youtube'
 import { ProductCustomizer } from '@/components/product/ProductCustomizer'
+import type { ProductWithRelations, CustomizationOption } from '@/types'
+import { extractYouTubeId, getYouTubeEmbedUrl } from '@/lib/youtube'
 
 const PURPLE = '#4B1D8F'
 const GOLD = '#D4AF37'
 
-const COLOR_GROUP_RE =
-  /(?:\bcolor\b|\bcolors\b|\bpaint\b|\bwall\b|\bcladding\b|\bfinish\b|\bfacade\b|\bfaçade\b)/i
 
-function normalizeLabel(value?: string | null) {
-  return (
-    value
-      ?.trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, ' ') ?? ''
-  )
-}
-
-function labelsMatch(a?: string | null, b?: string | null) {
-  const normalizedA = normalizeLabel(a)
-  const normalizedB = normalizeLabel(b)
-  if (!normalizedA || !normalizedB) return false
-  if (normalizedA === normalizedB) return true
-  if (normalizedA.includes(normalizedB) || normalizedB.includes(normalizedA)) return true
-  const wordsA = new Set(normalizedA.split(' ').filter(Boolean))
-  const wordsB = new Set(normalizedB.split(' ').filter(Boolean))
-  return [...wordsA].some((word) => wordsB.has(word))
-}
 
 function getPriceTypeLabel(priceType: string): string {
   switch (priceType) {
@@ -64,12 +44,19 @@ function getPriceTypeLabel(priceType: string): string {
   }
 }
 
+function getSafeMaskUrl(url: string | null | undefined): string {
+  if (!url) return 'none'
+  if (url.startsWith('data:image/svg+xml;utf8,')) {
+    const rawSvg = url.substring('data:image/svg+xml;utf8,'.length)
+    return `data:image/svg+xml;utf8,${encodeURIComponent(rawSvg)}`
+  }
+  return url
+}
+
 export function ProductDetailClient({
   product,
-  configurator,
 }: {
   product: ProductWithRelations
-  configurator?: { anchors?: HouseAnchor[] } | null
 }) {
   const router = useRouter()
   const { addItem } = useCartStore()
@@ -90,6 +77,19 @@ export function ProductDetailClient({
   const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption[]>>(
     {}
   )
+
+  // Pre-populate customSelections with the first option of each customization group
+  useEffect(() => {
+    if (product.customizationGroups) {
+      const initial: Record<string, CustomizationOption[]> = {}
+      product.customizationGroups.forEach((group) => {
+        if (group.options && group.options.length > 0) {
+          initial[group.id] = [group.options[0]]
+        }
+      })
+      setCustomSelections(initial)
+    }
+  }, [product.customizationGroups])
 
   const openLightbox = useCallback(() => {
     const idx = allImages.findIndex((img) => img.id === activeId)
@@ -133,81 +133,9 @@ export function ProductDetailClient({
       .reduce((acc, opt) => acc + opt.price_modifier, 0)
   const displayPrice = activeTab === 'custom' ? totalCustomPrice : activePrice
 
-  const anchorLookup = useMemo(() => {
-    return new Map<string, HouseAnchor>(
-      (configurator?.anchors ?? []).map((anchor: HouseAnchor) => [anchor.id!, anchor])
-    )
-  }, [configurator])
 
-  const findMatchingAnchor = useCallback(
-    (
-      group: NonNullable<ProductWithRelations['customizationGroups']>[number],
-      option: CustomizationOption
-    ) => {
-      if (group.target_anchor_id) {
-        const explicitAnchor = anchorLookup.get(group.target_anchor_id)
-        if (explicitAnchor) return explicitAnchor
-      }
 
-      const matchedAnchor = configurator?.anchors?.find(
-        (anchor: HouseAnchor) =>
-          labelsMatch(anchor.label, group.name) ||
-          labelsMatch(anchor.label, option.name) ||
-          labelsMatch(anchor.label, option.description)
-      )
 
-      if (matchedAnchor) return matchedAnchor
-
-      const isColorGroup =
-        group.visual_type === 'wall-color' || COLOR_GROUP_RE.test(normalizeLabel(group.name))
-
-      if (!isColorGroup) return undefined
-
-      return configurator?.anchors?.find(
-        (anchor: HouseAnchor) => anchor.anchor_type === 'wall-mask'
-      )
-    },
-    [anchorLookup, configurator]
-  )
-
-  const customizationOverlays = useMemo(() => {
-    if (!configurator?.anchors?.length) return {}
-    type OverlayValue = { imageUrl?: string; color?: string }
-    const overlays: Record<string, OverlayValue> = {}
-
-    Object.entries(customSelections).forEach(([groupId, options]) => {
-      const group = product.customizationGroups?.find((g) => g.id === groupId)
-      if (!group) return
-
-      options.forEach((option) => {
-        const anchor = findMatchingAnchor(group, option)
-        if (!anchor?.id) return
-
-        const colorValue =
-          option.color_hex ??
-          (option.description && /^#([0-9A-F]{6}|[0-9A-F]{3})$/i.test(option.description)
-            ? option.description
-            : undefined)
-
-        const isMaskableWall = anchor.anchor_type === 'wall-mask'
-        if (isMaskableWall && !anchor.mask_url) return
-
-        if (option.image_url) {
-          overlays[anchor.id] = { imageUrl: option.image_url }
-        } else if (colorValue) {
-          overlays[anchor.id] = { color: colorValue }
-        }
-      })
-    })
-
-    return overlays
-  }, [customSelections, configurator, findMatchingAnchor, product.customizationGroups])
-
-  const hasColorOverlay = useMemo(() => {
-    return Object.values(customizationOverlays).some((overlay) =>
-      Boolean(overlay.color || overlay.imageUrl)
-    )
-  }, [customizationOverlays])
 
   function buildCartItem() {
     const isCustom = activeTab === 'custom'
@@ -257,6 +185,14 @@ export function ProductDetailClient({
     router.push('/checkout')
   }
 
+
+  const customImageUrl = useMemo(() => {
+    const selectedOptionWithImage = Object.values(customSelections)
+      .flat()
+      .find((opt) => opt.image_url)
+    return selectedOptionWithImage?.image_url ?? activeImage?.url ?? ''
+  }, [customSelections, activeImage])
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-14 w-full max-w-full items-start">
@@ -291,81 +227,47 @@ export function ProductDetailClient({
 
           {/* Image area */}
           {activeTab === 'custom' ? (
-            /* Custom tab: identical layout to the calibration tool (aspect-[16/9] + object-contain)
-             so anchor percentages align pixel-perfectly with what the admin drew */
             <div
-              className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-white"
+              className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-white flex items-center justify-center"
               style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}` }}
             >
-              {activeImage && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={activeImage.url}
-                  alt={activeImage.altText ?? product.name}
-                  className="absolute inset-0 w-full h-full object-contain"
-                />
-              )}
+              {/* Base Master Image */}
+              <img
+                src={masterImage?.url || customImageUrl}
+                alt={product.name}
+                className="w-full h-full object-contain pointer-events-none transition-all duration-300"
+              />
 
-              {configurator
-                ? Object.entries(customizationOverlays).map(([anchorId, overlay]) => {
-                    const anchor = configurator?.anchors?.find(
-                      (a: HouseAnchor) => a.id === anchorId
-                    )
-                    if (!anchor) return null
-                    return (
-                      <div
-                        key={anchorId}
-                        className="absolute pointer-events-none transition-all duration-500 ease-in-out"
-                        style={{
-                          left: `${anchor.x_pos}%`,
-                          top: `${anchor.y_pos}%`,
-                          width: `${anchor.width}%`,
-                          height: `${anchor.height}%`,
-                          zIndex: anchor.z_index ?? 10,
-                        }}
-                      >
-                        {overlay.imageUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={overlay.imageUrl}
-                            alt={anchor.label}
-                            className="w-full h-full object-contain drop-shadow-md"
-                          />
-                        ) : overlay.color ? (
-                          <div
-                            className="w-full h-full"
-                            style={{
-                              backgroundColor: overlay.color,
-                              ...(anchor.mask_url
-                                ? {
-                                    WebkitMaskImage: `url(${anchor.mask_url})`,
-                                    maskImage: `url(${anchor.mask_url})`,
-                                    WebkitMaskSize: '100% 100%',
-                                    maskSize: '100% 100%',
-                                    backgroundRepeat: 'no-repeat',
-                                    backgroundPosition: 'center',
-                                  }
-                                : {}),
-                            }}
-                          />
-                        ) : null}
-                      </div>
-                    )
-                  })
-                : null}
+              {/* Dynamic Overlay Masks */}
+              {Object.entries(customSelections).map(([groupId, selectedOptions]) => {
+                const group = product.customizationGroups?.find((g) => g.id === groupId)
+                const targetZoneId = group ? (group as any).target_zone_id : null
+                if (!group || !targetZoneId) return null
 
-              {Object.keys(customSelections).length > 0 && !configurator && (
-                <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/90 px-3 py-1 text-xs font-bold text-slate-900 shadow-sm">
-                  House configurator is not configured for this product yet.
-                </div>
-              )}
+                const zone = product.customizationZones?.find((z) => z.id === targetZoneId)
+                if (!zone || !zone.mask_url) return null
 
-              {configurator && Object.keys(customSelections).length > 0 && !hasColorOverlay && (
-                <div className="absolute left-4 top-4 rounded-full border border-white/60 bg-white/90 px-3 py-1 text-xs font-bold text-slate-900 shadow-sm">
-                  House configurator is enabled, but the wall-mask mask is not yet configured. Add
-                  or update the mask URL for the red wall region.
-                </div>
-              )}
+                const opt = selectedOptions[0]
+                if (!opt) return null
+
+                return (
+                  <div
+                    key={groupId}
+                    className="absolute inset-0 pointer-events-none transition-all duration-300"
+                    style={{
+                      maskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
+                      WebkitMaskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
+                      maskSize: '100% 100%',
+                      WebkitMaskSize: '100% 100%',
+                      backgroundColor: opt.color_hex || 'transparent',
+                      backgroundImage: opt.image_url ? `url("${opt.image_url}")` : 'none',
+                      backgroundSize: 'cover',
+                      mixBlendMode: opt.image_url ? 'normal' : 'multiply',
+                      opacity: opt.image_url ? 0.95 : 0.8,
+                    }}
+                  />
+                )
+              })}
             </div>
           ) : (
             /* Ready tab: original gallery unchanged */
@@ -623,10 +525,13 @@ export function ProductDetailClient({
               )}
             </div>
           ) : (
-            <ProductCustomizer
-              groups={product.customizationGroups ?? []}
-              onSelectionChange={setCustomSelections}
-            />
+            <div className="flex flex-col gap-6">
+              <ProductCustomizer
+                groups={product.customizationGroups ?? []}
+                selections={customSelections}
+                onSelectionChange={setCustomSelections}
+              />
+            </div>
           )}
 
           {/* Parameters / Documents bar */}

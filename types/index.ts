@@ -46,7 +46,7 @@ import type {
   product_customization_options,
 } from './database'
 
-export * from './configurator'
+
 
 export type {
   Database,
@@ -130,14 +130,22 @@ export interface ProductWithRelations {
   documents: ProductDocumentData[]
   hasCustomization: boolean
   customizationGroups?: CustomizationGroupWithRelations[]
+  customizationZones?: CustomizationZone[]
 }
 
-// CustomizationGroup already contains target_anchor_id and visual_type from the DB type.
-// We re-declare them here only to ensure TypeScript resolves them as part of this interface.
+export interface CustomizationZone {
+  id: string
+  product_id: string
+  name: string
+  mask_url: string | null
+  created_at?: string
+  updated_at?: string
+}
+
 export interface CustomizationGroupWithRelations extends CustomizationGroup {
   options: CustomizationOption[]
-  target_anchor_id: string | null
-  visual_type: 'door' | 'window' | 'wall-color' | 'generic' | null
+  target_zone_id?: string | null
+  zone?: CustomizationZone | null
 }
 
 export interface ProductDocumentData {

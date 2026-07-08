@@ -244,7 +244,7 @@ export function ContactForm() {
               value={formData.projectLocation}
               onChange={(e) => setFormData({ ...formData, projectLocation: e.target.value })}
               className={inputClass}
-              placeholder="e.g. Vaughan, ON, Canada"
+              placeholder="e.g. Toronto, ON, Canada"
             />
           </div>
         </div>
