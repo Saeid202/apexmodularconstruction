@@ -31,7 +31,7 @@ export default async function ARPage({ params }: Props) {
   if (result.data) {
     productName = result.data.name
     // Fallback for sofa-2 for testing if not set
-    glbUrl = (result.data.specifications as any)?.ar_glb_url || (slug === 'sofa-2' ? 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/SheenChair/glTF-Binary/SheenChair.glb' : '')
+    glbUrl = (result.data.specifications as any)?.ar_glb_url || ''
     usdzUrl = (result.data.specifications as any)?.ar_usdz_url || ''
   } else {
     const mock = mockProducts.find((p) => p.slug === slug)

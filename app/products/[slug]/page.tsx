@@ -98,7 +98,7 @@ function transformProduct(
     configurator_type: detailProduct.configurator_type ?? 'none',
     specifications: {
       ...(detailProduct.specifications as Record<string, string>),
-      ar_glb_url: (detailProduct.specifications as any)?.ar_glb_url || (dbProduct.slug === 'sofa-2' ? 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/SheenChair/glTF-Binary/SheenChair.glb' : ''),
+      ar_glb_url: (detailProduct.specifications as any)?.ar_glb_url || '',
       ar_usdz_url: (detailProduct.specifications as any)?.ar_usdz_url || '',
     },
     requireOrderRequest: detailProduct.require_order_request ?? false,
