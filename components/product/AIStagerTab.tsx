@@ -56,7 +56,11 @@ export function AIStagerTab({ product, activeImageUrl }: AIStagerTabProps) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(window.location.href)}`)
+      if (product?.slug) {
+        setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(window.location.origin + '/ar/' + product.slug)}`)
+      } else {
+        setQrUrl(`https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=${encodeURIComponent(window.location.href)}`)
+      }
       
       const handleSwitch = () => {
         setStageMode('ar')
