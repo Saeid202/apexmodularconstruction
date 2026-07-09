@@ -18,6 +18,7 @@ import {
   File,
   Settings,
   Wrench,
+  Sparkles,
 } from 'lucide-react'
 import { useCartStore } from '@/lib/stores/cartStore'
 import { OrderRequestModal } from '@/components/product/OrderRequestModal'
@@ -25,6 +26,7 @@ import { WhatsAppLink } from '@/components/layout/WhatsAppLink'
 import { RichTextRenderer } from '@/components/product/RichTextRenderer'
 import { ProductInclusionsPanel } from '@/components/ProductInclusionsPanel'
 import { ProductCustomizer } from '@/components/product/ProductCustomizer'
+import { AIStagerTab } from '@/components/product/AIStagerTab'
 import type { ProductWithRelations, CustomizationOption } from '@/types'
 import { extractYouTubeId, getYouTubeEmbedUrl } from '@/lib/youtube'
 
@@ -61,6 +63,11 @@ export function ProductDetailClient({
   const router = useRouter()
   const { addItem } = useCartStore()
   const masterImage = product.images.find((img) => img.isMaster) ?? product.images[0] ?? null
+  const isFurniture = useMemo(() => {
+    return ['sofa', 'furniture'].some((cat) =>
+      product.category?.name?.toLowerCase().includes(cat)
+    )
+  }, [product.category?.name])
   const variantImages = product.images.filter((img) => img.id !== masterImage?.id)
   const allImages = useMemo(
     () => (masterImage ? [masterImage, ...variantImages] : variantImages),
@@ -73,7 +80,7 @@ export function ProductDetailClient({
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [requestModalOpen, setRequestModalOpen] = useState(false)
   const [requestSuccess, setRequestSuccess] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'ready' | 'custom'>('ready')
+  const [activeTab, setActiveTab] = useState<'ready' | 'custom' | 'stager'>('ready')
   const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption[]>>(
     {}
   )
@@ -342,6 +349,29 @@ export function ProductDetailClient({
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 )}
+                {/* Floating AR View badge */}
+                {(product.specifications?.ar_glb_url || product.specifications?.ar_usdz_url) && (
+                  <div className="absolute top-4 left-4 z-10">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        setActiveTab('stager')
+                        // We will add a small state or search param to force AIStagerTab to load into AR mode
+                        if (typeof window !== 'undefined') {
+                          window.dispatchEvent(new CustomEvent('switch-to-ar-tab'))
+                        }
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all text-white border-2 border-[#D4AF37] hover:border-white"
+                      style={{
+                        background: 'linear-gradient(135deg, #4B1D8F 0%, #30125C 100%)',
+                      }}
+                    >
+                      <Sparkles className="h-3.5 w-3.5 text-[#D4AF37] animate-pulse" />
+                      View in AR (3D)
+                    </button>
+                  </div>
+                )}
                 {/* Zoom hint */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                   <div
@@ -509,7 +539,18 @@ export function ProductDetailClient({
                 }`}
               >
                 <Settings className={`h-4 w-4 ${activeTab === 'custom' ? 'text-[#D4AF37]' : ''}`} />
-                Customize Your Build
+                {isFurniture ? 'Customize Your Furniture' : 'Customize Your Build'}
+              </button>
+              <button
+                onClick={() => setActiveTab('stager')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
+                  activeTab === 'stager'
+                    ? 'bg-white text-[#4B1D8F] shadow-lg scale-100'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50/50 scale-95 opacity-70'
+                }`}
+              >
+                <Sparkles className={`h-4 w-4 ${activeTab === 'stager' ? 'text-[#D4AF37]' : ''}`} />
+                Stager
               </button>
             </div>
           )}
@@ -524,7 +565,7 @@ export function ProductDetailClient({
                 </div>
               )}
             </div>
-          ) : (
+          ) : activeTab === 'custom' ? (
             <div className="flex flex-col gap-6">
               <ProductCustomizer
                 groups={product.customizationGroups ?? []}
@@ -532,6 +573,8 @@ export function ProductDetailClient({
                 onSelectionChange={setCustomSelections}
               />
             </div>
+          ) : (
+            <AIStagerTab product={product} activeImageUrl={customImageUrl || activeImage?.url} />
           )}
 
           {/* Parameters / Documents bar */}

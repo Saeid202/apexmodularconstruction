@@ -130,6 +130,8 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
     name: null,
     file: null,
   })
+  const [arGlbFile, setArGlbFile] = useState<File | null>(null)
+  const [arUsdzFile, setArUsdzFile] = useState<File | null>(null)
 
   const handleAiScan = async () => {
     const mainImage = variants.find((v) => v.file || v.existingUrl)
@@ -253,6 +255,44 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
         }
       }
 
+      // Upload GLB AR file if chosen
+      let finalArGlbUrl: string | null = null
+      if (arGlbFile) {
+        setStatus('Uploading GLB 3D model…')
+        const fileExt = arGlbFile.name.split('.').pop()
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(`models/${user.id}/${fileName}`, arGlbFile)
+        if (!uploadError) {
+          const { data: publicData } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(`models/${user.id}/${fileName}`)
+          finalArGlbUrl = publicData.publicUrl
+        } else {
+          console.error('Error uploading GLB:', uploadError)
+        }
+      }
+
+      // Upload USDZ AR file if chosen
+      let finalArUsdzUrl: string | null = null
+      if (arUsdzFile) {
+        setStatus('Uploading USDZ 3D model…')
+        const fileExt = arUsdzFile.name.split('.').pop()
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(`models/${user.id}/${fileName}`, arUsdzFile)
+        if (!uploadError) {
+          const { data: publicData } = supabase.storage
+            .from('product-images')
+            .getPublicUrl(`models/${user.id}/${fileName}`)
+          finalArUsdzUrl = publicData.publicUrl
+        } else {
+          console.error('Error uploading USDZ:', uploadError)
+        }
+      }
+
       const specObj: Record<string, string> = {}
       specs.forEach(({ key, value }) => {
         if (key && value) specObj[key] = value
@@ -265,6 +305,12 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       }
       if (finalSpecFileName) {
         specObj['_specification_file_name'] = finalSpecFileName
+      }
+      if (finalArGlbUrl) {
+        specObj['ar_glb_url'] = finalArGlbUrl
+      }
+      if (finalArUsdzUrl) {
+        specObj['ar_usdz_url'] = finalArUsdzUrl
       }
 
       formData.set('specifications', JSON.stringify(specObj))
@@ -902,7 +948,54 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
         </Field>
       </div>
 
+      {/* Card 10: Augmented Reality (AR) Assets */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+        <Section title="10. Augmented Reality (AR) Assets" />
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Optional: Upload 3D models of this product so customers can visualize it at 1:1 scale in their own rooms using their smartphone camera (similar to oakfurnitureland.co.uk). Works best for furniture items.
+        </p>
+        <div className="grid sm:grid-cols-2 gap-5">
+          <Field 
+            label="10.1 Android / Web 3D Model (.glb)" 
+            hint="Upload a GLB file containing the 3D model"
+          >
+            <div className="flex flex-col gap-2">
+              {arGlbFile ? (
+                <div className="flex items-center justify-between p-3.5 bg-green-50 border border-green-200 rounded-xl text-sm font-bold text-green-800">
+                  <span className="truncate max-w-[200px]">✓ {arGlbFile.name}</span>
+                  <button type="button" onClick={() => setArGlbFile(null)} className="text-red-500 hover:text-red-700">Remove</button>
+                </div>
+              ) : (
+                <label className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 hover:border-purple-300 transition-all flex flex-col items-center gap-2">
+                  <Upload className="h-6 w-6 text-gray-400" />
+                  <span className="text-xs font-bold text-gray-600">Select GLB File</span>
+                  <input type="file" accept=".glb" onChange={(e) => setArGlbFile(e.target.files?.[0] || null)} className="hidden" />
+                </label>
+              )}
+            </div>
+          </Field>
 
+          <Field 
+            label="10.2 iOS / Safari 3D Model (.usdz)" 
+            hint="Upload a USDZ file for Apple AR Quick Look"
+          >
+            <div className="flex flex-col gap-2">
+              {arUsdzFile ? (
+                <div className="flex items-center justify-between p-3.5 bg-green-50 border border-green-200 rounded-xl text-sm font-bold text-green-800">
+                  <span className="truncate max-w-[200px]">✓ {arUsdzFile.name}</span>
+                  <button type="button" onClick={() => setArUsdzFile(null)} className="text-red-500 hover:text-red-700">Remove</button>
+                </div>
+              ) : (
+                <label className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 hover:border-purple-300 transition-all flex flex-col items-center gap-2">
+                  <Upload className="h-6 w-6 text-gray-400" />
+                  <span className="text-xs font-bold text-gray-600">Select USDZ File</span>
+                  <input type="file" accept=".usdz" onChange={(e) => setArUsdzFile(e.target.files?.[0] || null)} className="hidden" />
+                </label>
+              )}
+            </div>
+          </Field>
+        </div>
+      </div>
 
       {/* Card 11: Publish status */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">

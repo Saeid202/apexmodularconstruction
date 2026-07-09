@@ -96,7 +96,11 @@ function transformProduct(
     sellerId: dbProduct.seller_id,
     status: dbProduct.status,
     configurator_type: detailProduct.configurator_type ?? 'none',
-    specifications: detailProduct.specifications as Record<string, string>,
+    specifications: {
+      ...(detailProduct.specifications as Record<string, string>),
+      ar_glb_url: (detailProduct.specifications as any)?.ar_glb_url || (dbProduct.slug === 'sofa-2' ? 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/SheenChair/glTF-Binary/SheenChair.glb' : ''),
+      ar_usdz_url: (detailProduct.specifications as any)?.ar_usdz_url || '',
+    },
     requireOrderRequest: detailProduct.require_order_request ?? false,
     showStock: detailProduct.show_stock ?? true,
     youtubeUrl: detailProduct.youtube_url ?? null,
