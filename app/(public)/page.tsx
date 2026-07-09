@@ -1,5 +1,8 @@
 import { PrefabHero } from '@/components/home/PrefabHero'
 import { ProductShowcaseWrapper } from '@/components/home/ProductShowcaseWrapper'
+import { HowItWorks } from '@/components/home/HowItWorks'
+import { TrustMetrics } from '@/components/home/TrustMetrics'
+import { HomeCTA } from '@/components/home/HomeCTA'
 import { getProducts } from '@/app/actions/products'
 import { getHeroSlides } from '@/app/actions/hero-slides'
 import { getSiteSettings } from '@/app/actions/cms-settings'
@@ -7,7 +10,6 @@ import { mockProducts } from '@/lib/mock-data'
 import type { ProductWithRelations } from '@/types'
 import type { Metadata } from 'next'
 
-// Always fetch fresh data
 export const revalidate = 0
 
 export const metadata: Metadata = {
@@ -20,7 +22,6 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  // Fetch active hero slides and site settings in parallel
   let activeSlides: any[] = []
   let heroAutoplay = false
   let heroAutoplayInterval = 5
@@ -35,14 +36,12 @@ export default async function HomePage() {
     console.error('Failed to fetch hero slide or settings:', error)
   }
 
-  // Try to fetch from Supabase with timeout protection, fall back to mock data
   let productsResult: { data: any[] | null; error: string | null } = {
     data: null,
     error: 'Using mock data',
   }
 
   try {
-    // Add timeout protection to prevent hanging
     const timeoutPromise = new Promise((_, reject) =>
       setTimeout(() => reject(new Error('Database timeout')), 3000)
     )
@@ -118,12 +117,6 @@ export default async function HomePage() {
       documents: [],
     })) ?? []
   const products: ProductWithRelations[] = dbProducts.length > 0 ? dbProducts : mockProducts
-  console.log(
-    'Using products:',
-    dbProducts.length > 0 ? 'database' : 'mock data',
-    'Count:',
-    products.length
-  )
 
   return (
     <>
@@ -132,7 +125,10 @@ export default async function HomePage() {
         autoplay={heroAutoplay}
         autoplayInterval={heroAutoplayInterval}
       />
+      <HowItWorks />
+      <TrustMetrics />
       <ProductShowcaseWrapper products={products} title="Projects" limit={productsLimit} />
+      <HomeCTA />
     </>
   )
 }

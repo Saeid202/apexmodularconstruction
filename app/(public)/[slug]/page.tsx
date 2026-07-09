@@ -1,5 +1,8 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { createServerClient } from "@/lib/supabase/server";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Section } from "@/components/ui/Section";
 
 export const revalidate = 60;
 
@@ -13,6 +16,23 @@ export async function generateStaticParams() {
   } catch {
     return [];
   }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const supabase = await createServerClient();
+    const { data } = await supabase
+      .from("page_contents" as any)
+      .select("title")
+      .eq("slug", slug)
+      .single();
+    const row = data as { title: string } | null;
+    if (row?.title) {
+      return { title: row.title };
+    }
+  } catch {}
+  return {};
 }
 
 interface CmsPageProps {
@@ -36,12 +56,16 @@ export default async function CmsPage({ params }: CmsPageProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">{typedPage.title}</h1>
-      <div
-        className="prose prose-lg max-w-3xl"
-        dangerouslySetInnerHTML={{ __html: typedPage.content }}
-      />
-    </div>
+    <>
+      <PageHeader title={typedPage.title} background="white" />
+      <Section background="white" padding="lg">
+        <div className="mx-auto max-w-4xl">
+          <div
+            className="prose prose-lg md:prose-xl max-w-none prose-headings:scroll-mt-20 prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl md:prose-h2:text-3xl prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-ul:space-y-3 prose-li:text-muted-foreground"
+            dangerouslySetInnerHTML={{ __html: typedPage.content }}
+          />
+        </div>
+      </Section>
+    </>
   );
 }

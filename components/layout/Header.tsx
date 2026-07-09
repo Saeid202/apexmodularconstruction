@@ -9,7 +9,6 @@ import { MobileMenu } from './MobileMenu'
 import { AuthModal } from '@/components/auth/AuthModal'
 import { SellerAuthModal } from '@/components/auth/SellerAuthModal'
 import { HeaderAuth } from './HeaderAuth'
-import { InstallButton } from '@/components/pwa/InstallButton'
 import { CartBadge } from './CartBadge'
 import { getSiteSettings, type SiteSettings } from '@/app/actions/cms-settings'
 
@@ -35,11 +34,11 @@ export function Header({ cmsNav }: HeaderProps) {
     open: false,
     mode: 'register',
   })
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    getSiteSettings().then((data) => {
-      setSettings(data)
-    })
+    setMounted(true)
+    getSiteSettings().then(setSettings)
   }, [])
 
   useEffect(() => {
@@ -74,11 +73,15 @@ export function Header({ cmsNav }: HeaderProps) {
     setSellerAuthModal((prev) => ({ ...prev, open: false }))
   }
 
+  const headerClass = mounted && scrolled
+    ? 'bg-primary shadow-elevation-medium border-b border-primary-700/50'
+    : 'bg-primary border-b border-primary-700/50'
+
   return (
     <>
-      <header className="w-full bg-[#4B1D8F] border-b border-purple-900/50 py-3 transition-all duration-500">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center gap-8">
+      <header className={`sticky top-0 z-40 w-full transition-all duration-300 ${headerClass}`}>
+        <div className="container mx-auto px-4 lg:px-6">
+          <div className="flex h-14 lg:h-16 items-center gap-4">
             {/* Logo */}
             <Link
               href="/"
@@ -86,12 +89,8 @@ export function Header({ cmsNav }: HeaderProps) {
             >
               {(!settings || settings.logo_style === 'complete-banner') && (
                 <div
-                  className={`flex items-center bg-white rounded-xl px-3 py-1.5 overflow-hidden ${
-                    settings?.logo_height === 'h-12'
-                      ? 'h-12'
-                      : settings?.logo_height === 'h-20'
-                        ? 'h-20'
-                        : 'h-12'
+                  className={`flex items-center bg-white rounded-lg px-2 py-1 overflow-hidden ${
+                    settings?.logo_height === 'h-20' ? 'h-10' : 'h-8'
                   }`}
                 >
                   <img
@@ -102,22 +101,16 @@ export function Header({ cmsNav }: HeaderProps) {
                 </div>
               )}
               {settings?.logo_style === 'icon-and-text' && (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <img
                     src={settings.logo_icon_url || '/logo.jpg'}
                     alt="Apex Logo"
-                    className={`w-auto rounded-lg ${
-                      settings.logo_height === 'h-12'
-                        ? 'h-12'
-                        : settings.logo_height === 'h-20'
-                          ? 'h-20'
-                          : 'h-10'
-                    }`}
+                    className="h-8 w-auto rounded-md"
                   />
                   <img
                     src={settings.logo_text_url || '/logo.svg'}
                     alt="Apex Modular Construction"
-                    className="h-8 w-auto hidden sm:block"
+                    className="h-6 w-auto hidden sm:block"
                   />
                 </div>
               )}
@@ -125,33 +118,28 @@ export function Header({ cmsNav }: HeaderProps) {
                 <img
                   src={settings.logo_text_url || '/logo.svg'}
                   alt="Apex Modular Construction"
-                  className="h-8 w-auto"
+                  className="h-6 w-auto"
                 />
               )}
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex items-center flex-1">
               <Navigation
-                scrolled={scrolled}
                 onOpenSellerAuth={(mode) => setSellerAuthModal({ open: true, mode })}
               />
               {cmsNav}
             </div>
 
-            {/* Spacer */}
-            <div className="flex-1" />
-
             {/* Right side */}
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0 ml-auto">
               <CartBadge />
-              <div className="hidden lg:flex items-center gap-2">
-                <InstallButton />
-                <HeaderAuth scrolled={scrolled} />
+              <div className="hidden lg:flex items-center gap-1.5">
+                <HeaderAuth />
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-white transition-all hover:bg-white/10 lg:hidden"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground/80 transition-colors hover:bg-white/10 lg:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />
@@ -172,7 +160,6 @@ export function Header({ cmsNav }: HeaderProps) {
       />
 
       <AuthModal isOpen={authModal.open} initialMode={authModal.mode} onClose={closeAuth} />
-
       <SellerAuthModal
         isOpen={sellerAuthModal.open}
         initialMode={sellerAuthModal.mode}

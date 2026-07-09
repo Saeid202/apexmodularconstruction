@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 import Link from 'next/link'
-import { Mail, Phone, MapPin, ArrowUpRight, X as XIcon } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
 import type { SocialLink } from '@/app/actions/cms-settings'
 
 const quickLinks = [
@@ -11,17 +11,10 @@ const quickLinks = [
   { href: '/contact', label: 'Contact Us' },
 ]
 
-const partnerLinks: { href: string; label: string }[] = []
-
-const customerServiceLinks = [
-  { href: '/shipping', label: 'Shipping Policy' },
-  { href: '/contact', label: 'FAQ' },
-  { href: '/contact', label: 'Support' },
-]
-
 const legalLinks = [
   { href: '/terms', label: 'Terms of Service' },
   { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/shipping', label: 'Shipping Policy' },
 ]
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -56,81 +49,15 @@ function YoutubeIcon({ className }: { className?: string }) {
   )
 }
 
-function GithubIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-    </svg>
-  )
-}
-
-function GlobeIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  )
-}
-
-function RedditIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
-    </svg>
-  )
-}
-
-function GoogleIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 1 1 0-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0 0 12.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.426-.013z" />
-    </svg>
-  )
-}
-
 const PLATFORM_ICONS: Record<string, ComponentType<{ className?: string }>> = {
   facebook: FacebookIcon,
   instagram: InstagramIcon,
   linkedin: LinkedinIcon,
-  twitter: XIcon,
-  x: XIcon,
   youtube: YoutubeIcon,
-  github: GithubIcon,
-  reddit: RedditIcon,
-  google: GoogleIcon,
-}
-
-function SocialIcon({ platform }: { platform: string }) {
-  const Icon = PLATFORM_ICONS[platform.toLowerCase()] ?? GlobeIcon
-  return <Icon className="h-4 w-4" />
 }
 
 interface FooterProps {
   socialLinks?: SocialLink[]
-}
-
-function ColHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="mb-5">
-      <p
-        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
-        style={{ color: '#D4AF37' }}
-      >
-        {children}
-      </p>
-      <div className="h-px w-8 rounded-full" style={{ background: 'rgba(212,175,55,0.35)' }} />
-    </div>
-  )
 }
 
 export function Footer({ socialLinks = [] }: FooterProps) {
@@ -138,55 +65,46 @@ export function Footer({ socialLinks = [] }: FooterProps) {
   const activeSocialLinks = socialLinks.filter((l) => l.enabled && l.url)
 
   return (
-    <footer
-      style={{ background: 'linear-gradient(160deg, #1e0840 0%, #2d1060 40%, #1a0636 100%)' }}
-    >
-      {/* Gold accent top line */}
-      <div
-        className="h-[3px]"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent 0%, #D4AF37 25%, #D4AF37 75%, transparent 100%)',
-        }}
-      />
+    <footer className="bg-primary-900">
+      {/* Gold accent */}
+      <div className="h-px bg-gradient-to-r from-transparent via-secondary-500/50 to-transparent" />
 
-      {/* Main grid */}
-      <div className="container mx-auto px-6 py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
-          {/* Brand — wider column */}
-          <div className="space-y-6 lg:col-span-5">
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid gap-12 lg:grid-cols-12">
+          {/* Brand */}
+          <div className="space-y-5 lg:col-span-5">
             <Link
               href="/"
               className="inline-flex items-center gap-3 hover:opacity-85 transition-opacity"
             >
-              <div className="bg-white rounded-full h-12 w-12 flex items-center justify-center shrink-0 overflow-hidden">
+              <div className="bg-white rounded-lg h-10 w-10 flex items-center justify-center shrink-0 overflow-hidden">
                 <img
                   src="/logo.png"
                   alt="Apex Modular Construction"
-                  className="h-10 w-10 object-contain"
+                  className="h-8 w-8 object-contain"
                 />
               </div>
-              <span className="text-white font-bold text-base whitespace-nowrap">
+              <span className="text-white font-semibold text-sm">
                 Apex Modular Construction
               </span>
             </Link>
-            <p className="text-sm text-white/85 leading-relaxed max-w-sm">
+            <p className="text-sm text-primary-100/70 leading-relaxed max-w-sm">
               Your trusted partner for quality prefabricated structures and construction solutions —
               direct from factory to your Canadian site.
             </p>
-            <div className="space-y-2.5 text-sm text-white/85">
+            <div className="space-y-2 text-sm text-primary-100/70">
               <div className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
+                <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-secondary-500" />
                 <span>9131 Keele Street, Vaughan, Ontario, L4K 0G7</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
+                <Phone className="h-4 w-4 shrink-0 text-secondary-500" />
                 <a href="tel:+14168825015" className="hover:text-white transition-colors">
                   +1 416 882 5015
                 </a>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
+                <Mail className="h-4 w-4 shrink-0 text-secondary-500" />
                 <a href="mailto:info@cargoplus.site" className="hover:text-white transition-colors">
                   info@cargoplus.site
                 </a>
@@ -194,34 +112,39 @@ export function Footer({ socialLinks = [] }: FooterProps) {
             </div>
 
             {activeSocialLinks.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-1">
-                {activeSocialLinks.map((link) => (
-                  <a
-                    key={link.platform}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white/70 hover:bg-[#D4AF37] hover:text-[#3b0764] hover:border-[#D4AF37] transition-all duration-200"
-                  >
-                    <SocialIcon platform={link.platform} />
-                  </a>
-                ))}
+              <div className="flex flex-wrap gap-2 pt-2">
+                {activeSocialLinks.map((link) => {
+                  const Icon = PLATFORM_ICONS[link.platform.toLowerCase()]
+                  if (!Icon) return null
+                  return (
+                    <a
+                      key={link.platform}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
+                      className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 border border-white/10 text-primary-100/50 hover:bg-secondary-500 hover:text-primary-900 hover:border-secondary-500 transition-all duration-200"
+                    >
+                      <Icon className="h-4 w-4" />
+                    </a>
+                  )
+                })}
               </div>
             )}
           </div>
 
-          {/* Links columns */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-8">
-            {/* Quick Links */}
+          {/* Links */}
+          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
             <div>
-              <ColHeading>Quick Links</ColHeading>
+              <p className="text-xs font-semibold uppercase tracking-widest text-secondary-500 mb-4">
+                Quick Links
+              </p>
               <ul className="space-y-3">
                 {quickLinks.map((link) => (
-                  <li key={link.href + link.label}>
+                  <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                      className="text-sm text-primary-100/70 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -230,53 +153,56 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               </ul>
             </div>
 
-            {/* Partner Links */}
             <div>
-              <ColHeading>Partners</ColHeading>
+              <p className="text-xs font-semibold uppercase tracking-widest text-secondary-500 mb-4">
+                Services
+              </p>
               <ul className="space-y-3">
-                {partnerLinks.length > 0 ? (
-                  partnerLinks.map((link) => (
-                    <li key={link.href + link.label}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))
-                ) : (
-                  <li className="text-sm text-white/60">Coming soon</li>
-                )}
+                <li>
+                  <Link
+                    href="/services/construction-solutions"
+                    className="text-sm text-primary-100/70 hover:text-white transition-colors"
+                  >
+                    Construction Solutions
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/services/csa-certification"
+                    className="text-sm text-primary-100/70 hover:text-white transition-colors"
+                  >
+                    CSA Certification
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/3d-printer"
+                    className="text-sm text-primary-100/70 hover:text-white transition-colors"
+                  >
+                    3D Printing
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/shipping"
+                    className="text-sm text-primary-100/70 hover:text-white transition-colors"
+                  >
+                    Shipping
+                  </Link>
+                </li>
               </ul>
             </div>
 
-            {/* Customer Service - hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:block">
-              <ColHeading>Customer Service</ColHeading>
-              <ul className="space-y-3">
-                {customerServiceLinks.map((link) => (
-                  <li key={link.href + link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Legal - hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:block">
-              <ColHeading>Legal</ColHeading>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-secondary-500 mb-4">
+                Legal
+              </p>
               <ul className="space-y-3">
                 {legalLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                      className="text-sm text-primary-100/70 hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -289,8 +215,8 @@ export function Footer({ socialLinks = [] }: FooterProps) {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-        <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/50">
+      <div className="border-t border-white/5">
+        <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-primary-100/40">
           <p>© {currentYear} Apex Modular Construction. All rights reserved.</p>
           <p>Prices in CAD. HST/GST calculated at checkout.</p>
         </div>

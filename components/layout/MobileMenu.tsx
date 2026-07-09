@@ -21,7 +21,6 @@ const navLinks = [
   { href: '/3d-printer', label: 'Construction 3D Printer' },
   { href: '/video-centre', label: 'Video Centre' },
   { href: '/contact', label: 'Contact Us' },
-  { href: '/seller/register', label: 'Sell on Apex Modular Construction' },
 ]
 
 export function MobileMenu({
@@ -37,27 +36,17 @@ export function MobileMenu({
   const [servicesOpen, setServicesOpen] = useState(false)
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        onClose()
-      }
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
     }
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.addEventListener('keydown', handleEscape)
+      document.addEventListener('keydown', handleKeyDown)
       document.body.style.overflow = 'hidden'
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('keydown', handleEscape)
+      document.removeEventListener('keydown', handleKeyDown)
       document.body.style.overflow = ''
     }
   }, [isOpen, onClose])
@@ -66,42 +55,38 @@ export function MobileMenu({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
           <motion.div
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             aria-hidden="true"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
+            onClick={onClose}
           />
 
-          {/* Menu panel */}
           <motion.div
             ref={menuRef}
-            className="absolute right-0 top-0 h-full w-80 max-w-[calc(100vw-4rem)] bg-background shadow-xl"
+            className="absolute right-0 top-0 h-full w-80 max-w-[calc(100vw-3rem)] bg-background shadow-elevation-raised border-l border-border"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 280 }}
           >
             <div className="flex h-full flex-col">
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-border p-4">
+              <div className="flex items-center justify-between border-b border-border px-4 h-14">
                 <span className="text-lg font-semibold">Menu</span>
                 <button
                   onClick={onClose}
-                  className="flex h-11 w-11 items-center justify-center rounded-lg hover:bg-muted transition-colors"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-muted transition-colors"
                   aria-label="Close menu"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
-              {/* Navigation links */}
               <nav className="flex-1 overflow-y-auto p-4">
                 <ul className="space-y-1">
-                  {/* Products */}
                   <li>
                     <Link
                       href="/products"
@@ -112,7 +97,6 @@ export function MobileMenu({
                     </Link>
                   </li>
 
-                  {/* Services — expandable */}
                   <li>
                     <button
                       type="button"
@@ -126,14 +110,14 @@ export function MobileMenu({
                       />
                     </button>
                     {servicesOpen && (
-                      <ul className="ml-4 mt-1 space-y-1 border-l-2 border-[#4B1D8F22] pl-3">
+                      <ul className="ml-4 mt-1 space-y-1 border-l-2 border-primary/20 pl-3">
                         <li>
                           <Link
                             href="/services/construction-solutions"
                             onClick={onClose}
                             className="flex min-h-[40px] items-center gap-2 rounded-lg px-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                           >
-                            <Wrench className="h-4 w-4 text-[#4B1D8F]" />
+                            <Wrench className="h-4 w-4 text-primary" />
                             Construction Solutions
                           </Link>
                         </li>
@@ -143,7 +127,7 @@ export function MobileMenu({
                             onClick={onClose}
                             className="flex min-h-[40px] items-center gap-2 rounded-lg px-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                           >
-                            <ShieldCheck className="h-4 w-4 text-[#4B1D8F]" />
+                            <ShieldCheck className="h-4 w-4 text-primary" />
                             CSA Certification Guide
                           </Link>
                         </li>
@@ -151,58 +135,23 @@ export function MobileMenu({
                     )}
                   </li>
 
-                  {/* About Us */}
-                  <li>
-                    <Link
-                      href="/about"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      About Us
-                    </Link>
-                  </li>
+                  {navLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        onClick={onClose}
+                        className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
 
-                  {/* Construction 3D Printer */}
-                  <li>
-                    <Link
-                      href="/3d-printer"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Construction 3D Printer
-                    </Link>
-                  </li>
-
-                  {/* Video Centre */}
-                  <li>
-                    <Link
-                      href="/video-centre"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Video Centre
-                    </Link>
-                  </li>
-
-                  {/* Contact Us */}
-                  <li>
-                    <Link
-                      href="/contact"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Contact Us
-                    </Link>
-                  </li>
-
-                  {/* Sell on Apex Modular Construction */}
-                  <li>
+                  <li className="pt-2">
                     <button
                       onClick={() => {
-                        if (onOpenSellerAuth) onOpenSellerAuth('register')
-                        onClose()
                       }}
-                      className="flex min-h-[44px] w-full items-center rounded-lg px-4 text-base font-medium text-blue-600 transition-colors hover:bg-blue-50 hover:text-blue-700"
+                      className="flex min-h-[44px] w-full items-center rounded-lg px-4 text-base font-medium text-primary transition-colors hover:bg-primary/10"
                     >
                       Sell on Apex Modular Construction
                     </button>
@@ -210,7 +159,6 @@ export function MobileMenu({
                 </ul>
               </nav>
 
-              {/* Footer actions */}
               <div className="border-t border-border p-4 space-y-3">
                 <Link
                   href="/cart"
@@ -253,7 +201,7 @@ export function MobileMenu({
                         onClose()
                         onOpenRegister()
                       }}
-                      className="flex flex-1 min-h-[44px] items-center justify-center rounded-lg bg-primary text-base font-medium text-primary-foreground transition-colors hover:bg-primary/80"
+                      className="flex flex-1 min-h-[44px] items-center justify-center rounded-lg bg-primary text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                     >
                       Sign Up
                     </button>

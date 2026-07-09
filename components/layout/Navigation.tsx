@@ -4,14 +4,10 @@ import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
 import { ChevronDown, Wrench, ShieldCheck } from 'lucide-react'
 
-const PURPLE = '#4B1D8F'
-const GOLD = '#D4AF37'
-
 interface NavigationProps {
   className?: string
   onLinkClick?: () => void
   onOpenSellerAuth?: (mode: 'login' | 'register') => void
-  scrolled?: boolean
 }
 
 const services = [
@@ -29,7 +25,7 @@ const services = [
   },
 ]
 
-export function Navigation({ className, onLinkClick, scrolled = true }: NavigationProps) {
+export function Navigation({ className, onLinkClick, onOpenSellerAuth }: NavigationProps) {
   const [servicesOpen, setServicesOpen] = useState(false)
   const dropdownRef = useRef<HTMLLIElement>(null)
 
@@ -43,31 +39,24 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
-  // Both states are dark backgrounds (purple or transparent over dark hero)
-  const linkClass = scrolled
-    ? 'relative text-sm font-semibold text-purple-100 transition-all hover:text-yellow-300 whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
-    : 'relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
+  const linkClass =
+    'relative text-sm font-medium text-primary-foreground/85 transition-colors hover:text-primary-foreground whitespace-nowrap flex items-center px-3 py-2 rounded-lg hover:bg-white/10'
 
   return (
     <nav className={className}>
-      <ul className="flex items-center gap-1">
-        {/* About Us */}
+      <ul className="flex items-center gap-0.5">
         <li>
           <Link href="/about" onClick={() => onLinkClick?.()} className={linkClass}>
             About Us
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 
-        {/* Products */}
         <li>
           <Link href="/products" onClick={() => onLinkClick?.()} className={linkClass}>
             Products
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 
-        {/* Services */}
         <li
           ref={dropdownRef}
           className="relative"
@@ -86,31 +75,11 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
               className="h-3.5 w-3.5 transition-transform duration-200"
               style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
             />
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </button>
 
-          {/* Dropdown panel */}
           {servicesOpen && (
-            <div
-              className="absolute left-0 top-full mt-1 w-64 rounded-2xl overflow-hidden shadow-xl z-50"
-              style={{
-                border: `1px solid ${GOLD}44`,
-                background: 'white',
-                boxShadow: `0 8px 32px rgba(75,29,143,0.15), 0 0 0 1px ${PURPLE}22`,
-              }}
-            >
-              {/* Header */}
-              <div
-                className="px-4 py-2.5"
-                style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)` }}
-              >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-purple-200">
-                  Our Services
-                </p>
-              </div>
-
-              {/* Items */}
-              <div className="p-2">
+            <div className="absolute left-0 top-full mt-1 w-64 rounded-xl border border-border bg-popover shadow-elevation-raised z-50 overflow-hidden">
+              <div className="p-1.5">
                 {services.map((s) => {
                   const Icon = s.icon
                   return (
@@ -121,19 +90,16 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
                         setServicesOpen(false)
                         onLinkClick?.()
                       }}
-                      className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[#EDE9F6] group/item"
+                      className="flex items-start gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-muted group/item"
                     >
-                      <span
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg mt-0.5"
-                        style={{ backgroundColor: `${PURPLE}18` }}
-                      >
-                        <Icon className="h-4 w-4" style={{ color: PURPLE }} />
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary">
+                        <Icon className="h-4 w-4" />
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-gray-900 group-hover/item:text-[#4B1D8F]">
+                        <p className="text-sm font-semibold text-foreground group-hover/item:text-primary">
                           {s.label}
                         </p>
-                        <p className="text-[11px] text-gray-500 mt-0.5">{s.description}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{s.description}</p>
                       </div>
                     </Link>
                   )
@@ -143,27 +109,21 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
           )}
         </li>
 
-        {/* Construction 3D Printer */}
         <li>
           <Link href="/3d-printer" onClick={() => onLinkClick?.()} className={linkClass}>
-            Construction 3D Printer
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            3D Printer
           </Link>
         </li>
 
-        {/* Video Centre */}
         <li>
           <Link href="/video-centre" onClick={() => onLinkClick?.()} className={linkClass}>
-            Video Centre
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            Videos
           </Link>
         </li>
 
-        {/* Contact Us */}
         <li>
           <Link href="/contact" onClick={() => onLinkClick?.()} className={linkClass}>
-            Contact Us
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            Contact
           </Link>
         </li>
       </ul>
