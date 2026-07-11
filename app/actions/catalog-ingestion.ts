@@ -76,7 +76,9 @@ export async function processCatalogFile(storagePath: string, fileName: string, 
       console.log("Extracting images from PDF using pdf-export-images...");
       try {
         const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cargoplus-pdf-'));
-        const images = await exportImages(new Uint8Array(buffer), tempDir);
+        const tempPdfPath = path.join(tempDir, 'temp.pdf');
+        fs.writeFileSync(tempPdfPath, buffer);
+        const images = await exportImages(tempPdfPath, tempDir);
         
         for (const img of images) {
           // img.name format is typically "img_p0_1" where p0 is page index (0-based)
