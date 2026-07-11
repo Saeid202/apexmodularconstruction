@@ -12,7 +12,7 @@ export default async function AgentDashboardPage() {
       <div
         className="relative overflow-hidden rounded-2xl p-8 text-white"
         style={{
-          background: "linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)",
+          background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)",
           boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F",
         }}
       >

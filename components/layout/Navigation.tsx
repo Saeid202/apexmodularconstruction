@@ -45,7 +45,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
 
   // Both states are dark backgrounds (purple or transparent over dark hero)
   const linkClass = scrolled
-    ? 'relative text-sm font-semibold text-purple-100 transition-all hover:text-yellow-300 whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
+    ? 'relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
     : 'relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
 
   return (
@@ -102,7 +102,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
               {/* Header */}
               <div
                 className="px-4 py-2.5"
-                style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)` }}
+                style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
               >
                 <p className="text-[10px] font-bold uppercase tracking-widest text-purple-200">
                   Our Services

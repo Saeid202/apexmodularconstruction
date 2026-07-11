@@ -68,7 +68,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div
           className="h-32 w-full relative"
-          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)` }}
+          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
         >
           <span className="absolute top-3 left-3 h-6 w-6 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
           <span className="absolute top-3 right-3 h-6 w-6 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />

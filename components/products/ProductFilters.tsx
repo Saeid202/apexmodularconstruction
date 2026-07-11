@@ -52,7 +52,7 @@ export function ProductFilters({
                     ? "text-white shadow-soft"
                     : "text-foreground/70 hover:text-primary hover:bg-primary/5"
                 }`}
-                style={selectedCategory === cat.slug ? { background: 'linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)' } : {}}
+                style={selectedCategory === cat.slug ? { background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' } : {}}
               >
                 <span className="truncate">{cat.name}</span>
                 <span

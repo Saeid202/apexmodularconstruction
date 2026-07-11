@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, X, Sparkles, RefreshCcw, Save, Trash2, Eye } from 'lucide-react'
+import { Plus, X, Sparkles, RefreshCcw, Save, Trash2, Eye, Upload } from 'lucide-react'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { scanProductImageAction } from '@/app/actions/customization-scanner'
 import { uploadProductImage } from '@/lib/uploadProductImage'
@@ -225,6 +225,29 @@ export function CustomizationSuiteSimple({
     syncToParent(updated)
   }
 
+  // Update a zone's mask URL
+  const handleUpdateZoneMask = (zoneId: string, maskUrl: string) => {
+    const updated = zones.map((z) => (z.id === zoneId ? { ...z, maskUrl } : z))
+    setZones(updated)
+    syncToParent(updated)
+  }
+
+  const handleMaskUpload = (zoneId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string
+      if (!text.includes('<svg')) {
+        alert('Please upload a valid SVG file.')
+        return
+      }
+      const dataUri = `data:image/svg+xml;utf8,${encodeURIComponent(text)}`
+      handleUpdateZoneMask(zoneId, dataUri)
+    }
+    reader.readAsText(file)
+  }
+
   // Delete a zone
   const handleDeleteZone = (zoneId: string) => {
     if (!confirm('Are you sure you want to remove this zone?')) return
@@ -415,6 +438,16 @@ export function CustomizationSuiteSimple({
                       />
                     </div>
                     <div className="flex items-center gap-2">
+                      <label className="cursor-pointer text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-50 hover:bg-purple-100 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                        <Upload className="h-3 w-3" />
+                        Upload Mask
+                        <input
+                          type="file"
+                          accept=".svg"
+                          className="hidden"
+                          onChange={(e) => handleMaskUpload(zone.id, e)}
+                        />
+                      </label>
                       <button
                         type="button"
                         onClick={() => handleDeleteZone(zone.id)}

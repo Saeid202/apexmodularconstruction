@@ -157,7 +157,8 @@ export function PrefabHero({
             {ctaEnabled && (
               <Link
                 href={ctaLink}
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-lg transition-all duration-300 hover:bg-gray-800 hover:shadow-xl active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold rounded-lg transition-all duration-300 hover:shadow-xl active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
                 data-ai-cta="primary"
               >
                 {ctaText}

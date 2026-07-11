@@ -77,7 +77,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                       href={slide.ctaLink}
                       className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg"
                       style={{
-                        background: "linear-gradient(135deg, #4B1D8F, #3a1570)",
+                        background: "linear-gradient(135deg, #4B1D8F, #3A1570)",
                         boxShadow: "0 0 0 2px #D4AF37, 0 8px 32px rgba(75,29,143,0.5)"
                       }}
                     >
@@ -217,7 +217,7 @@ export function HeroSlider({ slides }: HeroSliderProps) {
                   href={slide.ctaLink}
                   className="inline-flex items-center justify-center px-8 py-4 rounded-xl text-base font-bold text-white transition-all hover:scale-105"
                   style={{
-                    background: "linear-gradient(135deg, #4B1D8F, #3a1570)",
+                    background: "linear-gradient(135deg, #4B1D8F, #3A1570)",
                     boxShadow: "0 0 0 2px #D4AF37, 0 8px 32px rgba(75,29,143,0.5)"
                   }}
                 >

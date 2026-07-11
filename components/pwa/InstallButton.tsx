@@ -143,7 +143,7 @@ export function InstallButton() {
           Install App
         </button>
         {showIOSTooltip && (
-          <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-white/20 bg-[#3a1570] p-4 shadow-xl z-50 text-white text-sm">
+          <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-white/20 bg-[#3A1570] p-4 shadow-xl z-50 text-white text-sm">
             <div className="flex items-start justify-between mb-2">
               <span className="font-semibold">Add to Home Screen</span>
               <button onClick={() => setShowIOSTooltip(false)} className="text-white/60 hover:text-white ml-2">

@@ -228,7 +228,7 @@ export default function ShippingAgentRequestDetailPage() {
             onClick={handleStatusSave}
             disabled={savingStatus || statusValue === request.status}
             className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-white disabled:opacity-50 transition-all shadow-md"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "2px solid #D4AF37" }}
+            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}
           >
             {savingStatus ? <Loader2 className="h-5 w-5 animate-spin" /> : statusSaved ? <CheckCircle className="h-5 w-5" /> : null}
             {statusSaved ? "Saved!" : "Save Status"}
@@ -279,7 +279,7 @@ export default function ShippingAgentRequestDetailPage() {
           <button
             onClick={handleSendMessage}
             disabled={sending || !msgText.trim()}
-            className="h-12 w-12 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3a1570] disabled:opacity-40 shadow-md transition-all shrink-0"
+            className="h-12 w-12 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3A1570] disabled:opacity-40 shadow-md transition-all shrink-0"
           >
             {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>

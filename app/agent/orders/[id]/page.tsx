@@ -356,7 +356,7 @@ export default function AgentOrderDetailPage() {
             </label>
           </div>
           <button onClick={handleSendMessage} disabled={sendingMsg || (!msgText.trim() && msgFiles.length === 0)}
-            className="h-12 w-12 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3a1570] disabled:opacity-40 shadow-md transition-all shrink-0">
+            className="h-12 w-12 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3A1570] disabled:opacity-40 shadow-md transition-all shrink-0">
             {sendingMsg ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>
         </div>
@@ -503,7 +503,7 @@ export default function AgentOrderDetailPage() {
             <button
               type="submit"
               disabled={savingQuote}
-              className="flex items-center gap-3 px-8 py-4 bg-[#4B1D8F] text-white text-base font-bold rounded-xl hover:bg-[#3a1570] disabled:opacity-50 shadow-lg transition-all"
+              className="flex items-center gap-3 px-8 py-4 bg-[#4B1D8F] text-white text-base font-bold rounded-xl hover:bg-[#3A1570] disabled:opacity-50 shadow-lg transition-all"
             >
               {savingQuote ? <Loader2 className="h-5 w-5 animate-spin" /> : <ClipboardList className="h-5 w-5" />}
               {response ? "Update Quote" : "Submit Quote"}

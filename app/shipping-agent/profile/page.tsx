@@ -21,7 +21,7 @@ export default function ShippingAgentProfilePage() {
     <div className="space-y-6 max-w-lg">
       <div
         className="relative overflow-hidden rounded-2xl p-8 text-white"
-        style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)", boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F" }}
+        style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)", boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F" }}
       >
         <span className="absolute top-3 left-3 h-5 w-5 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
         <span className="absolute top-3 right-3 h-5 w-5 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />

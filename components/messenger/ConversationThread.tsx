@@ -139,7 +139,7 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
                           ? "text-white rounded-br-sm"
                           : "bg-gray-100 text-gray-900 rounded-bl-sm"
                       }`}
-                      style={isMe ? { background: "linear-gradient(135deg, #4B1D8F, #3a1570)" } : {}}
+                      style={isMe ? { background: "linear-gradient(135deg, #4B1D8F, #3A1570)" } : {}}
                     >
                       <p className="whitespace-pre-wrap leading-relaxed">{msg.message}</p>
                       <p className={`text-[10px] mt-1 ${isMe ? "text-purple-200 text-right" : "text-gray-400"}`}>
@@ -175,7 +175,7 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
             onClick={handleSend}
             disabled={sending || !text.trim()}
             className="flex items-center justify-center h-9 w-9 rounded-xl text-white disabled:opacity-40 shrink-0 transition-opacity"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}
+            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}
           >
             {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </button>

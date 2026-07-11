@@ -185,7 +185,7 @@ export function ProjectForm({ onSubmitted }: { onSubmitted: () => void }) {
 
       <button type="submit" disabled={submitting}
         className="w-full py-3 text-white font-bold rounded-xl transition-all shadow-lg disabled:opacity-50"
-        style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "2px solid #D4AF37" }}>
+        style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}>
         {submitting ? "Submitting…" : "🚀 Submit Project"}
       </button>
     </form>

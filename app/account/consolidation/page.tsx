@@ -220,7 +220,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
           </div>
           <button type="button" onClick={addItem}
             className="flex items-center gap-1.5 px-4 py-2 text-white text-xs font-bold rounded-xl transition-all shadow-md"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "1px solid #D4AF37" }}>
+            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}>
             <Plus className="h-3.5 w-3.5" /> Add Product Line
           </button>
         </div>
@@ -445,7 +445,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
       <div className="flex gap-3 pt-2">
         <button type="submit" disabled={saving}
           className="flex items-center gap-2 px-6 py-3 text-white text-sm font-bold rounded-xl disabled:opacity-50 transition-all shadow-lg"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "2px solid #D4AF37" }}>
+          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}>
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
           {existing ? "💾 Save Changes" : "🚀 Submit Order"}
         </button>
@@ -585,7 +585,7 @@ export default function ConsolidationPage() {
         {view === "table" && (
           <button onClick={() => setView("form")}
             className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-md"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "1px solid #D4AF37" }}>
+            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}>
             <Plus className="h-4 w-4" /> New Order
           </button>
         )}
@@ -594,7 +594,7 @@ export default function ConsolidationPage() {
       {/* Guidance banner */}
       {view === "table" && (
         <div className="rounded-2xl overflow-hidden border border-[#4B1D8F]/20" style={{ background: "linear-gradient(135deg, #f9f7ff 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(75,29,143,0.08)" }}>
-          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10" style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}>
+          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10" style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
             <span className="text-yellow-300 text-lg">✦</span>
             <p className="text-sm font-bold uppercase tracking-widest text-white">How It Works</p>
           </div>
@@ -704,7 +704,7 @@ export default function ConsolidationPage() {
                         <div className="shrink-0 flex items-center gap-2">
                           <button onClick={() => setViewOrder(order)}
                             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all"
-                            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "1px solid #D4AF37" }}>
+                            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}>
                             <Eye className="h-3.5 w-3.5" /> View
                           </button>
                           <button onClick={() => { setEditOrder(order); setView("edit"); }}

@@ -139,7 +139,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
 
   return (
     <footer
-      style={{ background: 'linear-gradient(160deg, #1e0840 0%, #2d1060 40%, #1a0636 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #4B1D8F 0%, #3a1570 100%)' }}
     >
       {/* Gold accent top line */}
       <div
@@ -202,7 +202,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white/70 hover:bg-[#D4AF37] hover:text-[#3b0764] hover:border-[#D4AF37] transition-all duration-200"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white/70 hover:bg-[#D4AF37] hover:text-[#1a1a2e] hover:border-[#D4AF37] transition-all duration-200"
                   >
                     <SocialIcon platform={link.platform} />
                   </a>

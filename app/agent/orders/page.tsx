@@ -186,7 +186,7 @@ export default function AgentOrdersPage() {
                   <div className="flex items-center gap-3 shrink-0 sm:pl-5 sm:border-l sm:border-gray-100">
                     <Link
                       href={`/agent/orders/${order.id}`}
-                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white bg-[#4B1D8F] hover:bg-[#3a1570] shadow-md transition-colors whitespace-nowrap"
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white bg-[#4B1D8F] hover:bg-[#3A1570] shadow-md transition-colors whitespace-nowrap"
                     >
                       <Eye className="h-5 w-5" />
                       View & Reply

@@ -4,8 +4,10 @@ import { createServerClient } from "@/lib/supabase/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import * as xlsx from "xlsx";
 import mammoth from "mammoth";
-import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
-import sharp from 'sharp';
+import { exportImages } from 'pdf-export-images';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 /**
  * Universal Catalog Ingestor
@@ -71,34 +73,34 @@ export async function processCatalogFile(storagePath: string, fileName: string, 
     // EXTRACT PDF IMAGES
     const extractedImagesByPage = new Map<number, string>();
     if (fileType === "application/pdf") {
-      console.log("Extracting raw images from PDF...");
+      console.log("Extracting images from PDF using pdf-export-images...");
       try {
-        const doc = await pdfjs.getDocument({ data: new Uint8Array(buffer) }).promise;
-        const pageCount = doc.numPages;
-        for (let p = 1; p <= pageCount; p++) {
-          const page = await doc.getPage(p);
-          const ops = await page.getOperatorList();
-          for (let i = 0; i < ops.fnArray.length; i++) {
-            if (ops.fnArray[i] === pdfjs.OPS.paintImageXObject || ops.fnArray[i] === pdfjs.OPS.paintInlineImageXObject) {
-              const name = ops.argsArray[i][0];
-              let img: any = null;
-              try { img = await (page.objs.has(name) ? page.objs.get(name) : page.commonObjs.get(name)); } catch(e) {}
-              if (!img) continue;
-              const { width, height } = img;
-              const channels = (img.data.length / width / height) as 1 | 2 | 3 | 4;
-              if ([1, 2, 3, 4].includes(channels)) {
-                const pngBuffer = await sharp(img.data, { raw: { width, height, channels } }).png().toBuffer();
-                const imagePath = `extracted/${sellerId}/${Date.now()}_p${p}.png`;
-                await supabase.storage.from("product-images").upload(imagePath, pngBuffer, { contentType: 'image/png' });
+        const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cargoplus-pdf-'));
+        const images = await exportImages(new Uint8Array(buffer), tempDir);
+        
+        for (const img of images) {
+          // img.name format is typically "img_p0_1" where p0 is page index (0-based)
+          const match = img.name.match(/_p(\d+)_/);
+          if (match) {
+            const pageIndex = parseInt(match[1], 10);
+            const pageNumber = pageIndex + 1; // 1-based page number
+            
+            if (!extractedImagesByPage.has(pageNumber)) {
+              const fileBuffer = fs.readFileSync(img.file);
+              const imagePath = `extracted/${sellerId}/${Date.now()}_p${pageNumber}.png`;
+              
+              const { error: uploadError } = await supabase.storage.from("product-images").upload(imagePath, fileBuffer, { contentType: 'image/png' });
+              
+              if (!uploadError) {
                 const { data: pubData } = supabase.storage.from("product-images").getPublicUrl(imagePath);
-                // Keep the first valid image per page for simplicity
-                if (!extractedImagesByPage.has(p)) {
-                  extractedImagesByPage.set(p, pubData.publicUrl);
-                }
+                extractedImagesByPage.set(pageNumber, pubData.publicUrl);
               }
             }
           }
         }
+        
+        // Clean up temp dir
+        fs.rmSync(tempDir, { recursive: true, force: true });
       } catch (err) {
         console.error("Failed to extract images from PDF", err);
       }

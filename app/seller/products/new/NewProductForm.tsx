@@ -132,6 +132,9 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
   })
   const [arGlbFile, setArGlbFile] = useState<File | null>(null)
   const [arUsdzFile, setArUsdzFile] = useState<File | null>(null)
+  const [beds, setBeds] = useState('')
+  const [baths, setBaths] = useState('')
+  const [sqft, setSqft] = useState('')
 
   const handleAiScan = async () => {
     const mainImage = variants.find((v) => v.file || v.existingUrl)
@@ -297,6 +300,10 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       specs.forEach(({ key, value }) => {
         if (key && value) specObj[key] = value
       })
+      if (beds) specObj['Beds'] = beds
+      if (baths) specObj['Baths'] = baths
+      if (sqft) specObj['Area'] = sqft
+      
       if (specText) {
         specObj['_specification_text'] = specText
       }
@@ -625,6 +632,43 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
           </Field>
         </div>
       </div>
+
+      {/* Card 4.5: House Specifications (Only for Prefab) */}
+      {categories.find((c) => c.id === selectedCategoryId)?.slug === 'pre-fabricated' && (
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+          <Section title="4.5 House Layout & Details" />
+          <div className="grid sm:grid-cols-3 gap-5">
+            <Field label="Bedrooms" icon={FileText} hint="e.g. 2">
+              <input
+                type="number"
+                value={beds}
+                onChange={(e) => setBeds(e.target.value)}
+                className={inputClass}
+                placeholder="2"
+              />
+            </Field>
+            <Field label="Bathrooms" icon={FileText} hint="e.g. 1.5">
+              <input
+                type="number"
+                step="0.5"
+                value={baths}
+                onChange={(e) => setBaths(e.target.value)}
+                className={inputClass}
+                placeholder="1"
+              />
+            </Field>
+            <Field label="Total Area (sqft)" icon={Layers} hint="e.g. 420">
+              <input
+                type="number"
+                value={sqft}
+                onChange={(e) => setSqft(e.target.value)}
+                className={inputClass}
+                placeholder="420"
+              />
+            </Field>
+          </div>
+        </div>
+      )}
 
       {/* Card 5: Documents */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">

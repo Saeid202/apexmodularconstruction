@@ -71,7 +71,7 @@ export default async function ContractorDashboardPage() {
           <p className="text-sm text-gray-600 mb-4">Update your personal information and company details</p>
           <a
             href="/contractor/profile"
-            className="inline-flex items-center text-sm font-semibold text-[#4B1D8F] hover:text-[#3a1570]"
+            className="inline-flex items-center text-sm font-semibold text-[#4B1D8F] hover:text-[#3A1570]"
           >
             Manage Profile →
           </a>
@@ -82,7 +82,7 @@ export default async function ContractorDashboardPage() {
           <p className="text-sm text-gray-600 mb-4">Manage your services, certifications, and service areas</p>
           <a
             href="/contractor/business-scope"
-            className="inline-flex items-center text-sm font-semibold text-[#4B1D8F] hover:text-[#3a1570]"
+            className="inline-flex items-center text-sm font-semibold text-[#4B1D8F] hover:text-[#3A1570]"
           >
             Manage Business Scope →
           </a>
@@ -93,7 +93,7 @@ export default async function ContractorDashboardPage() {
           <p className="text-sm text-gray-600 mb-4">Manage your account settings and password</p>
           <a
             href="/contractor/settings"
-            className="inline-flex items-center text-sm font-semibold text-[#4B1D8F] hover:text-[#3a1570]"
+            className="inline-flex items-center text-sm font-semibold text-[#4B1D8F] hover:text-[#3A1570]"
           >
             Manage Settings →
           </a>

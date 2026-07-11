@@ -338,7 +338,7 @@ export default function EngineeringPage() {
         <button
           onClick={() => setView(view === "form" ? "table" : "form")}
           className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-md"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "1px solid #D4AF37" }}
+          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}
         >
           {view === "form" ? <><X className="h-4 w-4" /> Cancel</> : <><Plus className="h-4 w-4" /> New Project</>}
         </button>
@@ -347,7 +347,7 @@ export default function EngineeringPage() {
       {/* Guidance banner */}
       {view === "table" && (
         <div className="rounded-2xl overflow-hidden border border-[#4B1D8F]/20" style={{ background: "linear-gradient(135deg, #f9f7ff 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(75,29,143,0.08)" }}>
-          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10" style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}>
+          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10" style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
             <span className="text-yellow-300 text-lg">✦</span>
             <p className="text-sm font-bold uppercase tracking-widest text-white">How It Works</p>
           </div>

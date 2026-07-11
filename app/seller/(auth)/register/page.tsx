@@ -21,7 +21,7 @@ export default function SellerRegisterPage() {
       {/* Left panel */}
       <div
         className="hidden lg:flex lg:w-5/12 flex-col items-center justify-center p-12 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)" }}
+        style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)" }}
       >
         <span className="absolute top-6 left-6 h-8 w-8 border-t-2 border-l-2 border-yellow-400 rounded-tl-lg" />
         <span className="absolute top-6 right-6 h-8 w-8 border-t-2 border-r-2 border-yellow-400 rounded-tr-lg" />

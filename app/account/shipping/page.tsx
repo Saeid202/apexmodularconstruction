@@ -331,7 +331,7 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
           type="submit"
           disabled={saving}
           className="flex items-center gap-2 px-6 py-3 text-white text-sm font-bold rounded-xl disabled:opacity-50 transition-all shadow-lg"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "2px solid #D4AF37" }}
+          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}
         >
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
           🚀 Submit Shipping Request
@@ -478,7 +478,7 @@ export default function ShippingPage() {
         <button
           onClick={() => setView(view === "form" ? "list" : "form")}
           className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-md"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "1px solid #D4AF37" }}
+          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}
         >
           {view === "form"
             ? <><X className="h-4 w-4" /> Cancel</>
@@ -495,7 +495,7 @@ export default function ShippingPage() {
         >
           <div
             className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}
+            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}
           >
             <Truck className="h-5 w-5 text-yellow-300" />
             <p className="text-sm font-bold uppercase tracking-widest text-white">How Shipping Works</p>
@@ -655,7 +655,7 @@ export default function ShippingPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setViewRequest(null)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}>
+              style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
               <div className="flex items-center gap-3">
                 <Truck className="h-5 w-5 text-[#D4AF37]" />
                 <p className="text-base font-bold text-white">{viewRequest.order_reference}</p>
@@ -703,7 +703,7 @@ export default function ShippingPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setEditRequest(null)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 sticky top-0"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}>
+              style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
               <div className="flex items-center gap-3">
                 <Pencil className="h-5 w-5 text-[#D4AF37]" />
                 <p className="text-base font-bold text-white">Edit Request</p>
@@ -815,7 +815,7 @@ export default function ShippingPage() {
 
               <div className="flex gap-3 pt-2">                <button onClick={handleEditSave} disabled={editSaving || !editRef || !editOrigin || !editDest || !editMethod}
                   className="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-bold rounded-xl disabled:opacity-50 transition-all shadow-md"
-                  style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "2px solid #D4AF37" }}>
+                  style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}>
                   {editSaving && <Loader2 className="h-4 w-4 animate-spin" />}
                   Save Changes
                 </button>
@@ -836,7 +836,7 @@ export default function ShippingPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setChatRequestId(null)} />
           <div className="relative ml-auto w-full max-w-md bg-white shadow-2xl flex flex-col h-full">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}>
+              style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
               <div className="flex items-center gap-3">
                 <MessageSquare className="h-5 w-5 text-[#D4AF37]" />
                 <div>
@@ -883,7 +883,7 @@ export default function ShippingPage() {
                 />
               </div>
               <button onClick={handleChatSend} disabled={chatSending || !chatText.trim()}
-                className="h-10 w-10 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3a1570] disabled:opacity-40 shadow-md transition-all shrink-0">
+                className="h-10 w-10 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3A1570] disabled:opacity-40 shadow-md transition-all shrink-0">
                 {chatSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>
             </div>

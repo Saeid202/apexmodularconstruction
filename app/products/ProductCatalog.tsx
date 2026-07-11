@@ -11,38 +11,18 @@ interface ProductCatalogProps {
 }
 
 export function ProductCatalog({ initialProducts, categories }: ProductCatalogProps) {
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
   const virtualCategories = useMemo(() => {
     const prefabCount = initialProducts.filter(
       (p) => p.category?.slug === "pre-fabricated" || p.category?.slug === "prefabricated"
     ).length;
-    const robotCount = initialProducts.filter(
-      (p) => p.category?.slug === "robots" || p.category?.slug === "robot"
-    ).length;
-    const sofaCount = initialProducts.filter(
-      (p) => p.category?.slug === "sofas" || p.category?.slug === "sofa"
-    ).length;
-    const otherCount = initialProducts.length - prefabCount - robotCount - sofaCount;
 
     return [
       {
         name: "Prefabricated",
         slug: "pre-fabricated",
         count: prefabCount,
-      },
-      {
-        name: "Robot",
-        slug: "robots",
-        count: robotCount,
-      },
-      {
-        name: "Sofa",
-        slug: "sofas",
-        count: sofaCount,
-      },
-      {
-        name: "Other",
-        slug: "other",
-        count: otherCount,
       },
     ];
   }, [initialProducts]);
@@ -55,19 +35,6 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
       const slug = p.category?.slug;
       if (selectedCategory === "pre-fabricated") {
         if (slug !== "pre-fabricated" && slug !== "prefabricated") return false;
-      } else if (selectedCategory === "robots") {
-        if (slug !== "robots" && slug !== "robot") return false;
-      } else if (selectedCategory === "sofas") {
-        if (slug !== "sofas" && slug !== "sofa") return false;
-      } else if (selectedCategory === "other") {
-        if (
-          slug === "pre-fabricated" || 
-          slug === "prefabricated" || 
-          slug === "robots" || 
-          slug === "robot" ||
-          slug === "sofas" ||
-          slug === "sofa"
-        ) return false;
       }
       if (p.price < priceRange[0] || p.price > priceRange[1]) return false;
       return true;
@@ -82,31 +49,46 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
 
   return (
     <div>
-      {/* Page header */}
-      <div className="bg-white border-b border-border">
-        <div className="container mx-auto px-6 pt-24 pb-8">
-          <p className="text-xs uppercase tracking-[0.3em] font-bold mb-2" style={{ color: '#D4AF37' }}>
-            Catalog
-          </p>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-[#1a1a2e] leading-tight">
-            Our <span style={{ color: '#4B1D8F' }}>Products</span>
+      {/* Ultra Compact Header */}
+      <div className="bg-white border-b border-gray-100 relative overflow-hidden">
+        {/* Subtle decorative background pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-40 pointer-events-none"></div>
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/20 to-transparent pointer-events-none"></div>
+
+        <div className="container mx-auto px-4 py-2.5 md:px-6 md:py-4 flex flex-col items-center text-center transition-all duration-300 relative z-10">
+          <h1 className="text-xl md:text-3xl font-extrabold text-[#1a1a2e] tracking-tight">
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4B1D8F] to-[#7c3aed]">Products</span>
           </h1>
-          <div className="mt-3 flex items-center gap-3">
-            <div className="h-0.5 w-6 shrink-0 rounded-full" style={{ background: '#D4AF37' }} />
-            <p className="text-sm text-gray-500">
-              Quality construction materials shipped directly from China to Canada.
-            </p>
-          </div>
         </div>
       </div>
 
       {/* Main content */}
       <div className="bg-[#F5F4F7] min-h-screen">
-        <div className="container mx-auto px-6 py-10">
+        {/* Sticky Mobile Filter Bar */}
+        <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-xl border-b border-border/50 lg:hidden shadow-sm">
+          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-extrabold text-[#1a1a2e]">{filteredProducts.length}</span>
+              <span className="text-xs text-gray-500 font-medium">products</span>
+            </div>
+            <button
+              onClick={() => setIsMobileFilterOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white transition-transform active:scale-95 shadow-md"
+              style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+              Filter & Sort
+            </button>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 lg:px-6 py-6 lg:py-10">
           <div className="flex flex-col lg:flex-row gap-8">
 
-            {/* Filters sidebar */}
-            <aside className="lg:w-72 shrink-0">
+            {/* Desktop Filters sidebar */}
+            <aside className="hidden lg:block lg:w-72 shrink-0">
               <ProductFilters
                 categories={virtualCategories}
                 selectedCategory={selectedCategory}
@@ -119,20 +101,20 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
             {/* Product grid */}
             <div className="flex-1">
               {/* Count bar */}
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-3 mb-6 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
                 {selectedCategoryData && (
                   <>
-                    <span className="text-sm font-bold px-3 py-1 rounded-full text-white" style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)' }}>
+                    <span className="text-sm font-bold px-4 py-1.5 rounded-xl text-white shadow-md shadow-purple-900/20" style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}>
                       {selectedCategoryData.name}
                     </span>
-                    <span className="text-gray-300">·</span>
+                    <span className="text-gray-200 font-black">/</span>
                   </>
                 )}
                 <span className="text-xl font-extrabold" style={{ color: '#4B1D8F' }}>
                   {filteredProducts.length}
                 </span>
-                <span className="text-sm text-gray-500">
-                  {filteredProducts.length === 1 ? "product" : "products"}
+                <span className="text-sm font-semibold text-gray-400 uppercase tracking-widest">
+                  {filteredProducts.length === 1 ? "Product" : "Products"}
                   {isPriceFiltered && selectedCategoryData && (
                     <span className="text-gray-400"> of {selectedCategoryData.count}</span>
                   )}
@@ -143,7 +125,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
               </div>
 
               {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
+                <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
@@ -170,6 +152,47 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
           </div>
         </div>
       </div>
+
+      {/* Mobile Filters Bottom Sheet */}
+      {isMobileFilterOpen && (
+        <div className="fixed inset-0 z-50 flex items-end lg:hidden">
+          <div 
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" 
+            onClick={() => setIsMobileFilterOpen(false)}
+          />
+          <div className="relative w-full max-h-[85vh] overflow-y-auto bg-white rounded-t-3xl shadow-2xl animate-in slide-in-from-bottom-full duration-300">
+            <div className="sticky top-0 bg-white/90 backdrop-blur-md z-10 px-6 py-4 border-b flex items-center justify-between">
+              <h3 className="text-lg font-bold text-[#1a1a2e]">Filters</h3>
+              <button 
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="p-2 -mr-2 text-gray-400 hover:text-gray-600 bg-gray-50 rounded-full"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 pb-safe">
+              <ProductFilters
+                categories={virtualCategories}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+                priceRange={priceRange}
+                onPriceChange={setPriceRange}
+              />
+              <div className="mt-8 pt-4 border-t sticky bottom-0 bg-white">
+                <button
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all shadow-lg shadow-purple-900/20 active:scale-[0.98]"
+                  style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
+                >
+                  Show {filteredProducts.length} Results
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

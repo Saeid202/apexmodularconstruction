@@ -19,6 +19,7 @@ import {
   Settings,
   Wrench,
   Sparkles,
+  Box,
 } from 'lucide-react'
 import { useCartStore } from '@/lib/stores/cartStore'
 import { OrderRequestModal } from '@/components/product/OrderRequestModal'
@@ -81,6 +82,7 @@ export function ProductDetailClient({
   const [requestModalOpen, setRequestModalOpen] = useState(false)
   const [requestSuccess, setRequestSuccess] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'ready' | 'custom' | 'stager'>('ready')
+  const [show3DViewer, setShow3DViewer] = useState(false)
   const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption[]>>(
     {}
   )
@@ -330,27 +332,62 @@ export function ProductDetailClient({
 
               {/* Main image */}
               <div
-                className="relative flex-1 overflow-hidden rounded-2xl bg-white cursor-zoom-in group w-full aspect-[4/3] md:aspect-auto"
+                className={`relative flex-1 overflow-hidden rounded-2xl bg-white group w-full aspect-[4/3] md:aspect-auto ${show3DViewer ? '' : 'cursor-zoom-in'}`}
                 style={{
                   boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
                   minHeight: 0,
                 }}
-                onClick={openLightbox}
-                role="button"
-                aria-label="Enlarge image"
+                onClick={(e) => !show3DViewer && openLightbox()}
+                role={show3DViewer ? 'region' : 'button'}
+                aria-label={show3DViewer ? '3D Interactive Viewer' : 'Enlarge image'}
                 tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && openLightbox()}
+                onKeyDown={(e) => e.key === 'Enter' && !show3DViewer && openLightbox()}
               >
-                {activeImage && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={activeImage.url}
-                    alt={activeImage.altText ?? product.name}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                {show3DViewer && product.specifications?.sketchfab_embed_url ? (
+                  <iframe
+                    title={`${product.name} 3D Model`}
+                    frameBorder="0"
+                    allowFullScreen
+                    allow="autoplay; fullscreen; xr-spatial-tracking"
+                    src={product.specifications.sketchfab_embed_url}
+                    className="absolute inset-0 w-full h-full bg-white z-0"
                   />
+                ) : (
+                  activeImage && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={activeImage.url}
+                      alt={activeImage.altText ?? product.name}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  )
                 )}
+
+                {/* Floating 3D Toggle Badge */}
+                {product.specifications?.sketchfab_embed_url && (
+                  <div className="absolute top-4 right-4 z-20">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        setShow3DViewer(!show3DViewer)
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all text-white border-2 hover:border-white"
+                      style={{
+                        background: show3DViewer 
+                          ? 'linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%)'
+                          : 'linear-gradient(135deg, #D4AF37 0%, #b49126 100%)',
+                        borderColor: show3DViewer ? '#fca5a5' : '#4B1D8F',
+                      }}
+                    >
+                      <Box className="h-4 w-4 text-white" />
+                      {show3DViewer ? 'Exit 3D View' : 'Interact in 3D'}
+                    </button>
+                  </div>
+                )}
+
                 {/* Floating AR View badge */}
-                {(product.specifications?.ar_glb_url || product.specifications?.ar_usdz_url) && (
+                {(product.specifications?.ar_glb_url || product.specifications?.ar_usdz_url) && !show3DViewer && (
                   <div className="absolute top-4 left-4 z-10">
                     <button
                       onClick={(e) => {
@@ -639,7 +676,7 @@ export function ProductDetailClient({
                 <table className="w-full text-sm">
                   <thead>
                     <tr
-                      style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)` }}
+                      style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
                     >
                       <th className="px-4 py-2.5 text-left text-xs font-bold uppercase tracking-wider text-white">
                         Code

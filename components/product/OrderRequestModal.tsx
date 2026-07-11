@@ -86,7 +86,7 @@ export function OrderRequestModal({
         {/* Header */}
         <div
           className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 rounded-t-2xl"
-          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)` }}
+          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
         >
           <div>
             <h2 className="text-lg font-extrabold text-white">Submit Order Request</h2>

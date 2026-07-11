@@ -54,7 +54,7 @@ export default async function EditProductPage({ params }: Props) {
         {/* Header band */}
         <div
           className="relative px-8 py-6"
-          style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)" }}
+          style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)" }}
         >
           <span className="absolute top-3 left-3 h-5 w-5 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
           <span className="absolute top-3 right-3 h-5 w-5 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />

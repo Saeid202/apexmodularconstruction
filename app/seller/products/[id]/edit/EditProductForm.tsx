@@ -145,6 +145,9 @@ export function EditProductForm({
   const [arUsdzUrl, setArUsdzUrl] = useState<string>('')
   const [arGlbFile, setArGlbFile] = useState<File | null>(null)
   const [arUsdzFile, setArUsdzFile] = useState<File | null>(null)
+  const [beds, setBeds] = useState<string>('')
+  const [baths, setBaths] = useState<string>('')
+  const [sqft, setSqft] = useState<string>('')
 
   useEffect(() => {
     if (product.product_images.length > 0) {
@@ -167,7 +170,7 @@ export function EditProductForm({
     const specObj = product.specifications as Record<string, string>
     if (specObj && Object.keys(specObj).length > 0) {
       const filteredSpecs = Object.entries(specObj)
-        .filter(([key]) => key !== '_specification_text' && key !== '_specification_file_url' && key !== '_specification_file_name')
+        .filter(([key]) => key !== '_specification_text' && key !== '_specification_file_url' && key !== '_specification_file_name' && key !== 'Beds' && key !== 'Baths' && key !== 'Area')
         .map(([key, value]) => ({ key, value }))
       setSpecs(filteredSpecs)
 
@@ -179,6 +182,9 @@ export function EditProductForm({
       })
       setArGlbUrl(specObj['ar_glb_url'] || '')
       setArUsdzUrl(specObj['ar_usdz_url'] || '')
+      setBeds(specObj['Beds'] || '')
+      setBaths(specObj['Baths'] || '')
+      setSqft(specObj['Area'] || '')
     }
 
     // Load existing customizations
@@ -367,6 +373,10 @@ export function EditProductForm({
       specs.forEach(({ key, value }) => {
         if (key && value) specObj[key] = value
       })
+      if (beds) specObj['Beds'] = beds
+      if (baths) specObj['Baths'] = baths
+      if (sqft) specObj['Area'] = sqft
+
       if (specText) {
         specObj['_specification_text'] = specText
       }
@@ -733,6 +743,43 @@ export function EditProductForm({
           </Field>
         </div>
       </div>
+
+      {/* Card 4.5: House Specifications (Only for Prefab) */}
+      {categories.find((c) => c.id === selectedCategoryId)?.slug === 'pre-fabricated' && (
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+          <Section title="4.5 House Layout & Details" />
+          <div className="grid sm:grid-cols-3 gap-5">
+            <Field label="Bedrooms" icon={FileText} hint="e.g. 2">
+              <input
+                type="number"
+                value={beds}
+                onChange={(e) => setBeds(e.target.value)}
+                className={inputClass}
+                placeholder="2"
+              />
+            </Field>
+            <Field label="Bathrooms" icon={FileText} hint="e.g. 1.5">
+              <input
+                type="number"
+                step="0.5"
+                value={baths}
+                onChange={(e) => setBaths(e.target.value)}
+                className={inputClass}
+                placeholder="1"
+              />
+            </Field>
+            <Field label="Total Area (sqft)" icon={Layers} hint="e.g. 420">
+              <input
+                type="number"
+                value={sqft}
+                onChange={(e) => setSqft(e.target.value)}
+                className={inputClass}
+                placeholder="420"
+              />
+            </Field>
+          </div>
+        </div>
+      )}
 
       {/* Card 5: Documents */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
