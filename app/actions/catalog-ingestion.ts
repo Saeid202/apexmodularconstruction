@@ -78,7 +78,7 @@ export async function processCatalogFile(storagePath: string, fileName: string, 
         const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cargoplus-pdf-'));
         const tempPdfPath = path.join(tempDir, 'temp.pdf');
         fs.writeFileSync(tempPdfPath, buffer);
-        const images = await exportImages(tempPdfPath, tempDir);
+        const images = (await exportImages(tempPdfPath, tempDir)) as any[];
         
         for (const img of images) {
           // img.name format is typically "img_p0_1" where p0 is page index (0-based)
