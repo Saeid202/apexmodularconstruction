@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, ArrowUpRight, Heart } from "lucide-react";
+import { ShoppingCart, ArrowUpRight, Heart, ShieldCheck } from "lucide-react";
 import type { ProductWithRelations } from "@/types";
 
 interface ProductCardProps {
@@ -105,6 +105,16 @@ export function ProductCard({ product }: ProductCardProps) {
               {product.specifications?.Baths && <span className="flex items-center gap-1"><span className="text-sm">🛁</span> {product.specifications.Baths} Baths</span>}
               {product.specifications?.Baths && product.specifications?.Area && <span className="text-gray-300">•</span>}
               {product.specifications?.Area && <span className="flex items-center gap-1"><span className="text-sm">📐</span> {product.specifications.Area} sqft</span>}
+            </div>
+          )}
+
+          {/* Certificates Row */}
+          {product.certificatesStandards && product.certificatesStandards.length > 0 && (
+            <div className="flex flex-wrap items-center gap-1 mb-2.5">
+              <span className="inline-flex items-center gap-1 rounded bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                <ShieldCheck className="h-3 w-3" />
+                Certified
+              </span>
             </div>
           )}
 

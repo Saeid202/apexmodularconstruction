@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
     const fullPrompt = `${systemPrompt}\n\n${conversationContext}\n\nUser: ${message}`;
 
     const response = await fetch(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey,
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=' + apiKey,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

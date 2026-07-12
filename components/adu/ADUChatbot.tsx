@@ -11,6 +11,7 @@ import {
   Info, LayoutGrid, Zap, X, Upload, FileText, Image as ImageIcon
 } from 'lucide-react';
 import { aduService, ADUCheckInputs, ADUReportData } from '@/lib/services/aduService';
+import { ARScanner } from '@/components/kitchen-studio/ARScanner';
 
 
 const AddressAutofill = dynamic(
@@ -95,6 +96,16 @@ export function ADUChatbot() {
     if (!overrideInput) setChatInput('');
     setChatMessages(prev => [...prev, { role: 'user', text: textToSend }]);
     
+    if (textToSend.toLowerCase().includes('scan my kitchen')) {
+      setTimeout(() => {
+        setChatMessages(prev => [...prev, { 
+          role: 'bot', 
+          text: "I can help with that! Use your iPhone camera to map your space automatically. Just scan the QR code below to get started:\n\n[AR_SCANNER]" 
+        }]);
+      }, 600);
+      return;
+    }
+
     setIsChatLoading(true);
     try {
       const response = await aduService.chatFollowUp(textToSend, report || undefined);
@@ -382,8 +393,11 @@ export function ADUChatbot() {
                       </div>
                     ) : (
                       <div className="text-xl font-bold text-black leading-relaxed whitespace-pre-wrap animate-in fade-in slide-in-from-bottom-2">
-                        {msg.text?.split(/(\[PRODUCT: [a-z0-9-]+\])/g).map((part, i) => {
-                          const match = part.match(/\[PRODUCT: ([a-z0-9-]+)\]/);
+                        {msg.text?.split(/(\[PRODUCT: [a-z0-9-]+\]|\[AR_SCANNER\])/g).map((part, i) => {
+                          if (part === '[AR_SCANNER]') {
+                            return <div key={i} className="my-8 w-full overflow-hidden rounded-3xl"><ARScanner /></div>;
+                          }
+                          const match = part?.match(/\[PRODUCT: ([a-z0-9-]+)\]/);
                           if (match) {
                             return (
                               <Link
@@ -427,6 +441,11 @@ export function ADUChatbot() {
       {step === 'chat' && (
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent pt-12 pb-10 z-50">
           <div className="max-w-4xl mx-auto px-6">
+            <div className="flex gap-2 overflow-x-auto pb-4 custom-scrollbar">
+               <button onClick={() => handleSendChat("I want to scan my kitchen")} className="px-5 py-2.5 bg-gray-100 hover:bg-purple-50 text-sm font-[1000] text-gray-700 hover:text-purple-700 rounded-full transition-colors whitespace-nowrap border-2 border-transparent hover:border-purple-200">
+                 📸 Scan My Kitchen
+               </button>
+            </div>
             <div className="relative group">
               <div className="relative flex items-center bg-white border-2 rounded-[32px] transition-all p-2 pl-8 pr-3" style={{ borderColor: CP_PURPLE }}>
                 <input type="text" placeholder="Ask follow-up questions..." className="flex-1 bg-transparent border-none py-5 text-xl font-bold text-black focus:ring-0 placeholder:text-gray-300" value={chatInput} onChange={(e) => setChatInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendChat()} />

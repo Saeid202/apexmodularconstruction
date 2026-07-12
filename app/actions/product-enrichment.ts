@@ -11,7 +11,7 @@ export async function enrichProductFromImage(imageInput: { url?: string, base64?
   
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
     let imageData = "";
     if (imageInput.base64) {

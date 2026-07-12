@@ -12,12 +12,24 @@ interface Message {
   showPropertyAnalysisButton?: boolean;
 }
 
-const SUGGESTED_PROMPTS = [
-  "Which modular home is right for me?",
-  "Compare expandable vs container homes",
-  "Can you ship to my country?",
-  "How much does installation cost?",
-  "What's included with this model?",
+import { KitchenStudio } from "./KitchenStudio";
+
+const ACTION_CARDS = [
+  {
+    title: "Design My Kitchen",
+    icon: "🍳",
+    action: "kitchen_design"
+  },
+  {
+    title: "Design Modular Home",
+    icon: "🏠",
+    action: "modular_design"
+  },
+  {
+    title: "Building Permit Assistant",
+    icon: "📋",
+    action: "permit_assistant"
+  }
 ];
 
 export function ApexAIAssistant() {
@@ -25,6 +37,7 @@ export function ApexAIAssistant() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPropertyAnalysis, setShowPropertyAnalysis] = useState(false);
+  const [activeMode, setActiveMode] = useState<"chat" | "kitchen_design" | null>(null);
   const [userLocation, setUserLocation] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -101,6 +114,20 @@ export function ApexAIAssistant() {
     window.location.href = "/property-feasibility";
   };
 
+  const handleActionSelect = (action: string) => {
+    if (action === "kitchen_design") {
+      setActiveMode("kitchen_design");
+    } else if (action === "permit_assistant") {
+      handlePropertyAnalysis();
+    } else {
+      sendMessage("I want to design a modular home. Where do I start?");
+    }
+  };
+
+  if (activeMode === "kitchen_design") {
+    return <KitchenStudio onExit={() => setActiveMode(null)} />;
+  }
+
   const isLandingView = messages.length === 0;
 
   return (
@@ -138,18 +165,19 @@ export function ApexAIAssistant() {
                 </p>
               </div>
 
-              {/* Suggested Prompts */}
+              {/* Suggested Prompts / Action Cards */}
               <div className="w-full max-w-2xl space-y-4 mb-16">
-                <p className="text-sm font-semibold text-gray-600 mb-5">Try asking:</p>
+                <p className="text-sm font-semibold text-gray-600 mb-5">What would you like to build today?</p>
                 <div className="grid gap-3 grid-cols-1">
-                  {SUGGESTED_PROMPTS.map((prompt, index) => (
+                  {ACTION_CARDS.map((card, index) => (
                     <button
                       key={index}
-                      onClick={() => sendMessage(prompt)}
-                      className="p-4 border border-gray-200 rounded-xl hover:border-purple-400 hover:bg-purple-50 transition-all text-left group hover:shadow-md"
+                      onClick={() => handleActionSelect(card.action)}
+                      className="p-5 border-2 border-gray-100 rounded-2xl hover:border-purple-400 hover:bg-purple-50 transition-all text-left group hover:shadow-md flex items-center gap-4 bg-white"
                     >
-                      <p className="text-sm font-medium text-gray-900 group-hover:text-purple-900">
-                        {prompt}
+                      <span className="text-3xl">{card.icon}</span>
+                      <p className="text-lg font-bold text-gray-900 group-hover:text-purple-900">
+                        {card.title}
                       </p>
                     </button>
                   ))}
