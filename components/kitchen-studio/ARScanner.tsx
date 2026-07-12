@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 import { createRoomScanSession } from '@/app/actions/room-scans'
 import { createBrowserClient } from '@/lib/supabase/client'
-import { CheckCircle2, Smartphone, Loader2, Maximize } from 'lucide-react'
+import { CheckCircle2, Smartphone, Loader2, Maximize, X } from 'lucide-react'
 
 interface ARScannerProps {
   onComplete?: (data: any) => void;
@@ -15,8 +15,21 @@ export function ARScanner({ onComplete }: ARScannerProps = {}) {
   const [status, setStatus] = useState<'pending' | 'scanning' | 'completed' | 'error'>('pending')
   const [roomData, setRoomData] = useState<any>(null)
   const [modelUrl, setModelUrl] = useState<string | null>(null)
+  const [deviceType, setDeviceType] = useState<'desktop' | 'ios' | 'android' | 'unknown'>('unknown')
   
   const supabase = createBrowserClient()
+
+  useEffect(() => {
+    // Detect device type for conditional UI
+    const ua = navigator.userAgent;
+    if (/iPad|iPhone|iPod/.test(ua)) {
+      setDeviceType('ios');
+    } else if (/Android/i.test(ua)) {
+      setDeviceType('android');
+    } else {
+      setDeviceType('desktop');
+    }
+  }, [])
 
   useEffect(() => {
     async function initSession() {
@@ -132,26 +145,51 @@ export function ARScanner({ onComplete }: ARScannerProps = {}) {
           </div>
         </div>
       </div>
-      
-      <div className="bg-white p-6 rounded-3xl shadow-2xl relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-        <div className="relative bg-white rounded-2xl p-2">
-          <QRCodeSVG 
-            value={scanUrl} 
-            size={240} 
-            level="H"
-            includeMargin={true}
-          />
+      {deviceType === 'ios' ? (
+        <div className="bg-white p-8 rounded-3xl shadow-2xl relative group flex flex-col items-center justify-center min-w-[300px]">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+          <div className="relative bg-white rounded-2xl p-6 flex flex-col items-center text-center">
+            <Smartphone className="h-16 w-16 text-purple-600 mb-4" />
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Scan</h3>
+            <p className="text-sm text-gray-500 mb-6">Tap below to open the RoomPlan scanner directly.</p>
+            <a 
+              href={scanUrl}
+              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg transition-all w-full text-center"
+            >
+              Launch AR Scanner
+            </a>
+          </div>
         </div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-           {/* Center logo overlay for QR */}
-           <div className="bg-white p-1 rounded-md">
-             <div className="w-10 h-10 bg-black rounded flex items-center justify-center">
-                <Smartphone className="h-6 w-6 text-white" />
+      ) : deviceType === 'android' ? (
+        <div className="bg-white p-8 rounded-3xl shadow-2xl relative group flex flex-col items-center justify-center min-w-[300px]">
+           <div className="relative bg-white rounded-2xl p-6 flex flex-col items-center text-center">
+             <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
+               <X className="h-6 w-6 text-red-500" />
              </div>
+             <h3 className="text-lg font-bold text-gray-900 mb-2">iOS Required</h3>
+             <p className="text-sm text-gray-500">Apple RoomPlan requires an iPhone or iPad with a LiDAR scanner. Please use an Apple device to scan your room.</p>
            </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-white p-6 rounded-3xl shadow-2xl relative group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+          <div className="relative bg-white rounded-2xl p-2">
+            <QRCodeSVG 
+              value={scanUrl} 
+              size={240} 
+              level="H"
+              includeMargin={true}
+            />
+          </div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+             <div className="bg-white p-1 rounded-md">
+               <div className="w-10 h-10 bg-black rounded flex items-center justify-center">
+                  <Smartphone className="h-6 w-6 text-white" />
+               </div>
+             </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
