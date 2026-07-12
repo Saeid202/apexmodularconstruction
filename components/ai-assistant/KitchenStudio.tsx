@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Camera, Upload, Ruler, Loader2, CheckCircle2, ChevronRight, X, Scan, Send, MessageCircle, Sparkles } from "lucide-react";
+import { Camera, Upload, Ruler, Loader2, CheckCircle2, ChevronRight, X, Scan, Send, MessageCircle, Sparkles, Image as ImageIcon } from "lucide-react";
 import { ARScanner } from "@/components/kitchen-studio/ARScanner";
 
 const CP_PURPLE = "#4B1D8F";
@@ -9,6 +9,7 @@ const CP_GOLD = "#D4AF37";
 
 type Step = 
   | "welcome"
+  | "uploading"
   | "scanning"
   | "processing"
   | "results"
@@ -25,6 +26,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
   const [step, setStep] = useState<Step>("welcome");
   const [scanProgress, setScanProgress] = useState(0);
   const [processingPhase, setProcessingPhase] = useState("Analyzing Kitchen...");
+  const [isPhotoFlow, setIsPhotoFlow] = useState(false);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
@@ -33,6 +35,10 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const [detectedObjects, setDetectedObjects] = useState<{name: string, top: number, left: number, delay: number}[]>([]);
+  
+  // Photo Upload State
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   
   // Design Preferences
   const [preferences, setPreferences] = useState({
@@ -93,7 +99,44 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
   }, [cameraStream]);
 
   const startScanning = () => {
+    setIsPhotoFlow(false);
     setStep("scanning");
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setIsPhotoFlow(true);
+      setStep("uploading");
+      
+      // Simulate fake photo upload progress
+      setTimeout(() => {
+        startPhotoAnalysis();
+      }, 1500);
+    }
+  };
+
+  const startPhotoAnalysis = () => {
+    setStep("processing");
+    const phases = [
+      "Uploading to AI Vision model...",
+      "Analyzing structural geometry...",
+      "Detecting cabinet layouts...",
+      "Identifying windows and doors...",
+      "Detecting appliances...",
+      "Extracting aesthetic style...",
+      "Generating spatial dimensions..."
+    ];
+    let phaseIndex = 0;
+    const interval = setInterval(() => {
+      phaseIndex++;
+      if (phaseIndex < phases.length) {
+        setProcessingPhase(phases[phaseIndex]);
+      } else {
+        clearInterval(interval);
+        setStep("results");
+      }
+    }, 800); // slightly slower for reading
   };
 
   const startProcessing = () => {
@@ -186,13 +229,21 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
           <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
         </button>
 
-        <button className="flex items-center p-6 border-2 border-transparent bg-gray-50 rounded-2xl hover:bg-white hover:border-gray-200 hover:shadow-lg transition-all group">
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          accept="image/*" 
+          multiple 
+          className="hidden" 
+          onChange={handlePhotoUpload} 
+        />
+        <button onClick={() => fileInputRef.current?.click()} className="flex items-center p-6 border-2 border-transparent bg-gray-50 rounded-2xl hover:bg-white hover:border-gray-200 hover:shadow-lg transition-all group">
           <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 mr-4 group-hover:scale-110 transition-transform">
             <Upload className="w-6 h-6" />
           </div>
           <div className="text-left flex-1">
             <h3 className="font-bold text-gray-900 text-lg">Upload Kitchen Photos</h3>
-            <p className="text-sm text-gray-500">AI will analyze photos from your gallery</p>
+            <p className="text-sm text-gray-500">AI Vision will analyze photos from your gallery</p>
           </div>
           <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
         </button>
@@ -208,6 +259,17 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
           <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all" />
         </button>
       </div>
+    </div>
+  );
+
+  const renderUploading = () => (
+    <div className="flex-1 flex flex-col items-center justify-center bg-gray-50 animate-in fade-in">
+      <div className="w-24 h-24 mb-6 relative bg-white rounded-full shadow-lg flex items-center justify-center">
+        <ImageIcon className="w-10 h-10 text-blue-500 animate-pulse" />
+        <div className="absolute inset-0 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Preparing Photos...</h2>
+      <p className="text-gray-500">Uploading to Apex AI Vision</p>
     </div>
   );
 
@@ -255,17 +317,27 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="w-8 h-8 text-green-600" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Kitchen Successfully Scanned</h2>
+          <h2 className="text-3xl font-bold text-gray-900">
+            {isPhotoFlow ? "Photos Successfully Analyzed" : "Kitchen Successfully Scanned"}
+          </h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-            <h3 className="text-xl font-bold mb-6 text-gray-900">Detected Elements</h3>
+            <h3 className="text-xl font-bold mb-6 text-gray-900">
+              {isPhotoFlow ? "AI Detected Architecture" : "Detected Elements"}
+            </h3>
             <div className="space-y-4">
               {[
-                "Room Length (14' 2\")", "Room Width (12' 8\")", "Ceiling Height (9' 0\")", 
-                "Window Locations (2)", "Door Locations (1)", "Sink Position", 
-                "Refrigerator Position", "Stove Position", "Existing Cabinets"
+                isPhotoFlow ? "Estimated Length (~14')" : "Room Length (14' 2\")", 
+                isPhotoFlow ? "Estimated Width (~12')" : "Room Width (12' 8\")", 
+                "Ceiling Height (9' 0\")", 
+                "Window Locations (2)", 
+                "Door Locations (1)", 
+                isPhotoFlow ? "U-Shaped Layout Detected" : "Sink Position", 
+                "Refrigerator Position", 
+                "Stove Position", 
+                "Existing Cabinets"
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3 text-gray-700">
                   <CheckCircle2 className="w-5 h-5 text-purple-600" />
@@ -501,6 +573,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
 
       {/* Main Content Area */}
       {step === "welcome" && renderWelcome()}
+      {step === "uploading" && renderUploading()}
       {step === "scanning" && renderScanning()}
       {step === "processing" && renderProcessing()}
       {step === "results" && renderResults()}
