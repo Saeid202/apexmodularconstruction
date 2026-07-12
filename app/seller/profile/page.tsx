@@ -14,6 +14,9 @@ export default async function SellerProfilePage() {
         phone: profile?.business_phone ?? "",
         address: profile?.business_address ?? "",
         description: profile?.description ?? "",
+        category: profile?.category ?? "",
+        specialties: profile?.specialties ?? [],
+        logoUrl: profile?.logo_url ?? "",
       }}
     />
   );

@@ -493,7 +493,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
               >
                 <option value="">Select a category</option>
                 {categories
-                  .filter((c) => c.slug === 'pre-fabricated' || c.slug === 'robots' || c.slug === 'sofas')
+                  .filter((c) => c.slug === 'pre-fabricated' || c.slug === 'robots' || c.slug === 'sofas' || c.slug === 'cabinets')
                   .map((c) => (
                     <option key={c.id} value={c.id}>
                       {c.slug === 'pre-fabricated' ? 'Prefabricated Houses' : c.name}

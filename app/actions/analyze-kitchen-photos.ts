@@ -24,18 +24,32 @@ export async function analyzeKitchenPhotos(base64Images: string[]) {
       };
     });
 
-    const prompt = `You are a professional kitchen architect. Analyze these photos of a kitchen. 
-Estimate the dimensions and layout based on standard appliance sizes (a standard fridge is 30-36 inches wide, a stove is 30 inches).
-Please return ONLY a JSON object (no markdown, no backticks) with the following exact keys:
+    const prompt = `You are an AI spatial analysis engine. Analyze these photos of a room.
+Estimate the dimensions and locate key objects (like doors, windows, signs, appliances).
+CRITICAL: You MUST detect the primary 'Wall' face as a distinct object. The bounding box for the 'Wall' type MUST exactly trace the physical edges of the main wall visible (from the left corner to the right corner, and from the floor baseboard up to the ceiling).
+For any key objects found, provide a 2D bounding box as relative percentages [0-100] of the image dimensions.
+Please return ONLY a JSON object (no markdown, no backticks) with the following exact structure:
 {
-  "layout": "string (e.g. U-Shaped, L-Shaped, Galley, Island, Single Wall)",
-  "estLength": "number (estimated length in feet, e.g. 14)",
-  "estWidth": "number (estimated width in feet, e.g. 12)",
+  "layout": "string (e.g. U-Shaped, Single Wall, Utility Room)",
+  "estLength": "number (estimated total length of the visible wall in feet, e.g. 14)",
+  "estHeight": "number (estimated height of the room in feet, e.g. 9)",
   "windows": "number (count of windows visible)",
   "doors": "number (count of doors/entryways visible)",
-  "sinkPosition": "string (e.g. 'Under Window', 'On Island', 'Against Wall')",
-  "stovePosition": "string (e.g. 'Next to Fridge', 'Opposite Sink')",
-  "existingCabinets": "string (e.g. 'Wood Shaker', 'White Modern', 'None')"
+  "sinkPosition": "string or 'None'",
+  "stovePosition": "string or 'None'",
+  "existingCabinets": "string or 'None'",
+  "detectedObjects": [
+    {
+      "type": "string (MUST include 'Wall', plus 'Door', 'Window', 'Sign', 'Appliance' etc.)",
+      "confidence": "number (0.0 to 1.0)",
+      "box": {
+        "top": "number (percentage 0-100)",
+        "left": "number (percentage 0-100)",
+        "width": "number (percentage 0-100)",
+        "height": "number (percentage 0-100)"
+      }
+    }
+  ]
 }`;
 
     const result = await model.generateContent([prompt, ...imageParts]);

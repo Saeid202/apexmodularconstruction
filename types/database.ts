@@ -60,6 +60,8 @@ export interface Database {
           description: string | null
           logo_url: string | null
           status: 'pending' | 'active' | 'suspended'
+          category: string | null
+          specialties: string[] | null
           created_at: string
           updated_at: string
         }
@@ -72,6 +74,8 @@ export interface Database {
           description?: string | null
           logo_url?: string | null
           status?: 'pending' | 'active' | 'suspended'
+          category?: string | null
+          specialties?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -84,6 +88,8 @@ export interface Database {
           description?: string | null
           logo_url?: string | null
           status?: 'pending' | 'active' | 'suspended'
+          category?: string | null
+          specialties?: string[] | null
           created_at?: string
           updated_at?: string
         }

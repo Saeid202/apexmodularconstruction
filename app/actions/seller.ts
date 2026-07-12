@@ -957,6 +957,9 @@ export async function updateSellerProfile(data: {
   business_phone: string
   business_address: string
   description: string
+  category?: string
+  specialties?: string[]
+  logo_url?: string
 }): Promise<{ success: boolean; error: string | null }> {
   try {
     const supabase = await createServerClient()
@@ -965,12 +968,22 @@ export async function updateSellerProfile(data: {
     } = await supabase.auth.getUser()
     if (!user) return { success: false, error: 'Not authenticated' }
 
-    const { error } = await supabase
-      .from('sellers')
-      .update({ ...data, updated_at: new Date().toISOString() })
-      .eq('id', user.id)
+    const adminClient = createAdminClient()
+    if (!adminClient) return { success: false, error: 'Failed to initialize database connection' }
 
-    if (error) return { success: false, error: error.message }
+    const { error } = await adminClient
+      .from('sellers')
+      .upsert({ 
+        id: user.id, // required for upsert
+        ...data, 
+        status: 'active', // ensure status is set if creating new
+        updated_at: new Date().toISOString() 
+      })
+
+    if (error) {
+      console.error('Supabase update seller profile error:', error)
+      return { success: false, error: error.message }
+    }
 
     revalidatePath('/seller/profile')
     return { success: true, error: null }

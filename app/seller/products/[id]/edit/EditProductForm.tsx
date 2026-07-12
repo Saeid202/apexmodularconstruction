@@ -598,6 +598,7 @@ export function EditProductForm({
                     cat.slug === 'pre-fabricated' || 
                     cat.slug === 'robots' || 
                     cat.slug === 'sofas' || 
+                    cat.slug === 'cabinets' ||
                     cat.id === product.category_id
                   )
                   .map((cat) => (
