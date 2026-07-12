@@ -3,8 +3,9 @@ import { Smartphone, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { createServerClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
-export default async function ARScanPage({ searchParams }: { searchParams: { session_id?: string } }) {
-  const sessionId = searchParams.session_id;
+export default async function ARScanPage({ searchParams }: { searchParams: Promise<{ session_id?: string }> | { session_id?: string } }) {
+  const resolvedParams = await searchParams;
+  const sessionId = resolvedParams.session_id;
 
   if (!sessionId) {
     return (
