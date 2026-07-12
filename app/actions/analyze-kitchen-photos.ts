@@ -10,7 +10,7 @@ export async function analyzeKitchenPhotos(base64Images: string[]) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
     // Prepare the parts for the prompt
     const imageParts = base64Images.map(base64Data => {

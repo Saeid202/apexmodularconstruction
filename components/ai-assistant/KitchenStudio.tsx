@@ -41,6 +41,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
   const [aiResults, setAiResults] = useState<any>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
   
   // Design Preferences
   const [preferences, setPreferences] = useState({
@@ -155,6 +156,8 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
       if (res.success && res.data) {
         setAiResults(res.data);
       } else {
+        // Show the actual API error
+        setApiError(res.error || "Failed to analyze photos");
         // Fallback to mock data if API fails or key is invalid
         setAiResults({
           layout: "U-Shaped",
@@ -359,6 +362,15 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
             <h3 className="text-xl font-bold mb-6 text-gray-900">
               {isPhotoFlow ? "AI Detected Architecture" : "Detected Elements"}
             </h3>
+            
+            {apiError && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                <strong>API Error:</strong> {apiError}
+                <br/>
+                <span className="text-red-500 text-xs">Falling back to demo data.</span>
+              </div>
+            )}
+
             <div className="space-y-4">
               {isPhotoFlow && aiResults ? (
                 <>
