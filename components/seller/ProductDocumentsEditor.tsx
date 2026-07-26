@@ -25,7 +25,8 @@ interface Props {
   onChange: (docs: DocSlot[]) => void;
 }
 
-const FILE_TYPE_CONFIG: Record<FileType, { icon: React.ElementType; color: string; bg: string; label: string }> = {
+const FILE_TYPE_CONFIG: Record<FileType, { icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  color: string; bg: string; label: string }> = {
   pdf:   { icon: FileText,        color: "#DC2626", bg: "#FEF2F2", label: "PDF" },
   excel: { icon: FileSpreadsheet, color: "#16A34A", bg: "#F0FDF4", label: "Excel" },
   word:  { icon: FileText,        color: "#2563EB", bg: "#EFF6FF", label: "Word" },

@@ -52,7 +52,10 @@ function Field({
   label: string
   hint?: string
   required?: boolean
-  icon?: React.ElementType
+  icon?: React.ComponentType<{
+    className?: string
+    style?: React.CSSProperties
+  }>
   children: React.ReactNode
 }) {
   return (
