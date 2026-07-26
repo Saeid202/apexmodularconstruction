@@ -21,6 +21,7 @@ import {
   X,
   File,
   Upload,
+  LucideIcon,
 } from 'lucide-react'
 import { LuxuryButton } from '@/components/seller/LuxuryButton'
 import { SpecificationsEditor } from '@/components/seller/SpecificationsEditor'
@@ -51,10 +52,7 @@ function Field({
   label: string
   hint?: string
   required?: boolean
-  icon?: React.ComponentType<{
-    className?: string
-    style?: React.CSSProperties
-  }>
+  icon?: LucideIcon
   children: React.ReactNode
 }) {
   return (
