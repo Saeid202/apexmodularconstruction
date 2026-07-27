@@ -8,7 +8,7 @@ import { getKitchenPartners, KitchenPartner } from "@/app/actions/kitchen-partne
 import { getPartnerProducts, PartnerProduct } from "@/app/actions/partner-products";
 import { getProducts } from "@/app/actions/products";
 import Link from "next/link";
-
+import { CabinetConfigurator, type CabinetConfig } from '@/components/product/CabinetConfigurator'
 const CP_PURPLE = "#4B1D8F";
 const CP_GOLD = "#D4AF37";
 
@@ -30,7 +30,7 @@ interface ChatMessage {
 import { parseWallCommand } from '@/app/actions/parse-wall-command';
 
 export function KitchenStudio({ onExit }: { onExit: () => void }) {
-  const [step, setStep] = useState<Step>("welcome");
+  const [step, setStep] = useState<Step>("final")
   const [scanProgress, setScanProgress] = useState(0);
   const [processingPhase, setProcessingPhase] = useState("Analyzing Kitchen...");
   const [isPhotoFlow, setIsPhotoFlow] = useState(false);
@@ -1024,16 +1024,18 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         {/* Left Side: 3D Preview & Cost */}
         <div className="flex-1 space-y-6">
           <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group">
-            <div className="aspect-[4/3] bg-gray-200 relative flex items-center justify-center overflow-hidden">
-              {/* Mock 3D Render Image Placeholder */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-300"></div>
-              <div className="relative z-10 text-center">
-                <div className="w-20 h-20 bg-white/50 backdrop-blur rounded-full flex items-center justify-center mx-auto mb-4 border border-white/50 shadow-lg">
-                  <Scan className="w-8 h-8 text-gray-700" />
-                </div>
-                <p className="font-bold text-gray-700 uppercase tracking-widest text-sm">Interactive 3D Kitchen</p>
-                <p className="text-xs text-gray-500 mt-1">{preferences.style} • {preferences.cabinetColor} Cabinets</p>
-              </div>
+            <div className="aspect-[4/3] relative overflow-hidden rounded-t-3xl bg-gray-100">
+              <CabinetConfigurator
+                cabinetColor={preferences.cabinetColor}
+                countertop={preferences.countertop}
+                style={preferences.style}
+                onAddToCart={(config, price) => {
+                  alert(`Added to cart: ${config.widthInches}" ${config.cabinetColor} cabinet — Est. $${price.toLocaleString()}`)
+                }}
+                onRequestQuote={(config, price) => {
+                  alert(`Quote requested for ${config.widthInches}" ${config.cabinetColor} ${config.doorStyle} cabinet — Est. $${price.toLocaleString()}`)
+                }}
+              />
             </div>
             
             <div className="p-6 bg-white flex items-center justify-between">
