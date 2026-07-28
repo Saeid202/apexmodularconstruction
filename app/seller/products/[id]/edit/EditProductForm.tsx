@@ -19,6 +19,7 @@ import {
   Plus,
   File,
   Upload,
+  LucideIcon,
 } from 'lucide-react'
 import Link from 'next/link'
 import { LuxuryButton } from '@/components/seller/LuxuryButton'
@@ -52,7 +53,7 @@ function Field({
   label: string
   hint?: string
   required?: boolean
-  icon?: React.ElementType
+  icon?: LucideIcon
   children: React.ReactNode
 }) {
   return (

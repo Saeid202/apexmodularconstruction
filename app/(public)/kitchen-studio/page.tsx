@@ -42,7 +42,7 @@ export default function KitchenStudioPage() {
                <p className="text-white/60 text-sm">Review your design in 3D and get an immediate manufacturing and shipping quote.</p>
              </div>
           </div>
-
+          
         </div>
       </div>
     </div>

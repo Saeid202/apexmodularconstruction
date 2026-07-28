@@ -20,6 +20,7 @@ import {
   Wrench,
   Sparkles,
   Box,
+  Image as ImageIcon,
 } from 'lucide-react'
 import { useCartStore } from '@/lib/stores/cartStore'
 import { OrderRequestModal } from '@/components/product/OrderRequestModal'
@@ -28,6 +29,14 @@ import { RichTextRenderer } from '@/components/product/RichTextRenderer'
 import { ProductInclusionsPanel } from '@/components/ProductInclusionsPanel'
 import { ProductCustomizer } from '@/components/product/ProductCustomizer'
 import { AIStagerTab } from '@/components/product/AIStagerTab'
+import { Build3DPreview } from '@/components/product/three/Build3DPreview'
+import { BuildStudioPanel } from '@/components/product/three/BuildStudioPanel'
+import {
+  buildSceneDirectives,
+  DEFAULT_STUDIO_CONFIG,
+  resolveModelUrl,
+  type StudioConfig,
+} from '@/lib/product/model3d'
 import type { ProductWithRelations, CustomizationOption } from '@/types'
 import { extractYouTubeId, getYouTubeEmbedUrl } from '@/lib/youtube'
 
@@ -86,6 +95,27 @@ export function ProductDetailClient({
   const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption[]>>(
     {}
   )
+  const [customPreviewMode, setCustomPreviewMode] = useState<'3d' | 'photo'>('3d')
+  const [studio, setStudio] = useState<StudioConfig>(DEFAULT_STUDIO_CONFIG)
+  const [discoveredNodes, setDiscoveredNodes] = useState<string[]>([])
+
+  const modelUrl = useMemo(() => resolveModelUrl(product), [product])
+
+  /** Buyer selections translated into show/hide/recolour instructions. */
+  const sceneDirectives = useMemo(
+    () => buildSceneDirectives(product.customizationGroups ?? [], customSelections),
+    [product.customizationGroups, customSelections]
+  )
+
+  // Stable identity: the viewer calls this from an effect, so a new function
+  // each render would re-fire it every time anything else changed.
+  const handlePartsDiscovered = useCallback((nodeNames: string[]) => {
+    setDiscoveredNodes((prev) =>
+      prev.length === nodeNames.length && prev.every((n, i) => n === nodeNames[i])
+        ? prev
+        : nodeNames
+    )
+  }, [])
 
   // Pre-populate customSelections with the first option of each customization group
   useEffect(() => {
@@ -236,47 +266,94 @@ export function ProductDetailClient({
 
           {/* Image area */}
           {activeTab === 'custom' ? (
-            <div
-              className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-white flex items-center justify-center"
-              style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}` }}
-            >
-              {/* Base Master Image */}
-              <img
-                src={masterImage?.url || customImageUrl}
-                alt={product.name}
-                className="w-full h-full object-contain pointer-events-none transition-all duration-300"
-              />
-
-              {/* Dynamic Overlay Masks */}
-              {Object.entries(customSelections).map(([groupId, selectedOptions]) => {
-                const group = product.customizationGroups?.find((g) => g.id === groupId)
-                const targetZoneId = group ? (group as any).target_zone_id : null
-                if (!group || !targetZoneId) return null
-
-                const zone = product.customizationZones?.find((z) => z.id === targetZoneId)
-                if (!zone || !zone.mask_url) return null
-
-                const opt = selectedOptions[0]
-                if (!opt) return null
-
-                return (
-                  <div
-                    key={groupId}
-                    className="absolute inset-0 pointer-events-none transition-all duration-300"
-                    style={{
-                      maskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
-                      WebkitMaskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
-                      maskSize: '100% 100%',
-                      WebkitMaskSize: '100% 100%',
-                      backgroundColor: opt.color_hex || 'transparent',
-                      backgroundImage: opt.image_url ? `url("${opt.image_url}")` : 'none',
-                      backgroundSize: 'cover',
-                      mixBlendMode: opt.image_url ? 'normal' : 'multiply',
-                      opacity: opt.image_url ? 0.95 : 0.8,
-                    }}
+            <div className="flex flex-col gap-3">
+              {/* 3D / Photo switch */}
+              <div className="flex self-start p-1 bg-gray-100 rounded-xl border-2 border-gray-100">
+                <button
+                  onClick={() => setCustomPreviewMode('3d')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all ${
+                    customPreviewMode === '3d'
+                      ? 'bg-white text-[#4B1D8F] shadow'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  <Box
+                    className="h-3.5 w-3.5"
+                    style={{ color: customPreviewMode === '3d' ? GOLD : undefined }}
                   />
-                )
-              })}
+                  3D Model
+                </button>
+                <button
+                  onClick={() => setCustomPreviewMode('photo')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all ${
+                    customPreviewMode === 'photo'
+                      ? 'bg-white text-[#4B1D8F] shadow'
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  <ImageIcon
+                    className="h-3.5 w-3.5"
+                    style={{ color: customPreviewMode === 'photo' ? GOLD : undefined }}
+                  />
+                  Photo
+                </button>
+              </div>
+
+              {customPreviewMode === '3d' ? (
+                <Build3DPreview
+                  modelUrl={modelUrl}
+                  productName={product.name}
+                  directives={sceneDirectives}
+                  studio={studio}
+                  onStudioChange={setStudio}
+                  onPartsDiscovered={handlePartsDiscovered}
+                />
+              ) : (
+                <div
+                  className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-white flex items-center justify-center"
+                  style={{
+                    boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
+                  }}
+                >
+                  {/* Base Master Image */}
+                  <img
+                    src={masterImage?.url || customImageUrl}
+                    alt={product.name}
+                    className="w-full h-full object-contain pointer-events-none transition-all duration-300"
+                  />
+
+                  {/* Dynamic Overlay Masks */}
+                  {Object.entries(customSelections).map(([groupId, selectedOptions]) => {
+                    const group = product.customizationGroups?.find((g) => g.id === groupId)
+                    const targetZoneId = group ? (group as any).target_zone_id : null
+                    if (!group || !targetZoneId) return null
+
+                    const zone = product.customizationZones?.find((z) => z.id === targetZoneId)
+                    if (!zone || !zone.mask_url) return null
+
+                    const opt = selectedOptions[0]
+                    if (!opt) return null
+
+                    return (
+                      <div
+                        key={groupId}
+                        className="absolute inset-0 pointer-events-none transition-all duration-300"
+                        style={{
+                          maskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
+                          WebkitMaskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
+                          maskSize: '100% 100%',
+                          WebkitMaskSize: '100% 100%',
+                          backgroundColor: opt.color_hex || 'transparent',
+                          backgroundImage: opt.image_url ? `url("${opt.image_url}")` : 'none',
+                          backgroundSize: 'cover',
+                          mixBlendMode: opt.image_url ? 'normal' : 'multiply',
+                          opacity: opt.image_url ? 0.95 : 0.8,
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+              )}
             </div>
           ) : (
             /* Ready tab: original gallery unchanged */
@@ -603,11 +680,17 @@ export function ProductDetailClient({
               )}
             </div>
           ) : activeTab === 'custom' ? (
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 mb-3.5">
               <ProductCustomizer
                 groups={product.customizationGroups ?? []}
                 selections={customSelections}
                 onSelectionChange={setCustomSelections}
+              />
+              <BuildStudioPanel
+                studio={studio}
+                onChange={setStudio}
+                discoveredNodes={discoveredNodes}
+                directives={sceneDirectives}
               />
             </div>
           ) : (
