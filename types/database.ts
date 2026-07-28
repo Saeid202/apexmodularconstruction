@@ -25,7 +25,7 @@ export interface Database {
           full_name: string | null
           phone: string | null
           avatar_url: string | null
-          role: 'customer' | 'seller' | 'admin' | 'partner'
+          role: 'customer' | 'seller' | 'admin' | 'partner' | 'architect'
           created_at: string
           updated_at: string
         }
@@ -35,7 +35,7 @@ export interface Database {
           full_name?: string | null
           phone?: string | null
           avatar_url?: string | null
-          role?: 'customer' | 'seller' | 'admin' | 'partner'
+          role?: 'customer' | 'seller' | 'admin' | 'partner' | 'architect'
           created_at?: string
           updated_at?: string
         }
@@ -45,7 +45,7 @@ export interface Database {
           full_name?: string | null
           phone?: string | null
           avatar_url?: string | null
-          role?: 'customer' | 'seller' | 'admin' | 'partner'
+          role?: 'customer' | 'seller' | 'admin' | 'partner' | 'architect'
           created_at?: string
           updated_at?: string
         }
@@ -92,6 +92,62 @@ export interface Database {
           specialties?: string[] | null
           created_at?: string
           updated_at?: string
+        }
+      }
+      architects: {
+        Row: {
+          id: string
+          full_name: string
+          email: string
+          phone: string | null
+          firm_name: string | null
+          bio: string | null
+          status: 'pending' | 'active' | 'suspended'
+          created_at: string
+          updated_at: string
+          website: string | null
+          address: string | null
+          professional_role: string | null
+          experience_years: number | null
+          specialization: string | null
+          subdomain: string | null
+          branding: any
+        }
+        Insert: {
+          id: string
+          full_name: string
+          email: string
+          phone?: string | null
+          firm_name?: string | null
+          bio?: string | null
+          status?: 'pending' | 'active' | 'suspended'
+          created_at?: string
+          updated_at?: string
+          website?: string | null
+          address?: string | null
+          professional_role?: string | null
+          experience_years?: number | null
+          specialization?: string | null
+          subdomain?: string | null
+          branding?: any
+        }
+        Update: {
+          id?: string
+          full_name?: string
+          email?: string
+          phone?: string | null
+          firm_name?: string | null
+          bio?: string | null
+          status?: 'pending' | 'active' | 'suspended'
+          created_at?: string
+          updated_at?: string
+          website?: string | null
+          address?: string | null
+          professional_role?: string | null
+          experience_years?: number | null
+          specialization?: string | null
+          subdomain?: string | null
+          branding?: any
         }
       }
       categories: {
@@ -493,6 +549,7 @@ export interface Database {
 // Convenience types for table rows
 export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Seller = Database['public']['Tables']['sellers']['Row']
+export type Architect = Database['public']['Tables']['architects']['Row']
 export type Category = Database['public']['Tables']['categories']['Row']
 export type Product = Database['public']['Tables']['products']['Row']
 export type ProductImage = Database['public']['Tables']['product_images']['Row']
@@ -509,6 +566,7 @@ export type product_customization_options =
 // Insert types
 export type InsertProfile = Database['public']['Tables']['profiles']['Insert']
 export type InsertSeller = Database['public']['Tables']['sellers']['Insert']
+export type InsertArchitect = Database['public']['Tables']['architects']['Insert']
 export type InsertCategory = Database['public']['Tables']['categories']['Insert']
 export type InsertProduct = Database['public']['Tables']['products']['Insert']
 export type InsertProductImage = Database['public']['Tables']['product_images']['Insert']
@@ -521,6 +579,7 @@ export type InsertHeroSlide = Database['public']['Tables']['hero_slides']['Inser
 // Update types
 export type UpdateProfile = Database['public']['Tables']['profiles']['Update']
 export type UpdateSeller = Database['public']['Tables']['sellers']['Update']
+export type UpdateArchitect = Database['public']['Tables']['architects']['Update']
 export type UpdateCategory = Database['public']['Tables']['categories']['Update']
 export type UpdateProduct = Database['public']['Tables']['products']['Update']
 export type UpdateProductImage = Database['public']['Tables']['product_images']['Update']

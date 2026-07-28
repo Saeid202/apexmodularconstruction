@@ -17,10 +17,10 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Sync mode when modal opens with a different initialMode
-  useEffect(() => {
-    if (isOpen) setMode(initialMode);
-  }, [isOpen, initialMode]);
+  function openArchitectAuth(mode: "login" | "register") {
+    onClose();
+    window.dispatchEvent(new CustomEvent("open-architect-auth-modal", { detail: mode }));
+  }
 
   // Lock scroll and focus close button when open
   useEffect(() => {
@@ -109,7 +109,7 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
           <AuthForm mode={mode} onSuccess={onClose} />
 
           {mode === "login" && (
-            <div className="mt-3 text-center">
+            <div className="mt-3 text-center space-y-2">
               <Link
                 href="/auth/reset-password"
                 onClick={onClose}
@@ -117,6 +117,15 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
               >
                 Forgot your password?
               </Link>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => openArchitectAuth("login")}
+                  className="text-xs text-primary font-medium hover:underline"
+                >
+                  Architect? Use Architect Login
+                </button>
+              </div>
             </div>
           )}
 
@@ -130,6 +139,15 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
               >
                 Apply as a seller →
               </Link>
+              <div className="mt-2">
+                <button
+                  type="button"
+                  onClick={() => openArchitectAuth("register")}
+                  className="text-primary font-medium hover:underline"
+                >
+                  Architect? Sign up here →
+                </button>
+              </div>
             </div>
           )}
         </div>

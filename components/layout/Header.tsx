@@ -8,6 +8,7 @@ import { Navigation } from './Navigation'
 import { MobileMenu } from './MobileMenu'
 import { AuthModal } from '@/components/auth/AuthModal'
 import { SellerAuthModal } from '@/components/auth/SellerAuthModal'
+import { ArchitectAuthModal } from '@/components/auth/ArchitectAuthModal'
 import { HeaderAuth } from './HeaderAuth'
 import { InstallButton } from '@/components/pwa/InstallButton'
 import { CartBadge } from './CartBadge'
@@ -29,6 +30,13 @@ export function Header({ cmsNav }: HeaderProps) {
     mode: 'login',
   })
   const [sellerAuthModal, setSellerAuthModal] = useState<{
+    open: boolean
+    mode: 'login' | 'register'
+  }>({
+    open: false,
+    mode: 'register',
+  })
+  const [architectAuthModal, setArchitectAuthModal] = useState<{
     open: boolean
     mode: 'login' | 'register'
   }>({
@@ -67,11 +75,23 @@ export function Header({ cmsNav }: HeaderProps) {
     return () => window.removeEventListener('open-seller-auth-modal', handler)
   }, [])
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const mode = (e as CustomEvent).detail as 'login' | 'register'
+      setArchitectAuthModal({ open: true, mode })
+    }
+    window.addEventListener('open-architect-auth-modal', handler)
+    return () => window.removeEventListener('open-architect-auth-modal', handler)
+  }, [])
+
   function closeAuth() {
     setAuthModal((prev) => ({ ...prev, open: false }))
   }
   function closeSellerAuth() {
     setSellerAuthModal((prev) => ({ ...prev, open: false }))
+  }
+  function closeArchitectAuth() {
+    setArchitectAuthModal((prev) => ({ ...prev, open: false }))
   }
 
   return (
@@ -174,12 +194,24 @@ export function Header({ cmsNav }: HeaderProps) {
         onOpenSellerAuth={(mode) => setSellerAuthModal({ open: true, mode })}
       />
 
-      <AuthModal isOpen={authModal.open} initialMode={authModal.mode} onClose={closeAuth} />
+      <AuthModal
+        key={`${authModal.open}-${authModal.mode}`}
+        isOpen={authModal.open}
+        initialMode={authModal.mode}
+        onClose={closeAuth}
+      />
 
       <SellerAuthModal
         isOpen={sellerAuthModal.open}
         initialMode={sellerAuthModal.mode}
         onClose={closeSellerAuth}
+      />
+
+      <ArchitectAuthModal
+        key={`${architectAuthModal.open}-${architectAuthModal.mode}`}
+        isOpen={architectAuthModal.open}
+        initialMode={architectAuthModal.mode}
+        onClose={closeArchitectAuth}
       />
     </>
   )

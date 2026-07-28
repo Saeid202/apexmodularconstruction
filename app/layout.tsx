@@ -6,6 +6,7 @@ import { CmsNavigation } from "@/components/layout/CmsNavigation";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceWorkerRegistrar } from "@/components/pwa/ServiceWorkerRegistrar";
 import { getSiteSettings } from "@/app/actions/cms-settings";
+import { headers } from "next/headers";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -89,6 +90,17 @@ export default async function RootLayout({
 }>) {
   const settings = await getSiteSettings();
 
+  const headersList = await headers();
+  const host = headersList.get("host") || "";
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+
+  let isSubdomain = false;
+  if (host && host !== rootDomain && host !== "apex.com" && host !== "www.apex.com") {
+    if (host.endsWith(`.${rootDomain}`) || host.endsWith(".apex.com")) {
+      isSubdomain = true;
+    }
+  }
+
   return (
     <html lang="en" className={`${inter.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col overflow-x-hidden" suppressHydrationWarning>
@@ -96,6 +108,7 @@ export default async function RootLayout({
         <ConditionalShell
           cmsNav={<CmsNavigation />}
           footer={<Footer socialLinks={settings.social_links} />}
+          isSubdomain={isSubdomain}
         >
           <main className="flex-1">{children}</main>
         </ConditionalShell>

@@ -275,7 +275,7 @@ export interface AuthUser {
   id: string
   email: string
   fullName: string | null
-  role: 'customer' | 'seller' | 'admin'
+  role: 'customer' | 'seller' | 'admin' | 'architect'
   avatarUrl: string | null
 }
 

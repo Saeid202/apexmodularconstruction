@@ -1,10 +1,63 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+type RoleResult = { data: { role: string } | null; error: unknown | null }
+type IdResult = { data: { id: string } | null; error: unknown | null }
+
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
+
+  const { pathname } = request.nextUrl
+
+  // Shopify-style Subdomain Routing
+  const hostname = request.headers.get('host') || ''
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000'
+  
+  let subdomain: string | null = null
+  if (hostname && hostname !== rootDomain && hostname !== 'apex.com' && hostname !== 'www.apex.com') {
+    if (hostname.endsWith(`.${rootDomain}`)) {
+      subdomain = hostname.substring(0, hostname.length - rootDomain.length - 1)
+    } else if (hostname.endsWith('.apex.com')) {
+      subdomain = hostname.substring(0, hostname.length - 9)
+    }
+  }
+
+  if (subdomain === 'www') {
+    subdomain = null
+  }
+
+  if (
+    subdomain &&
+    !pathname.startsWith('/_next') &&
+    !pathname.startsWith('/api') &&
+    !pathname.startsWith('/static') &&
+    !pathname.startsWith('/images') &&
+    !pathname.startsWith('/architect') &&
+    !pathname.startsWith('/seller') &&
+    !pathname.startsWith('/admin') &&
+    !pathname.startsWith('/partner') &&
+    !pathname.startsWith('/agent') &&
+    !pathname.startsWith('/shipping-agent') &&
+    !pathname.startsWith('/contractor') &&
+    !pathname.startsWith('/account') &&
+    !pathname.startsWith('/auth') &&
+    !pathname.includes('.')
+  ) {
+    console.log(`[Subdomain Router] Rewriting ${subdomain} to /studio/${subdomain}${pathname}`)
+    return NextResponse.rewrite(
+      new URL(`/studio/${subdomain}${pathname}`, request.url)
+    )
+  }
+
+  const devArchitectBypass =
+    process.env.NODE_ENV !== 'production' &&
+    process.env.DEV_BYPASS_ARCHITECT_AUTH === 'true'
+
+  if (devArchitectBypass && pathname.startsWith('/architect')) {
+    return supabaseResponse
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -27,7 +80,7 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  let user: any = null
+  let user: { id: string; user_metadata?: Record<string, unknown> } | null = null
   try {
     const { data, error: authError } = await supabase.auth.getUser()
     user = data?.user ?? null
@@ -45,8 +98,6 @@ export async function middleware(request: NextRequest) {
   } catch (err) {
     console.error('Middleware auth error:', err)
   }
-
-  const { pathname } = request.nextUrl
 
   // Seller routes protection
   if (pathname.startsWith('/seller')) {
@@ -70,8 +121,8 @@ export async function middleware(request: NextRequest) {
     }
 
     // Check both profiles role AND sellers table for complete validation with error handling
-    let profileResult: any = { data: null, error: null }
-    let sellerResult: any = { data: null, error: null }
+    let profileResult: RoleResult = { data: null, error: null }
+    let sellerResult: IdResult = { data: null, error: null }
 
     try {
       const results = await Promise.allSettled([
@@ -103,6 +154,68 @@ export async function middleware(request: NextRequest) {
     if (profileResult.data && profileResult.data.role === 'seller' && sellerResult.error) {
       // User is a seller but seller query failed - log error but allow access
       console.error('Seller profile query failed for seller user, allowing access')
+    }
+  }
+
+  // Architect routes protection
+  if (pathname.startsWith('/architect')) {
+    const hasBypass = request.cookies.has('architect_bypass_email')
+
+    if (pathname === '/architect/login' || pathname === '/architect/register') {
+      if (hasBypass || user) {
+        if (hasBypass) {
+          return NextResponse.redirect(new URL('/architect/dashboard', request.url))
+        }
+        const [profileResult, architectResult] = await Promise.all([
+          supabase.from('profiles').select('role').eq('id', user!.id).single(),
+          supabase.from('architects').select('id').eq('id', user!.id).single(),
+        ])
+
+        if (profileResult.data?.role === 'architect' && architectResult.data) {
+          return NextResponse.redirect(new URL('/architect/dashboard', request.url))
+        }
+      }
+      return supabaseResponse
+    }
+
+    if (hasBypass) {
+      return supabaseResponse
+    }
+
+    if (!user) {
+      return NextResponse.redirect(new URL('/architect/login', request.url))
+    }
+
+    let profileResult: RoleResult = { data: null, error: null }
+    let architectResult: IdResult = { data: null, error: null }
+
+    try {
+      const results = await Promise.allSettled([
+        supabase.from('profiles').select('role').eq('id', user.id).single(),
+        supabase.from('architects').select('id').eq('id', user.id).single(),
+      ])
+
+      if (results[0].status === 'fulfilled') {
+        profileResult = results[0].value
+      } else {
+        console.error('Profile query error:', results[0].reason)
+      }
+
+      if (results[1].status === 'fulfilled') {
+        architectResult = results[1].value
+      } else {
+        console.error('Architect query error:', results[1].reason)
+      }
+    } catch (error) {
+      console.error('Database query error:', error)
+    }
+
+    if (profileResult.data && profileResult.data.role !== 'architect') {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    if (profileResult.data && profileResult.data.role === 'architect' && architectResult.error) {
+      console.error('Architect profile query failed for architect user, allowing access')
     }
   }
 
@@ -180,13 +293,6 @@ export async function middleware(request: NextRequest) {
       .single()
 
     console.log('Contractor route access check:', { userId: user.id, profile, profileError })
-
-    // TEMPORARILY ALLOW ALL AUTHENTICATED USERS TO ACCESS CONTRACTOR DASHBOARD
-    // Allow both contractors and admins
-    // if (profileError || !profile || (profile.role !== 'contractor' && profile.role !== 'admin')) {
-    //   console.log('Contractor access denied - redirecting to home')
-    //   return NextResponse.redirect(new URL('/', request.url))
-    // }
   }
 
   // Account routes protection (for customers)
@@ -201,12 +307,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/account/:path*',
-    '/seller/:path*',
-    '/admin/:path*',
-    '/partner/:path*',
-    '/agent/:path*',
-    '/shipping-agent/:path*',
-    '/contractor/:path*',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
   ],
 }

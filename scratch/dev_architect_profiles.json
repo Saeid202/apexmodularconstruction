@@ -1,0 +1,54 @@
+{
+  "contract29101985@hotmail.com": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "full_name": "contract29101985",
+    "email": "contract29101985@hotmail.com",
+    "phone": null,
+    "firm_name": null,
+    "bio": "Bypass Dev Profile",
+    "status": "active",
+    "created_at": "2026-07-26T19:35:09.434Z",
+    "updated_at": "2026-07-26T19:35:09.437Z",
+    "website": null,
+    "address": null,
+    "professional_role": null,
+    "experience_years": null,
+    "specialization": null,
+    "subdomain": "sarah-designs",
+    "branding": {
+      "title": "Sarah Designs Studio",
+      "tagline": "Custom Prefabricated Luxury Modules",
+      "primaryColor": "#1E3A8A",
+      "secondaryColor": "#0F172A",
+      "instagram": "https://instagram.com",
+      "linkedin": "https://linkedin.com",
+      "twitter": ""
+    }
+  },
+  "subdomain:sarah-designs": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "full_name": "contract29101985",
+    "email": "contract29101985@hotmail.com",
+    "phone": null,
+    "firm_name": null,
+    "bio": "Bypass Dev Profile",
+    "status": "active",
+    "created_at": "2026-07-26T19:35:09.434Z",
+    "updated_at": "2026-07-26T19:35:09.437Z",
+    "website": null,
+    "address": null,
+    "professional_role": null,
+    "experience_years": null,
+    "specialization": null,
+    "subdomain": "sarah-designs",
+    "branding": {
+      "title": "Sarah Designs Studio",
+      "tagline": "Custom Prefabricated Luxury Modules",
+      "primaryColor": "#1E3A8A",
+      "secondaryColor": "#0F172A",
+      "instagram": "https://instagram.com",
+      "linkedin": "https://linkedin.com",
+      "twitter": ""
+    }
+  }
+}
