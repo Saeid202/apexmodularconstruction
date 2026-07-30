@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, User, FolderKanban, LayoutTemplate, Settings, ChevronRight, Compass, Wand2 } from "lucide-react";
+import { Menu, X, User, FolderKanban, LayoutTemplate, Settings, ChevronRight, Compass, Wand2, Globe } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,6 +13,7 @@ const menuItems = [
   { id: "profile", label: "Profile", icon: User, href: "/architect/profile" },
   { id: "projects", label: "Projects", icon: FolderKanban, href: "/architect/projects" },
   { id: "page-builder", label: "Page Builder", icon: Wand2, href: "/architect/page-builder" },
+  { id: "domains", label: "Domains", icon: Globe, href: "/architect/domains" },
   { id: "templates", label: "Templates", icon: LayoutTemplate, href: "/architect/templates" },
   { id: "settings", label: "Settings", icon: Settings, href: "/architect/settings" },
 ];
