@@ -28,26 +28,56 @@ export async function middleware(request: NextRequest) {
     subdomain = null
   }
 
-  if (
-    subdomain &&
-    !pathname.startsWith('/_next') &&
-    !pathname.startsWith('/api') &&
-    !pathname.startsWith('/static') &&
-    !pathname.startsWith('/images') &&
-    !pathname.startsWith('/architect') &&
-    !pathname.startsWith('/seller') &&
-    !pathname.startsWith('/admin') &&
-    !pathname.startsWith('/partner') &&
-    !pathname.startsWith('/agent') &&
-    !pathname.startsWith('/shipping-agent') &&
-    !pathname.startsWith('/contractor') &&
-    !pathname.startsWith('/account') &&
-    !pathname.startsWith('/auth') &&
-    !pathname.includes('.')
-  ) {
+  // Shared guard: internal app paths that must never be rewritten to a studio.
+  const isReservedPath =
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/static') ||
+    pathname.startsWith('/images') ||
+    pathname.startsWith('/studio') ||
+    pathname.startsWith('/architect') ||
+    pathname.startsWith('/seller') ||
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/partner') ||
+    pathname.startsWith('/agent') ||
+    pathname.startsWith('/shipping-agent') ||
+    pathname.startsWith('/contractor') ||
+    pathname.startsWith('/account') ||
+    pathname.startsWith('/auth') ||
+    pathname.includes('.')
+
+  if (subdomain && !isReservedPath) {
     console.log(`[Subdomain Router] Rewriting ${subdomain} to /studio/${subdomain}${pathname}`)
     return NextResponse.rewrite(
       new URL(`/studio/${subdomain}${pathname}`, request.url)
+    )
+  }
+
+  // Custom domain routing (Shopify-style "connect existing domain").
+  // A request whose Host is a foreign domain — not the root domain, not one
+  // of its subdomains, not localhost/preview — only reaches us when an
+  // architect has pointed their own domain at the app. Resolve it to the
+  // studio owner via /studio/domain/<host>.
+  const hostNoPort = hostname.split(':')[0]
+  const rootNoPort = rootDomain.split(':')[0]
+  const isCustomDomainCandidate =
+    !subdomain &&
+    !!hostNoPort &&
+    hostNoPort.includes('.') &&
+    hostNoPort !== rootNoPort &&
+    hostNoPort !== 'apex.com' &&
+    hostNoPort !== 'www.apex.com' &&
+    !hostNoPort.endsWith(`.${rootNoPort}`) &&
+    !hostNoPort.endsWith('.apex.com') &&
+    !hostNoPort.endsWith('.vercel.app') &&
+    hostNoPort !== 'localhost' &&
+    hostNoPort !== '127.0.0.1' &&
+    hostNoPort !== '0.0.0.0'
+
+  if (isCustomDomainCandidate && !isReservedPath) {
+    console.log(`[Custom Domain Router] Rewriting ${hostNoPort} to /studio/domain/${hostNoPort}`)
+    return NextResponse.rewrite(
+      new URL(`/studio/domain/${hostNoPort}`, request.url)
     )
   }
 
