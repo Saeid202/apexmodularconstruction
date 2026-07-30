@@ -10,17 +10,15 @@ import {
   Copy,
   Check,
   ExternalLink,
+  RefreshCw,
 } from "lucide-react";
 import { updateArchitectProfile } from "@/app/actions/architect";
-import { isValidCustomDomain, normalizeHost } from "@/lib/domains";
+import { verifyCustomDomainDNS, type DomainVerifyResult } from "@/app/actions/domains";
+import { isValidCustomDomain, normalizeHost, APP_ROOT_DOMAIN, APP_A_RECORD } from "@/lib/domains";
 
 interface DomainSettingsProps {
   initialProfile: any;
 }
-
-// The domain visitors should point their DNS at. Configurable per environment;
-// defaults to the marketing apex domain.
-const APP_ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "apex.com";
 
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
@@ -52,6 +50,8 @@ export function DomainSettings({ initialProfile }: DomainSettingsProps) {
   const [domain, setDomain] = useState<string>(savedDomain);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [verifying, setVerifying] = useState(false);
+  const [verifyResult, setVerifyResult] = useState<DomainVerifyResult | null>(null);
 
   const normalized = normalizeHost(domain);
   const valid = normalized === "" || isValidCustomDomain(normalized);
@@ -65,7 +65,7 @@ export function DomainSettings({ initialProfile }: DomainSettingsProps) {
       return [{ type: "CNAME", name: label, value: APP_ROOT_DOMAIN }];
     }
     return [
-      { type: "A", name: "@", value: "76.76.21.21" },
+      { type: "A", name: "@", value: APP_A_RECORD },
       { type: "CNAME", name: "www", value: APP_ROOT_DOMAIN },
     ];
   }, [normalized]);
@@ -112,7 +112,19 @@ export function DomainSettings({ initialProfile }: DomainSettingsProps) {
 
   function handleRemove() {
     setDomain("");
+    setVerifyResult(null);
     persist(null);
+  }
+
+  async function handleVerify() {
+    setVerifying(true);
+    setVerifyResult(null);
+    try {
+      const result = await verifyCustomDomainDNS(savedDomain);
+      setVerifyResult(result);
+    } finally {
+      setVerifying(false);
+    }
   }
 
   return (
@@ -207,11 +219,31 @@ export function DomainSettings({ initialProfile }: DomainSettingsProps) {
       {/* DNS setup instructions — shown once a domain is saved */}
       {savedDomain ? (
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2">
-            <h3 className="text-sm font-bold text-gray-900">Point your DNS</h3>
-            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 border border-amber-200">
-              <AlertCircle className="h-3 w-3" /> Awaiting DNS
-            </span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-gray-900">Point your DNS</h3>
+              {verifyResult?.connected ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200">
+                  <CheckCircle2 className="h-3 w-3" /> Connected
+                </span>
+              ) : verifyResult && !verifyResult.connected ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-700 border border-rose-200">
+                  <AlertCircle className="h-3 w-3" /> Not detected yet
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 border border-amber-200">
+                  <AlertCircle className="h-3 w-3" /> Awaiting DNS
+                </span>
+              )}
+            </div>
+            <button
+              onClick={handleVerify}
+              disabled={verifying}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${verifying ? "animate-spin" : ""}`} />
+              {verifying ? "Checking…" : "Verify connection"}
+            </button>
           </div>
           <p className="mt-1 text-sm text-gray-500">
             Log in to your domain registrar (GoDaddy, Namecheap, Cloudflare…) and add
@@ -248,6 +280,40 @@ export function DomainSettings({ initialProfile }: DomainSettingsProps) {
             <span className="font-semibold text-gray-600">{savedDomain}</span>. SSL is provisioned automatically by
             the Apex team once the domain resolves.
           </p>
+
+          {verifyResult ? (
+            <div
+              className={`mt-4 rounded-xl border px-4 py-3 text-sm ${
+                verifyResult.connected
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                  : "border-amber-200 bg-amber-50 text-amber-800"
+              }`}
+            >
+              <div className="flex items-start gap-2 font-medium">
+                {verifyResult.connected ? (
+                  <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" />
+                ) : (
+                  <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" />
+                )}
+                <span>
+                  {verifyResult.connected
+                    ? `DNS is pointing at Apex (via ${verifyResult.method?.toUpperCase()} record). Your domain is connected — SSL finishes automatically.`
+                    : verifyResult.error ||
+                      "DNS isn’t pointing here yet. Double-check the records above; changes can take up to 48 hours."}
+                </span>
+              </div>
+              {verifyResult.found.length > 0 ? (
+                <div className="mt-2 pl-6">
+                  <p className="text-xs font-semibold uppercase opacity-70">Records found</p>
+                  <ul className="mt-1 space-y-0.5 font-mono text-xs">
+                    {verifyResult.found.map((r) => (
+                      <li key={r}>{r}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>

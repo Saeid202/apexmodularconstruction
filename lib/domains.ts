@@ -4,6 +4,11 @@
  * client components alike. No backend/database state involved.
  */
 
+// The DNS targets architects point their domain at. Single source of truth
+// for both the setup instructions (UI) and the verify-connection check.
+export const APP_ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'apex.com'
+export const APP_A_RECORD = process.env.NEXT_PUBLIC_APP_IP || '76.76.21.21'
+
 /**
  * Normalize a hostname/custom domain for consistent storage and lookup:
  * strip protocol, path, port and any trailing dot, and lowercase it.
