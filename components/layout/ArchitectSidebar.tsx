@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, User, FolderKanban, LayoutTemplate, Settings, ChevronRight, Compass } from "lucide-react";
+import { Menu, X, User, FolderKanban, LayoutTemplate, Settings, ChevronRight, Compass, Wand2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -12,6 +12,7 @@ interface ArchitectSidebarProps {
 const menuItems = [
   { id: "profile", label: "Profile", icon: User, href: "/architect/profile" },
   { id: "projects", label: "Projects", icon: FolderKanban, href: "/architect/projects" },
+  { id: "page-builder", label: "Page Builder", icon: Wand2, href: "/architect/page-builder" },
   { id: "templates", label: "Templates", icon: LayoutTemplate, href: "/architect/templates" },
   { id: "settings", label: "Settings", icon: Settings, href: "/architect/settings" },
 ];

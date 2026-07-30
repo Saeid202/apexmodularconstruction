@@ -2,6 +2,8 @@ import { getArchitectProfileBySubdomain } from "@/app/actions/architect";
 import { notFound } from "next/navigation";
 import { Compass, Mail, Phone, MapPin, Globe, Award, Send, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { PageRenderer } from "@/components/page-builder/PageRenderer";
+import type { PageLayout } from "@/types/page-builder";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -53,6 +55,11 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
   const secondaryColor = branding.secondaryColor || "#0F172A"; // default dark slate
   const title = branding.title || profile.firm_name || profile.full_name;
   const tagline = branding.tagline || "Apex Authorized Architect Studio";
+
+  // If the architect has built a custom page in the Page Builder, render that
+  // (between the branded header and footer) instead of the default layout.
+  const customLayout: PageLayout | null =
+    Array.isArray(branding.layout) && branding.layout.length > 0 ? (branding.layout as PageLayout) : null;
 
   // Mock projects/designs to represent their modular templates (Shopify catalog style)
   const mockTemplates = [
@@ -120,6 +127,10 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
         </div>
       </header>
 
+      {customLayout ? (
+        <PageRenderer layout={customLayout} primaryColor={primaryColor} />
+      ) : (
+        <>
       {/* Hero Section */}
       <section className="relative bg-slate-950 text-white py-24 md:py-32 px-6 overflow-hidden">
         {/* Abstract background gradient */}
@@ -312,6 +323,9 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
           </button>
         </form>
       </section>
+
+        </>
+      )}
 
       {/* Footer */}
       <footer className="mt-auto bg-slate-900 text-white border-t border-slate-800 py-12 px-6">
