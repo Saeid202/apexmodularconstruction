@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { customizationsKey } from '@/lib/cart/canonicalJson'
+import type { CartCustomizations } from '@/types/cart'
 
 export interface CartItem {
   productId: string
@@ -8,7 +10,7 @@ export interface CartItem {
   productName: string
   productPrice: number
   quantity: number
-  customizations?: Record<string, { groupName: string; optionName: string; priceModifier: number }>
+  customizations?: CartCustomizations
   configurationId?: string | null
 }
 
@@ -17,9 +19,8 @@ interface CartStore {
   addItem: (item: Omit<CartItem, 'quantity'>, qty: number) => void
   removeItem: (productId: string, variantCode: string | null, customizations?: CartItem['customizations'], configurationId?: string | null) => void
   updateQuantity: (productId: string, variantCode: string | null, qty: number, customizations?: CartItem['customizations'], configurationId?: string | null) => void
+  replaceItems: (items: CartItem[]) => void /* Overwrites the whole cart in one update */
   clearCart: () => void
-  loadFromLocalStorage: () => void
-  syncToLocalStorage: () => void
   itemCount: () => number
   subtotal: () => number
 }
@@ -40,11 +41,11 @@ function isSameItem(
     a.variantCode === b.variantCode &&
     (a.configurationId || null) === (b.configurationId || null);
   if (!baseMatch) return false;
-  
-  // Compare customizations
-  const aCust = JSON.stringify(a.customizations || {});
-  const bCust = JSON.stringify(b.customizations || {});
-  return aCust === bCust;
+
+  // Compare customizations. Canonical form, not raw JSON.stringify — these
+  // objects are also compared server-side against values read back out of a
+  // jsonb column, which does not preserve key order.
+  return customizationsKey(a.customizations) === customizationsKey(b.customizations);
 }
 
 export const useCartStore = create<CartStore>()(
@@ -80,47 +81,9 @@ export const useCartStore = create<CartStore>()(
         }))
       },
 
+      replaceItems: (items) => set({ items }),
+
       clearCart: () => set({ items: [] }),
-
-      loadFromLocalStorage: () => {
-        if (typeof window === 'undefined') return
-        try {
-          const raw = window.localStorage.getItem(CART_KEY)
-          if (!raw) return
-          const parsed = JSON.parse(raw)
-          const items: CartItem[] = (parsed?.items ?? []).map((i: Record<string, unknown>) => ({
-            productId: i.product_id as string,
-            variantCode: (i.variant_code as string | null) ?? null,
-            variantImageUrl: (i.variant_image_url as string | null) ?? null,
-            productName: i.product_name as string,
-            productPrice: i.product_price as number,
-            quantity: i.quantity as number,
-            customizations: i.customizations as CartItem['customizations'],
-            configurationId: (i.configuration_id as string | null) ?? null,
-          }))
-          set({ items })
-        } catch {
-          // ignore malformed data
-        }
-      },
-
-      syncToLocalStorage: () => {
-        if (typeof window === 'undefined') return
-        const { items } = get()
-        const payload = {
-          items: items.map((i) => ({
-            product_id: i.productId,
-            variant_code: i.variantCode,
-            variant_image_url: i.variantImageUrl,
-            product_name: i.productName,
-            product_price: i.productPrice,
-            quantity: i.quantity,
-            customizations: i.customizations,
-            configuration_id: i.configurationId || null,
-          })),
-        }
-        window.localStorage.setItem(CART_KEY, JSON.stringify(payload))
-      },
 
       itemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
 

@@ -6,11 +6,12 @@ import Link from "next/link";
 import { Trash2, Minus, Plus, ShoppingCart, ArrowRight, Package } from "lucide-react";
 import { useCartStore, type CartItem } from "@/lib/stores/cartStore";
 import { createBrowserClient } from "@/lib/supabase/client";
+import { canonicalJson } from "@/lib/cart/canonicalJson";
 import {
-  getCartItems,
-  removeCartItem,
-  updateCartItemQuantity,
-} from "@/app/actions/cart";
+  removeFromCart,
+  setCartItemQuantity,
+  syncCartWithSession,
+} from "@/lib/cart/cartManager";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -20,26 +21,21 @@ function formatCAD(amount: number) {
 }
 
 function CartItemRow({ item }: { item: CartItem }) {
-  const { updateQuantity, removeItem } = useCartStore();
   const [isUpdating, setIsUpdating] = useState(false);
 
+  // Both handlers go through the Cart_Manager, which updates local state
+  // immediately and then persists to Supabase only when there is a session.
   async function handleQuantityChange(newQty: number) {
     if (newQty < 1 || isUpdating) return;
     setIsUpdating(true);
-    // Optimistic update
-    updateQuantity(item.productId, item.variantCode, newQty, item.customizations, item.configurationId);
-    // Sync to server (best-effort, no rollback for now)
-    await updateCartItemQuantity(item.productId, item.variantCode, newQty, item.customizations, item.configurationId);
+    await setCartItemQuantity(item, newQty);
     setIsUpdating(false);
   }
 
   async function handleRemove() {
     if (isUpdating) return;
     setIsUpdating(true);
-    // Optimistic update
-    removeItem(item.productId, item.variantCode, item.customizations, item.configurationId);
-    // Sync to server
-    await removeCartItem(item.productId, item.variantCode, item.customizations, item.configurationId);
+    await removeFromCart(item);
     setIsUpdating(false);
   }
 
@@ -158,44 +154,17 @@ export default function CartPage() {
   const [isSyncing, setIsSyncing] = useState(true);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
-  // On mount: sync from Supabase if logged in
+  // On mount: reconcile local state with the session.
+  //
+  // Previously this read the server cart and, if it had rows, cleared the local
+  // cart and replaced it — discarding anything a guest had added before logging
+  // in. syncCartWithSession merges first and only then mirrors, so a guest cart
+  // survives authentication. It is also a no-op for guests, and idempotent for a
+  // user whose local cart is already a mirror.
   useEffect(() => {
     async function syncCart() {
       try {
-        const supabase = createBrowserClient();
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        if (user) {
-          const { data } = await getCartItems();
-          if (data && data.length > 0) {
-            // Populate store from server data
-            const { clearCart, addItem } = useCartStore.getState();
-            clearCart();
-            for (const row of data) {
-              if (!row.products) continue;
-
-              // If the product is configurator-customized, use the saved configuration total price
-              const customPrice = row.house_configurations 
-                ? Number(row.house_configurations.total_price) 
-                : (row as any).product_price ?? row.products.price;
-
-              addItem(
-                {
-                  productId: row.product_id,
-                  variantCode: row.variant_code,
-                  variantImageUrl: row.variant_image_url,
-                  productName: row.products.name,
-                  productPrice: customPrice,
-                  customizations: (row as any).customizations ?? undefined,
-                  configurationId: row.configuration_id,
-                },
-                row.quantity
-              );
-            }
-          }
-        }
+        await syncCartWithSession();
       } catch {
         // ignore sync errors — local state is still valid
       } finally {
@@ -291,7 +260,7 @@ export default function CartPage() {
           <div className="space-y-4">
             {items.map((item) => (
               <CartItemRow
-                key={`${item.productId}-${item.variantCode ?? "null"}-${JSON.stringify(item.customizations ?? {})}`}
+                key={`${item.productId}-${item.variantCode ?? "null"}-${canonicalJson(item.customizations ?? {})}-${item.configurationId ?? "null"}`}
                 item={item}
               />
             ))}

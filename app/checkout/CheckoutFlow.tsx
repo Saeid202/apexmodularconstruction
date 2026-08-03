@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/stores/cartStore";
+import { clearCartAfterOrder } from "@/lib/cart/cartManager";
 import { ShippingStep, type ShippingFormData } from "./steps/ShippingStep";
 import { ReviewStep } from "./steps/ReviewStep";
 import { PaymentStep } from "./steps/PaymentStep";
@@ -21,7 +22,7 @@ const STEPS = ["Shipping", "Review", "Payment"] as const;
 
 export function CheckoutFlow({ userEmail, userName }: Props) {
   const router = useRouter();
-  const { items, clearCart } = useCartStore();
+  const { items } = useCartStore();
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [shippingData, setShippingData] = useState<ShippingFormData | null>(null);
@@ -45,7 +46,8 @@ export function CheckoutFlow({ userEmail, userName }: Props) {
         setIsCreatingOrder(false);
         return;
       }
-      clearCart();
+      // createOrder already deleted the server rows; this drops the local mirror.
+      clearCartAfterOrder();
       router.push(`/checkout/success?order=${result.orderNumber}`);
     } catch {
       setOrderError("An unexpected error occurred. Please contact support with your payment reference.");

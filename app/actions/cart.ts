@@ -1,6 +1,28 @@
 "use server";
 
 import { createServerClient } from "@/lib/supabase/server";
+import { customizationsKey } from "@/lib/cart/canonicalJson";
+import type { CartCustomizations } from "@/types/cart";
+
+/**
+ * `cart_items` stores "no variant" as '' and "no customizations" as '{}' rather
+ * than NULL, so that both columns can take part in
+ * `cart_items_line_identity_key` without COALESCE — see
+ * supabase/migrations/059_cart_line_identity.sql.
+ *
+ * Every write and lookup below normalises to that representation.
+ * `toCartItem` in lib/cart/cartManager.ts converts '' back to null on the way
+ * out, so the rest of the app keeps its `string | null` variant type.
+ */
+function variantKey(variantCode: string | null | undefined): string {
+  return variantCode ?? "";
+}
+
+function customizationsValue(
+  customizations: CartCustomizations | null | undefined
+): CartCustomizations {
+  return customizations ?? {};
+}
 
 export interface CartItemRow {
   id: string;
@@ -9,6 +31,26 @@ export interface CartItemRow {
   variant_code: string | null;
   variant_image_url: string | null;
   quantity: number;
+  /**
+   * NOT NULL in the database as of 059_cart_line_identity, defaulting
+   * to '{}'. Still typed as nullable so this code is correct both before and
+   * after that migration is applied; the null branch costs one `??` and every
+   * reader normalises through `customizationsKey` anyway.
+   */
+  customizations: CartCustomizations | null;
+  /**
+   * sha256 of `customizations`, maintained by the database as a GENERATED ALWAYS
+   * column so the line identity constraint can index a fixed 32 bytes instead of
+   * an unbounded document — a btree tuple is capped at 2704 bytes and a realistic
+   * payload passes that at roughly 40 customization groups.
+   *
+   * Returned because the query selects `*`. Never write it, and do not try to
+   * recompute it in JS: matching Postgres would mean reproducing jsonb's internal
+   * key ordering exactly. Use `customizationsKey` for application-side
+   * comparison instead — that is the semantic check, the digest only bounds the
+   * index.
+   */
+  readonly customizations_digest?: string;
   configuration_id: string | null;
   created_at: string;
   updated_at: string;
@@ -21,7 +63,7 @@ export interface CartItemRow {
   } | null;
   house_configurations?: {
     id: string;
-    selections: any;
+    selections: unknown;
     total_price: number;
   } | null;
 }
@@ -31,7 +73,7 @@ export interface GuestCartItem {
   variant_code: string | null;
   variant_image_url: string | null;
   quantity: number;
-  customizations?: any;
+  customizations?: CartCustomizations;
   configuration_id?: string | null;
 }
 
@@ -40,7 +82,7 @@ export async function addCartItem(
   variantCode: string | null,
   variantImageUrl: string | null,
   quantity: number,
-  customizations?: any,
+  customizations?: CartCustomizations,
   configurationId?: string | null
 ): Promise<{ error: string | null }> {
   try {
@@ -67,10 +109,11 @@ export async function addCartItem(
       .select("id, quantity, customizations, configuration_id")
       .eq("user_id", user.id)
       .eq("product_id", productId)
-      .is("variant_code", variantCode);
+      .eq("variant_code", variantKey(variantCode));
 
-    const existing = existingItems?.find(i => 
-      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {}) &&
+    const wantedCustomizations = customizationsKey(customizations);
+    const existing = existingItems?.find(i =>
+      customizationsKey(i.customizations) === wantedCustomizations &&
       (i.configuration_id || null) === (configurationId || null)
     );
 
@@ -87,10 +130,10 @@ export async function addCartItem(
       const { error: insertError } = await supabase.from("cart_items").insert({
         user_id: user.id,
         product_id: productId,
-        variant_code: variantCode,
+        variant_code: variantKey(variantCode),
         variant_image_url: variantImageUrl,
         quantity,
-        customizations: customizations || null,
+        customizations: customizationsValue(customizations),
         configuration_id: configurationId || null,
       });
       if (insertError) return { error: insertError.message };
@@ -106,7 +149,7 @@ export async function addCartItem(
 export async function removeCartItem(
   productId: string,
   variantCode: string | null,
-  customizations?: any,
+  customizations?: CartCustomizations,
   configurationId?: string | null
 ): Promise<{ error: string | null }> {
   try {
@@ -123,10 +166,11 @@ export async function removeCartItem(
       .select("id, customizations, configuration_id")
       .eq("user_id", user.id)
       .eq("product_id", productId)
-      .is("variant_code", variantCode);
+      .eq("variant_code", variantKey(variantCode));
 
-    const target = items?.find(i => 
-      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {}) &&
+    const wantedCustomizations = customizationsKey(customizations);
+    const target = items?.find(i =>
+      customizationsKey(i.customizations) === wantedCustomizations &&
       (i.configuration_id || null) === (configurationId || null)
     );
 
@@ -148,7 +192,7 @@ export async function updateCartItemQuantity(
   productId: string,
   variantCode: string | null,
   quantity: number,
-  customizations?: any,
+  customizations?: CartCustomizations,
   configurationId?: string | null
 ): Promise<{ error: string | null }> {
   try {
@@ -164,10 +208,11 @@ export async function updateCartItemQuantity(
       .select("id, customizations, configuration_id")
       .eq("user_id", user.id)
       .eq("product_id", productId)
-      .is("variant_code", variantCode);
+      .eq("variant_code", variantKey(variantCode));
 
-    const target = items?.find(i => 
-      JSON.stringify(i.customizations || {}) === JSON.stringify(customizations || {}) &&
+    const wantedCustomizations = customizationsKey(customizations);
+    const target = items?.find(i =>
+      customizationsKey(i.customizations) === wantedCustomizations &&
       (i.configuration_id || null) === (configurationId || null)
     );
 
@@ -268,10 +313,11 @@ export async function mergeGuestCartItems(
         .select("id, quantity, customizations, configuration_id")
         .eq("user_id", user.id)
         .eq("product_id", item.product_id)
-        .is("variant_code", item.variant_code);
+        .eq("variant_code", variantKey(item.variant_code));
 
-      const existing = existingItems?.find(i => 
-        JSON.stringify(i.customizations || {}) === JSON.stringify(item.customizations || {}) &&
+      const wantedCustomizations = customizationsKey(item.customizations);
+      const existing = existingItems?.find(i =>
+        customizationsKey(i.customizations) === wantedCustomizations &&
         (i.configuration_id || null) === (item.configuration_id || null)
       );
 
@@ -287,10 +333,10 @@ export async function mergeGuestCartItems(
         await supabase.from("cart_items").insert({
           user_id: user.id,
           product_id: item.product_id,
-          variant_code: item.variant_code,
+          variant_code: variantKey(item.variant_code),
           variant_image_url: item.variant_image_url,
           quantity: item.quantity,
-          customizations: item.customizations || null,
+          customizations: customizationsValue(item.customizations),
           configuration_id: item.configuration_id || null,
         });
       }
