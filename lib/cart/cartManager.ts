@@ -22,9 +22,10 @@
  *   equals user id  → already a mirror of that user's server cart; do not merge
  *   different id    → left behind by another user on a shared browser; discard
  *
- * That makes `syncCartWithSession` idempotent and safe to call on every page
- * load, which is what keeps it correct for logins that don't pass through
- * `AuthForm` (session restore, magic links, a second tab).
+ * The marker makes `syncCartWithSession` safe to call on every page load, which
+ * is what keeps it correct for logins that don't pass through `AuthForm`
+ * (session restore, magic links, a second tab).
+ *
  */
 
 import {
@@ -41,6 +42,16 @@ import { createBrowserClient } from '@/lib/supabase/client'
 import { useCartStore, type CartItem } from '@/lib/stores/cartStore'
 
 const CART_OWNER_KEY = 'cargoplus_cart_owner'
+
+/** Web Locks name. Origin-scoped, so it is shared by every tab and worker. */
+const CART_LOCK_NAME = 'cargoplus_cart_sync'
+
+/**
+ * The reconciliation currently running, if any. Concurrent callers join it
+ * rather than starting a second one, which is what stops a guest cart being
+ * merged into the server twice on a single sign-in.
+ */
+let inFlightSync: Promise<void> | null = null
 
 export interface CartMutationResult {
   /** Human-readable failure reason, or null on success. */
@@ -176,22 +187,66 @@ async function loadServerCart(): Promise<void> {
  * Reconciles local cart state with the current session. Safe to call on any
  * page load, including for guests.
  *
- * Merge guest cart into the user's Supabase cart on authentication, incrementing quantities for
- * duplicates and clear the localStorage cart once the merge completes.
+ * Merges a guest cart into the user's Supabase cart on authentication,
+ * incrementing quantities for duplicates, and clears the local cart once the
+ * merge completes.
+ *
+ * Concurrent callers share one run. A single sign-in triggers this from two
+ * places — the login form awaits it before navigating, and the global SIGNED_IN
+ * listener fires at the same moment — and `mergeGuestCartItems` *adds* the guest
+ * quantities to the server, so running it twice doubles them. The ownership
+ * marker cannot prevent that on its own: it is only written after the merge
+ * returns, so a second caller that started earlier has already read
+ * `owner === null` and is committed to merging. Coalescing is what actually
+ * makes this idempotent.
  */
-export async function syncCartWithSession(): Promise<void> {
+export function syncCartWithSession(): Promise<void> {
+  if (inFlightSync) return inFlightSync
+
+  inFlightSync = withCartLock(reconcileCartWithSession).finally(() => {
+    inFlightSync = null
+  })
+
+  return inFlightSync
+}
+
+interface LockManagerLike {
+  request(name: string, callback: () => Promise<void>): Promise<void>
+}
+
+/**
+ * Serialises reconciliation across every tab on this origin.
+ *
+ * `inFlightSync` only coalesces callers inside one JavaScript context, but
+ * `onAuthStateChange` fires in *all* open tabs, so a sign-in with two tabs open
+ * produces two independent reconciliations that would both merge.
+ *
+ * Web Locks are held for the lifetime of the returned promise and released
+ * automatically, including if the tab is closed or crashes mid-merge, so this
+ * cannot wedge the cart.
+ *
+ */
+function withCartLock(run: () => Promise<void>): Promise<void> {
+  const locks = (globalThis as { navigator?: { locks?: LockManagerLike } }).navigator?.locks
+  if (!locks) return run()
+
+  return locks.request(CART_LOCK_NAME, run)
+}
+
+async function reconcileCartWithSession(): Promise<void> {
   const userId = await getSessionUserId()
+  const owner = readCartOwner()
 
   if (!userId) {
-    // No session. Anything local is a guest cart from here on, so release the
-    // ownership marker — otherwise items added after a sign-out would look like
-    // a server mirror and be silently discarded on the next login instead of
-    // merged.
-    clearCartOwner()
+    if (owner !== null) {
+      // The local cart is a mirror of a signed-in user's server cart, and that
+      // session is gone. Drop it.
+      useCartStore.getState().clearCart()
+      clearCartOwner()
+    }
+    // No marker: a genuine guest cart. Leave it so it merges on next login.
     return
   }
-
-  const owner = readCartOwner()
 
   if (owner !== userId) {
     const localItems = useCartStore.getState().items
@@ -201,14 +256,10 @@ export async function syncCartWithSession(): Promise<void> {
       const { error } = await mergeGuestCartItems(localItems.map(toGuestCartItem))
 
       if (error) {
-        // Leave local state and the marker exactly as they are. Clearing here
-        // would destroy the guest cart, and mirroring the server on top of it
-        // would do the same — so bail out and let the next call retry.
+        // Leave local state and the marker exactly as they are.
         return
       }
     }
-    // A marker belonging to a *different* user means these items are another
-    // account's mirror on a shared browser. They are dropped, never merged.
 
     useCartStore.getState().clearCart()
     setCartOwner(userId)
@@ -240,10 +291,6 @@ export async function addToCart(
     return { error: null }
   }
 
-  // Authenticated, but this cart has not been claimed for them yet — they signed
-  // in through a path that skipped the merge (email confirmation link, a second
-  // tab, a restored session). Reconcile first, otherwise the pending guest items
-  // get discarded by the mirror on the next cart visit.
   if (readCartOwner() !== userId) {
     await syncCartWithSession()
   }
@@ -259,8 +306,6 @@ export async function addToCart(
 
   if (error) {
     if (error === NOT_AUTHENTICATED) {
-      // The session expired between the local check and the call. Treat this as
-      // a guest add rather than losing the item.
       clearCartOwner()
       useCartStore.getState().addItem(item, quantity)
       return { error: null }
