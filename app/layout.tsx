@@ -5,6 +5,7 @@ import { ConditionalShell } from "@/components/layout/ConditionalShell";
 import { CmsNavigation } from "@/components/layout/CmsNavigation";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceWorkerRegistrar } from "@/components/pwa/ServiceWorkerRegistrar";
+import { CartSessionSync } from "@/components/cart/CartSessionSync";
 import { getSiteSettings } from "@/app/actions/cms-settings";
 import { headers } from "next/headers";
 
@@ -105,6 +106,7 @@ export default async function RootLayout({
     <html lang="en" className={`${inter.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col overflow-x-hidden" suppressHydrationWarning>
         <ServiceWorkerRegistrar />
+        <CartSessionSync />
         <ConditionalShell
           cmsNav={<CmsNavigation />}
           footer={<Footer socialLinks={settings.social_links} />}

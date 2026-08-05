@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ShoppingCart, ArrowUpRight, Heart, ShieldCheck } from "lucide-react";
 import type { ProductWithRelations } from "@/types";
+import { OUT_OF_STOCK } from "@/lib/cart/errors";
 
 interface ProductCardProps {
   product: ProductWithRelations;
@@ -23,22 +24,46 @@ export function ProductCard({ product }: ProductCardProps) {
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const [added, setAdded] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [cartError, setCartError] = useState<string | null>(null);
+  const inStock = product.stockQuantity > 0;
 
   const priceLabel = product.requireOrderRequest
     ? "Request a quote"
     : `From $${product.price.toLocaleString("en-CA", { minimumFractionDigits: 0 })} CAD`;
 
-  function handleAddToCart(e: React.MouseEvent) {
+  async function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
-    import("@/lib/stores/cartStore").then(({ useCartStore }) => {
-      useCartStore.getState().addItem({
-        productId: product.id,
-        variantCode: image?.variantCode ?? null,
-        variantImageUrl: image?.url ?? null,
-        productName: product.name,
-        productPrice: product.price,
-      }, 1);
-    });
+    if (isAdding) return;
+
+    // Cheap local guard so guests get the same rejection as authenticated users,
+    // who are additionally checked against live stock by the server action.
+    if (!inStock) {
+      setCartError(OUT_OF_STOCK);
+      setTimeout(() => setCartError(null), 2400);
+      return;
+    }
+
+    setIsAdding(true);
+    setCartError(null);
+
+    const { addToCart } = await import("@/lib/cart/cartManager");
+    const { error } = await addToCart({
+      productId: product.id,
+      variantCode: image?.variantCode ?? null,
+      variantImageUrl: image?.url ?? null,
+      productName: product.name,
+      productPrice: product.price,
+    }, 1);
+
+    setIsAdding(false);
+
+    if (error) {
+      setCartError(error);
+      setTimeout(() => setCartError(null), 2400);
+      return;
+    }
+
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
@@ -143,12 +168,27 @@ export function ProductCard({ product }: ProductCardProps) {
           ) : (
             <button
               onClick={handleAddToCart}
+              disabled={!inStock || isAdding}
               aria-label={`Add ${product.name} to cart`}
-              className="flex flex-1 min-h-[36px] items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-all hover:brightness-110 active:scale-95"
-              style={{ background: added ? '#16a34a' : 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
+              className="flex flex-1 min-h-[36px] items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-all hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+              style={{
+                background: cartError
+                  ? '#dc2626'
+                  : added
+                  ? '#16a34a'
+                  : 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)',
+              }}
             >
               <ShoppingCart className="h-3.5 w-3.5" />
-              {added ? "Added!" : "Add to Cart"}
+              {cartError
+                ? cartError
+                : added
+                ? "Added!"
+                : !inStock
+                ? "Out of Stock"
+                : isAdding
+                ? "Adding…"
+                : "Add to Cart"}
             </button>
           )}
           <Link
