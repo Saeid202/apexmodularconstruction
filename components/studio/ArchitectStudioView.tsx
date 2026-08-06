@@ -2,7 +2,7 @@
  * Shared renderer for an architect's public studio page.
  *
  * Used by BOTH entry points so the markup lives in one place:
- *   - /studio/[slug]            (subdomain routing:  sub.apex.com)
+ *   - /studio/[slug]            (subdomain routing:  sub.apexmodularconstruction.com)
  *   - /studio/domain/[host]     (custom domain:      www.myfirm.com)
  *
  * It only READS the profile it is handed — no data fetching, no backend
