@@ -7,7 +7,10 @@
 // The DNS targets architects point their domain at. Single source of truth
 // for both the setup instructions (UI) and the verify-connection check.
 export const APP_ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'apexmodularconstruction.com'
-export const APP_A_RECORD = process.env.NEXT_PUBLIC_APP_IP || '76.76.21.21'
+// Vercel's current anycast IP for apex/root custom domains. (Was 76.76.21.21,
+// Vercel's legacy IP — architects who pointed an A record there would fail the
+// verify check.) Override via NEXT_PUBLIC_APP_IP if the host ever changes.
+export const APP_A_RECORD = process.env.NEXT_PUBLIC_APP_IP || '216.198.79.1'
 
 /**
  * Every hostname that belongs to the PLATFORM itself (its marketing site and
