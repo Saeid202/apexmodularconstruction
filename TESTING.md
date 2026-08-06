@@ -30,7 +30,7 @@ No real architect account is required — the login form has a built-in **dev by
 2. Sidebar → **Page Builder**: add **Hero / Text / Gallery / CTA** blocks, edit their fields,
    reorder with the up/down controls, watch the live preview, then **Save**.
 3. Sidebar → **Domains**:
-   - See the free built-in address (`<subdomain>.apex.com`).
+   - See the free built-in address (`<subdomain>.apexmodularconstruction.com`).
    - Type a domain (e.g. `myfirm.test`) and **Save** → the Shopify-style DNS records appear.
    - Click **Verify connection**. A domain you don't actually control correctly reports
      **"Not detected yet"** — that is the live DNS check working, not a bug. A green **Connected**
@@ -71,14 +71,20 @@ with a full Hero → Gallery → Text → CTA layout.
 The `Host` header exercises the exact routing path a real custom domain would:
 
 ```bash
-# Custom domain -> studio (served by the custom-domain route)
-curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: myfirm.test' http://localhost:3000/          # 200
+# Studio SUBDOMAIN on the real platform domain -> studio
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: sarah-designs.apexmodularconstruction.com' http://localhost:3000/ # 200
 
-# Existing subdomain routing still works
-curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: demo-studio.apex.com' http://localhost:3000/ # 200
+# Platform root -> marketing homepage, NOT a studio
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: apexmodularconstruction.com' http://localhost:3000/              # 200
+
+# Unknown subdomain -> resolver reached, no such studio -> 404
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: nobody.apexmodularconstruction.com' http://localhost:3000/      # 404
+
+# Custom domain -> studio (served by the custom-domain route)
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: myfirm.test' http://localhost:3000/                             # 200
 
 # Unknown custom domain -> resolver reached, no owner -> 404 (expected)
-curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: nobody-owns-this.example' http://localhost:3000/ # 404
+curl -s -o /dev/null -w '%{http_code}\n' -H 'Host: nobody-owns-this.example' http://localhost:3000/                # 404
 ```
 
 To confirm the demo actually renders its blocks:
