@@ -22,7 +22,7 @@ import {
   Box,
   Image as ImageIcon,
 } from 'lucide-react'
-import { useCartStore } from '@/lib/stores/cartStore'
+import { addToCart } from '@/lib/cart/cartManager'
 import { OrderRequestModal } from '@/components/product/OrderRequestModal'
 import { WhatsAppLink } from '@/components/layout/WhatsAppLink'
 import { RichTextRenderer } from '@/components/product/RichTextRenderer'
@@ -71,7 +71,6 @@ export function ProductDetailClient({
   product: ProductWithRelations
 }) {
   const router = useRouter()
-  const { addItem } = useCartStore()
   const masterImage = product.images.find((img) => img.isMaster) ?? product.images[0] ?? null
   const isFurniture = useMemo(() => {
     return ['sofa', 'furniture'].some((cat) =>
@@ -86,6 +85,8 @@ export function ProductDetailClient({
 
   const [activeId, setActiveId] = useState<string | null>(masterImage?.id ?? null)
   const [addedToCart, setAddedToCart] = useState(false)
+  const [isAddingToCart, setIsAddingToCart] = useState(false)
+  const [cartError, setCartError] = useState<string | null>(null)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [requestModalOpen, setRequestModalOpen] = useState(false)
@@ -211,16 +212,37 @@ export function ProductDetailClient({
     }
   }
 
-  function handleAddToCart() {
-    if (!inStock) return
-    addItem(buildCartItem(), 1)
+  async function handleAddToCart() {
+    if (!inStock || isAddingToCart) return
+    setIsAddingToCart(true)
+    setCartError(null)
+
+    const { error } = await addToCart(buildCartItem(), 1)
+    setIsAddingToCart(false)
+
+    if (error) {
+      setCartError(error)
+      return
+    }
+
     setAddedToCart(true)
     setTimeout(() => setAddedToCart(false), 2000)
   }
 
-  function handleBuyNow() {
-    if (!inStock) return
-    addItem(buildCartItem(), 1)
+  async function handleBuyNow() {
+    if (!inStock || isAddingToCart) return
+    setIsAddingToCart(true)
+    setCartError(null)
+
+    const { error } = await addToCart(buildCartItem(), 1)
+    setIsAddingToCart(false)
+
+    // Don't send the buyer to checkout if the item never made it into the cart.
+    if (error) {
+      setCartError(error)
+      return
+    }
+
     router.push('/checkout')
   }
 
@@ -849,7 +871,7 @@ export function ProductDetailClient({
               <>
                 <button
                   onClick={handleAddToCart}
-                  disabled={!inStock}
+                  disabled={!inStock || isAddingToCart}
                   className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                   style={{
                     backgroundColor: addedToCart ? '#16a34a' : PURPLE,
@@ -863,7 +885,7 @@ export function ProductDetailClient({
                   ) : (
                     <>
                       <ShoppingCart className="h-5 w-5" />
-                      {inStock ? 'Add to Cart' : 'Out of Stock'}
+                      {!inStock ? 'Out of Stock' : isAddingToCart ? 'Adding…' : 'Add to Cart'}
                     </>
                   )}
                 </button>
@@ -871,7 +893,8 @@ export function ProductDetailClient({
                 {inStock && (
                   <button
                     onClick={handleBuyNow}
-                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90"
+                    disabled={isAddingToCart}
+                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     style={{
                       backgroundColor: GOLD,
                       color: '#1a1a2e',
@@ -881,6 +904,15 @@ export function ProductDetailClient({
                     <Zap className="h-5 w-5" />
                     Buy Now
                   </button>
+                )}
+
+                {cartError && (
+                  <p
+                    role="alert"
+                    className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-center text-sm font-semibold text-red-700"
+                  >
+                    {cartError}
+                  </p>
                 )}
 
                 {hasVariants && activeCode && (

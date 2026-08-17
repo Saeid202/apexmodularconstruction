@@ -10,9 +10,13 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ redirect?: string }>;
+  searchParams: Promise<{ redirect?: string; returnUrl?: string }>;
 }) {
-  const { redirect } = await searchParams;
+  const params = await searchParams;
+  // The cart and checkout pages link here with `?returnUrl=`, while the register
+  // page uses `?redirect=`. Accept both so the buyer actually lands back on
+  // /checkout after logging in.
+  const redirect = params.redirect ?? params.returnUrl;
 
   return (
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">

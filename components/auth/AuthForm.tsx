@@ -68,8 +68,13 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
         return;
       }
 
-      console.log('Login email:', email);
-      console.log('User ID:', data.user.id);
+      // Fold any guest cart into this account before navigating
+      try {
+        const { syncCartWithSession } = await import("@/lib/cart/cartManager");
+        await syncCartWithSession();
+      } catch (err) {
+        console.error("Cart merge after login failed:", err);
+      }
 
       // Force redirect to contractor dashboard for this specific user
       if (email.trim().toLowerCase() === 'apexmodular1@hotmail.com') {

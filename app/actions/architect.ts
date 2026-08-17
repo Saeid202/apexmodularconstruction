@@ -3,6 +3,7 @@
 import { createServerClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Architect } from '@/types/database'
+import { normalizeHost, hostCandidates } from '@/lib/domains'
 import fs from 'fs'
 import path from 'path'
 
@@ -26,6 +27,10 @@ function saveDevProfileToFile(email: string, profile: any) {
     profiles[email.toLowerCase()] = profile
     if (profile.subdomain) {
       profiles[`subdomain:${profile.subdomain.toLowerCase()}`] = profile
+    }
+    const customDomain = profile.branding?.customDomain
+    if (customDomain) {
+      profiles[`customdomain:${normalizeHost(customDomain)}`] = profile
     }
     const dir = path.dirname(DEV_PROFILES_FILE)
     if (!fs.existsSync(dir)) {
@@ -438,3 +443,47 @@ export async function uploadArchitectImage(formData: FormData): Promise<{
     return { success: false, url: null, error: err.message || 'Upload failed' }
   }
 }
+
+export async function getArchitectProfileByCustomDomain(host: string): Promise<{
+  profile: any | null
+  error: string | null
+}> {
+  try {
+    const candidates = hostCandidates(host)
+    if (candidates.length === 0) {
+      return { profile: null, error: 'Invalid host' }
+    }
+
+    // Check developer bypass profiles from local file first (dev only)
+    try {
+      const devProfiles = getDevProfilesFromFile()
+      for (const candidate of candidates) {
+        const devProfile = devProfiles[`customdomain:${candidate}`]
+        if (devProfile) {
+          console.log(`[Dev Bypass File] Resolved profile for custom domain "${candidate}" from JSON file`)
+          return { profile: devProfile, error: null }
+        }
+      }
+    } catch (fileErr) {
+      console.error('Error reading dev profile from file:', fileErr)
+    }
+
+    const supabase = await createServerClient()
+    // Match the domain stored in the freeform `branding` JSON column.
+    // No schema change — `branding->>customDomain` reads the JSON key.
+    const { data, error } = await supabase
+      .from('architects')
+      .select('*')
+      .in('branding->>customDomain', candidates)
+      .limit(1)
+
+    if (error) {
+      return { profile: null, error: error.message }
+    }
+    if (!data || data.length === 0) {
+      return { profile: null, error: 'No studio found for this domain' }
+    }
+    return { profile: data[0], error: null }
+  }
+}
+
