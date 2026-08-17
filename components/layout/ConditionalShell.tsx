@@ -5,7 +5,7 @@ import { Header } from './Header'
 
 import { FloatingWidget } from '../adu/FloatingWidget'
 
-const DASHBOARD_PREFIXES = ['/partner', '/admin', '/seller', '/account']
+const DASHBOARD_PREFIXES = ['/partner', '/admin', '/seller', '/account', '/affiliate']
 
 interface ConditionalShellProps {
   children: React.ReactNode

@@ -5,7 +5,7 @@
 
 const BRAND_COLOR = '#FF6B35'
 const SECONDARY_COLOR = '#004E89'
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://cargoplus.com'
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://apexmodularconstruction.com'
 
 function emailWrapper(content: string): string {
   return `
@@ -110,13 +110,13 @@ export function confirmationEmailTemplate(
 ): string {
   return emailWrapper(`
     <div class="header">
-      <h1>Welcome to Cargoplus!</h1>
+      <h1>Welcome to Apex Modular Construction!</h1>
     </div>
 
     <div class="content">
       <p>Hi <span class="highlight">${escapeHtml(contractorName)}</span>,</p>
 
-      <p>Thank you for applying to join the Cargoplus contractor network! We're excited to review your application for <span class="highlight">${escapeHtml(companyName)}</span>.</p>
+      <p>Thank you for applying to join the Apex Modular Construction contractor network! We're excited to review your application for <span class="highlight">${escapeHtml(companyName)}</span>.</p>
 
       <div class="section">
         <p><strong>What happens next?</strong></p>
@@ -131,11 +131,11 @@ export function confirmationEmailTemplate(
 
       <p>If you have any questions, please don't hesitate to reach out to our support team.</p>
 
-      <p>Best regards,<br><span class="highlight">The Cargoplus Team</span></p>
+      <p>Best regards,<br><span class="highlight">The Apex Modular Construction Team</span></p>
     </div>
 
     <div class="footer">
-      <p>&copy; 2024 Cargoplus. All rights reserved.</p>
+      <p>&copy; 2026 Apex Modular Construction. All rights reserved.</p>
       <p>
         <a href="${BASE_URL}/privacy">Privacy Policy</a> |
         <a href="${BASE_URL}/contact">Contact Us</a>
@@ -162,7 +162,7 @@ export function approvalEmailTemplate(
       <p>Great news! Your application for <span class="highlight">${escapeHtml(companyName)}</span> has been <span class="highlight">approved</span>.</p>
 
       <div class="section">
-        <p><strong>Welcome to the Cargoplus Network!</strong></p>
+        <p><strong>Welcome to the Apex Modular Construction Network!</strong></p>
         <p>You can now access your full contractor dashboard and start exploring available projects. Your profile is now visible to customers on our platform.</p>
       </div>
 
@@ -184,11 +184,11 @@ export function approvalEmailTemplate(
 
       <p>If you have any questions about using the platform, check out our <a href="${BASE_URL}/contractor/help" style="color: ${BRAND_COLOR}; text-decoration: none;">help documentation</a> or contact our support team.</p>
 
-      <p>Best regards,<br><span class="highlight">The Cargoplus Team</span></p>
+      <p>Best regards,<br><span class="highlight">The Apex Modular Construction Team</span></p>
     </div>
 
     <div class="footer">
-      <p>&copy; 2024 Cargoplus. All rights reserved.</p>
+      <p>&copy; 2026 Apex Modular Construction. All rights reserved.</p>
       <p>
         <a href="${BASE_URL}/privacy">Privacy Policy</a> |
         <a href="${BASE_URL}/contact">Contact Us</a>
@@ -213,7 +213,7 @@ export function rejectionEmailTemplate(
     <div class="content">
       <p>Hi <span class="highlight">${escapeHtml(contractorName)}</span>,</p>
 
-      <p>Thank you for applying to join the Cargoplus contractor network. After careful review of your application for <span class="highlight">${escapeHtml(companyName)}</span>, we're unable to approve it at this time.</p>
+      <p>Thank you for applying to join the Apex Modular Construction contractor network. After careful review of your application for <span class="highlight">${escapeHtml(companyName)}</span>, we're unable to approve it at this time.</p>
 
       ${rejectionReason ? `
       <div class="section">
@@ -233,11 +233,11 @@ export function rejectionEmailTemplate(
         <p>You're welcome to reapply in the future. If you address the feedback above, we'd be happy to reconsider your application.</p>
       </div>
 
-      <p>Best regards,<br><span class="highlight">The Cargoplus Team</span></p>
+      <p>Best regards,<br><span class="highlight">The Apex Modular Construction Team</span></p>
     </div>
 
     <div class="footer">
-      <p>&copy; 2024 Cargoplus. All rights reserved.</p>
+      <p>&copy; 2026 Apex Modular Construction. All rights reserved.</p>
       <p>
         <a href="${BASE_URL}/privacy">Privacy Policy</a> |
         <a href="${BASE_URL}/contact">Contact Us</a>

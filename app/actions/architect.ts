@@ -394,3 +394,47 @@ export async function getArchitectProfileBySubdomain(subdomain: string): Promise
     return { profile: null, error: err.message || 'Failed to fetch profile' }
   }
 }
+
+export async function uploadArchitectImage(formData: FormData): Promise<{
+  success: boolean
+  url: string | null
+  error: string | null
+}> {
+  try {
+    const file = formData.get('file') as File | null
+    if (!file) {
+      return { success: false, url: null, error: 'No file provided' }
+    }
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+    if (!allowedTypes.includes(file.type)) {
+      return { success: false, url: null, error: 'Only JPEG, PNG, WebP, and GIF images are allowed' }
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      return { success: false, url: null, error: 'Image must be under 5MB' }
+    }
+
+    const ext = file.name.split('.').pop() ?? 'jpg'
+    const fileName = `architects/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+
+    const adminClient = createAdminClient()
+    if (!adminClient) {
+      return { success: false, url: null, error: 'Failed to initialize database connection' }
+    }
+
+    const { error } = await adminClient.storage
+      .from('cms-images')
+      .upload(fileName, file, { contentType: file.type, upsert: false })
+
+    if (error) {
+      return { success: false, url: null, error: error.message }
+    }
+
+    const { data: urlData } = adminClient.storage.from('cms-images').getPublicUrl(fileName)
+    return { success: true, url: urlData.publicUrl, error: null }
+  } catch (err: any) {
+    console.error('Error uploading architect image:', err)
+    return { success: false, url: null, error: err.message || 'Upload failed' }
+  }
+}

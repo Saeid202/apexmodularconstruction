@@ -15,6 +15,7 @@ const quickLinks = [
 
 const partnerLinks: { href: string; label: string }[] = [
   { href: '/architect/register', label: 'Become an Architect' },
+  { href: '/affiliate/register', label: 'Become an Affiliate' },
 ]
 
 const customerServiceLinks = [
@@ -145,6 +146,10 @@ export function Footer({ socialLinks = [] }: FooterProps) {
     window.dispatchEvent(new CustomEvent('open-architect-auth-modal', { detail: mode }))
   }
 
+  function openAffiliateAuth(mode: 'login' | 'register') {
+    window.dispatchEvent(new CustomEvent('open-affiliate-auth-modal', { detail: mode }))
+  }
+
   return (
     <footer
       style={{ background: 'linear-gradient(160deg, #4B1D8F 0%, #3a1570 100%)' }}
@@ -249,7 +254,15 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                         <button
                           type="button"
                           onClick={() => openArchitectAuth('register')}
-                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors cursor-pointer"
+                        >
+                          {link.label}
+                        </button>
+                      ) : link.href === '/affiliate/register' ? (
+                        <button
+                          type="button"
+                          onClick={() => openAffiliateAuth('register')}
+                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors cursor-pointer"
                         >
                           {link.label}
                         </button>

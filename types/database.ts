@@ -194,6 +194,10 @@ export interface Database {
           status: 'pending' | 'active' | 'rejected' | 'archived'
           specifications: Json
           has_customization: boolean
+          affiliate_enabled: boolean
+          affiliate_commission_type: 'percentage' | 'fixed_amount'
+          affiliate_commission_value: number
+          affiliate_availability: 'all_partners' | 'selected_partners'
           created_at: string
           updated_at: string
         }
@@ -211,6 +215,10 @@ export interface Database {
           status?: 'pending' | 'active' | 'rejected' | 'archived'
           specifications?: Json
           has_customization?: boolean
+          affiliate_enabled?: boolean
+          affiliate_commission_type?: 'percentage' | 'fixed_amount'
+          affiliate_commission_value?: number
+          affiliate_availability?: 'all_partners' | 'selected_partners'
           created_at?: string
           updated_at?: string
         }
@@ -228,6 +236,10 @@ export interface Database {
           status?: 'pending' | 'active' | 'rejected' | 'archived'
           specifications?: Json
           has_customization?: boolean
+          affiliate_enabled?: boolean
+          affiliate_commission_type?: 'percentage' | 'fixed_amount'
+          affiliate_commission_value?: number
+          affiliate_availability?: 'all_partners' | 'selected_partners'
           created_at?: string
           updated_at?: string
         }

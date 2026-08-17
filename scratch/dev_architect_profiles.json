@@ -8,7 +8,7 @@
     "bio": "Bypass Dev Profile",
     "status": "active",
     "created_at": "2026-07-26T19:35:09.434Z",
-    "updated_at": "2026-07-26T19:35:09.437Z",
+    "updated_at": "2026-08-17T17:59:17.646Z",
     "website": null,
     "address": null,
     "professional_role": null,
@@ -18,11 +18,23 @@
     "branding": {
       "title": "Sarah Designs Studio",
       "tagline": "Custom Prefabricated Luxury Modules",
-      "primaryColor": "#1E3A8A",
-      "secondaryColor": "#0F172A",
+      "primaryColor": "#C5A25D",
+      "secondaryColor": "#1C1917",
       "instagram": "https://instagram.com",
       "linkedin": "https://linkedin.com",
-      "twitter": ""
+      "twitter": "",
+      "logoUrl": "",
+      "heroConfig": {
+        "bgType": "image",
+        "singleImageUrl": "https://images.unsplash.com/photo-1600582731940-7fde89e0b403?auto=format&fit=crop&q=80&w=800",
+        "sliderImages": [],
+        "textAlignment": "center",
+        "textOverlayOpacity": 0.2,
+        "ctaButton": {
+          "text": "Discover Luxury Mod",
+          "link": "#portfolio"
+        }
+      }
     }
   },
   "subdomain:sarah-designs": {
@@ -34,7 +46,7 @@
     "bio": "Bypass Dev Profile",
     "status": "active",
     "created_at": "2026-07-26T19:35:09.434Z",
-    "updated_at": "2026-07-26T19:35:09.437Z",
+    "updated_at": "2026-08-17T17:59:17.646Z",
     "website": null,
     "address": null,
     "professional_role": null,
@@ -44,11 +56,23 @@
     "branding": {
       "title": "Sarah Designs Studio",
       "tagline": "Custom Prefabricated Luxury Modules",
-      "primaryColor": "#1E3A8A",
-      "secondaryColor": "#0F172A",
+      "primaryColor": "#C5A25D",
+      "secondaryColor": "#1C1917",
       "instagram": "https://instagram.com",
       "linkedin": "https://linkedin.com",
-      "twitter": ""
+      "twitter": "",
+      "logoUrl": "",
+      "heroConfig": {
+        "bgType": "image",
+        "singleImageUrl": "https://images.unsplash.com/photo-1600582731940-7fde89e0b403?auto=format&fit=crop&q=80&w=800",
+        "sliderImages": [],
+        "textAlignment": "center",
+        "textOverlayOpacity": 0.2,
+        "ctaButton": {
+          "text": "Discover Luxury Mod",
+          "link": "#portfolio"
+        }
+      }
     }
   }
 }

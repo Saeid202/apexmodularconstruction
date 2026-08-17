@@ -92,10 +92,11 @@ export default async function RootLayout({
 
   const headersList = await headers();
   const host = headersList.get("host") || "";
-  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+  const rawRootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || "localhost:3000";
+  const rootDomain = rawRootDomain.replace(/^www\./i, "");
 
   let isSubdomain = false;
-  if (host && host !== rootDomain && host !== "apex.com" && host !== "www.apex.com") {
+  if (host && host !== rootDomain && host !== `www.${rootDomain}` && host !== "apex.com" && host !== "www.apex.com") {
     if (host.endsWith(`.${rootDomain}`) || host.endsWith(".apex.com")) {
       isSubdomain = true;
     }

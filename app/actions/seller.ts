@@ -415,6 +415,10 @@ export async function createProduct(formData: FormData): Promise<{
       configurator_type: configuratorType,
       what_is_included: whatIsIncluded,
       certificates_standards: certificatesStandards,
+      affiliate_enabled: formData.get('affiliateEnabled') === 'true',
+      affiliate_commission_type: (formData.get('affiliateCommissionType') as string) || 'percentage',
+      affiliate_commission_value: parseFloat(formData.get('affiliateCommissionValue') as string) || 0,
+      affiliate_availability: (formData.get('affiliateAvailability') as string) || 'all_partners',
     }
 
     if (id) {
@@ -637,6 +641,10 @@ export async function updateProduct(
         configurator_type: 'none',
         what_is_included: whatIsIncluded,
         certificates_standards: certificatesStandards,
+        affiliate_enabled: formData.get('affiliateEnabled') === 'true',
+        affiliate_commission_type: (formData.get('affiliateCommissionType') as string) || 'percentage',
+        affiliate_commission_value: parseFloat(formData.get('affiliateCommissionValue') as string) || 0,
+        affiliate_availability: (formData.get('affiliateAvailability') as string) || 'all_partners',
         updated_at: new Date().toISOString(),
       })
       .eq('id', productId)

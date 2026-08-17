@@ -2,6 +2,7 @@ import { getArchitectProfileBySubdomain } from "@/app/actions/architect";
 import { notFound } from "next/navigation";
 import { Compass, Mail, Phone, MapPin, Globe, Award, Send, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import HeroBackgroundSlider from "./HeroBackgroundSlider";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -53,6 +54,16 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
   const secondaryColor = branding.secondaryColor || "#0F172A"; // default dark slate
   const title = branding.title || profile.firm_name || profile.full_name;
   const tagline = branding.tagline || "Apex Authorized Architect Studio";
+
+  // Hero section custom config
+  const heroConfig = branding.heroConfig || {};
+  const bgType = heroConfig.bgType || "color";
+  const singleImageUrl = heroConfig.singleImageUrl || "";
+  const sliderImages = heroConfig.sliderImages || [];
+  const textAlignment = heroConfig.textAlignment || "left";
+  const textOverlayOpacity = heroConfig.textOverlayOpacity !== undefined ? heroConfig.textOverlayOpacity : 0.4;
+  const ctaText = heroConfig.ctaButton?.text || "Browse Catalog";
+  const ctaLink = heroConfig.ctaButton?.link || "#portfolio";
 
   // Mock projects/designs to represent their modular templates (Shopify catalog style)
   const mockTemplates = [
@@ -122,12 +133,44 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
 
       {/* Hero Section */}
       <section className="relative bg-slate-950 text-white py-24 md:py-32 px-6 overflow-hidden">
-        {/* Abstract background gradient */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.08),transparent)] z-0" />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 z-0" />
+        {/* Dynamic Background Rendering */}
+        {bgType === "color" ? (
+          <>
+            {/* Abstract background gradient */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.08),transparent)] z-0" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 z-0" />
+          </>
+        ) : bgType === "image" && singleImageUrl ? (
+          <div className="absolute inset-0 z-0 overflow-hidden">
+            <div 
+              className="absolute inset-0 bg-slate-950 z-10" 
+              style={{ opacity: textOverlayOpacity }} 
+            />
+            <div 
+              className="absolute inset-0 bg-cover bg-center" 
+              style={{ backgroundImage: `url(${singleImageUrl})` }} 
+            />
+          </div>
+        ) : bgType === "slider" && sliderImages.length > 0 ? (
+          <HeroBackgroundSlider 
+            images={sliderImages} 
+            overlayOpacity={textOverlayOpacity} 
+          />
+        ) : (
+          <>
+            {/* Fallback to default gradients */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(16,185,129,0.08),transparent)] z-0" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 z-0" />
+          </>
+        )}
 
         <div className="relative z-10 max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-8 space-y-6">
+          <div className={`space-y-6 ${textAlignment === "center" ? "md:col-span-12 flex flex-col items-center text-center mx-auto" : "md:col-span-8"}`}>
+            {textAlignment === "center" && branding.logoUrl && (
+              <div className="relative w-24 h-24 mb-2 rounded-xl border border-white/10 bg-white shadow-lg flex items-center justify-center p-2 overflow-hidden mx-auto">
+                <img src={branding.logoUrl} alt={`${title} Logo`} className="max-w-full max-h-full object-contain" />
+              </div>
+            )}
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold" style={{ color: primaryColor }}>
               <span className="h-2 w-2 rounded-full" style={{ backgroundColor: primaryColor }} />
               Certified Apex Architect Partner
@@ -138,12 +181,12 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
             <p className="text-lg md:text-xl text-slate-300 max-w-xl font-normal leading-relaxed">
               {tagline}
             </p>
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className={`flex flex-wrap gap-4 pt-4 ${textAlignment === "center" ? "justify-center" : ""}`}>
               <a
-                href="#portfolio"
+                href={ctaLink}
                 className="px-6 py-3 rounded-xl font-bold text-sm text-slate-900 bg-white hover:bg-slate-100 transition-all flex items-center gap-2"
               >
-                Browse Catalog <ArrowRight className="h-4 w-4" />
+                {ctaText} <ArrowRight className="h-4 w-4" />
               </a>
               <a
                 href="#contact"
@@ -153,17 +196,19 @@ export default async function PublicArchitectStudioPage({ params }: PageProps) {
               </a>
             </div>
           </div>
-          <div className="md:col-span-4 flex justify-center md:justify-end">
-            {branding.logoUrl ? (
-              <div className="relative w-48 h-48 rounded-2xl border-4 border-white/10 bg-white shadow-2xl flex items-center justify-center p-4 overflow-hidden">
-                <img src={branding.logoUrl} alt={`${title} Logo`} className="max-w-full max-h-full object-contain" />
-              </div>
-            ) : (
-              <div className="relative w-48 h-48 rounded-full border-4 border-white/10 bg-slate-900 shadow-2xl flex items-center justify-center text-4xl font-black" style={{ color: primaryColor }}>
-                {(profile.firm_name || profile.full_name).substring(0, 2).toUpperCase()}
-              </div>
-            )}
-          </div>
+          {textAlignment !== "center" && (
+            <div className="md:col-span-4 flex justify-center md:justify-end">
+              {branding.logoUrl ? (
+                <div className="relative w-48 h-48 rounded-2xl border-4 border-white/10 bg-white shadow-2xl flex items-center justify-center p-4 overflow-hidden">
+                  <img src={branding.logoUrl} alt={`${title} Logo`} className="max-w-full max-h-full object-contain" />
+                </div>
+              ) : (
+                <div className="relative w-48 h-48 rounded-full border-4 border-white/10 bg-slate-900 shadow-2xl flex items-center justify-center text-4xl font-black" style={{ color: primaryColor }}>
+                  {(profile.firm_name || profile.full_name).substring(0, 2).toUpperCase()}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

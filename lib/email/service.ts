@@ -19,7 +19,7 @@ export async function sendEmail(options: EmailOptions): Promise<void> {
     }
 
     const resend = new Resend(apiKey)
-    const fromEmail = process.env.FROM_EMAIL || 'noreply@cargoplus.com'
+    const fromEmail = process.env.FROM_EMAIL || 'noreply@apexmodularconstruction.com'
 
     await resend.emails.send({
       from: fromEmail,
