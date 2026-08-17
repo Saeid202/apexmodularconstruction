@@ -484,6 +484,9 @@ export async function getArchitectProfileByCustomDomain(host: string): Promise<{
       return { profile: null, error: 'No studio found for this domain' }
     }
     return { profile: data[0], error: null }
+  } catch (err: any) {
+    console.error('Error fetching architect profile by custom domain:', err)
+    return { profile: null, error: err.message || 'Failed to fetch profile' }
   }
 }
 

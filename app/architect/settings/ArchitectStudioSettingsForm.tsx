@@ -160,7 +160,7 @@ export default function ArchitectStudioSettingsForm({ initialProfile }: Architec
       const res = await generateStudioDesign(aiPrompt, currentConfig);
       if (res.success && res.design) {
         const d = res.design;
-        let changes = [];
+        let changes: string[] = [];
         if (d.title !== undefined) {
           setTitle(d.title);
           changes.push(`Title: "${d.title}"`);
