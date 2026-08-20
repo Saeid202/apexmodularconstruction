@@ -152,7 +152,10 @@ export function Footer({ socialLinks = [] }: FooterProps) {
 
   return (
     <footer
-      style={{ background: 'linear-gradient(160deg, #4B1D8F 0%, #3a1570 100%)' }}
+      style={{
+        background:
+          'linear-gradient(160deg, var(--brand-chrome-from) 0%, var(--brand-chrome-to) 100%)',
+      }}
     >
       {/* Gold accent top line */}
       <div
