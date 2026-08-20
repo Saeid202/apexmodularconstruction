@@ -140,6 +140,18 @@
   --gradient-radial: radial-gradient(ellipse at 20% 10%, rgba(75,29,143,0.5) 0%, transparent 55%);
 }
 
+/* ─── Brand chrome surfaces ──────────────────────────────────────────────────
+ * The header and footer are large flat washes of brand purple that carry small
+ * gold labels on top. They are tokenised separately from --primary because a
+ * lighter brand purple has to be anchored to a deeper step here, otherwise the
+ * gold drops to ~2.8:1 contrast and stops being readable.
+ * Managed by scripts/apply-palette.mjs.
+ */
+:root {
+  --brand-chrome-from: #4B1D8F;
+  --brand-chrome-to: #3a1570;
+}
+
 .text-gradient {
   background: linear-gradient(135deg, #D4AF37 0%, #f5e08a 40%, #D4AF37 100%);
   -webkit-background-clip: text;

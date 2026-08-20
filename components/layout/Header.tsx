@@ -118,7 +118,10 @@ export function Header({ cmsNav }: HeaderProps) {
     <>
       <header 
         className="w-full py-3 transition-all duration-500 z-50 border-b border-purple-900/50"
-        style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)' }}
+        style={{
+          background:
+            'linear-gradient(135deg, var(--brand-chrome-from) 0%, var(--brand-chrome-to) 100%)',
+        }}
       >
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-center gap-8">
