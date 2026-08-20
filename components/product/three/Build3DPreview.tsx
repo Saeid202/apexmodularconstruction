@@ -52,6 +52,12 @@ interface Props {
   studio: StudioConfig
   onStudioChange: (next: StudioConfig) => void
   onPartsDiscovered: (nodeNames: string[]) => void
+  /**
+   * Stretch to the parent's height instead of holding a 16:10 box, and drop the
+   * framed border. Used by the configurator stage, which is already framed by
+   * the viewport.
+   */
+  fill?: boolean
 }
 
 interface ToolButtonProps {
@@ -88,6 +94,7 @@ export function Build3DPreview({
   studio,
   onStudioChange,
   onPartsDiscovered,
+  fill = false,
 }: Props) {
   const wrapperRef = useRef<HTMLDivElement | null>(null)
   const rendererRef = useRef<WebGLRenderer | null>(null)
@@ -136,10 +143,14 @@ export function Build3DPreview({
   return (
     <div
       ref={wrapperRef}
-      className={`relative w-full overflow-hidden rounded-2xl bg-white ${
-        isFullscreen ? 'h-screen' : 'aspect-[16/10]'
+      className={`relative w-full overflow-hidden bg-white ${
+        isFullscreen ? 'h-screen' : fill ? 'h-full' : 'aspect-[16/10] rounded-2xl'
       }`}
-      style={{ boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}` }}
+      style={
+        fill
+          ? undefined
+          : { boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}` }
+      }
     >
       <ModelViewer3D
         modelUrl={modelUrl}
@@ -151,8 +162,14 @@ export function Build3DPreview({
         onModelError={setModelError}
       />
 
-      {/* View presets — bottom left */}
-      <div className="pointer-events-auto absolute bottom-3 left-3 flex flex-wrap gap-1.5">
+      {/* View presets — bottom left. In fill mode the orbit hint joins this
+          wrapping row, because the host stage owns the top-left corner. */}
+      <div
+        className={`pointer-events-auto absolute bottom-3 left-3 z-10 flex flex-wrap items-center gap-1.5 ${
+          // Keep the wrapped rows clear of the tool column on the right.
+          fill ? 'max-w-[calc(100%-7rem)] lg:max-w-[calc(100%-4.5rem)]' : 'max-w-[calc(100%-1.5rem)]'
+        }`}
+      >
         {CAMERA_VIEWS.map((view) => {
           const active = studio.view === view.id
           return (
@@ -171,10 +188,26 @@ export function Build3DPreview({
             </button>
           )
         })}
+
+        {fill && (
+          <span
+            className="pointer-events-none hidden items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-black tracking-wider text-white uppercase shadow-lg sm:inline-flex"
+            style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #30125C 100%)` }}
+          >
+            <Compass className="h-3.5 w-3.5" style={{ color: GOLD }} />
+            Drag to orbit · Scroll to zoom
+          </span>
+        )}
       </div>
 
-      {/* Tools — top right */}
-      <div className="absolute top-3 right-3 flex flex-col gap-1.5">
+      {/* Tools — top right. Offset below the host stage's own controls in fill
+          mode, and laid out as a compact grid on short viewports so the column
+          never runs past the bottom of a shallow stage. */}
+      <div
+        className={`absolute right-3 z-10 gap-1.5 ${
+          fill ? 'top-16 grid grid-cols-2 lg:flex lg:flex-col' : 'top-3 flex flex-col'
+        }`}
+      >
         <ToolButton
           label={studio.autoRotate ? 'Stop turntable' : 'Start turntable'}
           active={studio.autoRotate}
@@ -210,18 +243,26 @@ export function Build3DPreview({
         </ToolButton>
       </div>
 
-      {/* Orbit hint — top left */}
-      <div
-        className="pointer-events-none absolute top-3 left-3 flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-lg"
-        style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #30125C 100%)` }}
-      >
-        <Compass className="h-3.5 w-3.5" style={{ color: GOLD }} />
-        Drag to orbit · Scroll to zoom
-      </div>
+      {/* Orbit hint — top left. Only for the framed layout; in fill mode it
+          rides along with the view presets above. */}
+      {!fill && (
+        <div
+          className="pointer-events-none absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white shadow-lg"
+          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #30125C 100%)` }}
+        >
+          <Compass className="h-3.5 w-3.5" style={{ color: GOLD }} />
+          Drag to orbit · Scroll to zoom
+        </div>
+      )}
 
-      {/* Non-blocking notice when the product's own model could not be loaded */}
+      {/* Non-blocking notice when the product's own model could not be loaded.
+          Sits top-left in fill mode, where the bottom corners are occupied. */}
       {modelError && (
-        <div className="pointer-events-none absolute bottom-3 right-3 flex max-w-[260px] items-start gap-2 rounded-xl border-2 border-amber-300 bg-amber-50/95 px-3 py-2 shadow-lg">
+        <div
+          className={`pointer-events-none absolute z-10 flex max-w-[260px] items-start gap-2 rounded-xl border-2 border-amber-300 bg-amber-50/95 px-3 py-2 shadow-lg ${
+            fill ? 'top-16 left-3' : 'bottom-3 right-3'
+          }`}
+        >
           <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
           <p className="text-[11px] font-semibold leading-snug text-amber-800">
             This product&apos;s 3D model could not be loaded. Showing a reference layout instead.
