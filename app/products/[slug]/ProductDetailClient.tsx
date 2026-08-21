@@ -4,6 +4,8 @@ import { useCallback, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
+  AlignLeft,
+  Boxes,
   Check,
   File,
   FileSpreadsheet,
@@ -443,13 +445,20 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                 ) : (
                   <>
                     {product.description && (
-                      <RailSection title="Description">
+                      <RailSection
+                        title="Description"
+                        icon={<AlignLeft className="h-5 w-5" />}
+                      >
                         <RichTextRenderer html={product.description} />
                       </RailSection>
                     )}
 
                     {hasVariants && (
-                      <RailSection title="Product Variants" meta={`${allImages.length}`}>
+                      <RailSection
+                        title="Product Variants"
+                        icon={<Boxes className="h-5 w-5" />}
+                        meta={`${allImages.length}`}
+                      >
                         <VariantPicker
                           images={allImages}
                           activeId={activeId}
@@ -464,7 +473,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                 {product.documents && product.documents.length > 0 && (
                   <RailSection
                     title="Documents"
-                    icon={<FileText className="h-4 w-4" />}
+                    icon={<FileText className="h-5 w-5" />}
                     meta={`${product.documents.length}`}
                   >
                     <div className="flex flex-col gap-2">
@@ -500,7 +509,7 @@ export function ProductDetailClient({ product }: { product: ProductWithRelations
                   specifications={product.specifications}
                 />
 
-                <RailSection title="Tools & Support" icon={<Sparkles className="h-4 w-4" />}>
+                <RailSection title="Tools & Support" icon={<Sparkles className="h-5 w-5" />}>
                   <div className="flex flex-col gap-2">
                     {/* The AI Stager ships with the customization suite, so it
                         is only offered on products that have it enabled. */}
