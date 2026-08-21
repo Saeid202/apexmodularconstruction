@@ -2,12 +2,12 @@
 
 ## Introduction
 
-The Partner Role feature introduces a new user type — Partner — into the CargoPlus platform. A partner is a Chinese engineering company that receives all engineering project submissions, reviews them, and responds with structured quotes (price, timeline, notes) and optional file attachments. Partners log in through the existing auth modal, are created by admins, and have their own dashboard separate from customers and sellers.
+The Partner Role feature introduces a new user type — Partner — into the Apex Modular Construction platform. A partner is a Chinese engineering company that receives all engineering project submissions, reviews them, and responds with structured quotes (price, timeline, notes) and optional file attachments. Partners log in through the existing auth modal, are created by admins, and have their own dashboard separate from customers and sellers.
 
 ## Glossary
 
 - **Partner**: A Chinese company account that reviews engineering project submissions and submits quotes.
-- **Admin**: A CargoPlus administrator who creates and manages partner accounts.
+- **Admin**: A Apex Modular Construction administrator who creates and manages partner accounts.
 - **Customer**: A user who submits engineering projects and receives quotes.
 - **Engineering_Project**: A project submission created by a customer containing building specifications and drawings.
 - **Quote**: A structured response from a partner to an engineering project, containing price, timeline, validity period, notes, and optional file attachments.

@@ -1,6 +1,8 @@
 import { getSellerProfile } from "@/app/actions/seller";
 import { SellerProfileClient } from "./SellerProfileClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function SellerProfilePage() {
   const { data: profile } = await getSellerProfile();
 
@@ -12,6 +14,9 @@ export default async function SellerProfilePage() {
         phone: profile?.business_phone ?? "",
         address: profile?.business_address ?? "",
         description: profile?.description ?? "",
+        category: profile?.category ?? "",
+        specialties: profile?.specialties ?? [],
+        logoUrl: profile?.logo_url ?? "",
       }}
     />
   );

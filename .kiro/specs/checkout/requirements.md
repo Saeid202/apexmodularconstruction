@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Checkout feature enables authenticated CargoPlus customers to purchase construction materials sourced from China and delivered to Canada. It covers the full purchase flow: adding items to a cart (with localStorage for guests and Supabase persistence for logged-in users), a three-step checkout process (contact/shipping → order review → Stripe payment), order creation on payment success, and admin order management. All prices are in CAD.
+The Checkout feature enables authenticated Apex Modular Construction customers to purchase construction materials sourced from China and delivered to Canada. It covers the full purchase flow: adding items to a cart (with localStorage for guests and Supabase persistence for logged-in users), a three-step checkout process (contact/shipping → order review → Stripe payment), order creation on payment success, and admin order management. All prices are in CAD.
 
 ## Glossary
 

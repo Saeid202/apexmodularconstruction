@@ -2,7 +2,7 @@
 
 ## Overview
 
-Implement the full checkout flow for CargoPlus: Zustand cart store with localStorage/Supabase sync, a three-step checkout wizard (shipping → review → Stripe payment), order creation, success page, and admin order management. All in TypeScript/Next.js using Server Actions consistent with existing patterns.
+Implement the full checkout flow for Apex Modular Construction: Zustand cart store with localStorage/Supabase sync, a three-step checkout wizard (shipping → review → Stripe payment), order creation, success page, and admin order management. All in TypeScript/Next.js using Server Actions consistent with existing patterns.
 
 ## Tasks
 

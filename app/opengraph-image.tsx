@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Shanghai CargoPlus - Your Trusted Partner for Construction Success";
+export const alt = "Shanghai Apex Modular Construction - Your Trusted Partner for Construction Success";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -37,9 +37,9 @@ export default function OGImage() {
             borderRadius: 100, padding: "8px 20px", width: "fit-content", marginBottom: 32,
           }}>
             <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#D4AF37", display: "flex" }} />
-            <span style={{ color: "#D4AF37", fontSize: 18, fontWeight: 700, letterSpacing: 2 }}>SHANGHAI CARGOPLUS</span>
+            <span style={{ color: "#D4AF37", fontSize: 18, fontWeight: 700, letterSpacing: 2 }}>APEX MODULAR CONSTRUCTION</span>
           </div>
-
+          
           {/* Headline */}
           <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 24 }}>
             <span style={{ color: "white", fontSize: 58, fontWeight: 900, lineHeight: 1.1 }}>Your Trusted Partner</span>
@@ -49,7 +49,7 @@ export default function OGImage() {
 
           {/* Subtext */}
           <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 24, marginBottom: 40, lineHeight: 1.5 }}>
-            One-stop sourcing and consolidation of{"\n"}construction materials from China.
+            One-stop sourcing and consolidation of{"\n"}construction materials.
           </div>
 
           {/* Feature pills */}
@@ -71,14 +71,14 @@ export default function OGImage() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          display: "flex", alignItems: "center",
+          justifyContent: "space-between",
           padding: "16px 80px",
           borderTop: "1px solid rgba(212,175,55,0.2)",
           background: "rgba(0,0,0,0.2)",
         }}>
-          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, letterSpacing: 2 }}>cargoplus.site</span>
+          <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 18, letterSpacing: 2 }}>apexmodularconstruction.com</span>
           <span style={{ color: "rgba(212,175,55,0.6)", fontSize: 16 }}>Source from China · Ship to Canada</span>
         </div>
 

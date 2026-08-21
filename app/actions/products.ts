@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { Product, ProductImage, Category, Seller } from "@/types/database";
 
 export interface ProductWithRelations extends Product {
@@ -22,7 +22,10 @@ export async function getProducts(options: GetProductsOptions = {}): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
+    if (!supabase) {
+      return { data: null, error: "Supabase client not initialized" };
+    }
     const { limit = 20, categorySlug, minPrice, maxPrice, searchQuery } = options;
 
     let query = supabase
@@ -60,11 +63,11 @@ export async function getProducts(options: GetProductsOptions = {}): Promise<{
       query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
     }
 
-    // Race against a 3s timeout so we fail fast and fall back to mock data
+    // Race against a 10s timeout so we fail fast and fall back to mock data
     const result = await Promise.race([
       query,
       new Promise<{ data: null; error: { message: string } }>((resolve) =>
-        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
+        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 10000)
       ),
     ]);
 
@@ -85,29 +88,51 @@ export async function getProductBySlug(slug: string): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
+    if (!supabase) return { data: null, error: "Supabase not configured" };
 
-    const { data, error } = await supabase
+    const query = supabase
       .from("products")
       .select(`
         *,
         product_images (*),
         categories (*),
-        sellers (*)
+        sellers (*),
+        product_documents (*),
+        product_customization_groups (
+          *,
+          options:product_customization_options (*)
+        ),
+        product_customization_zones (*)
       `)
       .eq("slug", slug)
-      .eq("status", "active")
       .single();
 
-    if (error) {
-      if (error.code === "PGRST116") {
+    // Race against a 3s timeout
+    const result = await Promise.race([
+      query,
+      new Promise<{ data: null; error: { message: string } }>((resolve) =>
+        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
+      ),
+    ]);
+
+    if (result.error) {
+      if ((result.error as any).code === "PGRST116") {
         return { data: null, error: "Product not found" };
       }
-      console.error("Error fetching product:", error);
-      return { data: null, error: error.message };
+      console.error("Error fetching product:", result.error);
+      return { data: null, error: result.error.message };
     }
 
-    return { data: data as ProductWithRelations, error: null };
+    const product = result.data as ProductWithRelations;
+    
+    // Check status
+    if (product.status !== "active") {
+      console.warn(`Product found but status is ${product.status}: ${slug}`);
+      return { data: null, error: `Product is ${product.status}` };
+    }
+
+    return { data: product, error: null };
   } catch (err) {
     console.error("Unexpected error fetching product:", err);
     return { data: null, error: "Failed to fetch product" };
@@ -119,7 +144,8 @@ export async function getCategories(): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
+    if (!supabase) return { data: null, error: "Supabase not configured" };
 
     const result = await Promise.race([
       supabase.from("categories").select("*").order("name", { ascending: true }),

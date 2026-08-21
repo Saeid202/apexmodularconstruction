@@ -137,13 +137,13 @@ export function InstallButton() {
         <button
           onClick={() => setShowIOSTooltip((v) => !v)}
           className="flex items-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition-colors"
-          aria-label="Install CargoPlus app"
+          aria-label="Install Apex Modular Construction app"
         >
           <Share className="h-3.5 w-3.5" />
           Install App
         </button>
         {showIOSTooltip && (
-          <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-white/20 bg-[#3a1570] p-4 shadow-xl z-50 text-white text-sm">
+          <div className="absolute right-0 top-full mt-2 w-64 rounded-xl border border-white/20 bg-[#3A1570] p-4 shadow-xl z-50 text-white text-sm">
             <div className="flex items-start justify-between mb-2">
               <span className="font-semibold">Add to Home Screen</span>
               <button onClick={() => setShowIOSTooltip(false)} className="text-white/60 hover:text-white ml-2">
@@ -165,7 +165,7 @@ export function InstallButton() {
         <button
           onClick={handleInstall}
           className="flex items-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition-colors"
-          aria-label="Install CargoPlus app"
+          aria-label="Install Apex Modular Construction app"
         >
           <Download className="h-3.5 w-3.5" />
           Install App

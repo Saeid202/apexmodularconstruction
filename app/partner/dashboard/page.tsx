@@ -42,7 +42,7 @@ export default async function PartnerDashboardPage() {
           <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 shrink-0" />
           <div>
             <h3 className="font-semibold text-red-800">Account Suspended</h3>
-            <p className="text-sm text-red-600 mt-0.5">Your partner account has been suspended. Please contact CargoPlus support.</p>
+            <p className="text-sm text-red-600 mt-0.5">Your partner account has been suspended. Please contact Apex Modular Construction support.</p>
           </div>
         </div>
       )}

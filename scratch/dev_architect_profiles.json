@@ -1,0 +1,140 @@
+{
+  "contract29101985@hotmail.com": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "full_name": "contract29101985",
+    "email": "contract29101985@hotmail.com",
+    "phone": null,
+    "firm_name": null,
+    "bio": "Bypass Dev Profile",
+    "status": "active",
+    "created_at": "2026-07-26T19:35:09.434Z",
+    "updated_at": "2026-08-17T17:59:17.646Z",
+    "website": null,
+    "address": null,
+    "professional_role": null,
+    "experience_years": null,
+    "specialization": null,
+    "subdomain": "sarah-designs",
+    "branding": {
+      "title": "Sarah Designs Studio",
+      "tagline": "Custom Prefabricated Luxury Modules",
+      "primaryColor": "#C5A25D",
+      "secondaryColor": "#1C1917",
+      "instagram": "https://instagram.com",
+      "linkedin": "https://linkedin.com",
+      "twitter": "",
+      "logoUrl": "",
+      "heroConfig": {
+        "bgType": "image",
+        "singleImageUrl": "https://images.unsplash.com/photo-1600582731940-7fde89e0b403?auto=format&fit=crop&q=80&w=800",
+        "sliderImages": [],
+        "textAlignment": "center",
+        "textOverlayOpacity": 0.2,
+        "ctaButton": {
+          "text": "Discover Luxury Mod",
+          "link": "#portfolio"
+        }
+      }
+    }
+  },
+  "subdomain:sarah-designs": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "full_name": "contract29101985",
+    "email": "contract29101985@hotmail.com",
+    "phone": null,
+    "firm_name": null,
+    "bio": "Bypass Dev Profile",
+    "status": "active",
+    "created_at": "2026-07-26T19:35:09.434Z",
+    "updated_at": "2026-08-17T17:59:17.646Z",
+    "website": null,
+    "address": null,
+    "professional_role": null,
+    "experience_years": null,
+    "specialization": null,
+    "subdomain": "sarah-designs",
+    "branding": {
+      "title": "Sarah Designs Studio",
+      "tagline": "Custom Prefabricated Luxury Modules",
+      "primaryColor": "#C5A25D",
+      "secondaryColor": "#1C1917",
+      "instagram": "https://instagram.com",
+      "linkedin": "https://linkedin.com",
+      "twitter": "",
+      "logoUrl": "",
+      "heroConfig": {
+        "bgType": "image",
+        "singleImageUrl": "https://images.unsplash.com/photo-1600582731940-7fde89e0b403?auto=format&fit=crop&q=80&w=800",
+        "sliderImages": [],
+        "textAlignment": "center",
+        "textOverlayOpacity": 0.2,
+        "ctaButton": {
+          "text": "Discover Luxury Mod",
+          "link": "#portfolio"
+        }
+      }
+    }
+  },
+  "customdomain:myfirm.test": {
+    "id": "22222222-2222-2222-2222-222222222222",
+    "full_name": "Demo Firm Architect",
+    "email": "demo@myfirm.test",
+    "firm_name": "MyFirm Modular Studio",
+    "bio": "This studio is being served through a CUSTOM DOMAIN (myfirm.test) resolved by the middleware + custom-domain route.",
+    "status": "active",
+    "website": "https://myfirm.test",
+    "address": "Local Demo, Toronto, ON",
+    "professional_role": "Architect",
+    "experience_years": 9,
+    "specialization": "Custom Modular Homes",
+    "subdomain": "myfirm-demo",
+    "branding": {
+      "title": "MyFirm Modular Studio",
+      "tagline": "You are viewing this via a custom domain (myfirm.test)",
+      "primaryColor": "#0EA5E9",
+      "customDomain": "myfirm.test",
+      "layout": [
+        {
+          "id": "blk-hero",
+          "type": "hero",
+          "props": {
+            "badge": "Served via a custom domain",
+            "heading": "MyFirm Modular Studio",
+            "subheading": "Prefabricated homes engineered for real life — delivered faster, built to last.",
+            "imageUrl": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200",
+            "primaryLabel": "Browse Catalog",
+            "primaryHref": "#portfolio",
+            "secondaryLabel": "Contact Studio",
+            "secondaryHref": "#contact"
+          }
+        },
+        {
+          "id": "blk-gallery",
+          "type": "gallery",
+          "props": {
+            "heading": "Selected Work",
+            "images": "https://images.unsplash.com/photo-1549517045-bc93de075e53?auto=format&fit=crop&q=80&w=800\nhttps://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=800\nhttps://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=800"
+          }
+        },
+        {
+          "id": "blk-text",
+          "type": "text",
+          "props": {
+            "heading": "About the Studio",
+            "body": "We design modular structures that balance speed, sustainability, and craft.\n\nThis entire page is composed from Page Builder blocks and served through a custom domain — no code changes per architect."
+          }
+        },
+        {
+          "id": "blk-cta",
+          "type": "cta",
+          "props": {
+            "heading": "Request a Consultation",
+            "subtext": "Tell us about your lot and we will match you to a modular design.",
+            "buttonLabel": "Get in Touch",
+            "buttonHref": "#contact"
+          }
+        }
+      ]
+    }
+  }
+}

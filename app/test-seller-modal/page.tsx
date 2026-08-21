@@ -39,7 +39,7 @@ export default function TestSellerModalPage() {
       <div className="bg-gray-50 p-4 rounded-lg mb-6">
         <h2 className="font-semibold mb-2">What to test:</h2>
         <ul className="text-sm text-gray-600 space-y-1">
-          <li>1. Click "Sell on CargoPlus" in the navigation - should open modal with "Become a Seller" tab</li>
+          <li>1. Click "Sell on Apex Modular Construction" in the navigation - should open modal with "Become a Seller" tab</li>
           <li>2. Click the buttons below to test modal triggers programmatically</li>
           <li>3. Test switching between "Seller Login" and "Become a Seller" tabs</li>
           <li>4. Test form submissions (they should work as before)</li>
@@ -88,15 +88,15 @@ export default function TestSellerModalPage() {
         <div className="space-y-2 text-sm">
           <label className="flex items-center gap-2">
             <input type="checkbox" className="rounded" />
-            <span>"Sell on CargoPlus" link in main navigation opens modal</span>
+            <span>"Sell on Apex Modular Construction" link in main navigation opens modal</span>
           </label>
           <label className="flex items-center gap-2">
             <input type="checkbox" className="rounded" />
-            <span>"Sell on CargoPlus" link in mobile menu opens modal</span>
+            <span>"Sell on Apex Modular Construction" link in mobile menu opens modal</span>
           </label>
           <label className="flex items-center gap-2">
             <input type="checkbox" className="rounded" />
-            <span>"Sell on CargoPlus" link in footer opens modal</span>
+            <span>"Sell on Apex Modular Construction" link in footer opens modal</span>
           </label>
           <label className="flex items-center gap-2">
             <input type="checkbox" className="rounded" />

@@ -136,7 +136,7 @@ export function SellerAuthModal({ isOpen, initialMode = "login", onClose }: Sell
               <p className="text-sm text-gray-500 mb-6">
                 {mode === "login"
                   ? "Login to your seller account to manage your products"
-                  : "Join CargoPlus and start selling to Canadian customers"}
+                  : "Join Apex Modular Construction and start selling to Canadian customers"}
               </p>
 
               {mode === "login" ? (

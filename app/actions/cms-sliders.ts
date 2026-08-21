@@ -27,10 +27,20 @@ export async function createSlide(formData: SlideFormData): Promise<ActionResult
         title: formData.title,
         subtitle: formData.subtitle || null,
         image_url: formData.image_url,
+        cta_enabled: formData.cta_enabled,
         cta_text: formData.cta_text || null,
         cta_link: formData.cta_link || null,
         position: formData.position,
         is_active: formData.is_active,
+        // New fields for enhanced hero section
+        headline: formData.headline || null,
+        subtext: formData.subtext || null,
+        benefits: formData.benefits || [],
+        cta_secondary_text: formData.cta_secondary_text || null,
+        cta_secondary_link: formData.cta_secondary_link || null,
+        layout_type: formData.layout_type,
+        background_overlay: formData.background_overlay,
+        trust_line: formData.trust_line || null,
       })
       .select()
       .single();
@@ -51,10 +61,20 @@ export async function updateSlide(id: string, formData: SlideFormData): Promise<
         title: formData.title,
         subtitle: formData.subtitle || null,
         image_url: formData.image_url,
+        cta_enabled: formData.cta_enabled,
         cta_text: formData.cta_text || null,
         cta_link: formData.cta_link || null,
         position: formData.position,
         is_active: formData.is_active,
+        // New fields for enhanced hero section
+        headline: formData.headline || null,
+        subtext: formData.subtext || null,
+        benefits: formData.benefits || [],
+        cta_secondary_text: formData.cta_secondary_text || null,
+        cta_secondary_link: formData.cta_secondary_link || null,
+        layout_type: formData.layout_type,
+        background_overlay: formData.background_overlay,
+        trust_line: formData.trust_line || null,
       })
       .eq("id", id)
       .select()

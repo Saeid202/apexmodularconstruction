@@ -103,7 +103,7 @@ export function FloatingMessenger() {
       <button
         onClick={() => setOpen((v) => !v)}
         className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-xl transition-transform hover:scale-105 focus:outline-none"
-        style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)", border: "2px solid #D4AF37" }}
+        style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}
         aria-label="Open messenger"
       >
         {open ? (
@@ -132,7 +132,7 @@ export function FloatingMessenger() {
           {/* Panel header */}
           <div
             className="flex items-center justify-between px-4 py-3 shrink-0"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3a1570)" }}
+            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}
           >
             <div className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4 text-yellow-300" />

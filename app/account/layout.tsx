@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createBrowserClient } from "@/lib/supabase/client";
-import { LayoutDashboard, ShoppingBag, User, LogOut, Wrench, Package, ChevronRight, Zap } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, User, LogOut, Wrench, Package, ChevronRight, Zap, Truck } from "lucide-react";
 import { FloatingMessenger } from "@/components/messenger/FloatingMessenger";
 
 const navItems = [
@@ -13,17 +13,22 @@ const navItems = [
   { href: "/account/orders",        label: "My Orders",         icon: ShoppingBag,     color: "from-emerald-400 to-teal-500" },
   { href: "/account/consolidation", label: "Consolidation/RFQ", icon: Package,         color: "from-orange-400 to-rose-500" },
   { href: "/account/engineering",   label: "Engineering",       icon: Wrench,          color: "from-cyan-400 to-blue-500" },
+  { href: "/account/shipping",      label: "Shipping",          icon: Truck,           color: "from-amber-400 to-orange-500" },
 ];
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [user, setUser] = useState<{ email?: string; user_metadata?: { full_name?: string } } | null>(null);
+  const [user, setUser] = useState<{ email?: string; user_metadata?: { full_name?: string; role?: string } } | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = createBrowserClient();
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) window.location.href = "/";
-      else setUser(data.session.user);
+      else {
+        setUser(data.session.user);
+        setUserRole(data.session.user?.user_metadata?.role || null);
+      }
     });
   }, []);
 
@@ -49,7 +54,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
             <Zap className="h-4 w-4 text-yellow-300" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white tracking-tight">CargoPlus</p>
+            <p className="text-sm font-bold text-white tracking-tight">Apex Modular Construction</p>
             <p className="text-[10px] text-purple-300 font-semibold uppercase tracking-widest">Buyer Portal</p>
           </div>
         </div>

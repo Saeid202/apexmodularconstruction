@@ -17,10 +17,10 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Sync mode when modal opens with a different initialMode
-  useEffect(() => {
-    if (isOpen) setMode(initialMode);
-  }, [isOpen, initialMode]);
+  function openArchitectAuth(mode: "login" | "register") {
+    onClose();
+    window.dispatchEvent(new CustomEvent("open-architect-auth-modal", { detail: mode }));
+  }
 
   // Lock scroll and focus close button when open
   useEffect(() => {
@@ -98,7 +98,7 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
 
           {/* Title */}
           <h2 className="text-xl font-bold text-gray-900 mb-1">
-            {mode === "login" ? "Welcome back" : "Join CargoPlus"}
+            {mode === "login" ? "Welcome back" : "Join Apex Modular Construction"}
           </h2>
           <p className="text-sm text-gray-500 mb-6">
             {mode === "login"
@@ -109,7 +109,7 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
           <AuthForm mode={mode} onSuccess={onClose} />
 
           {mode === "login" && (
-            <div className="mt-3 text-center">
+            <div className="mt-3 text-center space-y-2">
               <Link
                 href="/auth/reset-password"
                 onClick={onClose}
@@ -117,12 +117,21 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
               >
                 Forgot your password?
               </Link>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => openArchitectAuth("login")}
+                  className="text-xs text-primary font-medium hover:underline"
+                >
+                  Architect? Use Architect Login
+                </button>
+              </div>
             </div>
           )}
 
           {mode === "register" && (
             <div className="mt-4 border-t border-gray-100 pt-4 text-center text-xs text-gray-500">
-              Want to sell on CargoPlus?{" "}
+              Want to sell on Apex Modular Construction?{" "}
               <Link
                 href="/seller/register"
                 onClick={onClose}
@@ -130,6 +139,15 @@ export function AuthModal({ isOpen, initialMode = "login", onClose }: AuthModalP
               >
                 Apply as a seller →
               </Link>
+              <div className="mt-2">
+                <button
+                  type="button"
+                  onClick={() => openArchitectAuth("register")}
+                  className="text-primary font-medium hover:underline"
+                >
+                  Architect? Sign up here →
+                </button>
+              </div>
             </div>
           )}
         </div>

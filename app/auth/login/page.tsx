@@ -4,26 +4,36 @@ import { AuthForm } from "@/components/auth/AuthForm";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Login to your CargoPlus account",
+  description: "Login to your Apex Modular Construction account",
 };
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ redirect?: string }>;
+  searchParams: Promise<{ redirect?: string; returnUrl?: string }>;
 }) {
-  const { redirect } = await searchParams;
+  const params = await searchParams;
+  // The cart and checkout pages link here with `?returnUrl=`, while the register
+  // page uses `?redirect=`. Accept both so the buyer actually lands back on
+  // /checkout after logging in.
+  const redirect = params.redirect ?? params.returnUrl;
 
   return (
     <div className="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Welcome back</h1>
-          <p className="mt-2 text-gray-600">Login to your CargoPlus account</p>
+          <p className="mt-2 text-gray-600">Login to your Apex Modular Construction account</p>
         </div>
 
         <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-8">
           <AuthForm mode="login" redirectTo={redirect ?? "/account/dashboard"} />
+
+          <div className="mt-4 text-center">
+            <Link href="/auth/reset-password" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
+              Forgot your password?
+            </Link>
+          </div>
         </div>
 
         <p className="mt-6 text-center text-sm text-gray-600">

@@ -45,6 +45,24 @@ export function createBrowserClient() {
         },
       },
     })
+
+    // Override auth.getUser to be robust against null data on client-side
+    const originalGetUser = client.auth.getUser.bind(client.auth)
+    client.auth.getUser = async (jwt?: string) => {
+      try {
+        const res = await originalGetUser(jwt)
+        if (!res.data) {
+          res.data = { user: null }
+        }
+        return res
+      } catch (err: any) {
+        console.error('Browser safe getUser intercepted error:', err)
+        return {
+          data: { user: null },
+          error: err,
+        }
+      }
+    }
   }
 
   return client

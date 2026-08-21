@@ -123,7 +123,7 @@ export default function InvestigateSellerRedirectPage() {
 
   const testSellerSpecificLogin = async () => {
     addResult("=== TESTING SELLER-SPECIFIC LOGIN ===");
-    addResult("Please use the seller auth modal (Sell on CargoPlus) to login.");
+    addResult("Please use the seller auth modal (Sell on Apex Modular Construction) to login.");
     addResult("This will use SellerLoginForm instead of AuthForm.");
     addResult("Check console logs to see if SellerLoginForm redirect works correctly.");
   };

@@ -4,7 +4,7 @@ import { AuthForm } from "@/components/auth/AuthForm";
 
 export const metadata: Metadata = {
   title: "Create Account",
-  description: "Create a new CargoPlus account",
+  description: "Create a new Apex Modular Construction account",
 };
 
 export default async function RegisterPage({
@@ -19,7 +19,7 @@ export default async function RegisterPage({
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Create an account</h1>
-          <p className="mt-2 text-gray-600">Join CargoPlus to start shopping</p>
+          <p className="mt-2 text-gray-600">Join Apex Modular Construction to start shopping</p>
         </div>
 
         <div className="bg-white shadow-sm border border-gray-200 rounded-xl p-8">
@@ -37,7 +37,7 @@ export default async function RegisterPage({
         </p>
 
         <div className="mt-4 border border-blue-100 bg-blue-50 rounded-lg px-4 py-3 text-center text-sm text-gray-700">
-          Want to sell on CargoPlus?{" "}
+          Want to sell on Apex Modular Construction?{" "}
           <Link href="/seller/register" className="text-blue-600 font-semibold hover:underline">
             Apply as a seller →
           </Link>

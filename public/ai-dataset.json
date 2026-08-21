@@ -1,0 +1,97 @@
+{
+  "name": "Apex Modular Construction",
+  "description": "Premium construction materials marketplace connecting buyers and sellers worldwide",
+  "url": "https://apexmodularconstruction.com",
+  "version": "1.0.0",
+  "language": "en",
+  "last_updated": "2026-05-17",
+  "dataset": {
+    "type": "ecommerce",
+    "category": "construction_materials",
+    "focus": [
+      "prefabricated_modular_homes",
+      "light_steel_structures",
+      "building_materials",
+      "international_shipping",
+      "b2b_marketplace"
+    ]
+  },
+  "content": {
+    "homepage": {
+      "title": "Apex Modular Construction - Construction Materials Marketplace",
+      "description": "Premium construction materials marketplace connecting buyers and sellers worldwide. Specializing in prefabricated modular homes, light steel structures, and building materials delivered from China to Canada.",
+      "keywords": [
+        "construction materials",
+        "modular homes",
+        "prefabricated buildings",
+        "light steel structures",
+        "building supplies",
+        "China to Canada shipping",
+        "B2B marketplace",
+        "construction logistics"
+      ]
+    },
+    "products": {
+      "title": "Construction Materials Catalog",
+      "description": "Browse our extensive catalog of construction materials, modular homes, and building supplies from verified sellers worldwide.",
+      "categories": [
+        "Modular Homes",
+        "Construction Materials",
+        "Steel Structures",
+        "Building Supplies",
+        "Shipping & Logistics"
+      ]
+    },
+    "about": {
+      "title": "About Apex Modular Construction",
+      "description": "Learn about Apex Modular Construction and our mission to streamline construction material sourcing with quality assurance and reliable logistics."
+    },
+    "contact": {
+      "title": "Contact Apex Modular Construction",
+      "description": "Get in touch with our team for quotes, inquiries, and support."
+    }
+  },
+  "business": {
+    "model": "B2B Marketplace",
+    "services": [
+      "Product sourcing",
+      "International shipping",
+      "Quality assurance",
+      "Logistics coordination",
+      "Supplier verification"
+    ],
+    "target_audience": [
+      "Construction companies",
+      "Builders and contractors",
+      "Real estate developers",
+      "Homeowners",
+      "Architects and engineers"
+    ],
+    "geographic_focus": [
+      "Canada",
+      "China",
+      "United States",
+      "Global"
+    ]
+  },
+  "technical": {
+    "platform": "Next.js",
+    "database": "Supabase",
+    "authentication": "Supabase Auth",
+    "features": [
+      "User authentication",
+      "Product catalog",
+      "Shopping cart",
+      "Order management",
+      "Seller dashboard",
+      "Admin panel",
+      "CMS system"
+    ]
+  },
+  "seo": {
+    "sitemap": "https://apexmodularconstruction.com/sitemap.xml",
+    "robots": "https://apexmodularconstruction.com/robots.txt",
+    "llm_txt": "https://apexmodularconstruction.com/llm.txt",
+    "llms_txt": "https://apexmodularconstruction.com/llms.txt"
+  }
+}

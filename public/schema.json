@@ -1,0 +1,27 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Apex Modular Construction",
+  "url": "https://apexmodularconstruction.com",
+  "description": "Premium construction materials marketplace connecting buyers and sellers worldwide. Specializing in prefabricated modular homes, light steel structures, and building materials delivered from China to Canada.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://apexmodularconstruction.com/products?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Apex Modular Construction",
+    "url": "https://apexmodularconstruction.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://apexmodularconstruction.com/logo.png"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-XXX-XXX-XXXX",
+      "contactType": "customer service",
+      "availableLanguage": "English"
+    }
+  }
+}

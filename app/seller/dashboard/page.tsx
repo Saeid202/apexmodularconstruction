@@ -7,7 +7,7 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export const metadata: Metadata = { title: "Seller Dashboard | CargoPlus" };
+export const metadata: Metadata = { title: "Seller Dashboard | Apex Modular Construction" };
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -72,7 +72,7 @@ export default async function SellerDashboardPage() {
               textShadow: "0 2px 16px rgba(212,175,55,0.5)",
             }}
           >
-            Shanghai CargoPlus
+            Shanghai Apex Modular Construction
           </h1>
           <p className="text-white/80 text-base max-w-md leading-relaxed">
             Welcome back,{" "}

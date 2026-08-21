@@ -1,5 +1,5 @@
 -- ============================================
--- CargoPlus E-Commerce Platform
+-- Apex Modular Construction E-Commerce Platform
 -- Sample Data Seed
 -- ============================================
 -- Run this migration to populate the database with sample data for development

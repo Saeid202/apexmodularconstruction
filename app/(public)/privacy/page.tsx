@@ -5,7 +5,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Privacy Policy for CargoPlus. Learn how we collect, use, and protect your personal information in compliance with PIPEDA.",
+  description: "Privacy Policy for Apex Modular Construction. Learn how we collect, use, and protect your personal information in compliance with PIPEDA.",
 };
 
 export default async function PrivacyPage() {
@@ -44,7 +44,7 @@ function PrivacyPageStatic() {
       <div className="prose prose-lg max-w-3xl">
         <h2>1. Introduction</h2>
         <p>
-          CargoPlus (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. We comply with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy laws.
+          Apex Modular Construction (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. We comply with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy laws.
         </p>
 
         <h2>2. Information We Collect</h2>

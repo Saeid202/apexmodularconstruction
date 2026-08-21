@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { HeroSlide } from "@/types/database";
 
 export async function getHeroSlides(): Promise<{
@@ -8,12 +8,15 @@ export async function getHeroSlides(): Promise<{
   error: string | null;
 }> {
   try {
-    const supabase = await createServerClient();
+    const supabase = createPublicClient();
+    if (!supabase) {
+      return { data: null, error: "Supabase client not initialized" };
+    }
 
     const result = await Promise.race([
       supabase.from("hero_slides").select("*").eq("is_active", true).order("position", { ascending: true }),
       new Promise<{ data: null; error: { message: string } }>((resolve) =>
-        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 3000)
+        setTimeout(() => resolve({ data: null, error: { message: "timeout" } }), 10000)
       ),
     ]);
 

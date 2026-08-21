@@ -116,28 +116,39 @@ export async function getOrderDetailForAgent(orderId: string): Promise<{
   order: AgentOrder | null;
   response: AgentResponse | null;
   images: any[];
+  attachments: any[];
   error: string | null;
 }> {
   try {
     const admin = createAdminClient();
 
-    const [orderResult, responseResult, imagesResult] = await Promise.all([
-      admin.from("consolidation_orders").select("*, consolidation_order_items(*)").eq("id", orderId).single(),
+    // First fetch the order to get user_id, then fan out everything in parallel
+    const { data: orderData, error: orderError } = await admin
+      .from("consolidation_orders")
+      .select("*, consolidation_order_items(*)")
+      .eq("id", orderId)
+      .single();
+
+    if (orderError) return { order: null, response: null, images: [], attachments: [], error: orderError.message };
+
+    const o = orderData as any;
+
+    // All remaining queries in parallel — including the profile lookup
+    const [responseResult, imagesResult, attachmentsResult, profileResult] = await Promise.all([
       admin.from("consolidation_order_responses").select("*, consolidation_response_files(*)").eq("order_id", orderId).maybeSingle(),
       admin.from("consolidation_item_images").select("*").eq("order_id", orderId),
+      admin.from("consolidation_order_attachments").select("*").eq("order_id", orderId).order("uploaded_at", { ascending: true }),
+      admin.from("profiles").select("full_name, email, phone").eq("id", o.user_id).single(),
     ]);
 
-    if (orderResult.error) return { order: null, response: null, images: [], error: orderResult.error.message };
-
-    const o = orderResult.data as any;
-    const { data: profile } = await admin.from("profiles").select("full_name, email, phone").eq("id", o.user_id).single();
+    const profile = profileResult.data as any;
 
     const order: AgentOrder = {
       ...o,
       items: (o.consolidation_order_items ?? []).sort((a: any, b: any) => a.position - b.position),
-      buyer_name: (profile as any)?.full_name ?? null,
-      buyer_email: (profile as any)?.email ?? null,
-      buyer_phone: (profile as any)?.phone ?? null,
+      buyer_name: profile?.full_name ?? null,
+      buyer_email: profile?.email ?? null,
+      buyer_phone: profile?.phone ?? null,
     };
 
     const resp = responseResult.data as any;
@@ -146,8 +157,8 @@ export async function getOrderDetailForAgent(orderId: string): Promise<{
       files: resp.consolidation_response_files ?? [],
     } : null;
 
-    return { order, response, images: imagesResult.data ?? [], error: null };
-  } catch { return { order: null, response: null, images: [], error: "Failed to fetch order" }; }
+    return { order, response, images: imagesResult.data ?? [], attachments: attachmentsResult.data ?? [], error: null };
+  } catch { return { order: null, response: null, images: [], attachments: [], error: "Failed to fetch order" }; }
 }
 
 // ── Update order status ───────────────────────────────────────────────────────

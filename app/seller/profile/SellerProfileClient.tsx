@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { User, Mail, Phone, MapPin, Building, Edit2, Save, X, CheckCircle, Clock } from "lucide-react";
+import { User, Mail, Phone, MapPin, Building, Edit2, Save, X, CheckCircle, Clock, Camera as CameraIcon, Loader2 } from "lucide-react";
 import { updateSellerProfile } from "@/app/actions/seller";
+import { createBrowserClient } from "@supabase/ssr";
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
@@ -13,6 +14,9 @@ interface ProfileData {
   phone: string;
   address: string;
   description: string;
+  category: string;
+  specialties: string[];
+  logoUrl: string;
 }
 
 interface Props {
@@ -25,6 +29,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
   const [editProfile, setEditProfile] = useState<ProfileData>(initialProfile);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
 
   const handleSave = () => {
     setError(null);
@@ -35,6 +40,9 @@ export function SellerProfileClient({ initialProfile }: Props) {
         business_phone: editProfile.phone,
         business_address: editProfile.address,
         description: editProfile.description,
+        category: editProfile.category,
+        specialties: editProfile.specialties,
+        logo_url: editProfile.logoUrl,
       });
       if (result.success) {
         setProfile(editProfile);
@@ -49,6 +57,56 @@ export function SellerProfileClient({ initialProfile }: Props) {
     setEditProfile(profile);
     setIsEditing(false);
     setError(null);
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingLogo(true);
+    setError(null);
+    try {
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      setEditProfile(prev => ({ ...prev, logoUrl: publicUrl }));
+      
+      // Auto-save just the logo immediately if not in edit mode
+      if (!isEditing) {
+        await updateSellerProfile({
+          business_name: profile.businessName,
+          business_email: profile.email,
+          business_phone: profile.phone,
+          business_address: profile.address,
+          description: profile.description,
+          category: profile.category,
+          specialties: profile.specialties,
+          logo_url: publicUrl,
+        });
+        setProfile(prev => ({ ...prev, logoUrl: publicUrl }));
+      }
+    } catch (err: any) {
+      console.error('Logo upload error:', err);
+      setError('Failed to upload logo. Please try again.');
+    } finally {
+      setIsUploadingLogo(false);
+    }
   };
 
   const inputClass =
@@ -68,7 +126,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div
           className="h-32 w-full relative"
-          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3a1570 100%)` }}
+          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
         >
           <span className="absolute top-3 left-3 h-6 w-6 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
           <span className="absolute top-3 right-3 h-6 w-6 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />
@@ -82,7 +140,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
               className="text-2xl font-bold tracking-wide drop-shadow-md"
               style={{ color: GOLD, fontFamily: "Georgia, 'Times New Roman', serif", textShadow: "0 1px 8px rgba(212,175,55,0.4)" }}
             >
-              Shanghai CargoPlus
+              Shanghai Apex Modular Construction
             </p>
           </div>
         </div>
@@ -92,11 +150,26 @@ export function SellerProfileClient({ initialProfile }: Props) {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         <div className="px-6 py-5 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div
-              className="h-16 w-16 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0"
-              style={{ backgroundColor: PURPLE }}
-            >
-              <Building className="h-7 w-7 text-white" />
+            <div className="relative group">
+              <div
+                className="h-16 w-16 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0 overflow-hidden bg-white border border-gray-100"
+                style={{ backgroundColor: (isEditing ? editProfile.logoUrl : profile.logoUrl) ? '#fff' : PURPLE }}
+              >
+                {(isEditing ? editProfile.logoUrl : profile.logoUrl) ? (
+                  <img src={isEditing ? editProfile.logoUrl : profile.logoUrl} alt="Logo" className="h-full w-full object-cover" />
+                ) : (
+                  <Building className="h-7 w-7 text-white" />
+                )}
+              </div>
+              
+              <label className="absolute -bottom-2 -right-2 h-8 w-8 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors z-10">
+                {isUploadingLogo ? (
+                  <Loader2 className="h-4 w-4 text-gray-500 animate-spin" />
+                ) : (
+                  <CameraIcon className="h-4 w-4 text-gray-600" />
+                )}
+                <input type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} disabled={isUploadingLogo} />
+              </label>
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-900">{profile.businessName || "Your Business Name"}</h2>
@@ -217,6 +290,52 @@ export function SellerProfileClient({ initialProfile }: Props) {
                 {profile.description || <span className="text-gray-400">—</span>}
               </div>
             )}
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Business Category</label>
+              {isEditing ? (
+                <select 
+                  value={editProfile.category || ""}
+                  onChange={(e) => setEditProfile({ ...editProfile, category: e.target.value })}
+                  className={inputClass}
+                >
+                  <option value="">Select Category...</option>
+                  <option value="Cabinet Maker">Cabinet Maker</option>
+                  <option value="Interior Designer">Interior Designer</option>
+                  <option value="Hardware Supplier">Hardware Supplier</option>
+                  <option value="General Contractor">General Contractor</option>
+                </select>
+              ) : (
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 rounded-xl text-sm text-gray-900">
+                  <Building className="h-4 w-4 flex-shrink-0" style={{ color: PURPLE }} />
+                  {profile.category || <span className="text-gray-400">—</span>}
+                </div>
+              )}
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 mb-1.5 uppercase tracking-wide">Specialties (comma separated)</label>
+              {isEditing ? (
+                <input type="text" 
+                  value={editProfile.specialties?.join(", ") || ""}
+                  onChange={(e) => setEditProfile({ ...editProfile, specialties: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })}
+                  placeholder="e.g. Modern, Quick Ship, Solid Wood"
+                  className={inputClass} />
+              ) : (
+                <div className="flex flex-wrap gap-2 px-4 py-2 bg-gray-50 rounded-xl min-h-[44px] items-center">
+                  {profile.specialties && profile.specialties.length > 0 ? (
+                    profile.specialties.map(spec => (
+                      <span key={spec} className="text-xs font-bold bg-purple-50 text-purple-700 px-2 py-1 rounded-full border border-purple-100">
+                        {spec}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-gray-400 text-sm">—</span>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

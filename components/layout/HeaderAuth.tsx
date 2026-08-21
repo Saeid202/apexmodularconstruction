@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { User, ChevronDown, LogOut, LayoutDashboard, Store } from "lucide-react";
 
-export function HeaderAuth() {
+export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
   const supabase = createBrowserClient();
   const [user, setUser] = useState<{ id?: string; email?: string; user_metadata?: { full_name?: string } } | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -21,10 +21,35 @@ export function HeaderAuth() {
       setLoading(false);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
       const sessionUser = session?.user ?? null;
       setUser(sessionUser);
-      setUserRole(sessionUser?.user_metadata?.role ?? null);
+      
+      // Try to get role from auth metadata first
+      let role = sessionUser?.user_metadata?.role;
+      
+      // If no role in metadata, try to get from database
+      if (!role && sessionUser?.id) {
+        try {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', sessionUser.id)
+            .single();
+          
+          if (profileData?.role) {
+            role = profileData.role;
+            // Update auth metadata with role from database
+            await supabase.auth.updateUser({
+              data: { role: profileData.role }
+            });
+          }
+        } catch (err) {
+          console.error('Error fetching profile:', err);
+        }
+      }
+      
+      setUserRole(role);
     });
 
     return () => listener.subscription.unsubscribe();
@@ -42,16 +67,15 @@ export function HeaderAuth() {
       <div className="flex items-center gap-2">
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "login" }))}
-          className="inline-flex h-9 items-center justify-center rounded-xl border-2 border-white/30 px-4 text-sm font-semibold text-white transition-all hover:border-yellow-400 hover:text-yellow-300 hover:bg-white/10 cursor-pointer"
+          className="inline-flex h-9 items-center justify-center rounded-xl border border-white/40 bg-white/10 px-4 text-sm font-semibold text-white transition-all hover:bg-white/20 cursor-pointer"
         >
           Login
         </button>
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "register" }))}
-          className="inline-flex h-9 items-center justify-center rounded-xl px-4 text-sm font-semibold transition-all cursor-pointer shadow-md"
-          style={{ background: 'linear-gradient(135deg, #d4af37, #f5e27a)', color: '#3b0764' }}
+          className="inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-bold transition-all cursor-pointer bg-[#D4AF37] text-[#3b0764] font-black hover:brightness-110 hover:scale-105"
         >
-          Sign Up
+          Get Quote
         </button>
       </div>
     );
@@ -59,13 +83,16 @@ export function HeaderAuth() {
 
   const name = user.user_metadata?.full_name || user.email?.split("@")[0] || "Account";
 
+  console.log('HeaderAuth - userRole:', userRole);
+  console.log('HeaderAuth - user email:', user.email);
+
   return (
     <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-2 rounded-xl border-2 border-white/20 px-3 h-9 text-sm font-semibold text-white hover:bg-white/10 hover:border-yellow-400 transition-all cursor-pointer"
+        className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-3 h-9 text-sm font-semibold text-white hover:bg-white/20 hover:border-[#D4AF37] transition-all cursor-pointer"
       >
-        <User className="h-4 w-4 text-yellow-400" />
+        <User className="h-4 w-4 text-[#D4AF37]" />
         <span className="max-w-[120px] truncate">{name}</span>
         <ChevronDown className="h-3 w-3 text-white/50" />
       </button>
@@ -111,15 +138,35 @@ export function HeaderAuth() {
                 <LayoutDashboard className="h-4 w-4" />
                 Agent Dashboard
               </Link>
-            ) : (
+            ) : userRole === "contractor" ? (
               <Link
-                href="/account/dashboard"
+                href="/contractor/dashboard"
                 onClick={() => setDropdownOpen(false)}
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
               >
                 <LayoutDashboard className="h-4 w-4" />
-                My Dashboard
+                Contractor Dashboard
               </Link>
+            ) : (
+              // TEMPORARILY SHOW CONTRACTOR DASHBOARD LINK FOR ALL AUTHENTICATED USERS FOR TESTING
+              <>
+                <Link
+                  href="/account/dashboard"
+                  onClick={() => setDropdownOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  My Dashboard
+                </Link>
+                <Link
+                  href="/contractor/dashboard"
+                  onClick={() => setDropdownOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Contractor Dashboard (Test)
+                </Link>
+              </>
             )}
             {/* Only show orders/profile for buyers */}
             {userRole !== "seller" && userRole !== "admin" && userRole !== "partner" && (

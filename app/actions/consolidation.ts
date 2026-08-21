@@ -229,3 +229,76 @@ export async function deleteItemImage(imageId: string, storagePath: string): Pro
     return { error: null };
   } catch { return { error: "Failed to delete image" }; }
 }
+
+// ── Order attachments (PDF / Excel) ──────────────────────────────────────────
+
+export interface OrderAttachment {
+  id: string;
+  order_id: string;
+  file_name: string;
+  storage_path: string;
+  url: string;
+  file_type: string;
+  uploaded_at: string;
+}
+
+export async function getOrderAttachments(orderId: string): Promise<OrderAttachment[]> {
+  try {
+    const supabase = await createServerClient();
+    const { data } = await supabase
+      .from("consolidation_order_attachments")
+      .select("*")
+      .eq("order_id", orderId)
+      .order("uploaded_at", { ascending: true });
+    return (data ?? []) as OrderAttachment[];
+  } catch { return []; }
+}
+
+export async function uploadOrderAttachments(
+  orderId: string,
+  files: { name: string; base64: string; type: string }[]
+): Promise<{ error: string | null }> {
+  try {
+    const supabase = await createServerClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { error: "Not authenticated" };
+
+    for (const file of files) {
+      const storagePath = `${user.id}/${orderId}/${Date.now()}-${file.name}`;
+      const binary = atob(file.base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+
+      const { error: uploadError } = await supabase.storage
+        .from("consolidation-attachments")
+        .upload(storagePath, bytes, { contentType: file.type, upsert: false });
+
+      if (uploadError) { console.error("Attachment upload error:", uploadError.message); continue; }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("consolidation-attachments")
+        .getPublicUrl(storagePath);
+
+      await supabase.from("consolidation_order_attachments").insert({
+        order_id: orderId,
+        file_name: file.name,
+        storage_path: storagePath,
+        url: publicUrl,
+        file_type: file.type,
+      });
+    }
+    return { error: null };
+  } catch { return { error: "Failed to upload attachments" }; }
+}
+
+export async function deleteOrderAttachment(attachmentId: string, storagePath: string): Promise<{ error: string | null }> {
+  try {
+    const supabase = await createServerClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { error: "Not authenticated" };
+
+    await supabase.storage.from("consolidation-attachments").remove([storagePath]);
+    await supabase.from("consolidation_order_attachments").delete().eq("id", attachmentId);
+    return { error: null };
+  } catch { return { error: "Failed to delete attachment" }; }
+}

@@ -5,7 +5,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Shipping Policy",
-  description: "Shipping Policy for CargoPlus. Learn about our shipping methods, delivery times, and costs from China to Canada.",
+  description: "Shipping Policy for Apex Modular Construction. Learn about our shipping methods, delivery times, and costs from China to Canada.",
 };
 
 export default async function ShippingPage() {
@@ -44,7 +44,7 @@ function ShippingPageStatic() {
       <div className="prose prose-lg max-w-3xl">
         <h2>1. Shipping Overview</h2>
         <p>
-          CargoPlus ships construction materials and industrial robots from verified Chinese suppliers to customers across Canada. We partner with reliable international logistics providers to ensure your products arrive safely and on time.
+          Apex Modular Construction ships construction materials and industrial robots from verified Chinese suppliers to customers across Canada. We partner with reliable international logistics providers to ensure your products arrive safely and on time.
         </p>
 
         <h2>2. Shipping Methods</h2>
@@ -129,7 +129,7 @@ function ShippingPageStatic() {
 
         <h2>6. Customs and Duties</h2>
         <p>
-          All products shipped from China to Canada are subject to customs clearance. CargoPlus handles:
+          All products shipped from China to Canada are subject to customs clearance. Apex Modular Construction handles:
         </p>
         <ul>
           <li>Import documentation and customs declarations</li>

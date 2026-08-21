@@ -1,0 +1,63 @@
+# Apex Modular Construction - Construction Materials Platform
+# This file helps AI/LLM crawlers understand our website structure and content
+
+# Site Information
+name: Apex Modular Construction
+description: Premium construction materials marketplace connecting buyers and sellers worldwide. Specializing in prefabricated modular homes, light steel structures, and building materials delivered from China to Canada.
+url: https://apexmodularconstruction.com
+language: en
+
+# Key Sections
+sections:
+  - path: /
+    description: Homepage featuring prefabricated modular homes and construction materials
+  - path: /products
+    description: Browse our catalog of construction materials, modular homes, and building supplies
+  - path: /about
+    description: Learn about Apex Modular Construction and our mission to streamline construction material sourcing
+  - path: /contact
+    description: Get in touch with our team for quotes and inquiries
+  - path: /auth/register
+    description: Register as a buyer or seller on our platform
+  - path: /auth/login
+    description: Login to your Apex Modular Construction account
+
+# Product Categories
+categories:
+  - name: Modular Homes
+    description: Prefabricated modular homes and light steel structures
+  - name: Construction Materials
+    description: Building supplies, steel, cement, and construction materials
+  - name: Shipping & Logistics
+    description: International shipping and logistics solutions for construction materials
+
+# Target Audience
+audience:
+  - Construction companies
+  - Builders and contractors
+  - Real estate developers
+  - Homeowners
+  - Architects and engineers
+
+# Geographic Focus
+regions:
+  - Canada
+  - China
+  - United States
+  - Global
+
+# Business Model
+business_type: B2B Marketplace
+services:
+  - Product sourcing
+  - International shipping
+  - Quality assurance
+  - Logistics coordination
+
+# Contact Information
+support: https://apexmodularconstruction.com/contact
+email: support@apexmodularconstruction.com
+
+# Crawler Instructions
+crawl_delay: 1
+allow_ai: true

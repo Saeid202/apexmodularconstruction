@@ -15,7 +15,7 @@ export interface VariantSlot {
 
 const PURPLE = "#4B1D8F";
 const GOLD = "#D4AF37";
-export const MAX_VARIANTS = 5;
+export const MAX_VARIANTS = 20;
 
 export function newSlot(isMaster = false): VariantSlot {
   return { id: crypto.randomUUID(), file: null, preview: null, existingUrl: null, code: "", price: "", isMaster };
@@ -115,7 +115,7 @@ export function DraggableVariantGrid({ variants, onChange }: Props) {
       {/* Hidden multi-file input */}
       <input ref={multiRef} type="file" accept="image/*" multiple className="hidden" onChange={handleMultiSelect} />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {variants.map((slot, i) => (
           <VariantCard
             key={slot.id}

@@ -22,16 +22,11 @@ export function ProductActions({ productId, productName, productSlug, productSta
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleDelete = () => {
-    if (!confirmDelete) {
-      setConfirmDelete(true);
-      setTimeout(() => setConfirmDelete(false), 3000);
-      return;
-    }
+    if (!window.confirm(`Delete "${productName}"? This cannot be undone.`)) return;
     startTransition(async () => {
       const result = await deleteProduct(productId);
       if (result.error) {
         alert(result.error);
-        setConfirmDelete(false);
         return;
       }
       router.refresh();
@@ -91,13 +86,11 @@ export function ProductActions({ productId, productName, productSlug, productSta
         <Pencil className="h-4 w-4" />
       </Link>
       <button type="button"
-        title={confirmDelete ? "Click again to confirm delete" : "Delete product"}
+        title="Delete product"
         onClick={handleDelete}
         disabled={isPending}
-        className={`flex h-8 w-8 items-center justify-center rounded-lg transition-all ${
-          confirmDelete ? "bg-red-100 scale-110" : "hover:bg-red-50"
-        }`}
-        style={{ color: confirmDelete ? "#dc2626" : "#ef4444" }}>
+        className="flex h-8 w-8 items-center justify-center rounded-lg transition-all hover:bg-red-50"
+        style={{ color: "#ef4444" }}>
         {isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
       </button>
     </div>

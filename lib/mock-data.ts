@@ -4,8 +4,9 @@ export const mockHeroSlides: HeroSlideData[] = [
   {
     id: '1',
     title: 'Professional in\nConstruction material',
-    subtitle: 'Multi-Seller Consolidation|Combine multiple suppliers, optimize logistics, save time and cost.|Light Steel Structure Engineering sourcing|High-quality steel structure materials, one-stop sourcing for your projects.',
+    subtitle: 'Design and Manufacturing Container Houses|Transform shipping containers into modern, sustainable living spaces. Custom designs for homes, offices, and commercial buildings.|Light Steel Structure Engineering sourcing|High-quality steel structure materials, one-stop sourcing for your projects.',
     imageUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&h=600&q=75&fit=crop',
+    ctaEnabled: true,
     ctaText: 'Shanghai cargo Plus',
     ctaLink: '/products',
     position: 0,
@@ -42,6 +43,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-1', name: 'Steel & Metal', slug: 'steel-metal', description: null, imageUrl: null },
     seller: { id: 'seller-1', businessName: 'SteelPro China', businessEmail: 'info@steelpro.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '2',
@@ -71,6 +73,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-2', name: 'Robots', slug: 'robots', description: null, imageUrl: null },
     seller: { id: 'seller-2', businessName: 'RoboTech Shanghai', businessEmail: 'sales@robotech.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '3',
@@ -100,6 +103,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-3', name: 'Cement & Concrete', slug: 'cement-concrete', description: null, imageUrl: null },
     seller: { id: 'seller-1', businessName: 'SteelPro China', businessEmail: 'info@steelpro.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '4',
@@ -129,6 +133,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-2', name: 'Robots', slug: 'robots', description: null, imageUrl: null },
     seller: { id: 'seller-2', businessName: 'RoboTech Shanghai', businessEmail: 'sales@robotech.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '5',
@@ -148,7 +153,7 @@ export const mockProducts: ProductWithRelations[] = [
       {
         id: 'img-5',
         productId: '5',
-        url: 'https://images.unsplash.com/photo-1615971677499-5467cbab01c0?w=400&h=400&q=75&fit=crop',
+        url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2Y0ZjRmNCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSIjNjY2Ij5DZXJhbWljIFRpbGVzPC90ZXh0Pjwvc3ZnPg==',
         altText: 'Ceramic floor tiles',
         position: 0,
         variantCode: null,
@@ -158,6 +163,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-4', name: 'Tiles & Flooring', slug: 'tiles-flooring', description: null, imageUrl: null },
     seller: { id: 'seller-3', businessName: 'TileWorld Guangzhou', businessEmail: 'export@tileworld.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '6',
@@ -187,6 +193,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-2', name: 'Robots', slug: 'robots', description: null, imageUrl: null },
     seller: { id: 'seller-2', businessName: 'RoboTech Shanghai', businessEmail: 'sales@robotech.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '7',
@@ -216,6 +223,7 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-1', name: 'Steel & Metal', slug: 'steel-metal', description: null, imageUrl: null },
     seller: { id: 'seller-1', businessName: 'SteelPro China', businessEmail: 'info@steelpro.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
   {
     id: '8',
@@ -245,5 +253,36 @@ export const mockProducts: ProductWithRelations[] = [
     ],
     category: { id: 'cat-2', name: 'Robots', slug: 'robots', description: null, imageUrl: null },
     seller: { id: 'seller-2', businessName: 'RoboTech Shanghai', businessEmail: 'sales@robotech.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
+  },
+  {
+    id: '9',
+    name: 'Pre-fabricated Steel Frame Structure',
+    slug: 'pre-fabricated-steel-frame-structure',
+    description: 'Complete pre-fabricated steel frame building kit. Includes all structural components and fasteners.',
+    price: 15999.99,
+    compareAtPrice: 17999.99,
+    stockQuantity: 25,
+    categoryId: 'cat-5',
+    sellerId: 'seller-1',
+    status: 'active',
+    specifications: { span: '12m', height: '4.5m', material: 'Galvanized Steel', assembly: 'Bolt-together' },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    images: [
+      {
+        id: 'img-9',
+        productId: '9',
+        url: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2U2ZTZlNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSIjNjY2Ij5QcmUtZmFicmljYXRlZCBTdGVlbDwvdGV4dD48L3N2Zz4=',
+        altText: 'Pre-fabricated steel frame structure',
+        position: 0,
+        variantCode: null,
+        variantPrice: null,
+        isMaster: true,
+      },
+    ],
+    category: { id: 'cat-5', name: 'Pre-fabricated', slug: 'pre-fabricated', description: null, imageUrl: null },
+    seller: { id: 'seller-1', businessName: 'SteelPro China', businessEmail: 'info@steelpro.cn', logoUrl: null, status: 'active' },
+    requireOrderRequest: false, showStock: true, youtubeUrl: null, documents: [], hasCustomization: false, priceType: 'unit', configurator_type: 'none',
   },
 ]

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { ShoppingBag, User, Package, Wrench, ArrowRight, Zap, TrendingUp, Clock } from "lucide-react";
+import { ShoppingBag, User, Package, Wrench, ArrowRight, Zap, TrendingUp, Clock, Truck } from "lucide-react";
 
 export default function BuyerDashboard() {
   const [user, setUser] = useState<{ email?: string; user_metadata?: { full_name?: string } } | null>(null);
@@ -65,8 +65,7 @@ export default function BuyerDashboard() {
           { label: "RFQ Submitted",   value: "0", icon: Package,     gradient: "from-orange-500 to-rose-500",   shadow: "shadow-orange-500/20" },
           { label: "Engineering",     value: "0", icon: Wrench,      gradient: "from-cyan-500 to-blue-500",     shadow: "shadow-cyan-500/20" },
           { label: "In Progress",     value: "0", icon: TrendingUp,  gradient: "from-emerald-500 to-teal-600",  shadow: "shadow-emerald-500/20" },
-        ].map(({ label, value, icon: Icon, gradient, shadow }) => (
-          <div key={label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+        ].map(({ label, value, icon: Icon, gradient, shadow }) => (          <div key={label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-shadow">
             <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} shadow-lg ${shadow} mb-3`}>
               <Icon className="h-5 w-5 text-white" />
             </div>
@@ -107,6 +106,15 @@ export default function BuyerDashboard() {
               gradient: "from-cyan-500 to-blue-500",
               bg: "bg-cyan-50",
               border: "border-cyan-100 hover:border-cyan-300",
+            },
+            {
+              href: "/account/shipping",
+              label: "Shipping",
+              desc: "Submit and track freight shipments",
+              icon: Truck,
+              gradient: "from-amber-500 to-orange-500",
+              bg: "bg-amber-50",
+              border: "border-amber-100 hover:border-amber-300",
             },
             {
               href: "/account/profile",

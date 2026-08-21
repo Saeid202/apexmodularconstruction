@@ -1,6 +1,6 @@
 const CACHE_VERSION = 'v2';
-const STATIC_CACHE = `cargoplus-static-${CACHE_VERSION}`;
-const HTML_CACHE = `cargoplus-html-${CACHE_VERSION}`;
+const STATIC_CACHE = `apexmodularconstruction-static-${CACHE_VERSION}`;
+const HTML_CACHE = `apexmodularconstruction-html-${CACHE_VERSION}`;
 const KNOWN_CACHES = [STATIC_CACHE, HTML_CACHE];
 
 const PRECACHE_URLS = [
@@ -76,7 +76,7 @@ self.addEventListener('fetch', (event) => {
 // ── Push ──────────────────────────────────────────────────────────────────────
 self.addEventListener('push', (event) => {
   let payload = {
-    title: 'CargoPlus',
+    title: 'Apex Modular Construction',
     body: 'You have a new update',
     icon: '/icons/icon-192.png',
     data: { url: '/' },

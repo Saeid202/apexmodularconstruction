@@ -4,11 +4,11 @@ export function WhatsAppButton() {
   function handleClick(e: React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
     // Try native app protocol first (skips redirect page on mobile)
-    window.location.href = "whatsapp://send?phone=14168825015&text=Hi%20CargoPlus%2C%20I%20have%20a%20question.";
+    window.location.href = "whatsapp://send?phone=14168825015&text=Hi%20Apex Modular Construction%2C%20I%20have%20a%20question.";
     // Fall back to wa.me after a short delay if app didn't open
     setTimeout(() => {
       window.open(
-        "https://wa.me/14168825015?text=Hi%20CargoPlus%2C%20I%20have%20a%20question.",
+        "https://wa.me/14168825015?text=Hi%20Apex Modular Construction%2C%20I%20have%20a%20question.",
         "_blank"
       );
     }, 1000);
@@ -16,7 +16,7 @@ export function WhatsAppButton() {
 
   return (
     <a
-      href="whatsapp://send?phone=14168825015&text=Hi%20CargoPlus%2C%20I%20have%20a%20question."
+      href="whatsapp://send?phone=14168825015&text=Hi%20Apex Modular Construction%2C%20I%20have%20a%20question."
       onClick={handleClick}
       aria-label="Chat with us on WhatsApp"
       className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110"

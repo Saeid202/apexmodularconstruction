@@ -1,0 +1,75 @@
+﻿
+C:\Users\shaba\OneDrive\Desktop\Cargoplus\cargoplus-ecommerce\components\product\ProductCustomizer.tsx
+   74:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  157:83  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+C:\Users\shaba\OneDrive\Desktop\Cargoplus\cargoplus-ecommerce\components\seller\customization\CustomizationSuiteSimple.tsx
+   12:18  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+   13:35  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+   56:87  warning  'customGroups' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+   59:10  warning  'loading' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   64:7   error    Error: Cannot access variable before it is declared
+
+`loadExistingOptions` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\shaba\OneDrive\Desktop\Cargoplus\cargoplus-ecommerce\components\seller\customization\CustomizationSuiteSimple.tsx:64:7
+  62 |   useEffect(() => {
+  63 |     if (isEnabled) {
+> 64 |       loadExistingOptions();
+     |       ^^^^^^^^^^^^^^^^^^^ `loadExistingOptions` accessed before it is declared
+  65 |     } else {
+  66 |       setOptions([]);
+  67 |     }
+
+C:\Users\shaba\OneDrive\Desktop\Cargoplus\cargoplus-ecommerce\components\seller\customization\CustomizationSuiteSimple.tsx:70:3
+   68 |   }, [isEnabled, productId]);
+   69 |
+>  70 |   const loadExistingOptions = async () => {
+      |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  71 |     setLoading(true);
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  72 |     try {
+      ΓÇª
+      | ^^^^^^^^^^^^^^^^^^^^^
+> 112 |     }
+      | ^^^^^^^^^^^^^^^^^^^^^
+> 113 |   };
+      | ^^^^^ `loadExistingOptions` is declared here
+  114 |
+  115 |   const addNewRow = () => {
+  116 |     const newRow: OptionRow = {  react-hooks/immutability
+   66:7   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\shaba\OneDrive\Desktop\Cargoplus\cargoplus-ecommerce\components\seller\customization\CustomizationSuiteSimple.tsx:66:7
+  64 |       loadExistingOptions();
+  65 |     } else {
+> 66 |       setOptions([]);
+     |       ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  67 |     }
+  68 |   }, [isEnabled, productId]);
+  69 |                                                                                                                    react-hooks/set-state-in-effect
+   68:6   warning  React Hook useEffect has a missing dependency: 'loadExistingOptions'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/exhaustive-deps
+  154:62  error    Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\shaba\OneDrive\Desktop\Cargoplus\cargoplus-ecommerce\components\seller\customization\CustomizationSuiteSimple.tsx:154:62
+  152 |         
+  153 |         try {
+> 154 |           const url = await uploadProductImage(file, userId, Date.now());
+      |                                                              ^^^^^^^^^^ Cannot call impure function
+  155 |           console.log('Upload successful for:', file.name, 'URL:', url);
+  156 |           imageUrls.push(url);
+  157 |         } catch (fileError) {                                                                                                                                                                                                                                                                                                                            react-hooks/purity
+  188:79  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+  445:23  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react/no-unescaped-entities
+  445:52  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react/no-unescaped-entities
+
+Γ£û 13 problems (9 errors, 4 warnings)
+

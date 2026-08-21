@@ -7,10 +7,20 @@ export interface HeroSlideRow {
   image_url: string
   cta_text: string | null
   cta_link: string | null
+  cta_enabled: boolean
   position: number
   is_active: boolean
   created_at: string
   updated_at: string
+  // New fields for enhanced hero section
+  headline: string | null
+  subtext: string | null
+  benefits: string[] | null
+  cta_secondary_text: string | null
+  cta_secondary_link: string | null
+  layout_type: string
+  background_overlay: boolean
+  trust_line: string | null
 }
 
 export interface NavItemRow {
@@ -48,10 +58,20 @@ export interface SlideFormData {
   title: string
   subtitle: string
   image_url: string
+  cta_enabled: boolean
   cta_text: string
   cta_link: string
   position: number
   is_active: boolean
+  // New fields for enhanced hero section
+  headline: string
+  subtext: string
+  benefits: string[]
+  cta_secondary_text: string
+  cta_secondary_link: string
+  layout_type: string
+  background_overlay: boolean
+  trust_line: string
 }
 
 export interface NavItemFormData {

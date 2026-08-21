@@ -1,9 +1,9 @@
 -- ============================================
--- CargoPlus E-Commerce Platform
+-- Apex Modular Construction E-Commerce Platform
 -- Initial Database Schema Migration
 -- ============================================
 -- Requirements: 1.1
--- This migration creates the complete database schema for the CargoPlus platform
+-- This migration creates the complete database schema for the Apex Modular Construction platform
 -- Run this migration in the Supabase SQL Editor after creating your project
 
 -- Enable UUID extension
