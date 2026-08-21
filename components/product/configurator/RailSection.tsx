@@ -34,33 +34,37 @@ export function RailSection({ title, meta, icon, defaultOpen = true, children }:
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-gray-50"
+        className={`flex w-full items-center gap-3 bg-gray-50 px-4 py-4 text-left transition-colors hover:bg-gray-100 ${
+          // Only divide from content that is actually showing, otherwise this
+          // doubles up with the card's own bottom border.
+          open ? 'border-b border-gray-200' : ''
+        }`}
       >
         {icon && (
           <span className="shrink-0" style={{ color: PURPLE }}>
             {icon}
           </span>
         )}
-        <span className="flex-1 text-[11px] font-black uppercase tracking-[0.14em] text-gray-800">
+        <span className="flex-1 text-base font-black uppercase tracking-wide text-gray-800">
           {title}
         </span>
         {meta && (
           <span
-            className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
+            className="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold"
             style={{ backgroundColor: `${GOLD}1F`, color: '#8A6D12' }}
           >
             {meta}
           </span>
         )}
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-gray-400 transition-transform duration-200 ${
+          className={`h-5 w-5 shrink-0 text-gray-500 transition-transform duration-200 ${
             open ? 'rotate-180' : ''
           }`}
         />
       </button>
 
       {open && (
-        <div className="border-t border-gray-100 px-4 py-4 animate-in fade-in duration-200">
+        <div className="px-4 py-4 animate-in fade-in duration-200">
           {children}
         </div>
       )}

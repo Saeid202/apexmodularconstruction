@@ -68,7 +68,7 @@ export function ProductInclusionsPanel({
     <div className="flex flex-col gap-3">
       <RailSection
         title="What's Included"
-        icon={<ListChecks className="h-4 w-4" />}
+        icon={<ListChecks className="h-5 w-5" />}
         meta={included.length > 0 ? `${included.length} items` : undefined}
       >
         {included.length > 0 ? (
@@ -92,7 +92,7 @@ export function ProductInclusionsPanel({
 
       <RailSection
         title="Certificates & Standards"
-        icon={<ShieldCheck className="h-4 w-4" />}
+        icon={<ShieldCheck className="h-5 w-5" />}
         meta={certificates.length > 0 ? `${certificates.length}` : undefined}
       >
         {certificates.length > 0 ? (
@@ -130,7 +130,7 @@ export function ProductInclusionsPanel({
         )}
       </RailSection>
 
-      <RailSection title="Specification" icon={<Ruler className="h-4 w-4" />}>
+      <RailSection title="Specification" icon={<Ruler className="h-5 w-5" />}>
         {hasSpecs ? (
           <div className="flex flex-col gap-4">
             {kvSpecs.length > 0 && (
