@@ -16,10 +16,10 @@ interface MobileMenuProps {
 }
 
 const navLinks = [
-  { href: '/products', label: 'Products' },
+  { href: '/products', label: 'Buildings' },
+  { href: '/products?category=building-systems', label: 'Building Systems' },
+  { href: '/products?category=materials', label: 'Materials' },
   { href: '/about', label: 'About Us' },
-  { href: '/3d-printer', label: 'Construction 3D Printer' },
-  { href: '/video-centre', label: 'Video Centre' },
   { href: '/contact', label: 'Contact Us' },
   { href: '/seller/register', label: 'Sell on Apex Modular Construction' },
 ]
@@ -101,16 +101,52 @@ export function MobileMenu({
               {/* Navigation links */}
               <nav className="flex-1 overflow-y-auto p-4">
                 <ul className="space-y-1">
-                  {/* Products */}
+                  {/* Buildings */}
                   <li>
                     <Link
                       href="/products"
                       onClick={onClose}
                       className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                     >
-                      Products
+                      Buildings
                     </Link>
                   </li>
+
+                  {/* Building Systems
+                  <li>
+                    <Link
+                      href="/products?category=building-systems"
+                      onClick={onClose}
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      Building Systems
+                    </Link>
+                  </li>
+                  */}
+
+                  {/* Materials
+                  <li>
+                    <Link
+                      href="/products?category=materials"
+                      onClick={onClose}
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      Materials
+                    </Link>
+                  </li>
+                  */}
+
+                  {/* Get Quote
+                  <li>
+                    <Link
+                      href="/get-quote"
+                      onClick={onClose}
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      Get Quote
+                    </Link>
+                  </li>
+                  */}
 
                   {/* Services — expandable */}
                   <li>
@@ -151,7 +187,7 @@ export function MobileMenu({
                     )}
                   </li>
 
-                  {/* About Us */}
+                  {/* About Us
                   <li>
                     <Link
                       href="/about"
@@ -161,28 +197,11 @@ export function MobileMenu({
                       About Us
                     </Link>
                   </li>
+                  */}
 
-                  {/* Construction 3D Printer */}
-                  <li>
-                    <Link
-                      href="/3d-printer"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Construction 3D Printer
-                    </Link>
-                  </li>
 
-                  {/* Video Centre */}
-                  <li>
-                    <Link
-                      href="/video-centre"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Video Centre
-                    </Link>
-                  </li>
+
+
 
                   {/* Contact Us */}
                   <li>

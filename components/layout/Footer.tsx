@@ -7,8 +7,11 @@ import type { SocialLink } from '@/app/actions/cms-settings'
 
 const quickLinks = [
   { href: '/about', label: 'About Us' },
-  { href: '/products', label: 'Products' },
+  { href: '/products', label: 'Buildings' },
+  { href: '/products?category=building-systems', label: 'Building Systems' },
+  { href: '/products?category=materials', label: 'Materials' },
   { href: '/services/construction-solutions', label: 'Construction Solutions' },
+  { href: '/video-centre', label: 'Video Centre' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact Us' },
 ]
