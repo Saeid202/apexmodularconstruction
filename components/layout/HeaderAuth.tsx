@@ -71,12 +71,6 @@ export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
         >
           Login
         </button>
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "register" }))}
-          className="inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-bold transition-all cursor-pointer bg-[#D4AF37] text-[#3b0764] font-black hover:brightness-110 hover:scale-105"
-        >
-          Get Quote
-        </button>
       </div>
     );
   }
