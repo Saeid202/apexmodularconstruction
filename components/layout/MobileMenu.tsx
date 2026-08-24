@@ -124,7 +124,7 @@ export function MobileMenu({
                   </li>
                   */}
 
-                  {/* Materials
+                  {/* Materials */}
                   <li>
                     <Link
                       href="/products?category=materials"
@@ -134,7 +134,6 @@ export function MobileMenu({
                       Materials
                     </Link>
                   </li>
-                  */}
 
                   {/* Get Quote
                   <li>

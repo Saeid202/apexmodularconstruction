@@ -1,49 +1,162 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ProductCard } from "@/components/products/ProductCard";
 import { ProductFilters } from "@/components/products/ProductFilters";
 import type { ProductWithRelations, CategoryData } from "@/types";
 
+interface VirtualCategory {
+  name: string;
+  slug: string;
+  count: number;
+  subcategories?: {
+    name: string;
+    slug: string;
+    count: number;
+  }[];
+}
+
 interface ProductCatalogProps {
   initialProducts: ProductWithRelations[];
   categories: CategoryData[];
+  categoryParam?: string | null;
 }
 
-export function ProductCatalog({ initialProducts, categories }: ProductCatalogProps) {
+export function ProductCatalog({ initialProducts, categories, categoryParam }: ProductCatalogProps) {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
-  const virtualCategories = useMemo(() => {
-    const prefabCount = initialProducts.filter(
-      (p) => p.category?.slug === "pre-fabricated" || p.category?.slug === "prefabricated"
-    ).length;
+  const isPrefabMode = !categoryParam || categoryParam === "pre-fabricated" || categoryParam === "prefabricated";
 
-    return [
-      {
-        name: "Prefabricated",
-        slug: "pre-fabricated",
-        count: prefabCount,
-      },
-    ];
-  }, [initialProducts]);
+  const virtualCategories = useMemo<VirtualCategory[]>(() => {
+    if (isPrefabMode) {
+      const prefabCount = initialProducts.filter(
+        (p) => p.category?.slug === "pre-fabricated" || p.category?.slug === "prefabricated"
+      ).length;
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("pre-fabricated");
+      return [
+        {
+          name: "Prefabricated",
+          slug: "pre-fabricated",
+          count: prefabCount,
+        },
+      ];
+    } else {
+      // Materials mode: list all top-level categories that are NOT prefabricated
+      const topLevelCats = categories.filter(
+        (c) =>
+          (!c.parent_id) &&
+          c.slug !== "pre-fabricated" &&
+          c.slug !== "prefabricated"
+      );
+
+      const list = topLevelCats.map((cat) => {
+        // Find subcategories for this category
+        const subCats = categories.filter((c) => c.parent_id === cat.id);
+
+        const subList = subCats.map((sub) => {
+          const count = initialProducts.filter((p) => p.category?.id === sub.id).length;
+          return {
+            name: sub.name,
+            slug: sub.slug,
+            count,
+          };
+        });
+
+        // Compute total count for this top-level category: own products + subcategory products
+        const ownCount = initialProducts.filter((p) => p.category?.id === cat.id).length;
+        const subCountTotal = subList.reduce((sum, item) => sum + item.count, 0);
+        const totalCount = ownCount + subCountTotal;
+
+        return {
+          name: cat.name,
+          slug: cat.slug,
+          count: totalCount,
+          subcategories: subList.length > 0 ? subList : undefined,
+        };
+      });
+
+      const allMaterialsCount = initialProducts.filter(
+        (p) => p.category?.slug !== "pre-fabricated" && p.category?.slug !== "prefabricated"
+      ).length;
+
+      return [
+        {
+          name: "All Materials",
+          slug: "all-materials",
+          count: allMaterialsCount,
+        },
+        ...list,
+      ];
+    }
+  }, [isPrefabMode, initialProducts, categories]);
+
+  const defaultCategory = isPrefabMode ? "pre-fabricated" : "all-materials";
+  const [selectedCategory, setSelectedCategory] = useState<string>(defaultCategory);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
+
+  // Sync state when mode/categoryParam changes
+  useEffect(() => {
+    if (isPrefabMode) {
+      setSelectedCategory("pre-fabricated");
+    } else {
+      const isValidCat = categories.some(
+        (c) => c.slug === categoryParam && c.slug !== "pre-fabricated" && c.slug !== "prefabricated"
+      );
+      if (isValidCat) {
+        setSelectedCategory(categoryParam!);
+      } else {
+        setSelectedCategory("all-materials");
+      }
+    }
+  }, [categoryParam, isPrefabMode, categories]);
 
   const filteredProducts = useMemo(() => {
     return initialProducts.filter((p) => {
       const slug = p.category?.slug;
-      if (selectedCategory === "pre-fabricated") {
+      const catId = p.category?.id;
+
+      if (isPrefabMode) {
         if (slug !== "pre-fabricated" && slug !== "prefabricated") return false;
+      } else {
+        // Exclude prefabricated houses from materials
+        if (slug === "pre-fabricated" || slug === "prefabricated") return false;
+
+        // Filter by specific material category if not "all-materials"
+        if (selectedCategory !== "all-materials") {
+          const selectedCatObj = categories.find((c) => c.slug === selectedCategory);
+          if (selectedCatObj) {
+            // Find all subcategories belonging to this selected category (if it is a parent)
+            const subCatIds = categories
+              .filter((c) => c.parent_id === selectedCatObj.id)
+              .map((c) => c.id);
+
+            const matchesSelected = catId === selectedCatObj.id || subCatIds.includes(catId);
+            if (!matchesSelected) return false;
+          } else {
+            return false;
+          }
+        }
       }
+
       if (p.price < priceRange[0] || p.price > priceRange[1]) return false;
       return true;
     });
-  }, [selectedCategory, priceRange, initialProducts]);
+  }, [isPrefabMode, selectedCategory, priceRange, initialProducts, categories]);
 
-  const selectedCategoryData = useMemo(() =>
-    virtualCategories.find((c) => c.slug === selectedCategory) ?? null,
-  [virtualCategories, selectedCategory]);
+  const selectedCategoryData = useMemo(() => {
+    // Search top-level categories first
+    const found = virtualCategories.find((c) => c.slug === selectedCategory);
+    if (found) return found;
+
+    // Search subcategories
+    for (const cat of virtualCategories) {
+      if (cat.subcategories) {
+        const subFound = cat.subcategories.find((s) => s.slug === selectedCategory);
+        if (subFound) return subFound;
+      }
+    }
+    return null;
+  }, [virtualCategories, selectedCategory]);
 
   const isPriceFiltered = priceRange[0] > 0 || priceRange[1] < 50000;
 
@@ -57,7 +170,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
 
         <div className="container mx-auto px-4 py-2.5 md:px-6 md:py-4 flex flex-col items-center text-center transition-all duration-300 relative z-10">
           <h1 className="text-xl md:text-3xl font-extrabold text-[#1a1a2e] tracking-tight">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4B1D8F] to-[#7c3aed]">Products</span>
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4B1D8F] to-[#7c3aed]">{isPrefabMode ? "Buildings" : "Materials"}</span>
           </h1>
         </div>
       </div>
@@ -95,6 +208,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
                 onCategoryChange={setSelectedCategory}
                 priceRange={priceRange}
                 onPriceChange={setPriceRange}
+                defaultCategory={defaultCategory}
               />
             </aside>
 
@@ -140,7 +254,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
                   <p className="text-lg font-semibold text-gray-700 mb-1">No products match your filters</p>
                   <p className="text-sm text-gray-400 mb-6">Try adjusting the category or price range</p>
                   <button
-                    onClick={() => { setSelectedCategory("pre-fabricated"); setPriceRange([0, 50000]); }}
+                    onClick={() => { setSelectedCategory(defaultCategory); setPriceRange([0, 50000]); }}
                     className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110"
                     style={{ background: '#4B1D8F' }}
                   >
@@ -179,6 +293,7 @@ export function ProductCatalog({ initialProducts, categories }: ProductCatalogPr
                 onCategoryChange={setSelectedCategory}
                 priceRange={priceRange}
                 onPriceChange={setPriceRange}
+                defaultCategory={defaultCategory}
               />
               <div className="mt-8 pt-4 border-t sticky bottom-0 bg-white">
                 <button

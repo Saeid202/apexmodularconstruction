@@ -173,6 +173,7 @@ export interface CategoryData {
   slug: string
   description: string | null
   imageUrl: string | null
+  parent_id?: string | null
 }
 
 export interface SellerData {

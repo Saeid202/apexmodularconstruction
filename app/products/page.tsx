@@ -46,7 +46,8 @@ function transformProduct(dbProduct: NonNullable<Awaited<ReturnType<typeof getPr
       slug: dbProduct.categories.slug,
       description: dbProduct.categories.description,
       imageUrl: dbProduct.categories.image_url,
-    } : { id: "", name: "Uncategorized", slug: "uncategorized", description: null, imageUrl: null },
+      parent_id: dbProduct.categories.parent_id,
+    } : { id: "", name: "Uncategorized", slug: "uncategorized", description: null, imageUrl: null, parent_id: null },
     seller: dbProduct.sellers ? {
       id: dbProduct.sellers.id,
       businessName: dbProduct.sellers.business_name,
@@ -62,7 +63,14 @@ function transformProduct(dbProduct: NonNullable<Awaited<ReturnType<typeof getPr
   };
 }
 
-export default async function ProductsPage() {
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const params = await searchParams;
+  const categoryParam = params.category || null;
+
   // Try to fetch from Supabase
   const [productsResult, categoriesResult] = await Promise.all([
     getProducts({ limit: 100 }),
@@ -79,8 +87,15 @@ export default async function ProductsPage() {
     slug: cat.slug,
     description: cat.description,
     imageUrl: cat.image_url,
+    parent_id: cat.parent_id,
   })) ?? [];
   const categories: CategoryData[] = dbCategories;
 
-  return <ProductCatalog initialProducts={products} categories={categories} />;
+  return (
+    <ProductCatalog
+      initialProducts={products}
+      categories={categories}
+      categoryParam={categoryParam}
+    />
+  );
 }

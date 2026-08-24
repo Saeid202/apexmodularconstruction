@@ -371,13 +371,18 @@ export async function createAgent(input: CreateAgentInput): Promise<{ error: str
     if (authError) return { error: authError.message };
     if (!authData.user) return { error: "Failed to create user" };
 
-    await admin.from("profiles").insert({
+    const { error: profileError } = await admin.from("profiles").upsert({
       id: authData.user.id,
       email: input.email,
       full_name: input.full_name,
       phone: input.phone ?? null,
       role: "agent",
     });
+
+    if (profileError) {
+      await admin.auth.admin.deleteUser(authData.user.id);
+      return { error: `Profile creation failed: ${profileError.message}` };
+    }
 
     return { error: null };
   } catch { return { error: "Failed to create agent" }; }
