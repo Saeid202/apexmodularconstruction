@@ -121,8 +121,9 @@ function transformProduct(
           slug: dbProduct.categories.slug,
           description: dbProduct.categories.description,
           imageUrl: dbProduct.categories.image_url,
+          parent_id: dbProduct.categories.parent_id,
         }
-      : { id: '', name: 'Uncategorized', slug: 'uncategorized', description: null, imageUrl: null },
+      : { id: '', name: 'Uncategorized', slug: 'uncategorized', description: null, imageUrl: null, parent_id: null },
     seller: dbProduct.sellers
       ? {
           id: dbProduct.sellers.id,

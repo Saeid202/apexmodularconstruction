@@ -265,7 +265,7 @@ export async function createShippingAgent(input: {
     if (authError) return { error: authError.message };
     if (!authData.user) return { error: "Failed to create user" };
 
-    const { error: profileError } = await admin.from("profiles").insert({
+    const { error: profileError } = await admin.from("profiles").upsert({
       id: authData.user.id,
       email: input.email,
       full_name: input.full_name,
@@ -274,7 +274,7 @@ export async function createShippingAgent(input: {
     });
 
     if (profileError) {
-      // Clean up the auth user if profile insert failed
+      // Clean up the auth user if profile upsert failed
       await admin.auth.admin.deleteUser(authData.user.id);
       return { error: `Profile creation failed: ${profileError.message}` };
     }

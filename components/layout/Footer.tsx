@@ -185,8 +185,8 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                   className="h-10 w-10 object-contain"
                 />
               </div>
-              <span className="text-white font-bold text-base whitespace-nowrap">
-                Apex Modular Construction
+              <span className="text-white font-bold text-base">
+                Apex Modular Construction (16481043 Canada Inc.)
               </span>
             </Link>
             <p className="text-sm text-white/85 leading-relaxed max-w-sm">
@@ -328,7 +328,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
       {/* Bottom bar */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/50">
-          <p>© {currentYear} Apex Modular Construction. All rights reserved.</p>
+          <p>© {currentYear} Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
           <p>Prices in CAD. HST/GST calculated at checkout.</p>
         </div>
       </div>

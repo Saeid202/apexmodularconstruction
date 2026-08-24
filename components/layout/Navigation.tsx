@@ -77,14 +77,13 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
         </li>
         */}
 
-        {/* Materials
+        {/* Materials */}
         <li>
           <Link href="/products?category=materials" onClick={() => onLinkClick?.()} className={linkClass}>
             Materials
             <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
-        */}
 
         {/* Get Quote
         <li>
