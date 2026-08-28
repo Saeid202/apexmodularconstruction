@@ -126,10 +126,7 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
       <div className="flex items-start gap-2 text-sm">
         <input id="reg-terms" type="checkbox" required className="mt-1 rounded border-gray-300 accent-[#4B1D8F]" />
         <label htmlFor="reg-terms" className="text-gray-500">
-          I agree to the {" "}
-          <Link href="/terms" className="font-medium text-[#4B1D8F] hover:underline">Terms of Service</Link>
-          {" "}and{" "}
-          <Link href="/privacy" className="font-medium text-[#4B1D8F] hover:underline">Privacy Policy</Link>
+          I agree to the Terms and Conditions
         </label>
       </div>
 
