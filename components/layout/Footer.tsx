@@ -21,17 +21,6 @@ const partnerLinks: { href: string; label: string }[] = [
   { href: '/affiliate/register', label: 'Become an Affiliate' },
 ]
 
-const customerServiceLinks = [
-  { href: '/shipping', label: 'Shipping Policy' },
-  { href: '/contact', label: 'FAQ' },
-  { href: '/contact', label: 'Support' },
-]
-
-const legalLinks = [
-  { href: '/terms', label: 'Terms of Service' },
-  { href: '/privacy', label: 'Privacy Policy' },
-]
-
 function FacebookIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -200,14 +189,20 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
-                <a href="tel:+14168825015" className="hover:text-white transition-colors">
-                  +1 416 882 5015
-                </a>
+                <div className="flex items-center gap-2">
+                  <a href="tel:+14168825015" className="hover:text-white transition-colors">
+                    +1 416 882 5015
+                  </a>
+                  <span className="text-white/30">|</span>
+                  <a href="https://wa.me/14168825015" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-[#D4AF37] transition-colors font-bold flex items-center gap-1">
+                    WhatsApp
+                  </a>
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
-                <a href="mailto:shabani_saeid@hotmail.com" className="hover:text-white transition-colors">
-                  shabani_saeid@hotmail.com
+                <a href="mailto:hello@apexmodularconstruction.com" className="hover:text-white transition-colors">
+                  hello@apexmodularconstruction.com
                 </a>
               </div>
             </div>
@@ -231,7 +226,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
           </div>
 
           {/* Links columns */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="lg:col-span-7 grid grid-cols-2 gap-8">
             {/* Quick Links */}
             <div>
               <ColHeading>Quick Links</ColHeading>
@@ -288,39 +283,6 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               </ul>
             </div>
 
-            {/* Customer Service - hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:block">
-              <ColHeading>Customer Service</ColHeading>
-              <ul className="space-y-3">
-                {customerServiceLinks.map((link) => (
-                  <li key={link.href + link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Legal - hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:block">
-              <ColHeading>Legal</ColHeading>
-              <ul className="space-y-3">
-                {legalLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
       </div>

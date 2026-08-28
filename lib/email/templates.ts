@@ -137,7 +137,6 @@ export function confirmationEmailTemplate(
     <div class="footer">
       <p>&copy; 2026 Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
       <p>
-        <a href="${BASE_URL}/privacy">Privacy Policy</a> |
         <a href="${BASE_URL}/contact">Contact Us</a>
       </p>
     </div>
@@ -190,7 +189,6 @@ export function approvalEmailTemplate(
     <div class="footer">
       <p>&copy; 2026 Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
       <p>
-        <a href="${BASE_URL}/privacy">Privacy Policy</a> |
         <a href="${BASE_URL}/contact">Contact Us</a>
       </p>
     </div>
@@ -239,7 +237,6 @@ export function rejectionEmailTemplate(
     <div class="footer">
       <p>&copy; 2026 Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
       <p>
-        <a href="${BASE_URL}/privacy">Privacy Policy</a> |
         <a href="${BASE_URL}/contact">Contact Us</a>
       </p>
     </div>

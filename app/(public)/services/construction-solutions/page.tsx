@@ -24,14 +24,14 @@ export const metadata: Metadata = {
     "industrial prefab buildings Canada",
   ],
   alternates: {
-    canonical: "https://cargoplus.site/services/construction-solutions",
+    canonical: "https://apexmodularconstruction.com/services/construction-solutions",
   },
   openGraph: {
     title: "Prefab Construction Cost in Canada (2026 Guide) | Apex Modular Construction",
     description:
       "Full cost breakdown of prefab and steel structure projects from China to Canada. EPC delivery, CSA compliance, and modular building solutions.",
     type: "article",
-    url: "https://cargoplus.site/services/construction-solutions",
+    url: "https://apexmodularconstruction.com/services/construction-solutions",
   },
 };
 
@@ -93,18 +93,18 @@ export default function ConstructionSolutionsPage() {
             author: {
               "@type": "Organization",
               name: "Apex Modular Construction",
-              url: "https://cargoplus.site",
+              url: "https://apexmodularconstruction.com",
             },
             publisher: {
               "@type": "Organization",
               name: "Apex Modular Construction",
-              url: "https://cargoplus.site",
+              url: "https://apexmodularconstruction.com",
             },
             datePublished: "2026-01-01",
             dateModified: "2026-05-01",
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": "https://cargoplus.site/services/construction-solutions",
+              "@id": "https://apexmodularconstruction.com/services/construction-solutions",
             },
           }),
         }}
@@ -810,7 +810,7 @@ export default function ConstructionSolutionsPage() {
               </Link>
 
               <Link
-                href="/shipping"
+                href="/contact"
                 className="group rounded-2xl bg-white p-6 transition-shadow hover:shadow-md"
                 style={{ border: `1.5px solid ${PURPLE}18` }}
               >
