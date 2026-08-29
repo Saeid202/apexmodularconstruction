@@ -9,6 +9,7 @@ import { MobileMenu } from './MobileMenu'
 import { AuthModal } from '@/components/auth/AuthModal'
 import { SellerAuthModal } from '@/components/auth/SellerAuthModal'
 import { ArchitectAuthModal } from '@/components/auth/ArchitectAuthModal'
+import { AffiliateAuthModal } from '@/components/auth/AffiliateAuthModal'
 import { HeaderAuth } from './HeaderAuth'
 import { InstallButton } from '@/components/pwa/InstallButton'
 import { CartBadge } from './CartBadge'
@@ -37,6 +38,13 @@ export function Header({ cmsNav }: HeaderProps) {
     mode: 'register',
   })
   const [architectAuthModal, setArchitectAuthModal] = useState<{
+    open: boolean
+    mode: 'login' | 'register'
+  }>({
+    open: false,
+    mode: 'register',
+  })
+  const [affiliateAuthModal, setAffiliateAuthModal] = useState<{
     open: boolean
     mode: 'login' | 'register'
   }>({
@@ -84,6 +92,15 @@ export function Header({ cmsNav }: HeaderProps) {
     return () => window.removeEventListener('open-architect-auth-modal', handler)
   }, [])
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const mode = (e as CustomEvent).detail as 'login' | 'register'
+      setAffiliateAuthModal({ open: true, mode })
+    }
+    window.addEventListener('open-affiliate-auth-modal', handler)
+    return () => window.removeEventListener('open-affiliate-auth-modal', handler)
+  }, [])
+
   function closeAuth() {
     setAuthModal((prev) => ({ ...prev, open: false }))
   }
@@ -93,12 +110,18 @@ export function Header({ cmsNav }: HeaderProps) {
   function closeArchitectAuth() {
     setArchitectAuthModal((prev) => ({ ...prev, open: false }))
   }
+  function closeAffiliateAuth() {
+    setAffiliateAuthModal((prev) => ({ ...prev, open: false }))
+  }
 
   return (
     <>
       <header 
         className="w-full py-3 transition-all duration-500 z-50 border-b border-purple-900/50"
-        style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3a1570 100%)' }}
+        style={{
+          background:
+            'linear-gradient(135deg, var(--brand-chrome-from) 0%, var(--brand-chrome-to) 100%)',
+        }}
       >
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-center gap-8">
@@ -195,7 +218,7 @@ export function Header({ cmsNav }: HeaderProps) {
       />
 
       <AuthModal
-        key={`${authModal.open}-${authModal.mode}`}
+        key={`user-auth-${authModal.open}-${authModal.mode}`}
         isOpen={authModal.open}
         initialMode={authModal.mode}
         onClose={closeAuth}
@@ -208,10 +231,17 @@ export function Header({ cmsNav }: HeaderProps) {
       />
 
       <ArchitectAuthModal
-        key={`${architectAuthModal.open}-${architectAuthModal.mode}`}
+        key={`architect-auth-${architectAuthModal.open}-${architectAuthModal.mode}`}
         isOpen={architectAuthModal.open}
         initialMode={architectAuthModal.mode}
         onClose={closeArchitectAuth}
+      />
+
+      <AffiliateAuthModal
+        key={`affiliate-auth-${affiliateAuthModal.open}-${affiliateAuthModal.mode}`}
+        isOpen={affiliateAuthModal.open}
+        initialMode={affiliateAuthModal.mode}
+        onClose={closeAffiliateAuth}
       />
     </>
   )

@@ -7,25 +7,18 @@ import type { SocialLink } from '@/app/actions/cms-settings'
 
 const quickLinks = [
   { href: '/about', label: 'About Us' },
-  { href: '/products', label: 'Products' },
+  { href: '/products', label: 'Buildings' },
+  { href: '/products?category=building-systems', label: 'Building Systems' },
+  { href: '/products?category=materials', label: 'Materials' },
   { href: '/services/construction-solutions', label: 'Construction Solutions' },
+  { href: '/video-centre', label: 'Video Centre' },
   { href: '/blog', label: 'Blog' },
   { href: '/contact', label: 'Contact Us' },
 ]
 
 const partnerLinks: { href: string; label: string }[] = [
   { href: '/architect/register', label: 'Become an Architect' },
-]
-
-const customerServiceLinks = [
-  { href: '/shipping', label: 'Shipping Policy' },
-  { href: '/contact', label: 'FAQ' },
-  { href: '/contact', label: 'Support' },
-]
-
-const legalLinks = [
-  { href: '/terms', label: 'Terms of Service' },
-  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/affiliate/register', label: 'Become an Affiliate' },
 ]
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -145,9 +138,16 @@ export function Footer({ socialLinks = [] }: FooterProps) {
     window.dispatchEvent(new CustomEvent('open-architect-auth-modal', { detail: mode }))
   }
 
+  function openAffiliateAuth(mode: 'login' | 'register') {
+    window.dispatchEvent(new CustomEvent('open-affiliate-auth-modal', { detail: mode }))
+  }
+
   return (
     <footer
-      style={{ background: 'linear-gradient(160deg, #4B1D8F 0%, #3a1570 100%)' }}
+      style={{
+        background:
+          'linear-gradient(160deg, var(--brand-chrome-from) 0%, var(--brand-chrome-to) 100%)',
+      }}
     >
       {/* Gold accent top line */}
       <div
@@ -174,8 +174,8 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                   className="h-10 w-10 object-contain"
                 />
               </div>
-              <span className="text-white font-bold text-base whitespace-nowrap">
-                Apex Modular Construction
+              <span className="text-white font-bold text-base">
+                Apex Modular Construction (16481043 Canada Inc.)
               </span>
             </Link>
             <p className="text-sm text-white/85 leading-relaxed max-w-sm">
@@ -189,14 +189,20 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
-                <a href="tel:+14168825015" className="hover:text-white transition-colors">
-                  +1 416 882 5015
-                </a>
+                <div className="flex items-center gap-2">
+                  <a href="tel:+14168825015" className="hover:text-white transition-colors">
+                    +1 416 882 5015
+                  </a>
+                  <span className="text-white/30">|</span>
+                  <a href="https://wa.me/14168825015" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-[#D4AF37] transition-colors font-bold flex items-center gap-1">
+                    WhatsApp
+                  </a>
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
-                <a href="mailto:shabani_saeid@hotmail.com" className="hover:text-white transition-colors">
-                  shabani_saeid@hotmail.com
+                <a href="mailto:hello@apexmodularconstruction.com" className="hover:text-white transition-colors">
+                  hello@apexmodularconstruction.com
                 </a>
               </div>
             </div>
@@ -220,7 +226,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
           </div>
 
           {/* Links columns */}
-          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="lg:col-span-7 grid grid-cols-2 gap-8">
             {/* Quick Links */}
             <div>
               <ColHeading>Quick Links</ColHeading>
@@ -249,7 +255,15 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                         <button
                           type="button"
                           onClick={() => openArchitectAuth('register')}
-                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors cursor-pointer"
+                        >
+                          {link.label}
+                        </button>
+                      ) : link.href === '/affiliate/register' ? (
+                        <button
+                          type="button"
+                          onClick={() => openAffiliateAuth('register')}
+                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors cursor-pointer"
                         >
                           {link.label}
                         </button>
@@ -269,39 +283,6 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               </ul>
             </div>
 
-            {/* Customer Service - hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:block">
-              <ColHeading>Customer Service</ColHeading>
-              <ul className="space-y-3">
-                {customerServiceLinks.map((link) => (
-                  <li key={link.href + link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Legal - hidden on mobile, shown on larger screens */}
-            <div className="hidden sm:block">
-              <ColHeading>Legal</ColHeading>
-              <ul className="space-y-3">
-                {legalLinks.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -309,7 +290,13 @@ export function Footer({ socialLinks = [] }: FooterProps) {
       {/* Bottom bar */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/50">
-          <p>© {currentYear} Apex Modular Construction. All rights reserved.</p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p>© {currentYear} Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
+            <span className="hidden sm:inline text-white/20">|</span>
+            <Link href="/privacy" className="hover:text-white transition-colors">
+              Privacy Policy
+            </Link>
+          </div>
           <p>Prices in CAD. HST/GST calculated at checkout.</p>
         </div>
       </div>

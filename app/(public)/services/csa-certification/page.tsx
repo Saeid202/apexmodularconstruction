@@ -24,14 +24,14 @@ export const metadata: Metadata = {
     "imported steel structures CSA compliance",
   ],
   alternates: {
-    canonical: "https://cargoplus.site/services/csa-certification",
+    canonical: "https://apexmodularconstruction.com/services/csa-certification",
   },
   openGraph: {
     title: "CSA Certification for Prefab Buildings in Canada (2026 Guide) | Apex Modular Construction",
     description:
       "Complete guide to CSA certification requirements for prefabricated buildings imported from China to Canada. When it's required, how to comply, common mistakes, and costs.",
     type: "article",
-    url: "https://cargoplus.site/services/csa-certification",
+    url: "https://apexmodularconstruction.com/services/csa-certification",
   },
 };
 
@@ -101,13 +101,13 @@ export default function CSACertificationPage() {
             headline: "CSA Certification for Prefab Buildings in Canada (2026 Guide)",
             description:
               "Complete guide to CSA certification requirements for prefabricated buildings imported from China to Canada.",
-            author: { "@type": "Organization", name: "Apex Modular Construction", url: "https://cargoplus.site" },
-            publisher: { "@type": "Organization", name: "Apex Modular Construction", url: "https://cargoplus.site" },
+            author: { "@type": "Organization", name: "Apex Modular Construction", url: "https://apexmodularconstruction.com" },
+            publisher: { "@type": "Organization", name: "Apex Modular Construction", url: "https://apexmodularconstruction.com" },
             datePublished: "2026-01-01",
             dateModified: "2026-05-01",
             mainEntityOfPage: {
               "@type": "WebPage",
-              "@id": "https://cargoplus.site/services/csa-certification",
+              "@id": "https://apexmodularconstruction.com/services/csa-certification",
             },
           }),
         }}

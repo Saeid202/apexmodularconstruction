@@ -21,7 +21,7 @@ export interface ADUReportData {
 export const aduService = {
   async checkFeasibility(inputs: ADUCheckInputs): Promise<ADUReportData> {
     const municipality = this.detectMunicipality(inputs.address);
-    const reportId = `CP-ADU-${municipality.substring(0,3).toUpperCase()}-${Math.random().toString(36).substring(2,5).toUpperCase()}`;
+    const reportId = `APEX-ADU-${municipality.substring(0,3).toUpperCase()}-${Math.random().toString(36).substring(2,5).toUpperCase()}`;
 
     // 1. Fetch relevant Apex Modular Construction products
     const { data: products } = await getProducts({ categorySlug: 'pre-fabricated', limit: 10 });
@@ -31,7 +31,7 @@ export const aduService = {
       You are a Senior Planning Navigator at Apex Modular Construction. 
       Your goal is to tell the user if they can build an ADU AND which Apex Modular Construction products fit their site.
       
-      CARGOPLUS PRODUCT CATALOG:
+      APEX MODULAR CONSTRUCTION PRODUCT CATALOG:
       ${productContext}
 
       Return a ultra-concise "Level 1" ADU Feasibility Report in JSON format.
@@ -91,7 +91,7 @@ export const aduService = {
       const systemPrompt = `
         You are a Apex Modular Construction Sales Specialist. 
         
-        CARGOPLUS PRODUCT CATALOG:
+        APEX MODULAR CONSTRUCTION PRODUCT CATALOG:
         ${productContext}
 
         ${context ? `USER'S PROPERTY REPORT: ${JSON.stringify(context)}` : ""}

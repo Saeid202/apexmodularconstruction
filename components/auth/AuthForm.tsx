@@ -124,6 +124,8 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
         window.location.href = "/contractor/dashboard";
       } else if (userRole === "architect") {
         window.location.href = "/architect/dashboard";
+      } else if (userRole === "affiliate") {
+        window.location.href = "/affiliate/dashboard";
       } else if (redirectTo && redirectTo !== "/account/dashboard") {
         window.location.href = redirectTo;
       } else {

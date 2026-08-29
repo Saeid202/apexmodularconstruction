@@ -47,11 +47,13 @@ const GOLD = '#D4AF37'
 interface AIStagerTabProps {
   product?: ProductWithRelations
   activeImageUrl?: string
+  /** Which workspace to open on. Lets callers deep-link straight into AR. */
+  initialMode?: 'demo' | 'upload' | 'ar'
 }
 
-export function AIStagerTab({ product, activeImageUrl }: AIStagerTabProps) {
+export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTabProps) {
   // Mode selection: 'demo', 'upload', or 'ar'
-  const [stageMode, setStageMode] = useState<'demo' | 'upload' | 'ar'>('demo')
+  const [stageMode, setStageMode] = useState<'demo' | 'upload' | 'ar'>(initialMode ?? 'demo')
   const [qrUrl, setQrUrl] = useState('')
 
   useEffect(() => {

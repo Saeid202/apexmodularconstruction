@@ -11,7 +11,7 @@ import type { Metadata } from 'next'
 export const revalidate = 0
 
 export const metadata: Metadata = {
-  title: 'Apex Modular Construction - Prefabricated Modular Homes from China to Canada',
+  title: 'Apex Modular Construction - Design It Online. Built in the Factory. Delivered to your site.',
   description:
     'Premium construction materials marketplace. Prefabricated modular homes, light steel structures, and building materials delivered from China to Canada with CSA compliance.',
   alternates: {

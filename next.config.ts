@@ -24,7 +24,8 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    const domain = process.env.NEXT_PUBLIC_DOMAIN || 'apexmodularconstruction.com';
+    const rawDomain = process.env.NEXT_PUBLIC_DOMAIN || 'apexmodularconstruction.com';
+    const nakedDomain = rawDomain.replace(/^www\./i, '');
     const preferWww = process.env.NEXT_PUBLIC_PREFER_WWW === 'true';
     
     if (preferWww) {
@@ -35,10 +36,10 @@ const nextConfig: NextConfig = {
           has: [
             {
               type: 'host',
-              value: domain,
+              value: nakedDomain,
             },
           ],
-          destination: `https://www.${domain}/:path*`,
+          destination: `https://www.${nakedDomain}/:path*`,
           permanent: true,
         },
       ];
@@ -50,10 +51,10 @@ const nextConfig: NextConfig = {
           has: [
             {
               type: 'host',
-              value: `www.${domain}`,
+              value: `www.${nakedDomain}`,
             },
           ],
-          destination: `https://${domain}/:path*`,
+          destination: `https://${nakedDomain}/:path*`,
           permanent: true,
         },
       ];

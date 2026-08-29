@@ -34,6 +34,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/contractor') ||
     pathname.startsWith('/account') ||
     pathname.startsWith('/auth') ||
+    pathname.startsWith('/affiliate') ||
     pathname.includes('.')
 
   if (subdomain && !isReservedPath) {
@@ -231,6 +232,68 @@ export async function middleware(request: NextRequest) {
 
     if (profileResult.data && profileResult.data.role === 'architect' && architectResult.error) {
       console.error('Architect profile query failed for architect user, allowing access')
+    }
+  }
+
+  // Affiliate routes protection
+  if (pathname.startsWith('/affiliate')) {
+    const hasBypass = request.cookies.has('affiliate_bypass_email')
+
+    if (pathname === '/affiliate/login' || pathname === '/affiliate/register') {
+      if (hasBypass || user) {
+        if (hasBypass) {
+          return NextResponse.redirect(new URL('/affiliate/dashboard', request.url))
+        }
+        const [profileResult, affiliateResult] = await Promise.all([
+          supabase.from('profiles').select('role').eq('id', user!.id).single(),
+          supabase.from('affiliates').select('id').eq('id', user!.id).single(),
+        ])
+
+        if (profileResult.data?.role === 'affiliate' && affiliateResult.data) {
+          return NextResponse.redirect(new URL('/affiliate/dashboard', request.url))
+        }
+      }
+      return supabaseResponse
+    }
+
+    if (hasBypass) {
+      return supabaseResponse
+    }
+
+    if (!user) {
+      return NextResponse.redirect(new URL('/affiliate/login', request.url))
+    }
+
+    let profileResult: RoleResult = { data: null, error: null }
+    let affiliateResult: IdResult = { data: null, error: null }
+
+    try {
+      const results = await Promise.allSettled([
+        supabase.from('profiles').select('role').eq('id', user.id).single(),
+        supabase.from('affiliates').select('id').eq('id', user.id).single(),
+      ])
+
+      if (results[0].status === 'fulfilled') {
+        profileResult = results[0].value
+      } else {
+        console.error('Profile query error:', results[0].reason)
+      }
+
+      if (results[1].status === 'fulfilled') {
+        affiliateResult = results[1].value
+      } else {
+        console.error('Affiliate query error:', results[1].reason)
+      }
+    } catch (error) {
+      console.error('Database query error:', error)
+    }
+
+    if (profileResult.data && profileResult.data.role !== 'affiliate') {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    if (profileResult.data && profileResult.data.role === 'affiliate' && affiliateResult.error) {
+      console.error('Affiliate profile query failed for affiliate user, allowing access')
     }
   }
 

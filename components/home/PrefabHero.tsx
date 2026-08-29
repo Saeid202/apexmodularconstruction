@@ -58,7 +58,7 @@ export function PrefabHero({
   const subtext =
     activeSlide?.subtext ||
     activeSlide?.subtitle ||
-    "Factory-engineered with precision. CSA-certified. Delivered to your site in 8 weeks. Partner with Canada's trusted modular construction leader."
+    "Configure your building online. We manufacture it exactly to spec and deliver it ready to install."
 
   const ctaText = activeSlide?.cta_text || 'Get a Quote'
   const ctaLink = activeSlide?.cta_link || '/contact'

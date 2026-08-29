@@ -1,15 +1,19 @@
 import { Metadata } from "next";
 import { createServerClient } from "@/lib/supabase/server";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "Privacy Policy for Apex Modular Construction. Learn how we collect, use, and protect your personal information in compliance with PIPEDA.",
+  title: "Privacy Policy - Apex Modular Construction",
+  description: "Privacy Policy for 16481043 Canada Inc. (operating as Apex Modular Construction). Learn how we collect, use, and share your personal information.",
 };
+
+const PURPLE = "#4B1D8F";
 
 export default async function PrivacyPage() {
   let cmsContent: string | null = null;
+
   try {
     const supabase = await createServerClient();
     const { data } = await supabase
@@ -21,149 +25,83 @@ export default async function PrivacyPage() {
     if (row?.content && row.content.trim() !== "" && row.content !== "<p></p>") {
       cmsContent = row.content;
     }
-  } catch { /* fall through */ }
-
-  if (cmsContent) {
-    return (
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
-        <div className="prose prose-lg max-w-3xl" dangerouslySetInnerHTML={{ __html: cmsContent }} />
-      </div>
-    );
+  } catch {
+    // Fall through to static content
   }
 
-  return PrivacyPageStatic();
-}
+  const staticContent = `
+    <p>At <strong>16481043 Canada Inc.</strong> (operating as <strong>Apex Modular Construction</strong>), we are committed to protecting the privacy of our customers. This Privacy Policy describes how we collect, use, and share your personal information.</p>
+    
+    <h2>1. Information We Collect</h2>
+    <p>We may collect personal information that you provide directly to us, including:</p>
+    <ul>
+      <li>Name and contact information (such as email address and phone number).</li>
+      <li>Business information related to your inquiries.</li>
+      <li>Communication preferences and history of your interactions with us.</li>
+    </ul>
 
-function PrivacyPageStatic() {
+    <h2>2. How We Use Your Information</h2>
+    <p>We use the information we collect to:</p>
+    <ul>
+      <li>Provide and maintain our services.</li>
+      <li>Communicate with you regarding project updates or inquiries.</li>
+      <li>Send marketing and promotional communications (with your consent).</li>
+      <li>Comply with legal obligations and improve our website experience.</li>
+    </ul>
+
+    <h2>3. Sharing Your Information</h2>
+    <p>We do not sell your personal information. We may share your data with trusted third-party service providers who assist us in operating our business, including:</p>
+    <ul>
+      <li><strong>Meta Platforms, Inc.:</strong> For the purpose of providing customer support via WhatsApp and for advertising services.</li>
+      <li><strong>Other service providers:</strong> Who help with email delivery and website analytics.</li>
+    </ul>
+
+    <h2>4. Your Rights</h2>
+    <p>You have the right to access, update, or request the deletion of your personal information at any time. To exercise these rights, please contact us using the details below.</p>
+
+    <h2>5. Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
+    <p>
+      <strong>Legal Name:</strong> 16481043 Canada Inc.<br />
+      <strong>Email:</strong> <a href="mailto:hello@apexmodularconstruction.com">hello@apexmodularconstruction.com</a><br />
+      <strong>Phone:</strong> +1 416-882-5015
+    </p>
+  `;
+
+  const displayContent = cmsContent ?? staticContent;
+
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
-      <p className="text-muted-foreground mb-8">Last updated: January 2025</p>
+    <main className="bg-[#FAF9FC] min-h-screen text-gray-900 overflow-hidden relative">
+      
+      {/* Background Architectural Grid Effect */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay z-0" 
+        style={{
+          backgroundImage: `
+            radial-gradient(circle, ${PURPLE} 1px, transparent 1px),
+            linear-gradient(to right, ${PURPLE} 1px, transparent 1px),
+            linear-gradient(to bottom, ${PURPLE} 1px, transparent 1px)
+          `,
+          backgroundSize: "20px 20px, 40px 40px, 40px 40px"
+        }}
+      />
 
-      <div className="prose prose-lg max-w-3xl">
-        <h2>1. Introduction</h2>
-        <p>
-          Apex Modular Construction (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services. We comply with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy laws.
-        </p>
+      <PageHeader
+        eyebrow="Legal"
+        title={<>Privacy <span style={{ color: '#4B1D8F' }}>Policy</span></>}
+        subtitle="Effective Date: August 27, 2026"
+      />
 
-        <h2>2. Information We Collect</h2>
-        <h3>Personal Information</h3>
-        <p>We may collect the following personal information:</p>
-        <ul>
-          <li><strong>Account Information:</strong> Name, email address, phone number, company name</li>
-          <li><strong>Shipping Information:</strong> Delivery address, postal code, province</li>
-          <li><strong>Payment Information:</strong> Credit card details (processed securely via Stripe), billing address</li>
-          <li><strong>Order History:</strong> Products purchased, order dates, order values</li>
-          <li><strong>Communication Data:</strong> Messages sent through our contact form or customer support</li>
-        </ul>
+      {/* Main Content */}
+      <section className="container mx-auto px-6 py-16 max-w-4xl relative z-10">
+        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-gray-100/80">
+          <div 
+            className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: displayContent }}
+          />
+        </div>
+      </section>
 
-        <h3>Automatically Collected Information</h3>
-        <ul>
-          <li>IP address and browser type</li>
-          <li>Device information and operating system</li>
-          <li>Pages visited and time spent on our website</li>
-          <li>Referring website addresses</li>
-          <li>Cookies and similar tracking technologies</li>
-        </ul>
-
-        <h2>3. How We Use Your Information</h2>
-        <p>We use your personal information to:</p>
-        <ul>
-          <li>Process and fulfill your orders</li>
-          <li>Communicate with you about your orders and account</li>
-          <li>Send promotional emails (with your consent)</li>
-          <li>Improve our website and services</li>
-          <li>Prevent fraud and enhance security</li>
-          <li>Comply with legal obligations</li>
-          <li>Calculate applicable taxes (HST/GST) based on your province</li>
-        </ul>
-
-        <h2>4. Information Sharing</h2>
-        <p>We may share your information with:</p>
-        <ul>
-          <li><strong>Sellers:</strong> To fulfill your orders, sellers receive your shipping address and order details</li>
-          <li><strong>Payment Processors:</strong> Stripe processes your payments securely</li>
-          <li><strong>Shipping Partners:</strong> Logistics companies for delivery</li>
-          <li><strong>Service Providers:</strong> Third parties who assist in operating our website</li>
-          <li><strong>Legal Authorities:</strong> When required by law or to protect our rights</li>
-        </ul>
-        <p>We do not sell your personal information to third parties.</p>
-
-        <h2>5. Cookies and Tracking</h2>
-        <p>We use cookies and similar technologies to:</p>
-        <ul>
-          <li>Remember your preferences and login status</li>
-          <li>Understand how you use our website</li>
-          <li>Personalize your experience</li>
-          <li>Enable shopping cart functionality</li>
-        </ul>
-        <p>You can control cookies through your browser settings. Disabling cookies may affect website functionality.</p>
-
-        <h2>6. Data Security</h2>
-        <p>
-          We implement appropriate technical and organizational measures to protect your personal information, including:
-        </p>
-        <ul>
-          <li>SSL/TLS encryption for data transmission</li>
-          <li>Secure data storage with encryption at rest</li>
-          <li>Regular security assessments</li>
-          <li>Access controls and authentication</li>
-        </ul>
-        <p>
-          However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security.
-        </p>
-
-        <h2>7. Data Retention</h2>
-        <p>
-          We retain your personal information for as long as necessary to:
-        </p>
-        <ul>
-          <li>Provide our services to you</li>
-          <li>Comply with legal obligations (tax records for 7 years)</li>
-          <li>Resolve disputes and enforce agreements</li>
-        </ul>
-        <p>
-          You can request deletion of your account, though some data may be retained for legal compliance.
-        </p>
-
-        <h2>8. Your Rights</h2>
-        <p>Under PIPEDA, you have the right to:</p>
-        <ul>
-          <li><strong>Access:</strong> Request a copy of your personal information</li>
-          <li><strong>Correction:</strong> Request correction of inaccurate information</li>
-          <li><strong>Withdrawal:</strong> Withdraw consent for marketing communications</li>
-          <li><strong>Complaint:</strong> File a complaint with the Privacy Commissioner of Canada</li>
-        </ul>
-
-        <h2>9. Third-Party Links</h2>
-        <p>
-          Our website may contain links to third-party websites. We are not responsible for the privacy practices of these sites. We encourage you to read their privacy policies.
-        </p>
-
-        <h2>10. Children&apos;s Privacy</h2>
-        <p>
-          Our services are not intended for individuals under 18 years of age. We do not knowingly collect personal information from children.
-        </p>
-
-        <h2>11. Changes to This Policy</h2>
-        <p>
-          We may update this Privacy Policy periodically. Changes will be posted on this page with an updated revision date. Continued use of our services constitutes acceptance of changes.
-        </p>
-
-        <h2>12. Contact Us</h2>
-        <p>
-          For privacy-related inquiries or to exercise your rights, contact our Privacy Officer:
-        </p>
-        <ul>
-          <li>Email: privacy@cargoplus.ca</li>
-          <li>Phone: +1-888-CARGOPLUS</li>
-          <li>Address: 123 Commerce Street, Toronto, Ontario M5V 1A1, Canada</li>
-        </ul>
-        <p>
-          If you are not satisfied with our response, you may contact the Office of the Privacy Commissioner of Canada at <a href="https://www.priv.gc.ca" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">www.priv.gc.ca</a>.
-        </p>
-      </div>
-    </div>
+    </main>
   );
 }

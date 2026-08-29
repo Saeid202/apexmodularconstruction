@@ -1,0 +1,38 @@
+{
+  "partner@test.com": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "full_name": "partner",
+    "email": "partner@test.com",
+    "phone": "+1 (416) 555-0199",
+    "company_name": "Apex Growth Marketing",
+    "referral_code": "partner777",
+    "coupon_code": "APEX-PARTNER",
+    "total_earned": 1250,
+    "available_balance": 450,
+    "total_sales": 12500,
+    "total_orders": 15,
+    "partner_level": "Bronze",
+    "partner_rank": "Newcomer",
+    "status": "active",
+    "created_at": "2026-07-29T14:53:32.932Z",
+    "updated_at": "2026-07-29T14:53:32.932Z"
+  },
+  "contract29101985@hotmail.com": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "full_name": "contract        ",
+    "email": "contract29101985@hotmail.com",
+    "phone": "+1 (416) 555-0199",
+    "company_name": "Apex Growth Marketing",
+    "referral_code": "contract29101985777",
+    "coupon_code": "APEX-CONTRACT29101985",
+    "total_earned": 1250,
+    "available_balance": 450,
+    "total_sales": 12500,
+    "total_orders": 15,
+    "partner_level": "Bronze",
+    "partner_rank": "Newcomer",
+    "status": "active",
+    "created_at": "2026-07-29T16:26:23.620Z",
+    "updated_at": "2026-07-29T16:26:23.621Z"
+  }
+}

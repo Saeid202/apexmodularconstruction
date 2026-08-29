@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateProduct } from '@/app/actions/seller'
 import { uploadProductImage } from '@/lib/uploadProductImage'
@@ -118,9 +118,39 @@ export function EditProductForm({
   const [requireOrderRequest, setRequireOrderRequest] = useState<boolean>(
     (product as any).require_order_request ?? false
   )
+
+  const orderedCategories = useMemo(() => {
+    const topLevel = categories.filter((c) => !c.parent_id)
+    const result: typeof categories = []
+    topLevel.forEach((parent) => {
+      result.push(parent)
+      const subs = categories.filter((c) => c.parent_id === parent.id)
+      result.push(...subs)
+    })
+    categories.forEach((c) => {
+      if (!result.find((r) => r.id === c.id)) {
+        result.push(c)
+      }
+    })
+    return result
+  }, [categories])
   const [showStock, setShowStock] = useState<boolean>((product as any).show_stock ?? true)
   const [descriptionHtml, setDescriptionHtml] = useState<string>(product.description ?? '')
   const [docs, setDocs] = useState<DocSlot[]>([])
+  const [affiliateEnabled, setAffiliateEnabled] = useState<boolean>(
+    (product as any).affiliate_enabled ?? false
+  )
+  const [affiliateCommissionType, setAffiliateCommissionType] = useState<'percentage' | 'fixed_amount'>(
+    (product as any).affiliate_commission_type ?? 'percentage'
+  )
+  const [affiliateCommissionValue, setAffiliateCommissionValue] = useState<string>(
+    (product as any).affiliate_commission_value != null
+      ? String((product as any).affiliate_commission_value)
+      : ''
+  )
+  const [affiliateAvailability, setAffiliateAvailability] = useState<'all_partners' | 'selected_partners'>(
+    (product as any).affiliate_availability ?? 'all_partners'
+  )
   const [userId, setUserId] = useState<string>(propUserId || '')
   const [youtubeUrl, setYoutubeUrl] = useState<string>((product as any).youtube_url ?? '')
   const [hasCustomization, setHasCustomization] = useState<boolean>(
@@ -149,6 +179,11 @@ export function EditProductForm({
   const [beds, setBeds] = useState<string>('')
   const [baths, setBaths] = useState<string>('')
   const [sqft, setSqft] = useState<string>('')
+  const [frameMaterial, setFrameMaterial] = useState<string>('')
+  const [glassType, setGlassType] = useState<string>('')
+  const [openingStyle, setOpeningStyle] = useState<string>('')
+  const [doorWindowDimensions, setDoorWindowDimensions] = useState<string>('')
+  const [hardware, setHardware] = useState<string>('')
 
   useEffect(() => {
     if (product.product_images.length > 0) {
@@ -171,7 +206,19 @@ export function EditProductForm({
     const specObj = product.specifications as Record<string, string>
     if (specObj && Object.keys(specObj).length > 0) {
       const filteredSpecs = Object.entries(specObj)
-        .filter(([key]) => key !== '_specification_text' && key !== '_specification_file_url' && key !== '_specification_file_name' && key !== 'Beds' && key !== 'Baths' && key !== 'Area')
+        .filter(([key]) =>
+          key !== '_specification_text' &&
+          key !== '_specification_file_url' &&
+          key !== '_specification_file_name' &&
+          key !== 'Beds' &&
+          key !== 'Baths' &&
+          key !== 'Area' &&
+          key !== 'Frame Material' &&
+          key !== 'Glass Type' &&
+          key !== 'Opening Style' &&
+          key !== 'Dimensions' &&
+          key !== 'Hardware'
+        )
         .map(([key, value]) => ({ key, value }))
       setSpecs(filteredSpecs)
 
@@ -186,6 +233,11 @@ export function EditProductForm({
       setBeds(specObj['Beds'] || '')
       setBaths(specObj['Baths'] || '')
       setSqft(specObj['Area'] || '')
+      setFrameMaterial(specObj['Frame Material'] || '')
+      setGlassType(specObj['Glass Type'] || '')
+      setOpeningStyle(specObj['Opening Style'] || '')
+      setDoorWindowDimensions(specObj['Dimensions'] || '')
+      setHardware(specObj['Hardware'] || '')
     }
 
     // Load existing customizations
@@ -377,6 +429,11 @@ export function EditProductForm({
       if (beds) specObj['Beds'] = beds
       if (baths) specObj['Baths'] = baths
       if (sqft) specObj['Area'] = sqft
+      if (frameMaterial) specObj['Frame Material'] = frameMaterial
+      if (glassType) specObj['Glass Type'] = glassType
+      if (openingStyle) specObj['Opening Style'] = openingStyle
+      if (doorWindowDimensions) specObj['Dimensions'] = doorWindowDimensions
+      if (hardware) specObj['Hardware'] = hardware
 
       if (specText) {
         specObj['_specification_text'] = specText
@@ -394,6 +451,10 @@ export function EditProductForm({
         specObj['ar_usdz_url'] = finalArUsdzUrl
       }
       formData.set('specifications', JSON.stringify(specObj))
+      formData.set('affiliateEnabled', affiliateEnabled ? 'true' : 'false')
+      formData.set('affiliateCommissionType', affiliateCommissionType)
+      formData.set('affiliateCommissionValue', affiliateCommissionValue || '0')
+      formData.set('affiliateAvailability', affiliateAvailability)
 
       if (hasCustomization && customGroups.length > 0) {
         const customizationsJson = JSON.stringify(customGroups)
@@ -594,19 +655,19 @@ export function EditProductForm({
                 className={`${inputClass} appearance-none pr-9`}
               >
                 <option value="">Select a category</option>
-                {categories
-                  .filter((cat) => 
-                    cat.slug === 'pre-fabricated' || 
-                    cat.slug === 'robots' || 
-                    cat.slug === 'sofas' || 
-                    cat.slug === 'cabinets' ||
-                    cat.id === product.category_id
-                  )
-                  .map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.slug === 'pre-fabricated' ? 'Prefabricated Houses' : cat.name}
+                {orderedCategories.map((c) => {
+                  const isSub = !!c.parent_id
+                  const label = c.slug === 'pre-fabricated'
+                    ? 'Prefabricated Houses'
+                    : isSub
+                      ? `— ${c.name}`
+                      : c.name
+                  return (
+                    <option key={c.id} value={c.id}>
+                      {label}
                     </option>
-                  ))}
+                  )
+                })}
               </select>
               <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             </div>
@@ -782,6 +843,181 @@ export function EditProductForm({
           </div>
         </div>
       )}
+
+      {/* Card 4.6: Door & Window Specifications (Only for Door/Window products) */}
+      {(() => {
+        const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
+        const isDoorOrWindow = selectedCategory && (
+          selectedCategory.slug === 'doors-windows' ||
+          selectedCategory.slug === 'exterior-doors' ||
+          selectedCategory.slug === 'interior-doors' ||
+          selectedCategory.slug === 'entry-doors' ||
+          selectedCategory.slug === 'sliding-patio-doors' ||
+          selectedCategory.slug === 'windows' ||
+          selectedCategory.slug === 'skylights' ||
+          selectedCategory.slug === 'door-window-hardware' ||
+          selectedCategory.parent_id === categories.find(c => c.slug === 'doors-windows')?.id
+        );
+        
+        if (!isDoorOrWindow) return null;
+        
+        return (
+          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+            <Section title="4.6 Door & Window Details" />
+            <div className="grid sm:grid-cols-2 gap-5">
+              <Field label="Frame Material" icon={Layers} hint="e.g. Aluminum, Wood, PVC">
+                <input
+                  type="text"
+                  value={frameMaterial}
+                  onChange={(e) => setFrameMaterial(e.target.value)}
+                  className={inputClass}
+                  placeholder="e.g., Aluminum"
+                />
+              </Field>
+              <Field label="Glazing / Glass Type" icon={Layers} hint="e.g. Double Glazed, Triple Glazed, Low-E">
+                <input
+                  type="text"
+                  value={glassType}
+                  onChange={(e) => setGlassType(e.target.value)}
+                  className={inputClass}
+                  placeholder="e.g., Double Glazed Low-E"
+                />
+              </Field>
+              <Field label="Opening Style" icon={Layers} hint="e.g. Sliding, Swing, Fixed, Tilt-Turn">
+                <input
+                  type="text"
+                  value={openingStyle}
+                  onChange={(e) => setOpeningStyle(e.target.value)}
+                  className={inputClass}
+                  placeholder="e.g., Sliding"
+                />
+              </Field>
+              <Field label="Dimensions (Width x Height)" icon={FileText} hint="e.g. 900mm x 2100mm">
+                <input
+                  type="text"
+                  value={doorWindowDimensions}
+                  onChange={(e) => setDoorWindowDimensions(e.target.value)}
+                  className={inputClass}
+                  placeholder="e.g., 900mm x 2100mm"
+                />
+              </Field>
+              <div className="sm:col-span-2">
+                <Field label="Hardware Included" icon={Layers} hint="e.g. Handles, Locks, Hinges">
+                  <input
+                    type="text"
+                    value={hardware}
+                    onChange={(e) => setHardware(e.target.value)}
+                    className={inputClass}
+                    placeholder="e.g., Handles, locks, and hinges included"
+                  />
+                </Field>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Card 4.8: Affiliate Marketing */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+        <Section title="Affiliate Marketing" />
+        <div
+          className="flex items-center justify-between rounded-xl border px-3 py-2.5"
+          style={{
+            borderColor: affiliateEnabled ? PURPLE : `${GOLD}44`,
+            background: affiliateEnabled ? '#EDE9F6' : '#fdfbf7',
+          }}
+        >
+          <div className="flex-1 pr-3">
+            <div className="flex items-center gap-2">
+              <Tag className="h-4 w-4" style={{ color: affiliateEnabled ? PURPLE : GOLD }} />
+              <p className="text-xs font-bold text-gray-800">Enable Affiliate Promotion</p>
+            </div>
+            <p className="text-[10px] text-gray-400 mt-0.5 leading-tight">
+              Allow registered affiliate partners to promote this product and earn commissions.
+            </p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={affiliateEnabled}
+            onClick={() => setAffiliateEnabled(!affiliateEnabled)}
+            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+            style={{
+              backgroundColor: affiliateEnabled ? PURPLE : '#D1D5DB',
+              borderColor: affiliateEnabled ? PURPLE : '#D1D5DB',
+            }}
+          >
+            <span
+              className="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200"
+              style={{
+                transform: affiliateEnabled ? 'translateX(19px)' : 'translateX(1px)',
+                marginTop: 1,
+              }}
+            />
+          </button>
+        </div>
+
+        {affiliateEnabled && (
+          <div className="grid sm:grid-cols-3 gap-5 pt-2 animate-in fade-in duration-300">
+            <Field label="Commission Type" icon={Layers}>
+              <div className="relative">
+                <select
+                  value={affiliateCommissionType}
+                  onChange={(e) => setAffiliateCommissionType(e.target.value as any)}
+                  className={`${inputClass} appearance-none pr-9`}
+                >
+                  <option value="percentage">Percentage (%)</option>
+                  <option value="fixed_amount">Fixed Amount (CAD)</option>
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              </div>
+            </Field>
+
+            <Field 
+              label={affiliateCommissionType === 'percentage' ? 'Commission Percentage (%)' : 'Commission Amount (CAD)'} 
+              icon={DollarSign}
+              required
+            >
+              <div className="relative">
+                {affiliateCommissionType === 'fixed_amount' && (
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">
+                    $
+                  </span>
+                )}
+                <input
+                  type="number"
+                  step="any"
+                  min="0"
+                  required
+                  value={affiliateCommissionValue}
+                  onChange={(e) => setAffiliateCommissionValue(e.target.value)}
+                  className={`${inputClass} ${affiliateCommissionType === 'fixed_amount' ? 'pl-7' : ''}`}
+                  placeholder={affiliateCommissionType === 'percentage' ? 'e.g. 5' : 'e.g. 5000'}
+                />
+                {affiliateCommissionType === 'percentage' && (
+                  <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-400">
+                    %
+                  </span>
+                )}
+              </div>
+            </Field>
+
+            <Field label="Affiliate Availability" icon={Settings}>
+              <div className="relative">
+                <select
+                  value={affiliateAvailability}
+                  onChange={(e) => setAffiliateAvailability(e.target.value as any)}
+                  className={`${inputClass} appearance-none pr-9`}
+                >
+                  <option value="all_partners">All Partners</option>
+                  <option value="selected_partners">Selected Partners Only</option>
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              </div>
+            </Field>
+          </div>
+        )}
+      </div>
 
       {/* Card 5: Documents */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">

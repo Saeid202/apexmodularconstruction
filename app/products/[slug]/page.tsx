@@ -1,7 +1,5 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { getProductBySlug } from '@/app/actions/products'
 
 import { mockProducts } from '@/lib/mock-data'
@@ -123,8 +121,9 @@ function transformProduct(
           slug: dbProduct.categories.slug,
           description: dbProduct.categories.description,
           imageUrl: dbProduct.categories.image_url,
+          parent_id: dbProduct.categories.parent_id,
         }
-      : { id: '', name: 'Uncategorized', slug: 'uncategorized', description: null, imageUrl: null },
+      : { id: '', name: 'Uncategorized', slug: 'uncategorized', description: null, imageUrl: null, parent_id: null },
     seller: dbProduct.sellers
       ? {
           id: dbProduct.sellers.id,
@@ -241,15 +240,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
 
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <Link
-        href="/products"
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6"
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to Products
-      </Link>
-      <ProductDetailWrapper product={product} />
-    </div>
-  )
+  // No page chrome here on purpose: the configurator owns the whole viewport
+  // and provides its own top bar (see ConfiguratorTopBar / ConditionalShell).
+  return <ProductDetailWrapper product={product} />
 }

@@ -51,21 +51,48 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
   return (
     <nav className={className}>
       <ul className="flex items-center gap-1">
-        {/* About Us */}
+        {/* About Us
         <li>
           <Link href="/about" onClick={() => onLinkClick?.()} className={linkClass}>
             About Us
             <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
+        */}
 
-        {/* Products */}
+        {/* Buildings */}
         <li>
           <Link href="/products" onClick={() => onLinkClick?.()} className={linkClass}>
-            Products
+            Buildings
             <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
+
+        {/* Building Systems
+        <li>
+          <Link href="/products?category=building-systems" onClick={() => onLinkClick?.()} className={linkClass}>
+            Building Systems
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+        */}
+
+        {/* Materials */}
+        <li>
+          <Link href="/products?category=materials" onClick={() => onLinkClick?.()} className={linkClass}>
+            Materials
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+
+        {/* Get Quote
+        <li>
+          <Link href="/get-quote" onClick={() => onLinkClick?.()} className={linkClass}>
+            Get Quote
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+        */}
 
         {/* Services */}
         <li
@@ -143,21 +170,9 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
           )}
         </li>
 
-        {/* Construction 3D Printer */}
-        <li>
-          <Link href="/3d-printer" onClick={() => onLinkClick?.()} className={linkClass}>
-            Construction 3D Printer
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
-          </Link>
-        </li>
 
-        {/* Video Centre */}
-        <li>
-          <Link href="/video-centre" onClick={() => onLinkClick?.()} className={linkClass}>
-            Video Centre
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
-          </Link>
-        </li>
+
+
 
         {/* Contact Us */}
         <li>

@@ -1,26 +1,23 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
-  ShoppingCart,
+  AlignLeft,
+  Boxes,
   Check,
-  MessageSquare,
-  Zap,
-  X,
-  ZoomIn,
-  ChevronLeft,
-  ChevronRight,
-  Send,
-  FileText,
-  FileSpreadsheet,
   File,
+  FileSpreadsheet,
+  FileText,
+  Download,
+  MessageSquare,
+  Send,
   Settings,
-  Wrench,
+  ShoppingCart,
   Sparkles,
-  Box,
-  Image as ImageIcon,
+  Wrench,
+  Zap,
 } from 'lucide-react'
 import { addToCart } from '@/lib/cart/cartManager'
 import { OrderRequestModal } from '@/components/product/OrderRequestModal'
@@ -28,22 +25,50 @@ import { WhatsAppLink } from '@/components/layout/WhatsAppLink'
 import { RichTextRenderer } from '@/components/product/RichTextRenderer'
 import { ProductInclusionsPanel } from '@/components/ProductInclusionsPanel'
 import { ProductCustomizer } from '@/components/product/ProductCustomizer'
-import { AIStagerTab } from '@/components/product/AIStagerTab'
-import { Build3DPreview } from '@/components/product/three/Build3DPreview'
 import { BuildStudioPanel } from '@/components/product/three/BuildStudioPanel'
+import { ConfiguratorTopBar } from '@/components/product/configurator/ConfiguratorTopBar'
+import {
+  ConfiguratorStage,
+  type StageMedia,
+} from '@/components/product/configurator/ConfiguratorStage'
+import { ImageLightbox } from '@/components/product/configurator/ImageLightbox'
+import { RailSection } from '@/components/product/configurator/RailSection'
+import { StagerOverlay } from '@/components/product/configurator/StagerOverlay'
+import { VariantPicker } from '@/components/product/configurator/VariantPicker'
 import {
   buildSceneDirectives,
   DEFAULT_STUDIO_CONFIG,
   resolveModelUrl,
   type StudioConfig,
 } from '@/lib/product/model3d'
-import type { ProductWithRelations, CustomizationOption } from '@/types'
-import { extractYouTubeId, getYouTubeEmbedUrl } from '@/lib/youtube'
+import { extractYouTubeId } from '@/lib/youtube'
+import type {
+  CustomizationGroupWithRelations,
+  CustomizationOption,
+  ProductWithRelations,
+} from '@/types'
 
 const PURPLE = '#4B1D8F'
 const GOLD = '#D4AF37'
 
+type RailTab = 'ready' | 'custom'
+type StagerMode = 'demo' | 'upload' | 'ar'
 
+/**
+ * Every group starts on its first option so the 3D preview and the running
+ * total open from a complete, valid configuration.
+ */
+function defaultSelections(
+  groups: CustomizationGroupWithRelations[] | undefined
+): Record<string, CustomizationOption[]> {
+  const initial: Record<string, CustomizationOption[]> = {}
+  groups?.forEach((group) => {
+    if (group.options && group.options.length > 0) {
+      initial[group.id] = [group.options[0]]
+    }
+  })
+  return initial
+}
 
 function getPriceTypeLabel(priceType: string): string {
   switch (priceType) {
@@ -56,49 +81,47 @@ function getPriceTypeLabel(priceType: string): string {
   }
 }
 
-function getSafeMaskUrl(url: string | null | undefined): string {
-  if (!url) return 'none'
-  if (url.startsWith('data:image/svg+xml;utf8,')) {
-    const rawSvg = url.substring('data:image/svg+xml;utf8,'.length)
-    return `data:image/svg+xml;utf8,${encodeURIComponent(rawSvg)}`
-  }
-  return url
+function formatMoney(value: number): string {
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })
 }
 
-export function ProductDetailClient({
-  product,
-}: {
-  product: ProductWithRelations
-}) {
+export function ProductDetailClient({ product }: { product: ProductWithRelations }) {
   const router = useRouter()
-  const masterImage = product.images.find((img) => img.isMaster) ?? product.images[0] ?? null
-  const isFurniture = useMemo(() => {
-    return ['sofa', 'furniture'].some((cat) =>
-      product.category?.name?.toLowerCase().includes(cat)
-    )
-  }, [product.category?.name])
-  const variantImages = product.images.filter((img) => img.id !== masterImage?.id)
-  const allImages = useMemo(
-    () => (masterImage ? [masterImage, ...variantImages] : variantImages),
-    [masterImage, variantImages]
-  )
 
+  /* ── Imagery ──────────────────────────────────────────────────────── */
+  const masterImage = product.images.find((img) => img.isMaster) ?? product.images[0] ?? null
+  const allImages = useMemo(() => {
+    if (!masterImage) return product.images
+    return [masterImage, ...product.images.filter((img) => img.id !== masterImage.id)]
+  }, [masterImage, product.images])
+
+  /* ── State ────────────────────────────────────────────────────────── */
   const [activeId, setActiveId] = useState<string | null>(masterImage?.id ?? null)
+  const [tab, setTab] = useState<RailTab>('ready')
+  const [readyMedia, setReadyMedia] = useState<StageMedia>('photo')
+  const [customMedia, setCustomMedia] = useState<StageMedia>('model3d')
+  const [stagerMode, setStagerMode] = useState<StagerMode | null>(null)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxIndex, setLightboxIndex] = useState(0)
   const [addedToCart, setAddedToCart] = useState(false)
   const [isAddingToCart, setIsAddingToCart] = useState(false)
   const [cartError, setCartError] = useState<string | null>(null)
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [lightboxIndex, setLightboxIndex] = useState(0)
   const [requestModalOpen, setRequestModalOpen] = useState(false)
   const [requestSuccess, setRequestSuccess] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState<'ready' | 'custom' | 'stager'>('ready')
-  const [show3DViewer, setShow3DViewer] = useState(false)
   const [customSelections, setCustomSelections] = useState<Record<string, CustomizationOption[]>>(
-    {}
+    () => defaultSelections(product.customizationGroups)
   )
-  const [customPreviewMode, setCustomPreviewMode] = useState<'3d' | 'photo'>('3d')
   const [studio, setStudio] = useState<StudioConfig>(DEFAULT_STUDIO_CONFIG)
   const [discoveredNodes, setDiscoveredNodes] = useState<string[]>([])
+
+  /* ── Derived product data ─────────────────────────────────────────── */
+  const categoryName = product.category?.name ?? ''
+  const isFurniture = ['sofa', 'furniture'].some((cat) =>
+    categoryName.toLowerCase().includes(cat)
+  )
 
   const modelUrl = useMemo(() => resolveModelUrl(product), [product])
 
@@ -107,6 +130,55 @@ export function ProductDetailClient({
     () => buildSceneDirectives(product.customizationGroups ?? [], customSelections),
     [product.customizationGroups, customSelections]
   )
+
+  const activeImage = allImages.find((img) => img.id === activeId) ?? masterImage
+  const activePrice = activeImage?.variantPrice ?? product.price
+  const activeCode = activeImage?.variantCode ?? null
+  const hasVariants = allImages.length > 1
+  const inStock = product.stockQuantity > 0
+  const hasDiscount = Boolean(product.compareAtPrice && product.compareAtPrice > product.price)
+
+  const optionsTotal = useMemo(
+    () =>
+      Object.values(customSelections)
+        .flat()
+        .reduce((acc, opt) => acc + opt.price_modifier, 0),
+    [customSelections]
+  )
+  const selectedOptionCount = useMemo(
+    () => Object.values(customSelections).flat().length,
+    [customSelections]
+  )
+
+  const isCustomTab = tab === 'custom'
+  const displayPrice = isCustomTab ? product.price + optionsTotal : activePrice
+
+  const hasAr = Boolean(
+    product.specifications?.ar_glb_url || product.specifications?.ar_usdz_url
+  )
+  const hasSketchfab = Boolean(product.specifications?.sketchfab_embed_url)
+  const hasVideo = Boolean(product.youtubeUrl && extractYouTubeId(product.youtubeUrl))
+
+  /* ── Stage media wiring ───────────────────────────────────────────── */
+  const mediaOptions = useMemo<StageMedia[]>(() => {
+    if (isCustomTab) return ['model3d', 'composite']
+    const options: StageMedia[] = ['photo']
+    if (hasSketchfab) options.push('sketchfab')
+    if (hasVideo) options.push('video')
+    return options
+  }, [isCustomTab, hasSketchfab, hasVideo])
+
+  const media = isCustomTab ? customMedia : readyMedia
+
+  const handleMediaChange = useCallback(
+    (next: StageMedia) => {
+      if (next === 'model3d' || next === 'composite') setCustomMedia(next)
+      else setReadyMedia(next)
+    },
+    []
+  )
+
+  /* ── Callbacks ────────────────────────────────────────────────────── */
 
   // Stable identity: the viewer calls this from an effect, so a new function
   // each render would re-fire it every time anything else changed.
@@ -118,99 +190,51 @@ export function ProductDetailClient({
     )
   }, [])
 
-  // Pre-populate customSelections with the first option of each customization group
-  useEffect(() => {
-    if (product.customizationGroups) {
-      const initial: Record<string, CustomizationOption[]> = {}
-      product.customizationGroups.forEach((group) => {
-        if (group.options && group.options.length > 0) {
-          initial[group.id] = [group.options[0]]
-        }
-      })
-      setCustomSelections(initial)
-    }
-  }, [product.customizationGroups])
-
   const openLightbox = useCallback(() => {
     const idx = allImages.findIndex((img) => img.id === activeId)
     setLightboxIndex(idx >= 0 ? idx : 0)
     setLightboxOpen(true)
   }, [activeId, allImages])
 
-  const closeLightbox = useCallback(() => setLightboxOpen(false), [])
-
-  const lightboxPrev = useCallback(() => {
-    setLightboxIndex((i) => (i - 1 + allImages.length) % allImages.length)
-  }, [allImages.length])
-
-  const lightboxNext = useCallback(() => {
-    setLightboxIndex((i) => (i + 1) % allImages.length)
-  }, [allImages.length])
-
-  // Keyboard navigation for lightbox
-  useEffect(() => {
-    if (!lightboxOpen) return
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') closeLightbox()
-      if (e.key === 'ArrowLeft') lightboxPrev()
-      if (e.key === 'ArrowRight') lightboxNext()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [lightboxOpen, closeLightbox, lightboxPrev, lightboxNext])
-
-  const activeImage = allImages.find((img) => img.id === activeId) ?? masterImage
-  const activePrice = activeImage?.variantPrice != null ? activeImage.variantPrice : product.price
-  const activeCode = activeImage?.variantCode ?? null
-  const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price
-  const inStock = product.stockQuantity > 0
-  const hasVariants = variantImages.length > 0
-
-  const totalCustomPrice =
-    product.price +
-    Object.values(customSelections)
-      .flat()
-      .reduce((acc, opt) => acc + opt.price_modifier, 0)
-  const displayPrice = activeTab === 'custom' ? totalCustomPrice : activePrice
-
-
-
-
-
-  function buildCartItem() {
-    const isCustom = activeTab === 'custom'
-
-    // Convert custom selections to cart metadata
+  /* ── Cart ─────────────────────────────────────────────────────────── */
+  const buildCartItem = useCallback(() => {
     const customizations: Record<
       string,
       { groupName: string; optionName: string; priceModifier: number }
     > = {}
-    if (isCustom) {
+
+    if (isCustomTab) {
       Object.entries(customSelections).forEach(([groupId, options]) => {
         const group = product.customizationGroups?.find((g) => g.id === groupId)
-        if (group) {
-          const optionNames = options.map((opt) => opt.name).join(', ')
-          const totalPriceModifier = options.reduce((sum, opt) => sum + opt.price_modifier, 0)
-          customizations[groupId] = {
-            groupName: group.name,
-            optionName: optionNames,
-            priceModifier: totalPriceModifier,
-          }
+        if (!group) return
+        customizations[groupId] = {
+          groupName: group.name,
+          optionName: options.map((opt) => opt.name).join(', '),
+          priceModifier: options.reduce((sum, opt) => sum + opt.price_modifier, 0),
         }
       })
     }
 
     return {
       productId: product.id,
-      variantCode: isCustom ? 'Custom Build' : activeCode,
-      variantImageUrl: isCustom
+      variantCode: isCustomTab ? 'Custom Build' : activeCode,
+      variantImageUrl: isCustomTab
         ? (Object.values(customSelections).flat()[0]?.image_url ?? activeImage?.url ?? null)
         : (activeImage?.url ?? null),
       productName: product.name,
       productPrice: displayPrice,
-      customizations: isCustom ? customizations : undefined,
+      customizations: isCustomTab ? customizations : undefined,
     }
-  }
+  }, [
+    isCustomTab,
+    customSelections,
+    product.customizationGroups,
+    product.id,
+    product.name,
+    activeCode,
+    activeImage,
+    displayPrice,
+  ])
 
   async function handleAddToCart() {
     if (!inStock || isAddingToCart) return
@@ -246,712 +270,434 @@ export function ProductDetailClient({
     router.push('/checkout')
   }
 
-
-  const customImageUrl = useMemo(() => {
-    const selectedOptionWithImage = Object.values(customSelections)
+  /** Image the stager should composite, following the current configuration. */
+  const stagerImageUrl = useMemo(() => {
+    const withImage = Object.values(customSelections)
       .flat()
       .find((opt) => opt.image_url)
-    return selectedOptionWithImage?.image_url ?? activeImage?.url ?? ''
+    return withImage?.image_url ?? activeImage?.url ?? ''
   }, [customSelections, activeImage])
+
+  const priceTypeLabel = getPriceTypeLabel(product.priceType)
+  const priceLabel = product.requireOrderRequest
+    ? 'Request for a quote'
+    : `$${formatMoney(displayPrice)} CAD`
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-14 w-full max-w-full items-start">
-        {/* LEFT col */}
-        <div className="flex flex-col gap-3 md:sticky md:top-[90px] h-fit">
-          {/* Name + price — mobile only, one row */}
-          <div className="md:hidden flex items-baseline justify-between gap-2 flex-wrap">
-            <h1 className="text-2xl font-extrabold text-gray-900 break-words">{product.name}</h1>
-            {product.requireOrderRequest ? (
-              <span className="text-lg font-bold" style={{ color: GOLD }}>
-                Request for a quote
-              </span>
-            ) : (
-              <div className="flex flex-col items-end">
-                <span className="text-xl font-bold shrink-0" style={{ color: PURPLE }}>
-                  ${displayPrice.toFixed(2)} CAD
-                </span>
-                <span
-                  className="text-sm font-bold"
-                  style={{
-                    color: GOLD,
-                    backgroundColor: `${GOLD}15`,
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                  }}
-                >
-                  {getPriceTypeLabel(product.priceType)}
-                </span>
-              </div>
-            )}
+      <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white">
+        <ConfiguratorTopBar
+          productName={product.name}
+          categoryName={categoryName}
+          priceLabel={priceLabel}
+          priceCaption={product.requireOrderRequest ? null : priceTypeLabel}
+        />
+
+        <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+          {/* ── Fixed visual stage ──────────────────────────────────── */}
+          {/* The 3D viewer carries its own on-canvas controls, so it gets a
+              taller slice on phones than the photo gallery needs. */}
+          <div
+            className={`relative shrink-0 lg:h-full lg:min-h-0 lg:flex-1 ${
+              media === 'model3d' ? 'h-[46vh] min-h-[300px]' : 'h-[38vh] min-h-[220px]'
+            }`}
+          >
+            <ConfiguratorStage
+              product={product}
+              images={allImages}
+              activeImage={activeImage}
+              masterImage={masterImage}
+              onSelectImage={setActiveId}
+              media={media}
+              mediaOptions={mediaOptions}
+              onMediaChange={handleMediaChange}
+              onOpenLightbox={openLightbox}
+              onOpenAr={hasAr ? () => setStagerMode('ar') : undefined}
+              selections={customSelections}
+              modelUrl={modelUrl}
+              directives={sceneDirectives}
+              studio={studio}
+              onStudioChange={setStudio}
+              onPartsDiscovered={handlePartsDiscovered}
+            />
           </div>
 
-          {/* Image area */}
-          {activeTab === 'custom' ? (
-            <div className="flex flex-col gap-3">
-              {/* 3D / Photo switch */}
-              <div className="flex self-start p-1 bg-gray-100 rounded-xl border-2 border-gray-100">
-                <button
-                  onClick={() => setCustomPreviewMode('3d')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all ${
-                    customPreviewMode === '3d'
-                      ? 'bg-white text-[#4B1D8F] shadow'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <Box
-                    className="h-3.5 w-3.5"
-                    style={{ color: customPreviewMode === '3d' ? GOLD : undefined }}
-                  />
-                  3D Model
-                </button>
-                <button
-                  onClick={() => setCustomPreviewMode('photo')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black uppercase tracking-widest transition-all ${
-                    customPreviewMode === 'photo'
-                      ? 'bg-white text-[#4B1D8F] shadow'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <ImageIcon
-                    className="h-3.5 w-3.5"
-                    style={{ color: customPreviewMode === 'photo' ? GOLD : undefined }}
-                  />
-                  Photo
-                </button>
-              </div>
-
-              {customPreviewMode === '3d' ? (
-                <Build3DPreview
-                  modelUrl={modelUrl}
-                  productName={product.name}
-                  directives={sceneDirectives}
-                  studio={studio}
-                  onStudioChange={setStudio}
-                  onPartsDiscovered={handlePartsDiscovered}
-                />
-              ) : (
-                <div
-                  className="relative w-full aspect-[16/9] overflow-hidden rounded-2xl bg-white flex items-center justify-center"
-                  style={{
-                    boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
-                  }}
-                >
-                  {/* Base Master Image */}
-                  <img
-                    src={masterImage?.url || customImageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-contain pointer-events-none transition-all duration-300"
-                  />
-
-                  {/* Dynamic Overlay Masks */}
-                  {Object.entries(customSelections).map(([groupId, selectedOptions]) => {
-                    const group = product.customizationGroups?.find((g) => g.id === groupId)
-                    const targetZoneId = group ? (group as any).target_zone_id : null
-                    if (!group || !targetZoneId) return null
-
-                    const zone = product.customizationZones?.find((z) => z.id === targetZoneId)
-                    if (!zone || !zone.mask_url) return null
-
-                    const opt = selectedOptions[0]
-                    if (!opt) return null
-
-                    return (
-                      <div
-                        key={groupId}
-                        className="absolute inset-0 pointer-events-none transition-all duration-300"
-                        style={{
-                          maskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
-                          WebkitMaskImage: `url("${getSafeMaskUrl(zone.mask_url)}")`,
-                          maskSize: '100% 100%',
-                          WebkitMaskSize: '100% 100%',
-                          backgroundColor: opt.color_hex || 'transparent',
-                          backgroundImage: opt.image_url ? `url("${opt.image_url}")` : 'none',
-                          backgroundSize: 'cover',
-                          mixBlendMode: opt.image_url ? 'normal' : 'multiply',
-                          opacity: opt.image_url ? 0.95 : 0.8,
-                        }}
-                      />
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-          ) : (
-            /* Ready tab: original gallery unchanged */
-            <div className="flex flex-col-reverse md:flex-row items-stretch gap-3 h-auto md:h-[480px]">
-              {/* Thumbnail strip */}
-              {allImages.length > 1 && (
-                <div
-                  className="flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-y-auto pb-2 md:pb-0 pr-0 md:pr-0.5 w-full md:w-[144px]"
-                  style={{ scrollbarWidth: 'thin' }}
-                >
-                  {allImages.map((img, idx) => {
-                    const isActive = img.id === activeId
-                    const label = img.variantCode ? img.variantCode : `#${idx + 1}`
-                    return (
-                      <button
-                        key={img.id}
-                        type="button"
-                        onClick={() => setActiveId(img.id)}
-                        className="flex shrink-0 flex-col items-center gap-1"
-                        style={{ WebkitTapHighlightColor: 'transparent' }}
-                        aria-label={`Select image ${label}`}
-                      >
-                        <div
-                          className="h-20 w-20 md:h-32 md:w-32 shrink-0 overflow-hidden rounded-xl"
-                          style={{
-                            border: isActive ? `2.5px solid ${GOLD}` : `2px solid ${PURPLE}44`,
-                            boxShadow: isActive ? `0 0 0 2px ${PURPLE}` : 'none',
-                            transform: isActive ? 'scale(1.06)' : 'scale(1)',
-                            transition: 'all 0.15s',
-                          }}
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={img.url}
-                            alt={label}
-                            className="h-full w-full object-cover bg-white"
-                          />
-                        </div>
-                        <span
-                          className="max-w-[76px] md:max-w-[110px] truncate rounded-full px-2 py-0.5 text-[9px] md:text-[10px] font-bold text-center"
-                          style={{
-                            backgroundColor: isActive ? PURPLE : '#EDE9F6',
-                            color: isActive ? 'white' : PURPLE,
-                          }}
-                        >
-                          {label}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
-
-              {/* Main image */}
-              <div
-                className={`relative flex-1 overflow-hidden rounded-2xl bg-white group w-full aspect-[4/3] md:aspect-auto ${show3DViewer ? '' : 'cursor-zoom-in'}`}
-                style={{
-                  boxShadow: `0 0 0 1px ${PURPLE}, 0 0 0 4px ${GOLD}, 0 0 0 5px ${PURPLE}`,
-                  minHeight: 0,
-                }}
-                onClick={(e) => !show3DViewer && openLightbox()}
-                role={show3DViewer ? 'region' : 'button'}
-                aria-label={show3DViewer ? '3D Interactive Viewer' : 'Enlarge image'}
-                tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && !show3DViewer && openLightbox()}
-              >
-                {show3DViewer && product.specifications?.sketchfab_embed_url ? (
-                  <iframe
-                    title={`${product.name} 3D Model`}
-                    frameBorder="0"
-                    allowFullScreen
-                    allow="autoplay; fullscreen; xr-spatial-tracking"
-                    src={product.specifications.sketchfab_embed_url}
-                    className="absolute inset-0 w-full h-full bg-white z-0"
-                  />
-                ) : (
-                  activeImage && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={activeImage.url}
-                      alt={activeImage.altText ?? product.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  )
-                )}
-
-                {/* Floating 3D Toggle Badge */}
-                {product.specifications?.sketchfab_embed_url && (
-                  <div className="absolute top-4 right-4 z-20">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        e.preventDefault()
-                        setShow3DViewer(!show3DViewer)
-                      }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all text-white border-2 hover:border-white"
-                      style={{
-                        background: show3DViewer 
-                          ? 'linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%)'
-                          : 'linear-gradient(135deg, #D4AF37 0%, #b49126 100%)',
-                        borderColor: show3DViewer ? '#fca5a5' : '#4B1D8F',
-                      }}
-                    >
-                      <Box className="h-4 w-4 text-white" />
-                      {show3DViewer ? 'Exit 3D View' : 'Interact in 3D'}
-                    </button>
-                  </div>
-                )}
-
-                {/* Floating AR View badge */}
-                {(product.specifications?.ar_glb_url || product.specifications?.ar_usdz_url) && !show3DViewer && (
-                  <div className="absolute top-4 left-4 z-10">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        e.preventDefault()
-                        setActiveTab('stager')
-                        // We will add a small state or search param to force AIStagerTab to load into AR mode
-                        if (typeof window !== 'undefined') {
-                          window.dispatchEvent(new CustomEvent('switch-to-ar-tab'))
-                        }
-                      }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-lg hover:scale-105 active:scale-95 transition-all text-white border-2 border-[#D4AF37] hover:border-white"
-                      style={{
-                        background: 'linear-gradient(135deg, #4B1D8F 0%, #30125C 100%)',
-                      }}
-                    >
-                      <Sparkles className="h-3.5 w-3.5 text-[#D4AF37] animate-pulse" />
-                      View in AR (3D)
-                    </button>
-                  </div>
-                )}
-                {/* Zoom hint */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                  <div
-                    className="rounded-full p-3"
-                    style={{ backgroundColor: 'rgba(75,29,143,0.7)' }}
-                  >
-                    <ZoomIn className="h-7 w-7 text-white" />
-                  </div>
-                </div>
-                {activeCode && (
-                  <span
-                    className="absolute bottom-3 right-3 rounded-lg px-2.5 py-1 text-xs font-bold text-white"
-                    style={{ backgroundColor: 'rgba(75,29,143,0.85)' }}
-                  >
-                    {activeCode}
+          {/* ── Option rail ─────────────────────────────────────────── */}
+          <aside className="flex min-h-0 flex-1 flex-col border-t border-gray-200 bg-white lg:h-full lg:w-[456px] lg:flex-none lg:border-t-0 lg:border-l xl:w-[520px]">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+              {/* Identity + price */}
+              <div className="px-5 pt-5 pb-4 sm:px-6">
+                <div className="mb-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-[0.16em] text-gray-400">
+                    Sold by
                   </span>
-                )}
-              </div>
-            </div>
-          )}
+                  <span className="text-xs font-bold" style={{ color: PURPLE }}>
+                    {product.seller.businessName}
+                  </span>
+                  {product.showStock && (
+                    <>
+                      <span className="text-gray-300">·</span>
+                      {inStock ? (
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-green-600">
+                          <Check className="h-3.5 w-3.5" />
+                          In stock ({product.stockQuantity})
+                        </span>
+                      ) : (
+                        <span className="text-xs font-semibold text-red-500">Out of stock</span>
+                      )}
+                    </>
+                  )}
+                </div>
 
-          {/* YouTube video — shown below image gallery if present */}
-          {product.youtubeUrl &&
-            (() => {
-              const videoId = extractYouTubeId(product.youtubeUrl)
-              if (!videoId) return null
-              return (
-                <div className="mt-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="h-4 w-4 shrink-0"
-                      fill="#FF0000"
-                      aria-hidden="true"
+                <h2 className="text-2xl font-black leading-tight tracking-tight text-gray-900 sm:text-[28px]">
+                  {product.name}
+                </h2>
+
+                <div className="mt-3 flex flex-wrap items-end gap-x-3 gap-y-1">
+                  {product.requireOrderRequest ? (
+                    <span className="text-xl font-black" style={{ color: GOLD }}>
+                      Request for a quote
+                    </span>
+                  ) : (
+                    <>
+                      <span
+                        className="text-3xl font-black tracking-tight"
+                        style={{ color: PURPLE }}
+                      >
+                        ${formatMoney(displayPrice)}
+                      </span>
+                      <span className="pb-1 text-xs font-bold text-gray-400">CAD</span>
+                      <span
+                        className="mb-1 rounded-md px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider"
+                        style={{ color: '#8A6D12', backgroundColor: `${GOLD}20` }}
+                      >
+                        {priceTypeLabel}
+                      </span>
+                      {hasDiscount && !isCustomTab && activeImage?.variantPrice == null && (
+                        <span className="mb-1 text-sm text-gray-400 line-through">
+                          ${formatMoney(product.compareAtPrice!)}
+                        </span>
+                      )}
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Mode switcher */}
+              {product.hasCustomization && (
+                <div className="sticky top-0 z-10 border-y border-gray-100 bg-white/95 px-5 py-2.5 backdrop-blur sm:px-6">
+                  <div className="flex rounded-xl bg-gray-100 p-1">
+                    <button
+                      type="button"
+                      onClick={() => setTab('ready')}
+                      aria-pressed={tab === 'ready'}
+                      className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-[10px] font-black uppercase tracking-[0.12em] transition-all ${
+                        tab === 'ready'
+                          ? 'bg-white text-[#4B1D8F] shadow'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
                     >
-                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                    </svg>
-                    <span className="text-sm font-bold text-gray-700">Product Video</span>
-                  </div>
-                  <div
-                    className="relative w-full overflow-hidden rounded-2xl"
-                    style={{
-                      paddingBottom: '56.25%',
-                      boxShadow: `0 0 0 1.5px ${PURPLE}44`,
-                    }}
-                  >
-                    <iframe
-                      src={getYouTubeEmbedUrl(videoId)}
-                      title="Product video"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0 h-full w-full rounded-2xl"
-                      loading="lazy"
-                    />
+                      <Zap
+                        className="h-3.5 w-3.5"
+                        style={{ color: tab === 'ready' ? GOLD : undefined }}
+                      />
+                      Ready to Buy
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTab('custom')}
+                      aria-pressed={tab === 'custom'}
+                      className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-[10px] font-black uppercase tracking-[0.12em] transition-all ${
+                        tab === 'custom'
+                          ? 'bg-white text-[#4B1D8F] shadow'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      <Settings
+                        className="h-3.5 w-3.5"
+                        style={{ color: tab === 'custom' ? GOLD : undefined }}
+                      />
+                      {isFurniture ? 'Customize Furniture' : 'Customize Build'}
+                    </button>
                   </div>
                 </div>
-              )
-            })()}
+              )}
 
-          {/* Inclusions Panel - Sticky below image */}
-          <ProductInclusionsPanel
-            whatIsIncluded={product.whatIsIncluded}
-            certificatesStandards={product.certificatesStandards}
-            specifications={product.specifications}
-          />
-        </div>
+              {/* Body */}
+              <div className="flex flex-col gap-3 px-5 py-5 sm:px-6">
+                {isCustomTab ? (
+                  <div className="flex flex-col gap-6">
+                    <ProductCustomizer
+                      groups={product.customizationGroups ?? []}
+                      selections={customSelections}
+                      onSelectionChange={setCustomSelections}
+                    />
 
-        {/* RIGHT col */}
-        <div className="flex flex-col">
-          {/* Name + price — desktop only */}
-          <div className="hidden md:block mb-4">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-1">{product.name}</h1>
-            <div className="flex items-baseline gap-2">
-              {product.requireOrderRequest ? (
-                <span className="text-2xl font-bold" style={{ color: GOLD }}>
-                  Request for a quote
-                </span>
-              ) : (
-                <>
-                  <div className="flex flex-col">
-                    <span className="text-2xl font-bold" style={{ color: PURPLE }}>
-                      ${displayPrice.toFixed(2)} CAD
-                    </span>
-                    <span
-                      className="text-sm font-bold"
-                      style={{
-                        color: GOLD,
-                        backgroundColor: `${GOLD}15`,
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                      }}
-                    >
-                      {getPriceTypeLabel(product.priceType)}
-                    </span>
+                    {/* Studio controls are presentation-only, so they sit below
+                        the priced options and stay collapsed by default. */}
+                    <BuildStudioPanel
+                      studio={studio}
+                      onChange={setStudio}
+                      discoveredNodes={discoveredNodes}
+                      directives={sceneDirectives}
+                    />
                   </div>
-                  {hasDiscount && activeTab === 'ready' && activeImage?.variantPrice == null && (
-                    <span className="text-base text-gray-400 line-through">
-                      ${product.compareAtPrice!.toFixed(2)}
+                ) : (
+                  <>
+                    {product.description && (
+                      <RailSection
+                        title="Description"
+                        icon={<AlignLeft className="h-5 w-5" />}
+                      >
+                        <RichTextRenderer html={product.description} />
+                      </RailSection>
+                    )}
+
+                    {hasVariants && (
+                      <RailSection
+                        title="Product Variants"
+                        icon={<Boxes className="h-5 w-5" />}
+                        meta={`${allImages.length}`}
+                      >
+                        <VariantPicker
+                          images={allImages}
+                          activeId={activeId}
+                          basePrice={product.price}
+                          onSelect={setActiveId}
+                        />
+                      </RailSection>
+                    )}
+                  </>
+                )}
+
+                {product.documents && product.documents.length > 0 && (
+                  <RailSection
+                    title="Documents"
+                    icon={<FileText className="h-5 w-5" />}
+                    meta={`${product.documents.length}`}
+                  >
+                    <div className="flex flex-col gap-2">
+                      {product.documents.map((doc) => {
+                        const Icon =
+                          doc.fileType === 'excel'
+                            ? FileSpreadsheet
+                            : doc.fileType === 'other'
+                              ? File
+                              : FileText
+                        return (
+                          <a
+                            key={doc.id}
+                            href={doc.url}
+                            download={doc.name}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 rounded-xl border-2 border-gray-200 px-3 py-2.5 text-sm font-bold text-gray-800 transition-colors hover:border-[#D4AF37] hover:bg-gray-50"
+                          >
+                            <Icon className="h-4 w-4 shrink-0" style={{ color: PURPLE }} />
+                            <span className="flex-1 truncate text-left">{doc.name}</span>
+                            <Download className="h-4 w-4 shrink-0 text-gray-400" />
+                          </a>
+                        )
+                      })}
+                    </div>
+                  </RailSection>
+                )}
+
+                <ProductInclusionsPanel
+                  whatIsIncluded={product.whatIsIncluded}
+                  certificatesStandards={product.certificatesStandards}
+                  specifications={product.specifications}
+                />
+
+                <RailSection title="Tools & Support" icon={<Sparkles className="h-5 w-5" />}>
+                  <div className="flex flex-col gap-2">
+                    {/* The AI Stager ships with the customization suite, so it
+                        is only offered on products that have it enabled. */}
+                    {product.hasCustomization && (
+                      <button
+                        type="button"
+                        onClick={() => setStagerMode('demo')}
+                        className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl text-sm font-bold text-white transition-opacity hover:opacity-90"
+                        style={{
+                          background: `linear-gradient(135deg, ${PURPLE} 0%, #30125C 100%)`,
+                          border: `1.5px solid ${GOLD}`,
+                        }}
+                      >
+                        <Sparkles className="h-4 w-4" style={{ color: GOLD }} />
+                        Stage this in your room
+                      </button>
+                    )}
+
+                    {hasVariants && activeCode && (
+                      <Link
+                        href={`/contact?subject=${encodeURIComponent(
+                          `Quote request for ${activeCode}`
+                        )}`}
+                        className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 text-sm font-bold transition-colors hover:bg-[#EDE9F6]"
+                        style={{ borderColor: GOLD, color: PURPLE }}
+                      >
+                        <MessageSquare className="h-4 w-4" />
+                        Request quote for {activeCode}
+                      </Link>
+                    )}
+
+                    <Link
+                      href="/hire-installers"
+                      className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border-2 text-sm font-bold transition-colors hover:bg-[#EDE9F6]"
+                      style={{ borderColor: `${PURPLE}33`, color: PURPLE }}
+                    >
+                      <Wrench className="h-4 w-4" />
+                      Hire an installer
+                    </Link>
+
+                    <WhatsAppLink
+                      className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl text-sm font-bold text-white transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: '#25D366', border: '1.5px solid #128C7E' }}
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                      Chat on WhatsApp
+                    </WhatsAppLink>
+                  </div>
+                </RailSection>
+              </div>
+            </div>
+
+            {/* ── Purchase footer ───────────────────────────────────── */}
+            <div className="shrink-0 border-t border-gray-200 bg-white px-5 py-3.5 shadow-[0_-4px_16px_rgba(0,0,0,0.04)] sm:px-6">
+              {cartError && (
+                <p
+                  role="alert"
+                  className="mb-2.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-center text-xs font-semibold text-red-700"
+                >
+                  {cartError}
+                </p>
+              )}
+
+              <div className="mb-2.5 flex items-end justify-between gap-3">
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-[0.16em] text-gray-400">
+                    {isCustomTab ? 'Configured total' : 'Total'}
+                  </span>
+                  {isCustomTab && selectedOptionCount > 0 && (
+                    <span className="text-[11px] font-semibold text-gray-500">
+                      Base ${formatMoney(product.price)}
+                      {optionsTotal > 0 && (
+                        <> + ${formatMoney(optionsTotal)} in {selectedOptionCount} options</>
+                      )}
                     </span>
                   )}
-                </>
-              )}
-            </div>
-          </div>
-
-          {/* Seller — no box, sits above category */}
-          <div className="flex items-center gap-1.5 mb-3">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              Sold by
-            </span>
-            <span className="text-sm font-bold" style={{ color: PURPLE }}>
-              {product.seller.businessName}
-            </span>
-          </div>
-
-          {/* Category + Stock — same row */}
-          <div className="flex items-center gap-2 mb-4 flex-wrap">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              Category
-            </span>
-            <span
-              className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
-              style={{
-                backgroundColor: `${PURPLE}18`,
-                color: PURPLE,
-                border: `1px solid ${PURPLE}33`,
-              }}
-            >
-              {product.category.name}
-            </span>
-            {product.showStock && (
-              <>
-                <span className="mx-1 text-gray-300">·</span>
-                {inStock ? (
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-green-600">
-                    <Check className="h-3.5 w-3.5" /> In Stock ({product.stockQuantity} available)
-                  </span>
-                ) : (
-                  <span className="text-xs font-medium text-red-500">Out of Stock</span>
-                )}
-              </>
-            )}
-          </div>
-
-          {/* TABS Switcher */}
-          {product.hasCustomization && (
-            <div className="flex p-1 bg-gray-100 rounded-2xl mb-8 border-2 border-gray-100 shadow-inner">
-              <button
-                onClick={() => setActiveTab('ready')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                  activeTab === 'ready'
-                    ? 'bg-white text-[#4B1D8F] shadow-lg scale-100'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50/50 scale-95 opacity-70'
-                }`}
-              >
-                <Zap className={`h-4 w-4 ${activeTab === 'ready' ? 'text-[#D4AF37]' : ''}`} />
-                Ready to Buy
-              </button>
-              <button
-                onClick={() => setActiveTab('custom')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                  activeTab === 'custom'
-                    ? 'bg-white text-[#4B1D8F] shadow-lg scale-100'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50/50 scale-95 opacity-70'
-                }`}
-              >
-                <Settings className={`h-4 w-4 ${activeTab === 'custom' ? 'text-[#D4AF37]' : ''}`} />
-                {isFurniture ? 'Customize Your Furniture' : 'Customize Your Build'}
-              </button>
-              <button
-                onClick={() => setActiveTab('stager')}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${
-                  activeTab === 'stager'
-                    ? 'bg-white text-[#4B1D8F] shadow-lg scale-100'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50/50 scale-95 opacity-70'
-                }`}
-              >
-                <Sparkles className={`h-4 w-4 ${activeTab === 'stager' ? 'text-[#D4AF37]' : ''}`} />
-                Stager
-              </button>
-            </div>
-          )}
-
-          {activeTab === 'ready' ? (
-            <div className="animate-in fade-in slide-in-from-left-4 duration-500">
-              {/* Description */}
-              {product.description && (
-                <div className="mb-5">
-                  <h2 className="mb-3 font-bold text-gray-900">Description</h2>
-                  <RichTextRenderer html={product.description} />
                 </div>
-              )}
-            </div>
-          ) : activeTab === 'custom' ? (
-            <div className="flex flex-col gap-6 mb-3.5">
-              <ProductCustomizer
-                groups={product.customizationGroups ?? []}
-                selections={customSelections}
-                onSelectionChange={setCustomSelections}
-              />
-              <BuildStudioPanel
-                studio={studio}
-                onChange={setStudio}
-                discoveredNodes={discoveredNodes}
-                directives={sceneDirectives}
-              />
-            </div>
-          ) : (
-            <AIStagerTab product={product} activeImageUrl={customImageUrl || activeImage?.url} />
-          )}
-
-          {/* Parameters / Documents bar */}
-          {product.documents && product.documents.length > 0 && (
-            <div className="mb-5 flex flex-col gap-2">
-              {product.documents.map((doc) => {
-                const Icon =
-                  doc.fileType === 'excel'
-                    ? FileSpreadsheet
-                    : doc.fileType === 'other'
-                      ? File
-                      : FileText
-                return (
-                  <button
-                    key={doc.id}
-                    onClick={() => {
-                      const link = document.createElement('a')
-                      link.href = doc.url
-                      link.download = doc.name
-                      document.body.appendChild(link)
-                      link.click()
-                      document.body.removeChild(link)
-                    }}
-                    className="flex min-h-[48px] w-full items-center gap-3 rounded-xl px-4 text-base font-bold text-white transition-all hover:opacity-90"
-                    style={{ backgroundColor: PURPLE, border: `2px solid ${GOLD}` }}
-                  >
-                    <Icon className="h-5 w-5 shrink-0" />
-                    <span className="flex-1 truncate text-left">{doc.name}</span>
-                    <div className="flex items-center gap-1 text-xs">
-                      <svg
-                        className="h-3 w-3"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3M7 21l10-5M7 13l10 5"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <span className="text-xs">Download</span>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
-          )}
-
-
-
-          {/* Variants table */}
-          {hasVariants && (
-            <div className="mb-5">
-              <h2 className="mb-3 font-bold text-gray-900">Product Variants</h2>
-              <div
-                className="overflow-x-auto rounded-2xl border max-w-full"
-                style={{ borderColor: `${GOLD}55` }}
-              >
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr
-                      style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
-                    >
-                      <th className="px-4 py-2.5 text-left text-xs font-bold uppercase tracking-wider text-white">
-                        Code
-                      </th>
-                      <th className="px-4 py-2.5 text-left text-xs font-bold uppercase tracking-wider text-white">
-                        Price (CAD)
-                      </th>
-                      <th className="px-4 py-2.5 text-left text-xs font-bold uppercase tracking-wider text-white">
-                        Type
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {allImages.map((img, idx) => (
-                      <tr
-                        key={img.id}
-                        className="cursor-pointer"
-                        style={{ backgroundColor: img.id === activeId ? '#EDE9F6' : 'white' }}
-                        onClick={() => setActiveId(img.id)}
-                      >
-                        <td
-                          className="px-4 py-2.5 font-bold"
-                          style={{ color: idx === 0 ? GOLD : PURPLE }}
-                        >
-                          {img.variantCode ?? (idx === 0 ? 'Main' : `Image ${idx + 1}`)}
-                        </td>
-                        <td className="px-4 py-2.5 text-gray-700">
-                          ${(img.variantPrice ?? product.price).toFixed(2)}
-                          {img.variantPrice == null && idx > 0 && (
-                            <span className="ml-1 text-xs text-gray-400">(same as master)</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <span
-                            className="inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
-                            style={{ backgroundColor: idx === 0 ? GOLD : PURPLE }}
-                          >
-                            {idx === 0 ? '★ Master' : 'Variant'}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="flex shrink-0 items-baseline gap-1.5">
+                  {product.requireOrderRequest ? (
+                    <span className="text-lg font-black" style={{ color: GOLD }}>
+                      By quote
+                    </span>
+                  ) : (
+                    <>
+                      <span className="text-xl font-black tracking-tight" style={{ color: PURPLE }}>
+                        ${formatMoney(displayPrice)}
+                      </span>
+                      <span className="text-[10px] font-bold text-gray-400">{priceTypeLabel}</span>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
 
-          {/* CTAs */}
-          <div className="mt-auto space-y-3">
-            {product.requireOrderRequest ? (
-              /* ── Order-request mode ── */
-              <>
-                {requestSuccess ? (
-                  <div className="flex items-center gap-3 rounded-xl p-4 text-sm font-semibold text-green-700 bg-green-50 border border-green-200">
-                    <Check className="h-5 w-5 shrink-0" />
+              {product.requireOrderRequest ? (
+                requestSuccess ? (
+                  <div className="flex items-center gap-2.5 rounded-xl border border-green-200 bg-green-50 p-3 text-xs font-semibold text-green-700">
+                    <Check className="h-4 w-4 shrink-0" />
                     <span>
-                      Request <span className="font-bold">{requestSuccess}</span> submitted! The
+                      Request <span className="font-bold">{requestSuccess}</span> submitted. The
                       seller will be in touch.
                     </span>
                   </div>
                 ) : (
-                  <button
-                    onClick={() => setRequestModalOpen(true)}
-                    disabled={!inStock}
-                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                    style={{ backgroundColor: PURPLE, border: `2px solid ${GOLD}` }}
-                  >
-                    <Send className="h-5 w-5" />
-                    {inStock ? 'Submit Order Request' : 'Out of Stock'}
-                  </button>
-                )}
+                  <div className="grid grid-cols-[1fr_auto] gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setRequestModalOpen(true)}
+                      disabled={!inStock}
+                      className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-3 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      style={{ backgroundColor: PURPLE, border: `2px solid ${GOLD}` }}
+                    >
+                      <Send className="h-4 w-4" />
+                      {inStock ? 'Submit Order Request' : 'Out of Stock'}
+                    </button>
 
-                <WhatsAppLink
-                  className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90"
-                  style={{ backgroundColor: '#25D366', color: '#fff', border: '2px solid #128C7E' }}
-                >
-                  {/* WhatsApp icon */}
-                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-current" aria-hidden="true">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Chat on WhatsApp
-                </WhatsAppLink>
-              </>
-            ) : (
-              /* ── Direct purchase mode ── */
-              <>
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!inStock || isAddingToCart}
-                  className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                  style={{
-                    backgroundColor: addedToCart ? '#16a34a' : PURPLE,
-                    border: `2px solid ${GOLD}`,
-                  }}
-                >
-                  {addedToCart ? (
-                    <>
-                      <Check className="h-5 w-5" /> Added to Cart!
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingCart className="h-5 w-5" />
-                      {!inStock ? 'Out of Stock' : isAddingToCart ? 'Adding…' : 'Add to Cart'}
-                    </>
-                  )}
-                </button>
-
-                {inStock && (
+                    <WhatsAppLink
+                      className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: '#25D366', border: '2px solid #128C7E' }}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4 fill-current"
+                        aria-hidden="true"
+                      >
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                      </svg>
+                      <span className="hidden sm:inline">WhatsApp</span>
+                    </WhatsAppLink>
+                  </div>
+                )
+              ) : (
+                <div className={`grid gap-2 ${inStock ? 'grid-cols-2' : 'grid-cols-1'}`}>
                   <button
-                    onClick={handleBuyNow}
-                    disabled={isAddingToCart}
-                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={!inStock || isAddingToCart}
+                    className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-3 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     style={{
-                      backgroundColor: GOLD,
-                      color: '#1a1a2e',
-                      border: `2px solid ${PURPLE}`,
+                      backgroundColor: addedToCart ? '#16a34a' : PURPLE,
+                      border: `2px solid ${GOLD}`,
                     }}
                   >
-                    <Zap className="h-5 w-5" />
-                    Buy Now
+                    {addedToCart ? (
+                      <>
+                        <Check className="h-4 w-4" /> Added
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="h-4 w-4" />
+                        {!inStock ? 'Out of Stock' : isAddingToCart ? 'Adding…' : 'Add to Cart'}
+                      </>
+                    )}
                   </button>
-                )}
 
-                {cartError && (
-                  <p
-                    role="alert"
-                    className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-center text-sm font-semibold text-red-700"
-                  >
-                    {cartError}
-                  </p>
-                )}
-
-                {hasVariants && activeCode && (
-                  <a
-                    href={`/contact?subject=Quote request for ${activeCode}`}
-                    className="flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl border-2 text-sm font-bold transition-all hover:bg-[#EDE9F6]"
-                    style={{ borderColor: GOLD, color: PURPLE }}
-                  >
-                    <MessageSquare className="h-4 w-4" />
-                    Request Quote for <span style={{ color: GOLD }}>{activeCode}</span>
-                  </a>
-                )}
-
-                <a
-                  href="/hire-installers"
-                  className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl text-base font-bold text-white transition-all hover:opacity-90"
-                  style={{
-                    backgroundColor: PURPLE,
-                    border: `2px solid ${GOLD}`,
-                  }}
-                >
-                  <Wrench className="h-5 w-5" />
-                  Hire Installer
-                </a>
-              </>
-            )}
-          </div>
+                  {inStock && (
+                    <button
+                      type="button"
+                      onClick={handleBuyNow}
+                      disabled={isAddingToCart}
+                      className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl px-3 text-sm font-bold transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      style={{
+                        backgroundColor: GOLD,
+                        color: '#1a1a2e',
+                        border: `2px solid ${PURPLE}`,
+                      }}
+                    >
+                      <Zap className="h-4 w-4" />
+                      Buy Now
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          </aside>
         </div>
       </div>
 
-      {/* Order Request Modal */}
+      {/* ── Overlays ─────────────────────────────────────────────────── */}
       {requestModalOpen && (
         <OrderRequestModal
           productId={product.id}
           sellerId={product.sellerId}
           productName={product.name}
           productPrice={displayPrice}
-          variantCode={activeTab === 'custom' ? 'Custom Build' : activeCode}
-          customizations={activeTab === 'custom' ? buildCartItem().customizations : undefined}
+          variantCode={isCustomTab ? 'Custom Build' : activeCode}
+          customizations={isCustomTab ? buildCartItem().customizations : undefined}
           onClose={() => setRequestModalOpen(false)}
           onSuccess={(rn) => {
             setRequestModalOpen(false)
@@ -960,104 +706,23 @@ export function ProductDetailClient({
         />
       )}
 
-      {/* Lightbox */}
-      {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: 'rgba(0,0,0,0.88)' }}
-          onClick={closeLightbox}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Image lightbox"
-        >
-          {/* Close button */}
-          <button
-            className="absolute top-4 right-4 rounded-full p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
-            onClick={closeLightbox}
-            aria-label="Close lightbox"
-          >
-            <X className="h-7 w-7" />
-          </button>
+      {stagerMode && (
+        <StagerOverlay
+          product={product}
+          activeImageUrl={stagerImageUrl}
+          initialMode={stagerMode}
+          onClose={() => setStagerMode(null)}
+        />
+      )}
 
-          {/* Prev button */}
-          {allImages.length > 1 && (
-            <button
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
-              onClick={(e) => {
-                e.stopPropagation()
-                lightboxPrev()
-              }}
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="h-9 w-9" />
-            </button>
-          )}
-
-          {/* Image */}
-          <div
-            className="relative flex items-center justify-center"
-            style={{ width: 'min(92vw, 1100px)', height: 'min(88vh, 800px)' }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={allImages[lightboxIndex]?.url}
-              alt={allImages[lightboxIndex]?.altText ?? product.name}
-              className="rounded-2xl object-contain shadow-2xl"
-              style={{
-                border: `3px solid ${GOLD}`,
-                width: 'min(92vw, 1100px)',
-                height: 'min(88vh, 800px)',
-                maxWidth: '92vw',
-                maxHeight: '88vh',
-              }}
-            />
-            {/* Variant code badge */}
-            {allImages[lightboxIndex]?.variantCode && (
-              <span
-                className="absolute bottom-3 right-3 rounded-lg px-3 py-1 text-sm font-bold text-white"
-                style={{ backgroundColor: 'rgba(75,29,143,0.9)' }}
-              >
-                {allImages[lightboxIndex].variantCode}
-              </span>
-            )}
-          </div>
-
-          {/* Next button */}
-          {allImages.length > 1 && (
-            <button
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-2 text-white transition-colors hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
-              onClick={(e) => {
-                e.stopPropagation()
-                lightboxNext()
-              }}
-              aria-label="Next image"
-            >
-              <ChevronRight className="h-9 w-9" />
-            </button>
-          )}
-
-          {/* Dot indicators */}
-          {allImages.length > 1 && (
-            <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-2">
-              {allImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  className="h-2.5 w-2.5 rounded-full transition-all focus:outline-none"
-                  style={{
-                    backgroundColor: idx === lightboxIndex ? GOLD : 'rgba(255,255,255,0.45)',
-                    transform: idx === lightboxIndex ? 'scale(1.3)' : 'scale(1)',
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setLightboxIndex(idx)
-                  }}
-                  aria-label={`Go to image ${idx + 1}`}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+      {lightboxOpen && allImages.length > 0 && (
+        <ImageLightbox
+          images={allImages}
+          index={lightboxIndex}
+          productName={product.name}
+          onIndexChange={setLightboxIndex}
+          onClose={() => setLightboxOpen(false)}
+        />
       )}
     </>
   )

@@ -173,6 +173,7 @@ export interface CategoryData {
   slug: string
   description: string | null
   imageUrl: string | null
+  parent_id?: string | null
 }
 
 export interface SellerData {
@@ -275,7 +276,7 @@ export interface AuthUser {
   id: string
   email: string
   fullName: string | null
-  role: 'customer' | 'seller' | 'admin' | 'architect'
+  role: 'customer' | 'seller' | 'admin' | 'architect' | 'affiliate'
   avatarUrl: string | null
 }
 

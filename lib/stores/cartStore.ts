@@ -25,7 +25,7 @@ interface CartStore {
   subtotal: () => number
 }
 
-const CART_KEY = 'cargoplus_cart'
+const CART_KEY = 'apex_cart'
 
 function isSameItem(
   a: CartItem,
