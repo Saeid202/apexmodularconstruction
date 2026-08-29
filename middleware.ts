@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getStudioSubdomain, isPlatformHost } from '@/lib/domains'
 
 type RoleResult = { data: { role: string } | null; error: unknown | null }
 type IdResult = { data: { id: string } | null; error: unknown | null }
@@ -11,23 +12,11 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Shopify-style Subdomain Routing
+  // Shopify-style Subdomain Routing.
+  // All host classification lives in lib/domains (single source of truth) so the
+  // router, the DNS-verify check, and the studio UI can never drift apart.
   const hostname = request.headers.get('host') || ''
-  const rawRootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:3000'
-  const rootDomain = rawRootDomain.replace(/^www\./i, '')
-  
-  let subdomain: string | null = null
-  if (hostname && hostname !== rootDomain && hostname !== `www.${rootDomain}` && hostname !== 'apex.com' && hostname !== 'www.apex.com') {
-    if (hostname.endsWith(`.${rootDomain}`)) {
-      subdomain = hostname.substring(0, hostname.length - rootDomain.length - 1)
-    } else if (hostname.endsWith('.apex.com')) {
-      subdomain = hostname.substring(0, hostname.length - 9)
-    }
-  }
-
-  if (subdomain === 'www') {
-    subdomain = null
-  }
+  const subdomain = getStudioSubdomain(hostname)
 
   // Shared guard: internal app paths that must never be rewritten to a studio.
   const isReservedPath =
@@ -61,16 +50,11 @@ export async function middleware(request: NextRequest) {
   // architect has pointed their own domain at the app. Resolve it to the
   // studio owner via /studio/domain/<host>.
   const hostNoPort = hostname.split(':')[0]
-  const rootNoPort = rootDomain.split(':')[0]
   const isCustomDomainCandidate =
     !subdomain &&
     !!hostNoPort &&
     hostNoPort.includes('.') &&
-    hostNoPort !== rootNoPort &&
-    hostNoPort !== 'apex.com' &&
-    hostNoPort !== 'www.apex.com' &&
-    !hostNoPort.endsWith(`.${rootNoPort}`) &&
-    !hostNoPort.endsWith('.apex.com') &&
+    !isPlatformHost(hostname) &&
     !hostNoPort.endsWith('.vercel.app') &&
     hostNoPort !== 'localhost' &&
     hostNoPort !== '127.0.0.1' &&

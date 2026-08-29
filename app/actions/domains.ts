@@ -37,7 +37,7 @@ export async function verifyCustomDomainDNS(input: string): Promise<DomainVerify
   let connected = false
   let method: 'cname' | 'a' | null = null
 
-  // CNAME check — used for subdomains (www.myfirm.com -> apex.com)
+  // CNAME check — used for subdomains (www.myfirm.com -> apexmodularconstruction.com)
   try {
     const cnames = await dns.resolveCname(host)
     for (const c of cnames) {
