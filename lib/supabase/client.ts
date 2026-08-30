@@ -1,6 +1,9 @@
 import { createBrowserClient as createSupabaseBrowserClient } from '@supabase/ssr'
 
-let client: ReturnType<typeof createSupabaseBrowserClient> | null = null
+// Use globalThis to persist client across HMR in development to prevent duplicate client initialization
+const globalForSupabase = globalThis as unknown as {
+  supabaseClient: ReturnType<typeof createSupabaseBrowserClient> | undefined
+}
 
 export function createBrowserClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -11,6 +14,8 @@ export function createBrowserClient() {
       'Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env.local file.'
     )
   }
+
+  let client = globalForSupabase.supabaseClient
 
   if (!client) {
     client = createSupabaseBrowserClient(supabaseUrl, supabaseAnonKey, {
@@ -46,9 +51,13 @@ export function createBrowserClient() {
       },
     })
 
-    // Override auth.getUser to be robust against null data on client-side
+    globalForSupabase.supabaseClient = client
+  }
+
+  // Override auth.getUser only if it hasn't been overridden yet to avoid recursive infinite calls on HMR
+  if (client && !(client.auth.getUser as any).__isOverridden) {
     const originalGetUser = client.auth.getUser.bind(client.auth)
-    client.auth.getUser = async (jwt?: string) => {
+    const overriddenGetUser = async (jwt?: string) => {
       try {
         const res = await originalGetUser(jwt)
         if (!res.data) {
@@ -56,6 +65,14 @@ export function createBrowserClient() {
         }
         return res
       } catch (err: any) {
+        const msg = err?.message || ''
+        if (msg.includes('released because another request stole it') || msg.includes('Lock') || msg.includes('lock')) {
+          // Gracefully handle concurrent lock theft issues (e.g. from React Strict Mode in dev)
+          return {
+            data: { user: null },
+            error: null,
+          }
+        }
         console.error('Browser safe getUser intercepted error:', err)
         return {
           data: { user: null },
@@ -63,6 +80,8 @@ export function createBrowserClient() {
         }
       }
     }
+    ;(overriddenGetUser as any).__isOverridden = true
+    client.auth.getUser = overriddenGetUser
   }
 
   return client

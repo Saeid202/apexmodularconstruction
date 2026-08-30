@@ -10,8 +10,6 @@ export function LogoutButton() {
   const handleLogout = async () => {
     const supabase = createBrowserClient();
     await supabase.auth.signOut();
-    document.cookie = "architect_bypass_email=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    document.cookie = "architect_dev_profile=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     router.push("/architect/login");
     router.refresh();
   };

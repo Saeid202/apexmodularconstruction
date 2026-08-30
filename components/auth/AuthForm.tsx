@@ -47,15 +47,6 @@ export function AuthForm({ mode, onSuccess, redirectTo = "/account/dashboard" }:
       }
       setLoading(false);
     } else {
-      // Development bypass option
-      if (password === "admin123") {
-        document.cookie = `architect_bypass_email=${encodeURIComponent(email)}; path=/; max-age=86400`;
-        setLoading(false);
-        if (onSuccess) onSuccess();
-        window.location.href = "/architect/dashboard";
-        return;
-      }
-
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error) {

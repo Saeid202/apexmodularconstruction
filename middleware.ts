@@ -67,13 +67,7 @@ export async function middleware(request: NextRequest) {
     )
   }
 
-  const devArchitectBypass =
-    process.env.NODE_ENV !== 'production' &&
-    process.env.DEV_BYPASS_ARCHITECT_AUTH === 'true'
 
-  if (devArchitectBypass && pathname.startsWith('/architect')) {
-    return supabaseResponse
-  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -175,26 +169,17 @@ export async function middleware(request: NextRequest) {
 
   // Architect routes protection
   if (pathname.startsWith('/architect')) {
-    const hasBypass = request.cookies.has('architect_bypass_email')
-
     if (pathname === '/architect/login' || pathname === '/architect/register') {
-      if (hasBypass || user) {
-        if (hasBypass) {
-          return NextResponse.redirect(new URL('/architect/dashboard', request.url))
-        }
+      if (user) {
         const [profileResult, architectResult] = await Promise.all([
-          supabase.from('profiles').select('role').eq('id', user!.id).single(),
-          supabase.from('architects').select('id').eq('id', user!.id).single(),
+          supabase.from('profiles').select('role').eq('id', user.id).single(),
+          supabase.from('architects').select('id').eq('id', user.id).single(),
         ])
 
         if (profileResult.data?.role === 'architect' && architectResult.data) {
           return NextResponse.redirect(new URL('/architect/dashboard', request.url))
         }
       }
-      return supabaseResponse
-    }
-
-    if (hasBypass) {
       return supabaseResponse
     }
 
