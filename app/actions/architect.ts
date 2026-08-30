@@ -101,7 +101,51 @@ export async function getArchitectDashboardData(): Promise<{
       return { profile: null, error: 'Not authenticated' }
     }
 
-    const { data, error } = await supabase.from('architects').select('*').eq('id', user.id).single()
+    let { data, error } = await supabase.from('architects').select('*').eq('id', user.id).single()
+
+    if (error && (error.code === 'PGRST116' || error.message.includes('no rows'))) {
+      // 1. Auto-create/ensure profiles row exists
+      const { data: profileCheck } = await supabase.from('profiles').select('id').eq('id', user.id).single()
+      if (!profileCheck) {
+        const { error: profileErr } = await supabase.from('profiles').insert({
+          id: user.id,
+          email: user.email || '',
+          full_name: user.user_metadata?.full_name || 'Architect',
+          role: 'architect'
+        })
+        if (profileErr) console.error('Failed to auto-create profile row:', profileErr)
+      } else {
+        await supabase.from('profiles').update({ role: 'architect' }).eq('id', user.id)
+      }
+
+      // 2. Auto-create architects row
+      const defaultProfile = {
+        id: user.id,
+        email: user.email || '',
+        full_name: user.user_metadata?.full_name || 'Architect',
+        status: 'active',
+        subdomain: user.user_metadata?.subdomain || `studio-${user.id.slice(0, 8)}`,
+        branding: {
+          title: user.user_metadata?.full_name || 'Architect Studio',
+          tagline: 'Apex Authorized Architect Studio',
+          primaryColor: '#10B981',
+          secondaryColor: '#0F172A',
+          layout: []
+        }
+      }
+      const { data: inserted, error: insertError } = await supabase
+        .from('architects')
+        .insert(defaultProfile)
+        .select()
+        .single()
+      
+      if (insertError) {
+        console.error('Failed to auto-create architect profile:', insertError)
+      } else {
+        data = inserted
+        error = null
+      }
+    }
 
     if (error) {
       return { profile: null, error: error.message }
@@ -137,13 +181,24 @@ export async function updateArchitectProfile(data: {
       return { success: false, error: 'Not authenticated' }
     }
 
+    // 1. Ensure profile table exists & matches role
+    await supabase.from('profiles').upsert({
+      id: user.id,
+      email: user.email || '',
+      full_name: data.fullName,
+      role: 'architect'
+    }, { onConflict: 'id' })
+
+    // 2. Upsert architect details
     const { error } = await supabase
       .from('architects')
-      .update({
+      .upsert({
+        id: user.id,
+        email: user.email || '',
         full_name: data.fullName,
         phone: data.phone,
         firm_name: data.firmName,
-        bio: data.bio,
+        bio: data.bio || null,
         website: data.website || null,
         address: data.address || null,
         professional_role: data.professionalRole || null,
@@ -152,8 +207,7 @@ export async function updateArchitectProfile(data: {
         subdomain: data.subdomain !== undefined ? data.subdomain : undefined,
         branding: data.branding !== undefined ? data.branding : undefined,
         updated_at: new Date().toISOString(),
-      })
-      .eq('id', user.id)
+      }, { onConflict: 'id' })
 
     if (error) {
       return { success: false, error: error.message }
