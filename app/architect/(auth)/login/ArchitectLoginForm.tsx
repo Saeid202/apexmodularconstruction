@@ -21,14 +21,6 @@ export function ArchitectLoginForm() {
     setError(null);
     setInfo(null);
 
-    // Development bypass option
-    if (password === "admin123") {
-      document.cookie = `architect_bypass_email=${encodeURIComponent(email)}; path=/; max-age=86400`;
-      setLoading(false);
-      window.location.href = "/architect/dashboard";
-      return;
-    }
-
     const { data, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
 
     if (signInError) {

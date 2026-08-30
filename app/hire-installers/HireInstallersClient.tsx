@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Phone, Mail, Building2, Award, Clock, ChevronRight, Search } from 'lucide-react'
+import Link from 'next/link'
+import { MapPin, Phone, Mail, Building2, Award, Clock, ChevronRight, Search, Wrench } from 'lucide-react'
 
 interface Installer {
   id: string
@@ -46,6 +47,31 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Hire an Installer</h1>
           <p className="text-lg text-gray-600">Find qualified contractors in your area</p>
+        </div>
+        {/* Rental Equipment Banner */}
+        <div className="bg-gradient-to-r from-[#4B1D8F] to-[#6b31c2] rounded-2xl p-6 mb-8 shadow-sm border border-purple-800/20 text-white flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+          {/* Subtle design elements */}
+          <span className="absolute top-0 right-0 h-32 w-32 bg-white/5 rounded-full translate-x-12 -translate-y-12 pointer-events-none" />
+          <span className="absolute bottom-0 left-0 h-24 w-24 bg-white/5 rounded-full -translate-x-8 translate-y-8 pointer-events-none" />
+
+          <div className="flex-1 space-y-2 relative z-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/30 text-yellow-300 text-xs font-bold uppercase tracking-wider">
+              <span className="h-1.5 w-1.5 rounded-full bg-yellow-400 animate-pulse" />
+              Heavy Machinery Rentals
+            </div>
+            <h2 className="text-2xl font-extrabold tracking-tight">Need Construction Equipment?</h2>
+            <p className="text-purple-100 max-w-2xl text-sm leading-relaxed">
+              We provide heavy machinery rentals (cranes, lifts, loaders, and tools) to contractors and installers. Get competitive rates and fast delivery to your job site.
+            </p>
+          </div>
+
+          <Link
+            href="/rental-equipment"
+            className="shrink-0 px-6 py-3.5 bg-[#D4AF37] hover:bg-[#b8960f] text-gray-900 font-extrabold rounded-xl transition-all shadow-md hover:scale-[1.02] active:scale-[0.98] text-sm flex items-center gap-2 border border-yellow-300 relative z-10"
+          >
+            <Wrench className="h-4 w-4" />
+            Rent Equipment
+          </Link>
         </div>
 
         {/* Filters */}

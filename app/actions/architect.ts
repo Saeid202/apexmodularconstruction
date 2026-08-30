@@ -3,44 +3,7 @@
 import { createServerClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { Architect } from '@/types/database'
-import { normalizeHost, hostCandidates } from '@/lib/domains'
-import fs from 'fs'
-import path from 'path'
-
-const DEV_PROFILES_FILE = path.join(process.cwd(), 'scratch', 'dev_architect_profiles.json')
-
-function getDevProfilesFromFile(): Record<string, any> {
-  try {
-    if (fs.existsSync(DEV_PROFILES_FILE)) {
-      const data = fs.readFileSync(DEV_PROFILES_FILE, 'utf8')
-      return JSON.parse(data)
-    }
-  } catch (err) {
-    console.error('Error reading dev profiles from file:', err)
-  }
-  return {}
-}
-
-function saveDevProfileToFile(email: string, profile: any) {
-  try {
-    const profiles = getDevProfilesFromFile()
-    profiles[email.toLowerCase()] = profile
-    if (profile.subdomain) {
-      profiles[`subdomain:${profile.subdomain.toLowerCase()}`] = profile
-    }
-    const customDomain = profile.branding?.customDomain
-    if (customDomain) {
-      profiles[`customdomain:${normalizeHost(customDomain)}`] = profile
-    }
-    const dir = path.dirname(DEV_PROFILES_FILE)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
-    }
-    fs.writeFileSync(DEV_PROFILES_FILE, JSON.stringify(profiles, null, 2), 'utf8')
-  } catch (err) {
-    console.error('Error writing dev profile to file:', err)
-  }
-}
+import { hostCandidates } from '@/lib/domains'
 
 export async function registerArchitect(formData: FormData): Promise<{
   success: boolean
@@ -128,64 +91,6 @@ export async function getArchitectDashboardData(): Promise<{
   error: string | null
 }> {
   try {
-    // Check for developer/bypass cookie first
-    const { cookies } = await import('next/headers')
-    const cookieStore = await cookies()
-    const bypassEmail = cookieStore.get('architect_bypass_email')?.value
-    if (bypassEmail) {
-      // Check file first
-      const devProfiles = getDevProfilesFromFile()
-      let devProfile = devProfiles[bypassEmail.toLowerCase()]
-
-      if (!devProfile) {
-        // Fallback to cookie
-        const devProfileStr = cookieStore.get('architect_dev_profile')?.value
-        if (devProfileStr) {
-          try {
-            devProfile = JSON.parse(devProfileStr)
-            if (devProfile) {
-              saveDevProfileToFile(bypassEmail, devProfile)
-            }
-          } catch {}
-        }
-      }
-
-      if (!devProfile) {
-        devProfile = {
-          id: '00000000-0000-0000-0000-000000000000',
-          full_name: bypassEmail.split('@')[0] || 'Architect',
-          email: bypassEmail,
-          phone: null,
-          firm_name: null,
-          bio: 'Bypass Dev Profile',
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          website: null,
-          address: null,
-          professional_role: null,
-          experience_years: null,
-          specialization: null,
-          subdomain: 'demo-studio',
-          branding: {
-            title: 'Apex Architect Studio',
-            tagline: 'Premium Modular & Custom Home Designs',
-            primaryColor: '#10B981',
-            secondaryColor: '#0F172A',
-            instagram: 'https://instagram.com',
-            linkedin: 'https://linkedin.com',
-          },
-        }
-        // Save initial default dev profile to file
-        saveDevProfileToFile(bypassEmail, devProfile)
-      }
-
-      return {
-        profile: devProfile,
-        error: null,
-      }
-    }
-
     const supabase = await createServerClient()
 
     const {
@@ -229,71 +134,6 @@ export async function updateArchitectProfile(data: {
     } = await supabase.auth.getUser()
 
     if (!user) {
-      const { cookies } = await import('next/headers')
-      const cookieStore = await cookies()
-      const bypass = cookieStore.get('architect_bypass_email')?.value
-      if (bypass) {
-        // Read existing dev profile
-        const devProfiles = getDevProfilesFromFile()
-        let devProfile: any = devProfiles[bypass.toLowerCase()]
-
-        if (!devProfile) {
-          const existingCookie = cookieStore.get('architect_dev_profile')?.value
-          if (existingCookie) {
-            try {
-              devProfile = JSON.parse(existingCookie)
-            } catch {}
-          }
-        }
-
-        if (!devProfile) {
-          devProfile = {
-            id: '00000000-0000-0000-0000-000000000000',
-            full_name: data.fullName,
-            email: bypass,
-            phone: data.phone,
-            firm_name: data.firmName,
-            bio: data.bio || null,
-            status: 'active',
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-            website: data.website || null,
-            address: data.address || null,
-            professional_role: data.professionalRole || null,
-            experience_years: data.experienceYears || null,
-            specialization: data.specialization || null,
-            subdomain: data.subdomain || 'demo-studio',
-            branding: data.branding || {},
-          }
-        } else {
-          devProfile = {
-            ...devProfile,
-            full_name: data.fullName,
-            phone: data.phone,
-            firm_name: data.firmName,
-            bio: data.bio !== undefined ? data.bio : devProfile.bio,
-            website: data.website !== undefined ? data.website : devProfile.website,
-            address: data.address !== undefined ? data.address : devProfile.address,
-            professional_role: data.professionalRole !== undefined ? data.professionalRole : devProfile.professional_role,
-            experience_years: data.experienceYears !== undefined ? data.experienceYears : devProfile.experience_years,
-            specialization: data.specialization !== undefined ? data.specialization : devProfile.specialization,
-            subdomain: data.subdomain !== undefined ? data.subdomain : devProfile.subdomain,
-            branding: data.branding !== undefined ? data.branding : devProfile.branding,
-            updated_at: new Date().toISOString(),
-          }
-        }
-
-        // Save to file
-        saveDevProfileToFile(bypass, devProfile)
-
-        // Save to cookie (as fallback)
-        cookieStore.set('architect_dev_profile', JSON.stringify(devProfile), {
-          maxAge: 60 * 60 * 24 * 365, // 1 year
-          path: '/',
-        })
-
-        return { success: true, error: null }
-      }
       return { success: false, error: 'Not authenticated' }
     }
 
@@ -331,30 +171,6 @@ export async function getArchitectProfileBySubdomain(subdomain: string): Promise
   error: string | null
 }> {
   try {
-    // Check developer bypass profile from local file first
-    try {
-      const devProfiles = getDevProfilesFromFile()
-      const devProfile = devProfiles[`subdomain:${subdomain.toLowerCase()}`]
-      if (devProfile) {
-        console.log(`[Dev Bypass File] Resolved profile for subdomain "${subdomain}" from JSON file`)
-        return { profile: devProfile, error: null }
-      }
-
-      // Check developer bypass profile cookie fallback
-      const { cookies } = await import('next/headers')
-      const cookieStore = await cookies()
-      const devProfileStr = cookieStore.get('architect_dev_profile')?.value
-      if (devProfileStr) {
-        const devProfileParsed = JSON.parse(devProfileStr)
-        if (devProfileParsed && devProfileParsed.subdomain === subdomain) {
-          console.log(`[Dev Bypass Cookie] Resolved profile for subdomain "${subdomain}" from cookie`)
-          return { profile: devProfileParsed, error: null }
-        }
-      }
-    } catch (cookieErr) {
-      console.error('Error reading dev profile from file or cookie:', cookieErr)
-    }
-
     const supabase = await createServerClient()
     const { data, error } = await supabase
       .from('architects')
@@ -363,6 +179,7 @@ export async function getArchitectProfileBySubdomain(subdomain: string): Promise
       .single()
 
     if (error) {
+      // Fallback only for the demo studio config if not seeded yet
       if (subdomain === 'demo-studio') {
         return {
           profile: {
@@ -454,23 +271,7 @@ export async function getArchitectProfileByCustomDomain(host: string): Promise<{
       return { profile: null, error: 'Invalid host' }
     }
 
-    // Check developer bypass profiles from local file first (dev only)
-    try {
-      const devProfiles = getDevProfilesFromFile()
-      for (const candidate of candidates) {
-        const devProfile = devProfiles[`customdomain:${candidate}`]
-        if (devProfile) {
-          console.log(`[Dev Bypass File] Resolved profile for custom domain "${candidate}" from JSON file`)
-          return { profile: devProfile, error: null }
-        }
-      }
-    } catch (fileErr) {
-      console.error('Error reading dev profile from file:', fileErr)
-    }
-
     const supabase = await createServerClient()
-    // Match the domain stored in the freeform `branding` JSON column.
-    // No schema change — `branding->>customDomain` reads the JSON key.
     const { data, error } = await supabase
       .from('architects')
       .select('*')
@@ -489,4 +290,3 @@ export async function getArchitectProfileByCustomDomain(host: string): Promise<{
     return { profile: null, error: err.message || 'Failed to fetch profile' }
   }
 }
-
