@@ -14,7 +14,6 @@ const menuItems = [
   { id: "projects", label: "Projects", icon: FolderKanban, href: "/architect/projects" },
   { id: "page-builder", label: "Page Builder", icon: Wand2, href: "/architect/page-builder" },
   { id: "domains", label: "Domains", icon: Globe, href: "/architect/domains" },
-  { id: "templates", label: "Templates", icon: LayoutTemplate, href: "/architect/templates" },
   { id: "settings", label: "Settings", icon: Settings, href: "/architect/settings" },
 ];
 
