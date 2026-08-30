@@ -219,8 +219,6 @@ export function PageBuilderEditor({ initialProfile }: PageBuilderEditorProps) {
             {subdomain ? (
               <a
                 href={`/studio/${subdomain}`}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 <ExternalLink className="h-4 w-4" /> View live
