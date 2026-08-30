@@ -24,7 +24,7 @@ export default async function ArchitectDashboardPage() {
           Welcome, {result.profile?.full_name || "Architect"}
         </h2>
         <p className="mt-2 text-sm text-gray-600">
-          Your workspace is ready. Use the left sidebar to navigate Profile, Projects, Templates, and Settings.
+          Your workspace is ready. Use the left sidebar to navigate Profile, Projects, Page Builder, Domains, and Settings.
         </p>
       </div>
     </div>
