@@ -8,7 +8,7 @@
  * `components/page-builder/blocks`.
  */
 
-export type BlockType = "hero" | "text" | "gallery" | "cta";
+export type BlockType = "hero" | "text" | "gallery" | "cta" | "imageText";
 
 export interface BlockBase {
   /** Stable id used as React key and for reordering. */
@@ -58,7 +58,28 @@ export interface CtaBlock extends BlockBase {
   };
 }
 
-export type Block = HeroBlock | TextBlock | GalleryBlock | CtaBlock;
+/** Where the text sits relative to the image in an `imageText` block. */
+export type TextPosition = "left" | "right" | "above" | "below";
+
+export interface ImageTextBlock extends BlockBase {
+  type: "imageText";
+  props: {
+    imageUrl?: string;
+    /** Alt text for screen readers. Empty is treated as decorative. */
+    imageAlt?: string;
+    heading?: string;
+    /** Plain text; blank lines separate paragraphs. */
+    body: string;
+    /**
+     * "left"/"right" place the text beside the image in two columns.
+     * "above"/"below" stack it, and "below" renders as a caption.
+     * Stored as a string like every other prop; unknown values fall back to "right".
+     */
+    textPosition?: TextPosition;
+  };
+}
+
+export type Block = HeroBlock | TextBlock | GalleryBlock | CtaBlock | ImageTextBlock;
 
 export type PageLayout = Block[];
 
@@ -66,13 +87,17 @@ export type PageLayout = Block[];
 /* Editor metadata — drives the generic property panel in the editor. */
 /* ------------------------------------------------------------------ */
 
-export type FieldType = "text" | "textarea" | "image" | "url";
+export type FieldType = "text" | "textarea" | "image" | "url" | "select";
 
 export interface BlockField {
   key: string;
   label: string;
   type: FieldType;
   placeholder?: string;
+  /** Required for `select` fields; ignored otherwise. */
+  options?: { value: string; label: string }[];
+  /** Optional helper text rendered under the control in the editor. */
+  hint?: string;
 }
 
 export interface BlockDefinition {
@@ -139,6 +164,47 @@ export const BLOCK_LIBRARY: BlockDefinition[] = [
     defaults: {
       heading: "Selected Work",
       images: "",
+    },
+  },
+  {
+    type: "imageText",
+    label: "Image + Text",
+    icon: "Columns2",
+    description: "One image with text beside it, above it, or as a caption underneath.",
+    fields: [
+      { key: "imageUrl", label: "Image", type: "image" },
+      {
+        key: "imageAlt",
+        label: "Image alt text",
+        type: "text",
+        placeholder: "Describe the image for screen readers",
+        hint: "Leave blank only if the image is purely decorative.",
+      },
+      { key: "heading", label: "Heading", type: "text", placeholder: "A closer look" },
+      {
+        key: "body",
+        label: "Text",
+        type: "textarea",
+        placeholder: "Write a few sentences. Leave a blank line to start a new paragraph.",
+      },
+      {
+        key: "textPosition",
+        label: "Text position",
+        type: "select",
+        options: [
+          { value: "right", label: "Right of image" },
+          { value: "left", label: "Left of image" },
+          { value: "above", label: "Above image" },
+          { value: "below", label: "Below image (caption)" },
+        ],
+      },
+    ],
+    defaults: {
+      imageUrl: "",
+      imageAlt: "",
+      heading: "A closer look",
+      body: "Describe the project, the material choice or the detail shown here. Leave a blank line to start a new paragraph.",
+      textPosition: "right",
     },
   },
   {

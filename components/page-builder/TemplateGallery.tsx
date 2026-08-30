@@ -7,6 +7,7 @@ import {
   Type,
   Image as ImageIcon,
   Sparkles,
+  Columns2,
   Eye,
   X,
   Check,
@@ -31,6 +32,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Type,
   Image: ImageIcon,
   Sparkles,
+  Columns2,
 };
 
 /** Width the preview is composed at before being scaled down to fit its card. */

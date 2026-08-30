@@ -8,7 +8,15 @@
  * Styling mirrors the existing hardcoded studio page (app/studio/[slug]) so
  * custom layouts stay on-brand with the rest of Apex Modular.
  */
-import type { Block, HeroBlock, TextBlock, GalleryBlock, CtaBlock } from "@/types/page-builder";
+import type {
+  Block,
+  HeroBlock,
+  TextBlock,
+  GalleryBlock,
+  CtaBlock,
+  ImageTextBlock,
+  TextPosition,
+} from "@/types/page-builder";
 import { ArrowRight } from "lucide-react";
 
 interface BlockProps<T> {
@@ -136,6 +144,82 @@ function Cta({ block, primaryColor }: BlockProps<CtaBlock>) {
   );
 }
 
+const TEXT_POSITIONS: TextPosition[] = ["left", "right", "above", "below"];
+
+function ImageText({ block, primaryColor }: BlockProps<ImageTextBlock>) {
+  const { imageUrl, imageAlt, heading, body, textPosition } = block.props;
+
+  // Unknown/missing values fall back to "right" rather than rendering nothing.
+  const position: TextPosition = TEXT_POSITIONS.includes(textPosition as TextPosition)
+    ? (textPosition as TextPosition)
+    : "right";
+  const beside = position === "left" || position === "right";
+  const isCaption = position === "below";
+
+  const paragraphs = (body || "").split(/\n\s*\n/).filter((p) => p.trim().length > 0);
+
+  const image = imageUrl ? (
+    /* eslint-disable-next-line @next/next/no-img-element */
+    <img
+      src={imageUrl}
+      alt={imageAlt || ""}
+      className="w-full rounded-2xl border border-gray-200 object-cover shadow-sm"
+    />
+  ) : (
+    <div className="flex h-64 w-full items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-slate-100 px-6 text-center text-sm text-slate-400">
+      Upload an image to complete this section.
+    </div>
+  );
+
+  const text = (
+    <div className={isCaption ? "space-y-2 text-center" : "space-y-5"}>
+      {heading ? (
+        isCaption ? (
+          <h3 className="text-sm font-bold uppercase tracking-wide text-slate-900">{heading}</h3>
+        ) : (
+          <>
+            <h2 className="text-3xl font-extrabold text-slate-900">{heading}</h2>
+            <div className="h-1.5 w-16 rounded-full" style={{ backgroundColor: primaryColor }} />
+          </>
+        )
+      ) : null}
+      <div
+        className={
+          isCaption
+            ? "space-y-2 text-sm leading-relaxed text-slate-500"
+            : "space-y-4 leading-relaxed text-slate-600"
+        }
+      >
+        {paragraphs.map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
+      </div>
+    </div>
+  );
+
+  if (beside) {
+    return (
+      <section className="px-6 py-20">
+        <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
+          <div className={position === "left" ? "md:order-1" : "md:order-2"}>{text}</div>
+          <div className={position === "left" ? "md:order-2" : "md:order-1"}>{image}</div>
+        </div>
+      </section>
+    );
+  }
+
+  // Stacked. `figure`/`figcaption` gives the caption variant real semantics.
+  return (
+    <section className="px-6 py-20">
+      <figure className="mx-auto max-w-3xl space-y-6">
+        {position === "above" ? <figcaption>{text}</figcaption> : null}
+        {image}
+        {isCaption ? <figcaption>{text}</figcaption> : null}
+      </figure>
+    </section>
+  );
+}
+
 /** Render a single block by dispatching on its `type`. */
 export function BlockRenderer({ block, primaryColor }: { block: Block; primaryColor: string }) {
   switch (block.type) {
@@ -147,6 +231,8 @@ export function BlockRenderer({ block, primaryColor }: { block: Block; primaryCo
       return <Gallery block={block} primaryColor={primaryColor} />;
     case "cta":
       return <Cta block={block} primaryColor={primaryColor} />;
+    case "imageText":
+      return <ImageText block={block} primaryColor={primaryColor} />;
     default:
       return null;
   }

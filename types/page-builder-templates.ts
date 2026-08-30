@@ -90,8 +90,8 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     name: "Studio Showcase",
     tagline: "Hero, story, work, enquiry — the dependable studio homepage.",
     description:
-      "A balanced four-section page that introduces the studio, explains the approach and closes with a contact prompt. The safest starting point if you are not sure which layout you want.",
-    bestFor: ["Established studios", "Balanced", "4 blocks"],
+      "A balanced page that introduces the studio, explains the approach beside a supporting image, and closes with a contact prompt. The safest starting point if you are not sure which layout you want.",
+    bestFor: ["Established studios", "Balanced", "Image + text"],
     blocks: [
       {
         type: "hero",
@@ -113,6 +113,16 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
           heading: "About the Studio",
           body:
             "We are an architecture practice specialising in modular and prefabricated construction. Every project starts with the site, the climate and the way our clients actually live — then we resolve it into a system that a factory can build precisely and repeatedly.\n\nThat discipline means fewer surprises on site, tighter budgets and a finished building that holds its detail. We work with Apex Modular's manufacturing network so the drawings we issue are the drawings that get built.",
+        },
+      },
+      {
+        type: "imageText",
+        props: {
+          imageUrl: TILE(PHOTO.interiorMinimal),
+          imageAlt: "Pared-back living space with soft daylight and a low sofa",
+          heading: "Designed around how people live",
+          body: "We start with the way a room gets used at 7am and at 9pm, then work outward to the structure. Light, storage and circulation are resolved before the envelope is fixed.\n\nBecause the modules are built in a factory, those decisions stay intact — what gets drawn is what gets delivered.",
+          textPosition: "right",
         },
       },
       {
@@ -147,7 +157,7 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     tagline: "Let the photography do the talking.",
     description:
       "A stripped-back, image-first page: a dark typographic hero, a large gallery grid and a single closing prompt. Ideal when your work is stronger than any paragraph about it.",
-    bestFor: ["Image-first", "Fast to fill in", "3 blocks"],
+    bestFor: ["Image-first", "Fast to fill in"],
     blocks: [
       {
         type: "hero",
@@ -196,7 +206,7 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     tagline: "Services up front, process explained, work as proof.",
     description:
       "Written for practices that sell an end-to-end service. Leads with what you offer, shows completed projects, then walks through your process so clients know exactly what working with you looks like.",
-    bestFor: ["Service-led", "Full-service firms", "5 blocks"],
+    bestFor: ["Service-led", "Full-service firms"],
     blocks: [
       {
         type: "hero",
@@ -259,7 +269,7 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     tagline: "Put one flagship building at the centre of the page.",
     description:
       "A single-project landing page: a full-bleed hero of the building, the story behind it, a detail gallery and the specification. Useful for launching a new model or a development you are taking enquiries on.",
-    bestFor: ["One flagship project", "New model launch", "5 blocks"],
+    bestFor: ["One flagship project", "New model launch", "Captioned image"],
     blocks: [
       {
         type: "hero",
@@ -281,6 +291,16 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
           heading: "The Brief",
           body:
             "The Canopy started as a question: how do you put a warm, generous cabin on a difficult northern site without a two-year build programme? The answer was to stop treating the building as bespoke and treat it as a system.\n\nTwo modules, one shared spine, a deep roof overhang doing the work of a porch, a snow shelf and shading all at once. Everything else follows from that move — which is why it can be built in a factory in weeks and set on site in a single day.",
+        },
+      },
+      {
+        type: "imageText",
+        props: {
+          imageUrl: TILE(PHOTO.timberFrame),
+          imageAlt: "Aerial view of the timber frame being set on site",
+          heading: "Set in a single day",
+          body: "Both modules craned into position on prepared foundations, weathertight the same afternoon.",
+          textPosition: "below",
         },
       },
       {
@@ -322,7 +342,7 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     tagline: "Built to convert enquiries, not to browse.",
     description:
       "A short, text-forward page aimed squarely at generating leads. No gallery to maintain — just a clear offer, credentials that build trust and a strong closing prompt.",
-    bestFor: ["Lead generation", "No photos needed", "4 blocks"],
+    bestFor: ["Lead generation", "No photos needed"],
     blocks: [
       {
         type: "hero",
@@ -371,7 +391,7 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
     tagline: "Lead with performance, back it with numbers.",
     description:
       "For practices whose pitch is energy performance and low-carbon construction. Pairs the environmental story with hard figures so the claims stay credible.",
-    bestFor: ["Passive house", "Low-carbon", "5 blocks"],
+    bestFor: ["Passive house", "Low-carbon", "Image + text"],
     blocks: [
       {
         type: "hero",
@@ -393,6 +413,16 @@ export const PAGE_TEMPLATES: PageTemplate[] = [
           heading: "Our Approach",
           body:
             "Performance is a design decision, not a product you add at the end. We fix the energy target at concept stage and let it drive form, orientation, glazing ratio and envelope build-up.\n\nOff-site manufacture is what makes it achievable. Airtightness that is difficult to hit in the rain on a site is routine in a controlled factory, and the offcuts get recycled rather than skipped.",
+        },
+      },
+      {
+        type: "imageText",
+        props: {
+          imageUrl: TILE(PHOTO.constructionSite),
+          imageAlt: "Site crew installing services and insulation",
+          heading: "Where the performance comes from",
+          body: "Airtightness is won at the junctions — wall to roof, floor to wall, every service penetration. In a factory those details are repeatable and inspectable rather than improvised in the rain.\n\nWe model the envelope before fabrication, then blower-door test every completed build to confirm it landed.",
+          textPosition: "left",
         },
       },
       {
