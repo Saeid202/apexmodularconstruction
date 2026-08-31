@@ -120,11 +120,11 @@ function ColHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-5">
       <p
-        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 text-gray-800"
+        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 text-[#4B1D8F]"
       >
         {children}
       </p>
-      <div className="h-px w-8 rounded-full bg-gray-200" />
+      <div className="h-px w-8 rounded-full bg-[#4B1D8F]/30" />
     </div>
   )
 }
@@ -142,7 +142,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
   }
 
   return (
-    <footer className="bg-white border-t border-gray-200">
+    <footer className="bg-gray-50 border-t border-gray-200">
       {/* Gold accent top line */}
       <div
         className="h-[3px]"

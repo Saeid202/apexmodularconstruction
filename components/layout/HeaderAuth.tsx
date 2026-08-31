@@ -67,7 +67,7 @@ export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
       <div className="flex items-center gap-2">
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "login" }))}
-          className="inline-flex h-9 items-center justify-center rounded-xl border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+          className="inline-flex h-9 items-center justify-center rounded-xl bg-[#4B1D8F] px-4 text-sm font-semibold text-white transition-all hover:bg-[#3B1671] cursor-pointer shadow-sm hover:shadow"
         >
           Login
         </button>
