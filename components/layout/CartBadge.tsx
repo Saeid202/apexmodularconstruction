@@ -16,7 +16,7 @@ export function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="relative flex h-9 w-9 items-center justify-center rounded-xl text-purple-200 transition-all hover:bg-white/10 hover:text-white"
+      className="relative flex h-9 w-9 items-center justify-center rounded-xl text-gray-700 transition-all hover:bg-gray-100 hover:text-gray-900"
       aria-label={displayCount > 0 ? `Shopping cart, ${displayCount} item${displayCount !== 1 ? "s" : ""}` : "Shopping cart"}
     >
       <ShoppingCart className="h-5 w-5" />

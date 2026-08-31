@@ -117,11 +117,7 @@ export function Header({ cmsNav }: HeaderProps) {
   return (
     <>
       <header 
-        className="w-full py-3 transition-all duration-500 z-50 border-b border-purple-900/50"
-        style={{
-          background:
-            'linear-gradient(135deg, var(--brand-chrome-from) 0%, var(--brand-chrome-to) 100%)',
-        }}
+        className="w-full py-3 transition-all duration-500 z-50 border-b border-gray-200 bg-white shadow-sm"
       >
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex items-center gap-8">
@@ -197,7 +193,7 @@ export function Header({ cmsNav }: HeaderProps) {
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-white transition-all hover:bg-white/10 lg:hidden"
+                className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-700 transition-all hover:bg-gray-100 lg:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />

@@ -120,12 +120,11 @@ function ColHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-5">
       <p
-        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2"
-        style={{ color: '#D4AF37' }}
+        className="text-[10px] font-bold uppercase tracking-[0.2em] mb-2 text-gray-800"
       >
         {children}
       </p>
-      <div className="h-px w-8 rounded-full" style={{ background: 'rgba(212,175,55,0.35)' }} />
+      <div className="h-px w-8 rounded-full bg-gray-200" />
     </div>
   )
 }
@@ -143,12 +142,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
   }
 
   return (
-    <footer
-      style={{
-        background:
-          'linear-gradient(160deg, var(--brand-chrome-from) 0%, var(--brand-chrome-to) 100%)',
-      }}
-    >
+    <footer className="bg-white border-t border-gray-200">
       {/* Gold accent top line */}
       <div
         className="h-[3px]"
@@ -167,41 +161,41 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               href="/"
               className="inline-flex items-center gap-3 hover:opacity-85 transition-opacity"
             >
-              <div className="bg-white rounded-full h-12 w-12 flex items-center justify-center shrink-0 overflow-hidden">
+              <div className="bg-white border border-gray-100 rounded-full h-12 w-12 flex items-center justify-center shrink-0 overflow-hidden">
                 <img
                   src="/logo.png"
                   alt="Apex Modular Construction"
                   className="h-10 w-10 object-contain"
                 />
               </div>
-              <span className="text-white font-bold text-base">
+              <span className="text-gray-900 font-bold text-base">
                 Apex Modular Construction (16481043 Canada Inc.)
               </span>
             </Link>
-            <p className="text-sm text-white/85 leading-relaxed max-w-sm">
+            <p className="text-sm text-gray-600 leading-relaxed max-w-sm">
               Your trusted partner for quality prefabricated structures and construction solutions —
               direct from factory to your Canadian site.
             </p>
-            <div className="space-y-2.5 text-sm text-white/85">
+            <div className="space-y-2.5 text-sm text-gray-600">
               <div className="flex items-start gap-3">
-                <MapPin className="h-4 w-4 shrink-0 mt-0.5" style={{ color: '#D4AF37' }} />
+                <MapPin className="h-4 w-4 shrink-0 mt-0.5 text-gray-400" />
                 <span>1050 King St W 1st Floor, Toronto, ON M6K 0C7</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
+                <Phone className="h-4 w-4 shrink-0 text-gray-400" />
                 <div className="flex items-center gap-2">
-                  <a href="tel:+14168825015" className="hover:text-white transition-colors">
+                  <a href="tel:+14168825015" className="hover:text-gray-900 transition-colors">
                     +1 416 882 5015
                   </a>
-                  <span className="text-white/30">|</span>
-                  <a href="https://wa.me/14168825015" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-[#D4AF37] transition-colors font-bold flex items-center gap-1">
+                  <span className="text-gray-300">|</span>
+                  <a href="https://wa.me/14168825015" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 transition-colors font-bold flex items-center gap-1">
                     WhatsApp
                   </a>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 shrink-0" style={{ color: '#D4AF37' }} />
-                <a href="mailto:hello@apexmodularconstruction.com" className="hover:text-white transition-colors">
+                <Mail className="h-4 w-4 shrink-0 text-gray-400" />
+                <a href="mailto:hello@apexmodularconstruction.com" className="hover:text-gray-900 transition-colors">
                   hello@apexmodularconstruction.com
                 </a>
               </div>
@@ -216,7 +210,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white/70 hover:bg-[#D4AF37] hover:text-[#1a1a2e] hover:border-[#D4AF37] transition-all duration-200"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-500 hover:bg-[#4B1D8F] hover:text-white hover:border-[#4B1D8F] transition-all duration-200"
                   >
                     <SocialIcon platform={link.platform} />
                   </a>
@@ -235,7 +229,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                   <li key={link.href + link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                      className="text-sm text-gray-600 hover:text-[#4B1D8F] transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -255,7 +249,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                         <button
                           type="button"
                           onClick={() => openArchitectAuth('register')}
-                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors cursor-pointer"
+                          className="text-sm text-gray-600 hover:text-[#4B1D8F] transition-colors cursor-pointer"
                         >
                           {link.label}
                         </button>
@@ -263,14 +257,14 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                         <button
                           type="button"
                           onClick={() => openAffiliateAuth('register')}
-                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors cursor-pointer"
+                          className="text-sm text-gray-600 hover:text-[#4B1D8F] transition-colors cursor-pointer"
                         >
                           {link.label}
                         </button>
                       ) : (
                         <Link
                           href={link.href}
-                          className="text-sm text-white/85 hover:text-[#D4AF37] transition-colors"
+                          className="text-sm text-gray-600 hover:text-[#4B1D8F] transition-colors"
                         >
                           {link.label}
                         </Link>
@@ -278,7 +272,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                     </li>
                   ))
                 ) : (
-                  <li className="text-sm text-white/60">Coming soon</li>
+                  <li className="text-sm text-gray-400">Coming soon</li>
                 )}
               </ul>
             </div>
@@ -288,12 +282,12 @@ export function Footer({ socialLinks = [] }: FooterProps) {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-        <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/50">
+      <div style={{ borderTop: '1px solid #f3f4f6' }}>
+        <div className="container mx-auto px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-400">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
             <p>© {currentYear} Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
-            <span className="hidden sm:inline text-white/20">|</span>
-            <Link href="/privacy" className="hover:text-white transition-colors">
+            <span className="hidden sm:inline text-gray-200">|</span>
+            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
               Privacy Policy
             </Link>
           </div>

@@ -67,7 +67,7 @@ export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
       <div className="flex items-center gap-2">
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "login" }))}
-          className="inline-flex h-9 items-center justify-center rounded-xl border border-white/40 bg-white/10 px-4 text-sm font-semibold text-white transition-all hover:bg-white/20 cursor-pointer"
+          className="inline-flex h-9 items-center justify-center rounded-xl border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
         >
           Login
         </button>
@@ -84,11 +84,11 @@ export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
     <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-3 h-9 text-sm font-semibold text-white hover:bg-white/20 hover:border-[#D4AF37] transition-all cursor-pointer"
+        className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 h-9 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-[#D4AF37] hover:text-gray-900 transition-all cursor-pointer"
       >
         <User className="h-4 w-4 text-[#D4AF37]" />
         <span className="max-w-[120px] truncate">{name}</span>
-        <ChevronDown className="h-3 w-3 text-white/50" />
+        <ChevronDown className="h-3 w-3 text-gray-400" />
       </button>
 
       {dropdownOpen && (
