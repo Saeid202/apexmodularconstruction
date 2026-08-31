@@ -45,8 +45,8 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
 
   // Both states are dark backgrounds (purple or transparent over dark hero)
   const linkClass = scrolled
-    ? 'relative text-sm font-semibold text-gray-700 transition-all hover:text-gray-900 whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-gray-100 group'
-    : 'relative text-sm font-semibold text-gray-700 transition-all hover:text-gray-900 whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-gray-100 group'
+    ? 'relative text-[15px] font-bold text-gray-950 transition-all hover:text-black whitespace-nowrap flex items-center px-4 py-2 rounded-xl hover:bg-gray-50 group'
+    : 'relative text-[15px] font-bold text-gray-950 transition-all hover:text-black whitespace-nowrap flex items-center px-4 py-2 rounded-xl hover:bg-gray-50 group'
 
   return (
     <nav className={className}>

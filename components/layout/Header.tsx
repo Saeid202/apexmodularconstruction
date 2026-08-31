@@ -173,16 +173,13 @@ export function Header({ cmsNav }: HeaderProps) {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex flex-1 justify-center items-center">
               <Navigation
                 scrolled={scrolled}
                 onOpenSellerAuth={(mode) => setSellerAuthModal({ open: true, mode })}
               />
               {cmsNav}
             </div>
-
-            {/* Spacer */}
-            <div className="flex-1" />
 
             {/* Right side */}
             <div className="flex items-center gap-2 shrink-0">
