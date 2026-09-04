@@ -184,11 +184,11 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0 text-gray-400" />
                 <div className="flex items-center gap-2">
-                  <a href="tel:+14168825015" className="hover:text-gray-900 transition-colors">
-                    +1 416 882 5015
+                  <a href="tel:+12898168314" className="hover:text-gray-900 transition-colors">
+                    +1 289 816 8314
                   </a>
                   <span className="text-gray-300">|</span>
-                  <a href="https://wa.me/14168825015" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 transition-colors font-bold flex items-center gap-1">
+                  <a href="https://wa.me/12898168314" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 transition-colors font-bold flex items-center gap-1">
                     WhatsApp
                   </a>
                 </div>
