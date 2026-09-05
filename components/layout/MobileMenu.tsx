@@ -15,15 +15,6 @@ interface MobileMenuProps {
   onOpenSellerAuth?: (mode: 'login' | 'register') => void
 }
 
-const navLinks = [
-  { href: '/products', label: 'Buildings' },
-  { href: '/products?category=building-systems', label: 'Building Systems' },
-  { href: '/products?category=materials', label: 'Materials' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact Us' },
-  { href: '/seller/register', label: 'Sell on Apex Modular Construction' },
-]
-
 export function MobileMenu({
   isOpen,
   onClose,
@@ -112,40 +103,18 @@ export function MobileMenu({
                     </Link>
                   </li>
 
-                  {/* Building Systems
+                  {/* Materials — `all-materials` is the identifier the catalogue
+                      uses for "materials mode, everything". The previous
+                      `?category=materials` matched no category slug. */}
                   <li>
                     <Link
-                      href="/products?category=building-systems"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Building Systems
-                    </Link>
-                  </li>
-                  */}
-
-                  {/* Materials */}
-                  <li>
-                    <Link
-                      href="/products?category=materials"
+                      href="/products?category=all-materials"
                       onClick={onClose}
                       className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                     >
                       Materials
                     </Link>
                   </li>
-
-                  {/* Get Quote
-                  <li>
-                    <Link
-                      href="/get-quote"
-                      onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
-                    >
-                      Get Quote
-                    </Link>
-                  </li>
-                  */}
 
                   {/* Services — expandable */}
                   <li>
