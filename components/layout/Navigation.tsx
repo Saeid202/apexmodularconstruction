@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from 'react'
 import { ChevronDown, Wrench, ShieldCheck } from 'lucide-react'
 
 const PURPLE = '#4B1D8F'
-const GOLD = '#D4AF37'
 
 interface NavigationProps {
   className?: string
@@ -29,7 +28,7 @@ const services = [
   },
 ]
 
-export function Navigation({ className, onLinkClick, scrolled = true }: NavigationProps) {
+export function Navigation({ className, onLinkClick }: NavigationProps) {
   const [servicesOpen, setServicesOpen] = useState(false)
   const dropdownRef = useRef<HTMLLIElement>(null)
 
@@ -43,10 +42,10 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
-  // Both states are dark backgrounds (purple or transparent over dark hero)
-  const linkClass = scrolled
-    ? 'relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
-    : 'relative text-sm font-semibold text-white/80 transition-all hover:text-white whitespace-nowrap flex items-center px-3 py-2 rounded-xl hover:bg-white/10 group'
+  // The header is a white surface, so links are ink-on-white with a brand
+  // underline on hover.
+  const linkClass =
+    'group relative flex items-center rounded-lg px-3.5 py-2 text-[13.5px] font-medium whitespace-nowrap text-neutral-600 transition-colors hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none'
 
   return (
     <nav className={className}>
@@ -55,7 +54,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
         <li>
           <Link href="/about" onClick={() => onLinkClick?.()} className={linkClass}>
             About Us
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
         */}
@@ -64,40 +63,23 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
         <li>
           <Link href="/products" onClick={() => onLinkClick?.()} className={linkClass}>
             Buildings
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 
-        {/* Building Systems
+        {/* Materials — `all-materials` is the identifier the catalogue uses for
+            "materials mode, everything"; `?category=materials` matched no slug. */}
         <li>
-          <Link href="/products?category=building-systems" onClick={() => onLinkClick?.()} className={linkClass}>
-            Building Systems
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
-          </Link>
-        </li>
-        */}
-
-        {/* Materials */}
-        <li>
-          <Link href="/products?category=materials" onClick={() => onLinkClick?.()} className={linkClass}>
+          <Link href="/products?category=all-materials" onClick={() => onLinkClick?.()} className={linkClass}>
             Materials
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
-
-        {/* Get Quote
-        <li>
-          <Link href="/get-quote" onClick={() => onLinkClick?.()} className={linkClass}>
-            Get Quote
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
-          </Link>
-        </li>
-        */}
 
         {/* Services */}
         <li
           ref={dropdownRef}
-          className="relative"
+          className="relative hidden"
           onMouseEnter={() => setServicesOpen(true)}
           onMouseLeave={() => setServicesOpen(false)}
         >
@@ -113,25 +95,15 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
               className="h-3.5 w-3.5 transition-transform duration-200"
               style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
             />
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </button>
 
           {/* Dropdown panel */}
           {servicesOpen && (
-            <div
-              className="absolute left-0 top-full mt-1 w-64 rounded-2xl overflow-hidden shadow-xl z-50"
-              style={{
-                border: `1px solid ${GOLD}44`,
-                background: 'white',
-                boxShadow: `0 8px 32px rgba(75,29,143,0.15), 0 0 0 1px ${PURPLE}22`,
-              }}
-            >
+            <div className="shadow-panel absolute left-0 top-full z-50 mt-1.5 w-72 overflow-hidden rounded-2xl border border-neutral-200 bg-white">
               {/* Header */}
-              <div
-                className="px-4 py-2.5"
-                style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
-              >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-purple-200">
+              <div className="border-b border-neutral-100 bg-[var(--surface-subtle)] px-4 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                   Our Services
                 </p>
               </div>
@@ -148,19 +120,18 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
                         setServicesOpen(false)
                         onLinkClick?.()
                       }}
-                      className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[#EDE9F6] group/item"
+                      className="group/item flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--surface-subtle)]"
                     >
-                      <span
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg mt-0.5"
-                        style={{ backgroundColor: `${PURPLE}18` }}
-                      >
+                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-tint)]">
                         <Icon className="h-4 w-4" style={{ color: PURPLE }} />
                       </span>
                       <div>
-                        <p className="text-sm font-bold text-gray-900 group-hover/item:text-[#4B1D8F]">
+                        <p className="text-sm font-semibold text-neutral-900 group-hover/item:text-[#4B1D8F]">
                           {s.label}
                         </p>
-                        <p className="text-[11px] text-gray-500 mt-0.5">{s.description}</p>
+                        <p className="mt-0.5 text-[11px] leading-snug text-neutral-500">
+                          {s.description}
+                        </p>
                       </div>
                     </Link>
                   )
@@ -178,7 +149,7 @@ export function Navigation({ className, onLinkClick, scrolled = true }: Navigati
         <li>
           <Link href="/contact" onClick={() => onLinkClick?.()} className={linkClass}>
             Contact Us
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
       </ul>
