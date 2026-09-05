@@ -64,7 +64,7 @@ export default async function PrivacyPage() {
     <p>
       <strong>Legal Name:</strong> 16481043 Canada Inc.<br />
       <strong>Email:</strong> <a href="mailto:hello@apexmodularconstruction.com">hello@apexmodularconstruction.com</a><br />
-      <strong>Phone:</strong> +1 416-882-5015
+      <strong>Phone:</strong> +1 289-816-8314
     </p>
   `;
 

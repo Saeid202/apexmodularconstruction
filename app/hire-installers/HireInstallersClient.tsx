@@ -48,41 +48,15 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Hire an Installer</h1>
           <p className="text-lg text-gray-600">Find qualified contractors in your area</p>
         </div>
-        {/* Rental Equipment Banner */}
-        <div className="bg-gradient-to-r from-[#4B1D8F] to-[#6b31c2] rounded-2xl p-6 mb-8 shadow-sm border border-purple-800/20 text-white flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-          {/* Subtle design elements */}
-          <span className="absolute top-0 right-0 h-32 w-32 bg-white/5 rounded-full translate-x-12 -translate-y-12 pointer-events-none" />
-          <span className="absolute bottom-0 left-0 h-24 w-24 bg-white/5 rounded-full -translate-x-8 translate-y-8 pointer-events-none" />
-
-          <div className="flex-1 space-y-2 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400/20 border border-yellow-400/30 text-yellow-300 text-xs font-bold uppercase tracking-wider">
-              <span className="h-1.5 w-1.5 rounded-full bg-yellow-400 animate-pulse" />
-              Heavy Machinery Rentals
-            </div>
-            <h2 className="text-2xl font-extrabold tracking-tight">Need Construction Equipment?</h2>
-            <p className="text-purple-100 max-w-2xl text-sm leading-relaxed">
-              We provide heavy machinery rentals (cranes, lifts, loaders, and tools) to contractors and installers. Get competitive rates and fast delivery to your job site.
-            </p>
-          </div>
-
-          <Link
-            href="/rental-equipment"
-            className="shrink-0 px-6 py-3.5 bg-[#D4AF37] hover:bg-[#b8960f] text-gray-900 font-extrabold rounded-xl transition-all shadow-md hover:scale-[1.02] active:scale-[0.98] text-sm flex items-center gap-2 border border-yellow-300 relative z-10"
-          >
-            <Wrench className="h-4 w-4" />
-            Rent Equipment
-          </Link>
-        </div>
-
         {/* Filters */}
         <div className="bg-white rounded-2xl shadow-sm p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Province</label>
               <select
                 value={selectedProvince}
                 onChange={(e) => setSelectedProvince(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-gray-900 font-medium"
               >
                 <option value="">All Provinces</option>
                 {PROVINCES.map((province) => (
@@ -99,15 +73,25 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
                   placeholder="Search by city..."
                   value={searchCity}
                   onChange={(e) => setSearchCity(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-gray-900 font-medium"
                 />
               </div>
             </div>
-            <div className="flex items-end">
-              <p className="text-sm text-gray-500">
-                Showing {filteredInstallers.length} of {installers.length} contractors
-              </p>
+            <div className="flex flex-col justify-end">
+              <label className="block text-sm font-semibold text-transparent mb-2 hidden md:block select-none">Action</label>
+              <Link
+                href="/rental-equipment"
+                className="w-full text-center px-4 py-3 bg-[#4B1D8F] hover:bg-[#3b1671] text-white font-bold rounded-xl transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 h-[48px]"
+              >
+                <Wrench className="h-4 w-4" />
+                Need Construction Equipment?
+              </Link>
             </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500">
+            <span>
+              Showing <strong>{filteredInstallers.length}</strong> of {installers.length} contractors
+            </span>
           </div>
         </div>
 

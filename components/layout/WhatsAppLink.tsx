@@ -1,7 +1,7 @@
 "use client";
 import { MessageSquare } from "lucide-react";
 
-const WA_NUMBER = "14168825015";
+const WA_NUMBER = "12898168314";
 const DEFAULT_TEXT = "Hi Apex Modular Construction, I have a question.";
 
 export function WhatsAppLink({ className, style, children, text = DEFAULT_TEXT }: {

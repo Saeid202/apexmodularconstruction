@@ -79,8 +79,8 @@ export default async function ContactPage() {
                 Call or message us directly:
               </p>
               <div className="text-sm font-semibold space-y-1">
-                <a href="tel:+14168825015" className="block text-gray-900 hover:text-[#4B1D8F]">
-                  +1 (416) 882-5015
+                <a href="tel:+12898168314" className="block text-gray-900 hover:text-[#4B1D8F]">
+                  +1 (289) 816-8314
                 </a>
                 <WhatsAppLink className="inline-flex items-center gap-1.5 text-emerald-600 hover:text-emerald-700 font-bold">
                   Message on WhatsApp
