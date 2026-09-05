@@ -82,20 +82,20 @@ export async function CmsNavigation() {
               href={item.href}
               target={item.open_in_new_tab ? "_blank" : undefined}
               rel={item.open_in_new_tab ? "noopener noreferrer" : undefined}
-              className="relative text-sm font-semibold text-purple-100 transition-all hover:text-yellow-300 min-h-[44px] flex items-center px-4 py-2 rounded-xl hover:bg-white/10"
+              className="relative flex min-h-[44px] items-center rounded-lg px-3.5 py-2 text-[13.5px] font-medium text-neutral-600 transition-colors hover:text-neutral-900"
             >
               {item.label}
-              <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+              <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 origin-left scale-x-0 rounded-full bg-[#4B1D8F] transition-transform group-hover:scale-x-100" />
             </Link>
 
             {/* Dropdown for child pages */}
             {item.children && item.children.length > 0 && (
-              <ul className="absolute left-0 top-full z-50 hidden group-hover:block min-w-[180px] rounded-xl border border-white/10 bg-[#4B1D8F] shadow-xl py-1">
+              <ul className="shadow-panel absolute left-0 top-full z-50 hidden min-w-[200px] rounded-xl border border-neutral-200 bg-white py-1.5 group-hover:block">
                 {item.children.map((child) => (
                   <li key={child.href}>
                     <Link
                       href={child.href}
-                      className="block px-4 py-2 text-sm text-purple-100 hover:bg-white/10 hover:text-yellow-300 transition-colors"
+                      className="block px-4 py-2 text-sm text-neutral-600 transition-colors hover:bg-[var(--surface-subtle)] hover:text-neutral-900"
                     >
                       {child.label}
                     </Link>

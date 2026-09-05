@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Menu } from 'lucide-react'
 import { Navigation } from './Navigation'
@@ -20,9 +19,6 @@ interface HeaderProps {
 }
 
 export function Header({ cmsNav }: HeaderProps) {
-  const pathname = usePathname()
-  const isHome = pathname === '/'
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [settings, setSettings] = useState<SiteSettings | null>(null)
   const [scrolled, setScrolled] = useState(false)
@@ -116,24 +112,39 @@ export function Header({ cmsNav }: HeaderProps) {
 
   return (
     <>
-      <header 
-        className="w-full py-3 transition-all duration-500 z-50 border-b border-gray-200 bg-white shadow-sm"
+      {/* Slim white chrome. Keeps the same proportions as the reference site's
+       * header bar, but on a light surface so it sits with the white page body
+       * rather than reading as a separate dark band.
+       *
+       * The background is fully opaque on purpose. With `bg-white/90` the bar
+       * picked up the hero photograph behind it and rendered slightly grey, while
+       * the CMS logo — which ships with an opaque white background rather than a
+       * transparent one — stayed pure white. That left a visible white rectangle
+       * around the logo whenever the sticky bar crossed the hero image. Opaque
+       * white removes the mismatch for any logo asset, transparent or not. */}
+      <header
+        className={`sticky top-0 z-50 w-full border-b bg-white transition-shadow duration-300 ${
+          scrolled
+            ? 'border-neutral-200 shadow-[0_1px_16px_rgba(16,16,24,0.07)]'
+            : 'border-neutral-200/70'
+        }`}
       >
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex items-center gap-8">
+        <div className="relative z-10 mx-auto w-full max-w-[1360px] px-5 sm:px-8 lg:px-10">
+          {/* `1fr auto 1fr` rather than `auto 1fr auto`: equal outer tracks make
+           * the nav sit dead centre in the bar regardless of how wide the logo or
+           * the action cluster happen to be. With `auto 1fr auto` the nav was only
+           * centred inside the leftover space, so it drifted off-centre whenever
+           * the two sides differed in width — which they always do. */}
+          <div className="flex h-16 items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center shrink-0 hover:opacity-85 transition-opacity"
+              className="flex shrink-0 items-center transition-opacity hover:opacity-75 lg:justify-self-start"
             >
               {(!settings || settings.logo_style === 'complete-banner') && (
                 <div
-                  className={`flex items-center bg-white rounded-xl px-3 py-1.5 overflow-hidden ${
-                    settings?.logo_height === 'h-12'
-                      ? 'h-12'
-                      : settings?.logo_height === 'h-20'
-                        ? 'h-20'
-                        : 'h-12'
+                  className={`flex items-center overflow-hidden ${
+                    settings?.logo_height === 'h-20' ? 'h-11' : 'h-9'
                   }`}
                 >
                   <img
@@ -144,22 +155,16 @@ export function Header({ cmsNav }: HeaderProps) {
                 </div>
               )}
               {settings?.logo_style === 'icon-and-text' && (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2.5">
                   <img
                     src={settings.logo_icon_url || '/logo.jpg'}
                     alt="Apex Logo"
-                    className={`w-auto rounded-lg ${
-                      settings.logo_height === 'h-12'
-                        ? 'h-12'
-                        : settings.logo_height === 'h-20'
-                          ? 'h-20'
-                          : 'h-10'
-                    }`}
+                    className="h-8 w-auto rounded-lg"
                   />
                   <img
                     src={settings.logo_text_url || '/logo.svg'}
                     alt="Apex Modular Construction"
-                    className="h-8 w-auto hidden sm:block"
+                    className="hidden h-6 w-auto sm:block"
                   />
                 </div>
               )}
@@ -167,30 +172,31 @@ export function Header({ cmsNav }: HeaderProps) {
                 <img
                   src={settings.logo_text_url || '/logo.svg'}
                   alt="Apex Modular Construction"
-                  className="h-8 w-auto"
+                  className="h-6 w-auto"
                 />
               )}
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex flex-1 justify-center items-center">
+            {/* Centred navigation. A plain div, not a <nav>: Navigation and
+             * CmsNavigation each render their own nav landmark, and nesting them
+             * inside a third would give screen readers duplicate landmarks. */}
+            <div className="hidden items-center justify-center lg:flex lg:justify-self-center">
               <Navigation
-                scrolled={scrolled}
                 onOpenSellerAuth={(mode) => setSellerAuthModal({ open: true, mode })}
               />
               {cmsNav}
             </div>
 
-            {/* Right side */}
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Right side actions */}
+            <div className="flex shrink-0 items-center gap-2 lg:justify-self-end">
               <CartBadge />
-              <div className="hidden lg:flex items-center gap-2">
+              <div className="hidden items-center gap-2 lg:flex">
                 <InstallButton />
-                <HeaderAuth scrolled={scrolled} />
+                <HeaderAuth />
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-700 transition-all hover:bg-gray-100 lg:hidden"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 lg:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />

@@ -136,7 +136,7 @@ export function InstallButton() {
       <div className="relative" ref={tooltipRef}>
         <button
           onClick={() => setShowIOSTooltip((v) => !v)}
-          className="flex items-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition-colors"
+          className="flex h-8 items-center gap-1.5 rounded-full border border-neutral-300 px-3 text-[12px] font-semibold text-neutral-700 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
           aria-label="Install Apex Modular Construction app"
         >
           <Share className="h-3.5 w-3.5" />
@@ -164,7 +164,7 @@ export function InstallButton() {
       {deferredPrompt && (
         <button
           onClick={handleInstall}
-          className="flex items-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition-colors"
+          className="flex h-8 items-center gap-1.5 rounded-full border border-neutral-300 px-3 text-[12px] font-semibold text-neutral-700 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
           aria-label="Install Apex Modular Construction app"
         >
           <Download className="h-3.5 w-3.5" />
@@ -174,7 +174,7 @@ export function InstallButton() {
       {showNotifButton && (
         <button
           onClick={handleEnableNotifications}
-          className="flex items-center gap-1.5 rounded-lg border border-white/30 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20 transition-colors"
+          className="flex h-8 items-center gap-1.5 rounded-full border border-neutral-300 px-3 text-[12px] font-semibold text-neutral-700 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
           aria-label="Enable notifications"
         >
           <Bell className="h-3.5 w-3.5" />
