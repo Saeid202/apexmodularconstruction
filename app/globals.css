@@ -152,6 +152,93 @@
   --brand-chrome-to: #3a1570;
 }
 
+/* ─── Marketing surface scale ────────────────────────────────────────────────
+ * The public marketing pages sit on a white canvas with two near-white
+ * brand-tinted steps above it, so the brand reads as an accent rather than a
+ * flood fill. Every value here is one of the canonical colours in
+ * scripts/palettes.mjs, so `node scripts/apply-palette.mjs <palette>` still
+ * moves these surfaces with the rest of the brand.
+ *
+ * Gold is deliberately never used for text on a light surface — #D4AF37 on
+ * white is only ~2.2:1, which fails WCAG AA. It appears as hairlines and
+ * non-text marks only.
+ */
+:root {
+  --surface: #ffffff;
+  --surface-subtle: #F8F6FC;
+  --surface-tint: #F3EEFB;
+  --surface-tint-strong: #EDE9F6;
+  --surface-ink: #1a0a33;
+
+  --brand: #4B1D8F;
+  --brand-deep: #3A1570;
+  --brand-lift: #6B35B8;
+  --brand-hairline: rgba(75,29,143,0.14);
+  --brand-wash: rgba(75,29,143,0.04);
+  --accent-gold: #D4AF37;
+}
+
+/* Scrims for text sitting on top of photography. The reference site centres
+ * light-weight white type over full-bleed imagery, which only stays legible with
+ * a deliberate darkening pass — a top-and-bottom vignette plus an overall tint,
+ * rather than one flat black layer that would kill the photo. */
+:root {
+  /* Bottom-anchored card text. Weighted hard at the base because the model cards
+   * carry small metadata, not just a title, and stock photography is often
+   * brightest exactly where that text sits. */
+  --scrim-card: linear-gradient(
+    180deg,
+    rgba(12,6,26,0.12) 0%,
+    rgba(12,6,26,0.46) 45%,
+    rgba(12,6,26,0.88) 100%
+  );
+
+  /* Centred overlay text. A radial pool behind the copy, over a flat tint that
+   * keeps busy photographs from competing with it. One flat layer alone either
+   * greys out the image or leaves the type unreadable; two layers do both jobs. */
+  --scrim-centred:
+    radial-gradient(
+      ellipse 72% 62% at 50% 50%,
+      rgba(12,6,26,0.56) 0%,
+      rgba(12,6,26,0.22) 74%,
+      rgba(12,6,26,0.10) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(12,6,26,0.44) 0%,
+      rgba(12,6,26,0.34) 45%,
+      rgba(12,6,26,0.52) 100%
+    );
+}
+
+/* Restrained elevation. Hairline borders carry the structure; shadow only
+ * appears to confirm a hover, so the page stays flat and quiet at rest. */
+.shadow-card {
+  box-shadow: 0 1px 2px rgba(16,16,24,0.04);
+}
+
+.shadow-card-hover {
+  box-shadow:
+    0 14px 34px rgba(16,16,24,0.09),
+    0 2px 6px rgba(16,16,24,0.04);
+}
+
+.shadow-panel {
+  box-shadow:
+    0 24px 60px rgba(16,16,24,0.10),
+    0 4px 12px rgba(16,16,24,0.05);
+}
+
+/* Small type over photography. A scrim handles the large headings, but 13px
+ * metadata on a bright image still needs its own edge to stay legible.
+ *
+ * Deliberately NOT named `text-*`: tailwind-merge treats any `text-…` class as a
+ * text-colour utility, so `cn('text-white', 'text-on-media')` would silently drop
+ * the colour and leave the type unstyled. */
+.on-media {
+  text-shadow: 0 1px 3px rgba(12,6,26,0.65);
+}
+
 .text-gradient {
   background: linear-gradient(135deg, #D4AF37 0%, #f5e08a 40%, #D4AF37 100%);
   -webkit-background-clip: text;

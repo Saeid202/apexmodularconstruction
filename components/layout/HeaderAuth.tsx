@@ -5,7 +5,7 @@ import Link from "next/link";
 import { createBrowserClient } from "@/lib/supabase/client";
 import { User, ChevronDown, LogOut, LayoutDashboard, Store } from "lucide-react";
 
-export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
+export function HeaderAuth() {
   const supabase = createBrowserClient();
   const [user, setUser] = useState<{ id?: string; email?: string; user_metadata?: { full_name?: string } } | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -67,15 +67,9 @@ export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
       <div className="flex items-center gap-2">
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "login" }))}
-          className="inline-flex h-9 items-center justify-center rounded-xl border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-50 hover:text-gray-900 cursor-pointer"
+          className="inline-flex h-8 cursor-pointer items-center justify-center rounded-full px-3 text-[12.5px] font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
         >
           Login
-        </button>
-        <button
-          onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "register" }))}
-          className="inline-flex h-9 items-center justify-center rounded-xl bg-[#4B1D8F] px-4 text-sm font-semibold text-white transition-all hover:bg-[#3B1671] cursor-pointer shadow-sm hover:shadow"
-        >
-          Sign Up
         </button>
       </div>
     );
@@ -90,11 +84,11 @@ export function HeaderAuth({ scrolled = true }: { scrolled?: boolean }) {
     <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-3 h-9 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-[#D4AF37] hover:text-gray-900 transition-all cursor-pointer"
+        className="flex h-8 cursor-pointer items-center gap-2 rounded-full border border-neutral-300 px-3 text-[12.5px] font-medium text-neutral-800 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
       >
-        <User className="h-4 w-4 text-[#D4AF37]" />
-        <span className="max-w-[120px] truncate">{name}</span>
-        <ChevronDown className="h-3 w-3 text-gray-400" />
+        <User className="h-3.5 w-3.5 text-[#4B1D8F]" />
+        <span className="max-w-[110px] truncate">{name}</span>
+        <ChevronDown className="h-3 w-3 text-neutral-400" />
       </button>
 
       {dropdownOpen && (

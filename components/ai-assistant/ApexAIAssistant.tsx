@@ -32,7 +32,16 @@ const ACTION_CARDS = [
   }
 ];
 
-export function ApexAIAssistant() {
+interface ApexAIAssistantProps {
+  /**
+   * Render the assistant's own title bar. The floating widget supplies its own
+   * header with the same title and status, so it opts out — otherwise "Apex AI
+   * Assistant" appears twice, one row above the other.
+   */
+  showHeader?: boolean
+}
+
+export function ApexAIAssistant({ showHeader = true }: ApexAIAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -132,51 +141,63 @@ export function ApexAIAssistant() {
 
   return (
     <div className="flex flex-col h-full bg-white">
-      {/* Header */}
-      <div className="border-b px-4 py-4 sm:px-6">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center text-white"
-              style={{ backgroundColor: CP_PURPLE }}
-            >
-              <Sparkles className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg text-gray-900">Apex AI Assistant</h1>
-              <p className="text-xs text-gray-500">Your modular construction expert</p>
+      {/* Header — a brand-tinted icon tile with a purple glyph, matching the icon
+          tiles used across the marketing pages, instead of a solid purple fill. */}
+      {showHeader && (
+        <div className="border-b border-neutral-200 px-4 py-4 sm:px-6">
+          <div className="mx-auto flex max-w-4xl items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden
+                className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--surface-tint)] text-[#4B1D8F]"
+              >
+                <Sparkles className="h-5 w-5" />
+              </span>
+              <div>
+                <h1 className="text-[17px] font-semibold tracking-[-0.01em] text-neutral-900">
+                  Apex AI Assistant
+                </h1>
+                <p className="text-xs text-neutral-500">Your modular construction expert</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-4xl mx-auto h-full flex flex-col">
           {isLandingView ? (
             // Landing View with Suggested Prompts
-            <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 text-center">
-              <div className="mb-12 space-y-3 max-w-3xl">
-                <h2 className="text-5xl sm:text-6xl font-bold text-gray-900 tracking-tight">
+            // This component renders both full-page at /ai-assistant and inside the
+            // ~650px floating panel, so the display type is sized to work in the
+            // narrower of the two. It was text-5xl/6xl, which overflowed the panel.
+            <div className="flex flex-1 flex-col items-center justify-center px-5 py-10 text-center">
+              <div className="mb-10 max-w-2xl space-y-3">
+                <h2 className="text-2xl font-semibold tracking-[-0.02em] text-balance text-neutral-900 sm:text-3xl">
                   Ask anything about our modular buildings
                 </h2>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                  Get instant answers about products, pricing, shipping, installation, and more
+                <p className="mx-auto max-w-xl text-[15px] leading-relaxed text-neutral-600">
+                  Get instant answers about products, pricing, shipping, installation and more.
                 </p>
               </div>
 
               {/* Suggested Prompts / Action Cards */}
-              <div className="w-full max-w-2xl space-y-4 mb-16">
-                <p className="text-sm font-semibold text-gray-600 mb-5">What would you like to build today?</p>
-                <div className="grid gap-3 grid-cols-1">
+              <div className="mb-10 w-full max-w-xl">
+                <p className="mb-4 text-[11px] font-semibold tracking-[0.16em] text-neutral-400 uppercase">
+                  What would you like to build?
+                </p>
+                <div className="grid grid-cols-1 gap-2.5">
                   {ACTION_CARDS.map((card, index) => (
                     <button
                       key={index}
                       onClick={() => handleActionSelect(card.action)}
-                      className="p-5 border-2 border-gray-100 rounded-2xl hover:border-purple-400 hover:bg-purple-50 transition-all text-left group hover:shadow-md flex items-center gap-4 bg-white"
+                      className="group hover:shadow-card flex items-center gap-3.5 rounded-2xl border border-neutral-200 bg-white p-4 text-left transition-all hover:border-neutral-300 hover:bg-[var(--surface-subtle)] focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none"
                     >
-                      <span className="text-3xl">{card.icon}</span>
-                      <p className="text-lg font-bold text-gray-900 group-hover:text-purple-900">
+                      <span aria-hidden className="text-2xl">
+                        {card.icon}
+                      </span>
+                      <p className="text-[15px] font-medium text-neutral-900 group-hover:text-[#4B1D8F]">
                         {card.title}
                       </p>
                     </button>
