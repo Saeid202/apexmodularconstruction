@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import { ChevronDown, Wrench, ShieldCheck } from 'lucide-react'
+import { Building2, ChevronDown, Wrench, ShieldCheck } from 'lucide-react'
 
 const PURPLE = '#4B1D8F'
 
@@ -73,6 +73,15 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
           <Link href="/products?category=all-materials" onClick={() => onLinkClick?.()} className={linkClass}>
             Materials
             <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+
+        {/* Building Designer */}
+        <li>
+          <Link href="/building-designer" onClick={() => onLinkClick?.()} className={linkClass}>
+            <Building2 className="mr-1.5 h-4 w-4" />
+            Design Your Building
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 

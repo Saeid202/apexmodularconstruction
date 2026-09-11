@@ -48,6 +48,9 @@ export function ProductInclusionsPanel({
   const specFileUrl = specifications?.['_specification_file_url'] || null
   const specFileName = specifications?.['_specification_file_name'] || null
 
+  const legacySize = specifications?.['Size'] || specifications?.['size'] || ''
+  const legacyDimensions = legacySize.match(/^(\d+(?:\.\d+)?)\s*(mm|cm|m|ft|')?\s*[x×]\s*(\d+(?:\.\d+)?)\s*(mm|cm|m|ft|')?$/i)
+
   // The three underscore-prefixed keys are storage for the rich-text and file
   // fields, not real specifications, so they never appear in the table.
   const kvSpecs = Object.entries(specifications ?? {}).filter(
@@ -55,12 +58,20 @@ export function ProductInclusionsPanel({
       key !== '_specification_text' &&
       key !== '_specification_file_url' &&
       key !== '_specification_file_name' &&
+      key.toLowerCase() !== 'size' &&
       key !== 'ar_glb_url' &&
       key !== 'ar_usdz_url' &&
       key !== 'sketchfab_embed_url' &&
       key !== 'id' &&
       key !== 'created_at'
   )
+
+  if (legacyDimensions && !kvSpecs.some(([key]) => key.toLowerCase() === 'width')) {
+    kvSpecs.unshift(['Width', `${legacyDimensions[1]}${legacyDimensions[2] || ''}`])
+  }
+  if (legacyDimensions && !kvSpecs.some(([key]) => key.toLowerCase() === 'length')) {
+    kvSpecs.splice(1, 0, ['Length', `${legacyDimensions[3]}${legacyDimensions[4] || ''}`])
+  }
 
   const hasSpecs = kvSpecs.length > 0 || Boolean(specText) || Boolean(specFileUrl)
 

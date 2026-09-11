@@ -11,9 +11,7 @@ const inputClass =
 
 // ── Preset options ──────────────────────────────────────────────
 const SIZE_PRESETS = [
-  "300×300mm", "400×400mm", "600×600mm", "800×800mm",
-  "1000×1000mm", "1200×600mm", "1220×180mm", "600×1200mm",
-  "Custom",
+  "300mm", "400mm", "600mm", "800mm", "1000mm", "1200mm", "Custom",
 ];
 
 const THICKNESS_PRESETS = [
@@ -99,6 +97,11 @@ export function SpecificationsEditor({ specs, onChange }: Props) {
   const getVal = (key: string) =>
     specs.find((s) => s.key.toLowerCase() === key)?.value ?? "";
 
+  const legacySize = getVal("size");
+  const legacyDimensions = legacySize.match(/^(\d+(?:\.\d+)?)\s*(?:mm|cm|m|ft|')?\s*[x×]\s*(\d+(?:\.\d+)?)\s*(mm|cm|m|ft|')?$/i);
+  const getDimension = (key: "width" | "length") =>
+    getVal(key) || (legacyDimensions ? `${key === "width" ? legacyDimensions[1] : legacyDimensions[2]}${legacyDimensions[3] || ""}` : "");
+
   const setStructured = (key: string, value: string) => {
     const filtered = specs.filter((s) => s.key.toLowerCase() !== key);
     if (value.trim()) {
@@ -110,7 +113,7 @@ export function SpecificationsEditor({ specs, onChange }: Props) {
 
   // Extra free-form specs (anything that isn't size/thickness)
   const extraSpecs = specs.filter(
-    (s) => s.key.toLowerCase() !== "size" && s.key.toLowerCase() !== "thickness"
+    (s) => !["size", "width", "length", "height", "thickness"].includes(s.key.toLowerCase())
   );
 
   const addExtra = () =>
@@ -138,11 +141,25 @@ export function SpecificationsEditor({ specs, onChange }: Props) {
       <div className="grid sm:grid-cols-2 gap-5 p-4 rounded-2xl border"
         style={{ borderColor: `${GOLD}44`, backgroundColor: "#FDFBF7" }}>
         <HybridField
-          label="Size"
+          label="Width"
           presets={SIZE_PRESETS}
-          value={getVal("size")}
-          onChange={(v) => setStructured("size", v)}
-          placeholder="e.g. 1220mm × 180mm"
+          value={getDimension("width")}
+          onChange={(v) => setStructured("width", v)}
+          placeholder="e.g. 1220mm"
+        />
+        <HybridField
+          label="Length"
+          presets={SIZE_PRESETS}
+          value={getDimension("length")}
+          onChange={(v) => setStructured("length", v)}
+          placeholder="e.g. 2400mm"
+        />
+        <HybridField
+          label="Height"
+          presets={SIZE_PRESETS}
+          value={getVal("height")}
+          onChange={(v) => setStructured("height", v)}
+          placeholder="e.g. 120mm"
         />
         <HybridField
           label="Thickness"
@@ -194,7 +211,7 @@ export function SpecificationsEditor({ specs, onChange }: Props) {
         <Plus className="h-4 w-4" /> Add Specification
       </button>
       <p className="text-xs text-gray-400">
-        Size and Thickness are optional. Add more fields like Material, Color, Weight, etc.
+        Width, Length, Height, and Thickness are optional. Add more fields like Material, Color, Weight, etc.
       </p>
     </div>
   );

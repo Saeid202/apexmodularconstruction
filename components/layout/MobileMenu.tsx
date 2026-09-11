@@ -116,6 +116,17 @@ export function MobileMenu({
                     </Link>
                   </li>
 
+                  {/* Building Designer */}
+                  <li>
+                    <Link
+                      href="/building-designer"
+                      onClick={onClose}
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-semibold text-[#4B1D8F] transition-colors hover:bg-[#EDE9F6]"
+                    >
+                      Design Your Building
+                    </Link>
+                  </li>
+
                   {/* Services — expandable */}
                   <li>
                     <button

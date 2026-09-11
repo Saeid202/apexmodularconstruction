@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { getSellerDashboardData } from "@/app/actions/seller";
+import { getSellerProfile } from "@/app/actions/seller";
 import { Package, ShoppingBag, ClipboardList, UserCircle, ArrowRight, Clock, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
@@ -17,8 +17,8 @@ export default async function SellerDashboardPage() {
   let error: string | null = null;
 
   try {
-    const result = await getSellerDashboardData();
-    profile = result.profile;
+    const result = await getSellerProfile();
+    profile = result.data;
     error = result.error;
   } catch {
     error = "Failed to load";
