@@ -9,6 +9,8 @@ import { getPartnerProducts, PartnerProduct } from "@/app/actions/partner-produc
 import { getProducts } from "@/app/actions/products";
 import Link from "next/link";
 import { CabinetConfigurator, type CabinetConfig } from '@/components/product/CabinetConfigurator'
+import { parseCabinetCommand } from '@/app/actions/parse-cabinet-command'
+import { generateCabinetVariants, type CabinetVariant, type RoomData } from '@/app/actions/generate-cabinet-variants'
 const CP_PURPLE = "#4B1D8F";
 const CP_GOLD = "#D4AF37";
 
@@ -19,6 +21,7 @@ type Step =
   | "processing"
   | "results"
   | "questions"
+  | "variants"
   | "generating"
   | "final";
 
@@ -29,8 +32,9 @@ interface ChatMessage {
 
 import { parseWallCommand } from '@/app/actions/parse-wall-command';
 
+
 export function KitchenStudio({ onExit }: { onExit: () => void }) {
-  const [step, setStep] = useState<Step>("final")
+  const [step, setStep] = useState<Step>("welcome");
   const [scanProgress, setScanProgress] = useState(0);
   const [processingPhase, setProcessingPhase] = useState("Analyzing Kitchen...");
   const [isPhotoFlow, setIsPhotoFlow] = useState(false);
@@ -77,6 +81,9 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
   const [partnerProducts, setPartnerProducts] = useState<PartnerProduct[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [cabinetProducts, setCabinetProducts] = useState<any[]>([]);
+  const [cabinetConfigOverride, setCabinetConfigOverride] = useState<Partial<CabinetConfig>>({})
+  const [variants, setVariants] = useState<CabinetVariant[]>([])
+  const [selectedVariant, setSelectedVariant] = useState<CabinetVariant | null>(null)
 
   useEffect(() => {
     async function loadCabinets() {
@@ -374,25 +381,53 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
     });
   };
 
-  const submitFeatures = () => {
-    setStep("generating");
-    setTimeout(() => {
-      setStep("final");
-      setChatMessages([
-        { role: "assistant", content: "Here is your new kitchen design! You can tell me to change anything, like 'Make cabinets black' or 'Remove the island'." }
-      ]);
-    }, 3000);
-  };
+  const submitFeatures = async () => {
+    setStep("generating")
+    const res = await generateCabinetVariants(
+      {
+        estLength: aiResults?.estLength,
+        estHeight: aiResults?.estHeight,
+        windows:   aiResults?.windows,
+        doors:     aiResults?.doors,
+        layout:    aiResults?.layout,
+      },
+      preferences
+    )
+    if (res.success && res.variants) {
+      setVariants(res.variants)
+    }
+    setStep("variants")
+  }
+  const handleSendMessage = async () => {
+  if (!chatInput.trim()) return
+  const userMsg = chatInput
+  setChatMessages(prev => [...prev, { role: 'user', content: userMsg }])
+  setChatInput('')
 
-  const handleSendMessage = () => {
-    if (!chatInput.trim()) return;
-    setChatMessages(prev => [...prev, { role: "user", content: chatInput }]);
-    setChatInput("");
-    // Mock response
+  if (step === 'final') {
+    const currentConfig: CabinetConfig = {
+      cabinetColor: preferences.cabinetColor || 'White',
+      countertop:   preferences.countertop   || 'Quartz',
+      style:        preferences.style        || 'Modern',
+      widthInches:  36,
+      doorCount:    2,
+      doorStyle:    'flat',
+      handleStyle:  'bar',
+      ...cabinetConfigOverride,
+    }
+    const res = await parseCabinetCommand(userMsg, currentConfig)
+    if (res.success && res.data) {
+      setCabinetConfigOverride(prev => ({ ...prev, ...res.data!.updates }))
+      setChatMessages(prev => [...prev, { role: 'assistant', content: res.data!.reply }])
+    } else {
+      setChatMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I couldn't process that. Try something like 'make the cabinets black' or 'switch to marble countertop'." }])
+    }
+  } else {
     setTimeout(() => {
-      setChatMessages(prev => [...prev, { role: "assistant", content: "I've updated the design based on your request. How does it look now?" }]);
-    }, 1000);
-  };
+      setChatMessages(prev => [...prev, { role: 'assistant', content: "I've updated the design based on your request. How does it look now?" }])
+    }, 1000)
+  }
+}
 
   const renderWelcome = () => (
     <div className="flex-1 flex flex-col w-full h-full overflow-y-auto animate-in fade-in zoom-in-95 duration-500 p-4 lg:p-8">
@@ -481,6 +516,77 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
       <p className="text-gray-500">Uploading to Apex AI Vision</p>
     </div>
   );
+
+  const renderVariants = () => (
+  <div className="flex-1 overflow-y-auto bg-gray-50 p-4 lg:p-8 animate-in fade-in slide-in-from-bottom-4">
+    <div className="max-w-5xl mx-auto">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Choose Your Layout</h2>
+        <p className="text-gray-500">AI generated 3 designs based on your room scan and preferences. Pick one to configure further.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {variants.map((variant) => (
+          <button
+            key={variant.id}
+            onClick={() => {
+              setSelectedVariant(variant)
+              setCabinetConfigOverride(variant.config)
+              setChatMessages([{ role: 'assistant', content: `I've loaded the ${variant.name} layout. You can ask me to change anything — color, doors, countertop, whatever you like.` }])
+              setStep("final")
+            }}
+            className="text-left bg-white rounded-3xl border-2 border-gray-100 hover:border-purple-400 hover:shadow-xl transition-all duration-300 overflow-hidden group"
+          >
+            {/* Color swatch */}
+            <div
+              className="h-32 w-full flex items-end p-4"
+              style={{
+                background: variant.config.cabinetColor === 'White'  ? 'linear-gradient(135deg, #F5F4F0, #E8E6E0)'
+                          : variant.config.cabinetColor === 'Black'  ? 'linear-gradient(135deg, #1C1C1E, #3A3A3C)'
+                          : variant.config.cabinetColor === 'Walnut' ? 'linear-gradient(135deg, #6B3F25, #8B5A3A)'
+                          : variant.config.cabinetColor === 'Oak'    ? 'linear-gradient(135deg, #C8A882, #D4BC9A)'
+                          :                                            'linear-gradient(135deg, #4B1D8F, #6B3DAF)',
+              }}
+            >
+              <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white">
+                {variant.config.widthInches}" · {variant.config.doorCount} doors · {variant.config.doorStyle}
+              </span>
+            </div>
+
+            <div className="p-5">
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <h3 className="text-lg font-black text-gray-900 group-hover:text-purple-700 transition-colors">{variant.name}</h3>
+                  <p className="text-xs text-purple-600 font-semibold">{variant.tagline}</p>
+                </div>
+                <span className="text-lg font-black text-gray-900 shrink-0 ml-2">${variant.estimatedPrice.toLocaleString()}</span>
+              </div>
+              <p className="text-xs text-gray-500 mb-4 leading-relaxed">{variant.description}</p>
+              <div className="space-y-1.5">
+                {variant.highlights.map((h, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0" />
+                    {h}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 py-2.5 bg-purple-700 group-hover:bg-purple-800 text-white text-xs font-bold rounded-xl text-center transition-colors">
+                Select This Layout →
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+      <div className="text-center mt-6">
+        <button
+          onClick={() => setStep("final")}
+          className="text-sm text-gray-400 hover:text-gray-600 underline underline-offset-4"
+        >
+          Skip and configure manually
+        </button>
+      </div>
+    </div>
+  </div>
+)
 
   const renderScanning = () => (
     <div className="absolute inset-0 bg-black z-50 flex flex-col text-white overflow-y-auto">
@@ -1029,6 +1135,14 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 cabinetColor={preferences.cabinetColor}
                 countertop={preferences.countertop}
                 style={preferences.style}
+                configOverride={cabinetConfigOverride}
+                wallWidthInches={aiResults?.estLength ? Math.round(aiResults.estLength * 12) : undefined}
+                roomData={{
+                  estLength: aiResults?.estLength,
+                  estHeight: aiResults?.estHeight,
+                  windows:   aiResults?.windows,
+                  doors:     aiResults?.doors,
+                }}
                 onAddToCart={(config, price) => {
                   alert(`Added to cart: ${config.widthInches}" ${config.cabinetColor} cabinet — Est. $${price.toLocaleString()}`)
                 }}
@@ -1167,7 +1281,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 { id: "welcome", label: "Scan Space", icon: <Camera className="w-4 h-4" />, matches: ["welcome", "uploading"] },
                 { id: "results", label: "Analyze", icon: <Scan className="w-4 h-4" />, matches: ["processing", "results"] },
                 { id: "questions", label: "Design", icon: <Sparkles className="w-4 h-4" />, matches: ["questions"] },
-                { id: "final", label: "Final 3D", icon: <ImageIcon className="w-4 h-4" />, matches: ["generating", "final"] }
+                { id: "final", label: "Final 3D", icon: <ImageIcon className="w-4 h-4" />, matches: ["generating", "variants", "final"] }
               ].map((s, i) => {
                 const isActive = s.matches.includes(step);
                 return (
@@ -1215,6 +1329,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
       {step === "results" && renderResults()}
       {step === "questions" && renderQuestions()}
       {step === "generating" && renderGenerating()}
+      {step === "variants" && renderVariants()}
       {step === "final" && renderFinal()}
 
       {/* Slide-out Partner Storefront Drawer */}
