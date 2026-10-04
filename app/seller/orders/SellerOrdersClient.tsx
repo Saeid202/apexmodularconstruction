@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Package, Clock, CheckCircle, XCircle, ChevronDown, ChevronUp, MapPin, Phone, Mail, MessageSquare } from "lucide-react";
 import { updateOrderRequestStatus, type OrderRequestRow } from "@/app/actions/order-requests";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const STATUS_CONFIG = {
@@ -50,7 +50,7 @@ function RequestCard({ req }: { req: OrderRequestRow }) {
         <div className="flex items-center gap-3 min-w-0">
           <div
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-            style={{ backgroundColor: "#EDE9F6" }}
+            style={{ backgroundColor: "#FEF3C7" }}
           >
             <Package className="h-5 w-5" style={{ color: PURPLE }} />
           </div>
@@ -187,7 +187,7 @@ export function SellerOrdersClient({ requests, fetchError }: Props) {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-20 text-center">
           <div
             className="inline-flex h-16 w-16 items-center justify-center rounded-2xl mb-5"
-            style={{ backgroundColor: "#EDE9F6" }}
+            style={{ backgroundColor: "#FEF3C7" }}
           >
             <Package className="h-8 w-8" style={{ color: PURPLE }} />
           </div>

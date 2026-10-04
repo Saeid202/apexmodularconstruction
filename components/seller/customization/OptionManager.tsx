@@ -17,7 +17,7 @@ interface OptionManagerProps {
   userId: string;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export function OptionManager({ categoryId, categoryName, options, onOptionsChange, userId }: OptionManagerProps) {
@@ -191,7 +191,7 @@ const renderOptionImages = (option: CustomizationOption | { id: 'new', images: s
         ))}
         {(option.id === 'new' || uploadingImages.has(`${option.id}-uploading`)) && (
           <div className="w-16 h-16 rounded-lg border-2 border-dashed flex items-center justify-center" style={{ borderColor: `${PURPLE}44` }}>
-            <div className="animate-spin h-4 w-4 border-2 border-purple-600 border-t-transparent rounded-full"></div>
+            <div className="animate-spin h-4 w-4 border-2 border-gray-800 border-t-transparent rounded-full"></div>
           </div>
         )}
       </div>
@@ -322,7 +322,7 @@ const renderOptionImages = (option: CustomizationOption | { id: 'new', images: s
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <Package className="h-4 w-4 text-purple-600" />
+                  <Package className="h-4 w-4 text-gray-800" />
                   <h5 className="font-medium text-gray-900">{option.name}</h5>
                   {option.price_modifier !== 0 && (
                     <span

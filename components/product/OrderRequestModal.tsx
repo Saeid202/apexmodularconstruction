@@ -4,11 +4,11 @@ import { useState } from "react";
 import { X, Send, MapPin, User, Phone, Mail, Package, MessageSquare } from "lucide-react";
 import { submitOrderRequest, type OrderRequestInput } from "@/app/actions/order-requests";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const inputClass =
-  "w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:border-transparent transition-shadow";
+  "w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:border-transparent transition-shadow";
 
 interface Props {
   productId: string;
@@ -86,16 +86,16 @@ export function OrderRequestModal({
         {/* Header */}
         <div
           className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 rounded-t-2xl"
-          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
+          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #111827 100%)` }}
         >
           <div>
             <h2 className="text-lg font-extrabold text-white">Submit Order Request</h2>
-            <p className="text-xs text-purple-200 mt-0.5 truncate max-w-[280px]">{productName}</p>
+            <p className="text-xs text-amber-200 mt-0.5 truncate max-w-[280px]">{productName}</p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1.5 text-purple-200 hover:bg-white/20 transition-colors"
+            className="rounded-full p-1.5 text-amber-200 hover:bg-white/20 transition-colors"
             aria-label="Close"
           >
             <X className="h-5 w-5" />
@@ -110,7 +110,7 @@ export function OrderRequestModal({
           )}
 
           {/* Quantity + variant info */}
-          <div className="rounded-xl p-4 space-y-3" style={{ backgroundColor: "#EDE9F6" }}>
+          <div className="rounded-xl p-4 space-y-3" style={{ backgroundColor: "#FEF3C7" }}>
             <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: PURPLE }}>
               <Package className="h-4 w-4" />
               Order Details
@@ -137,11 +137,11 @@ export function OrderRequestModal({
               </div>
             </div>
             {customizations && Object.entries(customizations).length > 0 && (
-              <div className="mt-3 pt-3 border-t border-purple-200/50">
-                <p className="text-[10px] font-black uppercase tracking-widest text-purple-400 mb-1.5">Customizations</p>
+              <div className="mt-3 pt-3 border-t border-amber-200/50">
+                <p className="text-[10px] font-black uppercase tracking-widest text-amber-400 mb-1.5">Customizations</p>
                 <div className="space-y-1">
                   {Object.entries(customizations as Record<string, any>).map(([id, c]) => (
-                    <p key={id} className="text-xs text-purple-900">
+                    <p key={id} className="text-xs text-gray-900">
                       <span className="font-bold">{c.groupName}:</span> {c.optionName}
                     </p>
                   ))}

@@ -19,9 +19,9 @@ export default function PartnerProfilePage() {
 
       {/* Password card */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100 flex items-center gap-2">
-          <Lock className="h-4 w-4 text-purple-600" />
-          <h2 className="text-sm font-bold text-purple-900 uppercase tracking-wide">Change Password</h2>
+        <div className="px-6 py-4 bg-gradient-to-r from-amber-50 to-pink-50 border-b border-amber-100 flex items-center gap-2">
+          <Lock className="h-4 w-4 text-gray-800" />
+          <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide">Change Password</h2>
         </div>
         <div className="p-6">
           <ChangePasswordForm />

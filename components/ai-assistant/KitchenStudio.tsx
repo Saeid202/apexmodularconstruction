@@ -9,7 +9,7 @@ import { getPartnerProducts, PartnerProduct } from "@/app/actions/partner-produc
 import { getProducts } from "@/app/actions/products";
 import Link from "next/link";
 import { CabinetConfigurator, type CabinetConfig } from '@/components/product/CabinetConfigurator'
-const CP_PURPLE = "#4B1D8F";
+const CP_PURPLE = "#1F2937";
 const CP_GOLD = "#D4AF37";
 
 type Step = 
@@ -402,10 +402,10 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
           <div className="w-full mb-12 bg-white rounded-3xl p-6 border border-gray-100 shadow-sm animate-in slide-in-from-top-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                <ImageIcon className="w-5 h-5 text-purple-600" />
+                <ImageIcon className="w-5 h-5 text-gray-800" />
                 Project Assets ({savedScans.length} Saved Walls)
               </h3>
-              <button onClick={() => setStep("questions")} className="text-sm font-bold text-purple-600 hover:text-purple-700 flex items-center gap-1 bg-purple-50 px-3 py-1.5 rounded-full">
+              <button onClick={() => setStep("questions")} className="text-sm font-bold text-gray-800 hover:text-gray-800 flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-full">
                 Skip to Design <ChevronRight className="w-4 h-4" />
               </button>
             </div>
@@ -423,7 +423,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         )}
 
         <div className="text-center mb-10 space-y-4 max-w-2xl">
-          <div className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 bg-gradient-to-br from-purple-600 to-purple-900">
+          <div className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center text-white shadow-xl mb-6 bg-gradient-to-br from-gray-800 to-gray-900">
             <Scan className="w-10 h-10" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 tracking-tight">Apex Kitchen Studio</h1>
@@ -433,15 +433,15 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         </div>
       
         <div className="grid gap-4 w-full max-w-2xl">
-          <button onClick={startScanning} className="flex items-center p-6 border-2 border-transparent bg-gray-50 rounded-2xl hover:bg-white hover:border-purple-200 hover:shadow-lg transition-all group">
-            <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 mr-4 group-hover:scale-110 transition-transform">
+          <button onClick={startScanning} className="flex items-center p-6 border-2 border-transparent bg-gray-50 rounded-2xl hover:bg-white hover:border-amber-200 hover:shadow-lg transition-all group">
+            <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-gray-800 mr-4 group-hover:scale-110 transition-transform">
               <Camera className="w-6 h-6" />
             </div>
             <div className="text-left flex-1">
               <h3 className="font-bold text-gray-900 text-lg">Scan My Kitchen</h3>
               <p className="text-sm text-gray-500">Use your camera to map the space automatically</p>
             </div>
-            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-purple-600 group-hover:translate-x-1 transition-all" />
+            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-800 group-hover:translate-x-1 transition-all" />
           </button>
 
 
@@ -508,9 +508,9 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
   const renderProcessing = () => (
     <div className="flex-1 flex flex-col items-center justify-center bg-gray-50 animate-in fade-in">
       <div className="w-24 h-24 mb-8 relative">
-        <div className="absolute inset-0 rounded-full border-4 border-purple-100"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-purple-600 border-t-transparent animate-spin"></div>
-        <div className="absolute inset-0 flex items-center justify-center text-purple-600">
+        <div className="absolute inset-0 rounded-full border-4 border-amber-100"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-gray-800 border-t-transparent animate-spin"></div>
+        <div className="absolute inset-0 flex items-center justify-center text-gray-800">
           <Scan className="w-8 h-8 animate-pulse" />
         </div>
       </div>
@@ -555,24 +555,24 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         
         {/* Left Column: AI Co-Pilot Chat */}
         <div className="w-full lg:w-1/4 border-r border-gray-200 bg-white flex flex-col shadow-xl z-10 hidden lg:flex">
-          <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-purple-900 to-[#1A1A2E]">
+          <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-900 to-[#1A1A2E]">
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-purple-300" /> AI Co-Pilot
+              <Sparkles className="w-5 h-5 text-amber-300" /> AI Co-Pilot
             </h2>
-            <p className="text-purple-200 text-sm mt-1">Chat to adjust your layout.</p>
+            <p className="text-amber-200 text-sm mt-1">Chat to adjust your layout.</p>
           </div>
           
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
             {chatMessages.length === 0 ? (
               <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-4 h-4 text-purple-600" />
+                <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4 text-gray-800" />
                 </div>
                 <div className="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm text-gray-700 text-xs">
                   <p className="mb-2"><strong>Wall Space Mapped!</strong></p>
                   <p>I've placed a standard cabinet block on your wall.</p>
                   <p className="mt-2">Try saying:</p>
-                  <ul className="list-disc pl-4 mt-1 text-purple-700 font-medium space-y-1">
+                  <ul className="list-disc pl-4 mt-1 text-gray-800 font-medium space-y-1">
                     <li>"Move it to the right"</li>
                     <li>"Make it taller"</li>
                   </ul>
@@ -581,8 +581,8 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
             ) : (
               chatMessages.map((msg, i) => (
                 <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-gray-200' : 'bg-purple-100'}`}>
-                    {msg.role === 'user' ? <Scan className="w-4 h-4 text-gray-600" /> : <Sparkles className="w-4 h-4 text-purple-600" />}
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-gray-200' : 'bg-amber-100'}`}>
+                    {msg.role === 'user' ? <Scan className="w-4 h-4 text-gray-600" /> : <Sparkles className="w-4 h-4 text-gray-800" />}
                   </div>
                   <div className={`p-3 rounded-2xl border text-xs max-w-[85%] ${msg.role === 'user' ? 'bg-gray-900 text-white rounded-tr-none border-gray-800' : 'bg-white text-gray-700 rounded-tl-none border-gray-100 shadow-sm'}`}>
                     {msg.content}
@@ -599,7 +599,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 <button 
                   key={cmd}
                   onClick={() => handleCopilotCommand(cmd)}
-                  className="px-2.5 py-1 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-100 rounded-full text-[10px] font-bold transition-colors"
+                  className="px-2.5 py-1 bg-amber-50 text-gray-800 hover:bg-amber-100 border border-amber-100 rounded-full text-[10px] font-bold transition-colors"
                 >
                   {cmd}
                 </button>
@@ -612,11 +612,11 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleCopilotCommand(chatInput)}
                 placeholder="Tell AI to adjust..."
-                className="flex-1 p-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="flex-1 p-2 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
               <button 
                 onClick={() => handleCopilotCommand(chatInput)}
-                className="p-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors shadow-sm shrink-0"
+                className="p-2 bg-gray-800 text-white rounded-lg hover:bg-gray-800 transition-colors shadow-sm shrink-0"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -641,7 +641,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
               >
                 <Camera className="w-3 h-3" /> Rescan
               </button>
-              <button onClick={() => setStep("questions")} className="px-4 py-1.5 bg-purple-900 text-white rounded-full font-bold text-xs hover:bg-purple-800 transition-colors shadow-sm flex items-center gap-1.5">
+              <button onClick={() => setStep("questions")} className="px-4 py-1.5 bg-gray-900 text-white rounded-full font-bold text-xs hover:bg-gray-900 transition-colors shadow-sm flex items-center gap-1.5">
                 Confirm Layout <ChevronRight className="w-3 h-3" />
               </button>
             </div>
@@ -666,7 +666,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
               {placedProducts.map((prod) => (
                 <div
                   key={prod.id}
-                  className="absolute border-2 border-purple-500 bg-white shadow-xl rounded-lg overflow-hidden group/item cursor-move z-40 select-none"
+                  className="absolute border-2 border-amber-500 bg-white shadow-xl rounded-lg overflow-hidden group/item cursor-move z-40 select-none"
                   style={{
                     top: `${prod.top}%`,
                     left: `${prod.left}%`,
@@ -675,9 +675,9 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                   }}
                 >
                   <img src={prod.img} alt={prod.name} className="w-full h-[65%] object-cover pointer-events-none" />
-                  <div className="p-1 bg-purple-900 text-white h-[35%] flex flex-col justify-center text-center">
+                  <div className="p-1 bg-gray-900 text-white h-[35%] flex flex-col justify-center text-center">
                     <p className="text-[8px] font-bold truncate">{prod.name}</p>
-                    <p className="text-[8px] text-purple-200 font-semibold">{prod.price}</p>
+                    <p className="text-[8px] text-amber-200 font-semibold">{prod.price}</p>
                   </div>
                   {/* Delete Button */}
                   <button
@@ -692,7 +692,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 </div>
               ))}
               
-              <div className="absolute top-3 left-3 z-40 bg-purple-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none">
+              <div className="absolute top-3 left-3 z-40 bg-gray-800 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none">
                 <Scan className="w-3 h-3" /> Live AI Canvas
               </div>
               
@@ -701,7 +701,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 const box = customWallBox || { top: 40, left: 20, width: 60, height: 40 };
                 return (
                   <div 
-                    className="absolute border-[2px] border-purple-500 bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.3)] z-30 transition-all duration-75 ease-linear flex items-center justify-center group-hover:bg-purple-500/20"
+                    className="absolute border-[2px] border-amber-500 bg-amber-500/10 shadow-[0_0_15px_rgba(168,85,247,0.3)] z-30 transition-all duration-75 ease-linear flex items-center justify-center group-hover:bg-amber-500/20"
                     style={{ 
                       top: `${box.top}%`, 
                       left: `${box.left}%`, 
@@ -710,10 +710,10 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                     }}
                   >
                     {/* Draggable Edges */}
-                    <div className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-ns-resize z-40 hover:bg-purple-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('top'); }}></div>
-                    <div className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-ns-resize z-40 hover:bg-purple-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('bottom'); }}></div>
-                    <div className="absolute left-0 top-0 bottom-0 w-4 -ml-2 cursor-ew-resize z-40 hover:bg-purple-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('left'); }}></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-4 -mr-2 cursor-ew-resize z-40 hover:bg-purple-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('right'); }}></div>
+                    <div className="absolute top-0 left-0 right-0 h-4 -mt-2 cursor-ns-resize z-40 hover:bg-amber-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('top'); }}></div>
+                    <div className="absolute bottom-0 left-0 right-0 h-4 -mb-2 cursor-ns-resize z-40 hover:bg-amber-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('bottom'); }}></div>
+                    <div className="absolute left-0 top-0 bottom-0 w-4 -ml-2 cursor-ew-resize z-40 hover:bg-amber-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('left'); }}></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-4 -mr-2 cursor-ew-resize z-40 hover:bg-amber-500/50" onPointerDown={(e) => { e.preventDefault(); setDraggingEdge('right'); }}></div>
 
                     {/* Draggable Corners */}
                     <div className="absolute -top-1.5 -left-1.5 w-4 h-4 border-t-[3px] border-l-[3px] border-white cursor-nwse-resize z-50 bg-transparent hover:scale-125 transition-transform"></div>
@@ -722,7 +722,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                     <div className="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b-[3px] border-r-[3px] border-white cursor-nwse-resize z-50 bg-transparent hover:scale-125 transition-transform"></div>
                     
                     {/* Label */}
-                    <span className="absolute -top-6 bg-purple-600 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-md flex items-center gap-1 whitespace-nowrap pointer-events-none">
+                    <span className="absolute -top-6 bg-gray-800 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-md flex items-center gap-1 whitespace-nowrap pointer-events-none">
                       <Sparkles className="w-2.5 h-2.5" /> Cabinet Zone
                     </span>
                     
@@ -741,9 +741,9 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         <div className="w-full lg:w-1/4 border-l border-gray-200 bg-white flex flex-col shadow-[-10px_0_20px_-10px_rgba(0,0,0,0.05)] z-10">
           <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
             <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <Package className="w-4 h-4 text-purple-600" /> Product Center
+              <Package className="w-4 h-4 text-gray-800" /> Product Center
             </h2>
-            <span className="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">Drag & Drop</span>
+            <span className="text-[10px] font-bold bg-amber-100 text-gray-800 px-2 py-0.5 rounded-full">Drag & Drop</span>
           </div>
           
           <div className="flex-1 overflow-y-auto p-4 space-y-6">
@@ -760,14 +760,14 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                         key={prod.id} 
                         draggable={true}
                         onDragStart={(e) => handleDragStart(e, prod)}
-                        className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-purple-400 hover:shadow-md transition-all group"
+                        className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-amber-400 hover:shadow-md transition-all group"
                       >
                         <div className="aspect-square bg-gray-100 relative pointer-events-none">
                           <img src={img} alt={prod.name} className="w-full h-full object-cover mix-blend-multiply opacity-80 group-hover:opacity-100 transition-opacity" />
                         </div>
                         <div className="p-2 bg-white pointer-events-none">
                           <p className="text-[10px] font-bold text-gray-900 line-clamp-1">{prod.name}</p>
-                          <p className="text-[10px] text-purple-600 font-medium">${prod.price}</p>
+                          <p className="text-[10px] text-gray-800 font-medium">${prod.price}</p>
                         </div>
                       </div>
                     );
@@ -788,14 +788,14 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                     key={i} 
                     draggable={true}
                     onDragStart={(e) => handleDragStart(e, prod)}
-                    className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-purple-400 hover:shadow-md transition-all group"
+                    className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-amber-400 hover:shadow-md transition-all group"
                   >
                     <div className="aspect-square bg-gray-100 relative pointer-events-none">
                       <img src={prod.img} alt={prod.name} className="w-full h-full object-cover mix-blend-multiply opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="p-2 bg-white pointer-events-none">
                       <p className="text-[10px] font-bold text-gray-900 line-clamp-1">{prod.name}</p>
-                      <p className="text-[10px] text-purple-600 font-medium">{prod.price}</p>
+                      <p className="text-[10px] text-gray-800 font-medium">{prod.price}</p>
                     </div>
                   </div>
                 ))}
@@ -814,14 +814,14 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                     key={i} 
                     draggable={true}
                     onDragStart={(e) => handleDragStart(e, prod)}
-                    className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-purple-400 hover:shadow-md transition-all group"
+                    className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-amber-400 hover:shadow-md transition-all group"
                   >
                     <div className="aspect-square bg-gray-100 relative pointer-events-none">
                       <img src={prod.img} alt={prod.name} className="w-full h-full object-cover mix-blend-multiply opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="p-2 bg-white pointer-events-none">
                       <p className="text-[10px] font-bold text-gray-900 line-clamp-1">{prod.name}</p>
-                      <p className="text-[10px] text-purple-600 font-medium">{prod.price}</p>
+                      <p className="text-[10px] text-gray-800 font-medium">{prod.price}</p>
                     </div>
                   </div>
                 ))}
@@ -840,14 +840,14 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                     key={i} 
                     draggable={true}
                     onDragStart={(e) => handleDragStart(e, prod)}
-                    className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-purple-400 hover:shadow-md transition-all group"
+                    className="border border-gray-200 rounded-xl overflow-hidden cursor-grab active:cursor-grabbing hover:border-amber-400 hover:shadow-md transition-all group"
                   >
                     <div className="aspect-[4/3] bg-gray-100 relative pointer-events-none">
                       <img src={prod.img} alt={prod.name} className="w-full h-full object-cover mix-blend-multiply opacity-80 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="p-2 bg-white pointer-events-none">
                       <p className="text-[10px] font-bold text-gray-900 line-clamp-1">{prod.name}</p>
-                      <p className="text-[10px] text-purple-600 font-medium">{prod.price}</p>
+                      <p className="text-[10px] text-gray-800 font-medium">{prod.price}</p>
                     </div>
                   </div>
                 ))}
@@ -883,7 +883,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         <div className="w-full lg:w-1/3 flex flex-col gap-6">
           <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm sticky top-8">
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <Scan className="w-6 h-6 text-purple-600" />
+              <Scan className="w-6 h-6 text-gray-800" />
               Project Brief
             </h3>
             
@@ -912,7 +912,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
             <div className="space-y-3">
               <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Design Preferences</h4>
               <textarea 
-                className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-amber-500"
                 rows={4}
                 placeholder="What are you looking for? (e.g. Modern white shaker cabinets, double sink, island...)"
               ></textarea>
@@ -939,11 +939,11 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
           <div className="flex flex-col gap-4">
             {loadingPartners ? (
               <div className="flex flex-col items-center justify-center p-12 text-gray-400">
-                <Loader2 className="w-8 h-8 text-purple-600 animate-spin mb-4" />
+                <Loader2 className="w-8 h-8 text-gray-800 animate-spin mb-4" />
                 <p className="font-medium text-sm">Finding best matched factories...</p>
               </div>
             ) : kitchenPartners.length > 0 ? kitchenPartners.map((partner, idx) => (
-              <div key={idx} className="bg-white/60 backdrop-blur-md rounded-3xl p-6 border border-gray-100 hover:border-purple-300 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row items-start md:items-center gap-6 group">
+              <div key={idx} className="bg-white/60 backdrop-blur-md rounded-3xl p-6 border border-gray-100 hover:border-amber-300 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col md:flex-row items-start md:items-center gap-6 group">
                 <Link href={`/sellers/${partner.id}`} className="relative shrink-0 block hover:opacity-90 transition-opacity">
                   <img src={partner.img} alt={partner.name} className="w-20 h-20 rounded-full object-cover shadow-sm border-2 border-white" />
                   {partner.online && (
@@ -955,7 +955,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
-                    <Link href={`/sellers/${partner.id}`} className="text-xl font-bold text-gray-900 group-hover:text-purple-700 hover:underline transition-colors">{partner.name}</Link>
+                    <Link href={`/sellers/${partner.id}`} className="text-xl font-bold text-gray-900 group-hover:text-gray-800 hover:underline transition-colors">{partner.name}</Link>
                     <span className="text-xs font-bold bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{partner.location}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
@@ -965,7 +965,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {partner.specialties.map(spec => (
-                      <span key={spec} className="text-[11px] font-bold bg-purple-50 text-purple-700 px-3 py-1 rounded-full border border-purple-100">
+                      <span key={spec} className="text-[11px] font-bold bg-amber-50 text-gray-800 px-3 py-1 rounded-full border border-amber-100">
                         {spec}
                       </span>
                     ))}
@@ -973,12 +973,12 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 </div>
 
                 <div className="w-full md:w-auto flex flex-col gap-2 shrink-0">
-                  <button className="w-full md:w-48 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-[0_0_15px_rgba(147,51,234,0.3)] transition-colors flex items-center justify-center gap-2 group-hover:scale-105 duration-300">
+                  <button className="w-full md:w-48 py-3 bg-gray-800 hover:bg-gray-800 text-white rounded-xl font-bold shadow-[0_0_15px_rgba(147,51,234,0.3)] transition-colors flex items-center justify-center gap-2 group-hover:scale-105 duration-300">
                     <Camera className="w-4 h-4" /> Live Video Call
                   </button>
                   <button 
                     onClick={() => openPartnerStore(partner)}
-                    className="w-full md:w-48 py-3 bg-white border border-gray-200 hover:bg-gray-50 hover:border-purple-300 text-purple-700 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
+                    className="w-full md:w-48 py-3 bg-white border border-gray-200 hover:bg-gray-50 hover:border-amber-300 text-gray-800 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
                   >
                     <ImageIcon className="w-4 h-4" /> View Products
                   </button>
@@ -1003,16 +1003,16 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
     <div className="flex-1 flex flex-col items-center justify-center bg-gray-900 text-white animate-in fade-in">
       <div className="w-32 h-32 mb-8 relative">
         <div className="absolute inset-0 border-4 border-white/20 rounded-full"></div>
-        <div className="absolute inset-0 border-4 border-t-purple-500 rounded-full animate-spin"></div>
+        <div className="absolute inset-0 border-4 border-t-amber-500 rounded-full animate-spin"></div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <Sparkles className="w-10 h-10 text-purple-400 animate-pulse" />
+          <Sparkles className="w-10 h-10 text-amber-400 animate-pulse" />
         </div>
       </div>
       <h2 className="text-3xl font-bold mb-4">Generating Design...</h2>
       <p className="text-gray-400">Applying {preferences.style} style with {preferences.cabinetColor} cabinets...</p>
       
       <div className="w-64 h-2 bg-gray-800 rounded-full mt-10 overflow-hidden">
-        <div className="h-full bg-gradient-to-r from-purple-600 to-pink-500 animate-[pulse_2s_ease-in-out_infinite] w-full" style={{ width: '100%', animationDuration: '2s', transformOrigin: 'left', animationName: 'progress' }}></div>
+        <div className="h-full bg-gradient-to-r from-gray-800 to-pink-500 animate-[pulse_2s_ease-in-out_infinite] w-full" style={{ width: '100%', animationDuration: '2s', transformOrigin: 'left', animationName: 'progress' }}></div>
       </div>
     </div>
   );
@@ -1044,7 +1044,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 <p className="text-3xl font-black text-gray-900">$24,500</p>
               </div>
               <div className="flex gap-3">
-                <button className="px-6 py-3 bg-purple-900 hover:bg-purple-800 text-white rounded-xl font-bold transition-colors shadow-md">
+                <button className="px-6 py-3 bg-gray-900 hover:bg-gray-900 text-white rounded-xl font-bold transition-colors shadow-md">
                   Request Factory Quote
                 </button>
               </div>
@@ -1052,23 +1052,23 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
           </div>
 
           {/* Account Creation Prompt */}
-          <div className="bg-purple-900 rounded-3xl p-8 text-white shadow-xl mt-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600 rounded-full blur-[80px] opacity-50 -translate-y-1/2 translate-x-1/3"></div>
+          <div className="bg-gray-900 rounded-3xl p-8 text-white shadow-xl mt-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gray-800 rounded-full blur-[80px] opacity-50 -translate-y-1/2 translate-x-1/3"></div>
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                  <Sparkles className="w-6 h-6 text-purple-300" />
+                  <Sparkles className="w-6 h-6 text-amber-300" />
                   Save to Your Workspace
                 </h3>
-                <p className="text-purple-200">
+                <p className="text-amber-200">
                   You've mapped {savedScans.length > 0 ? savedScans.length : "your"} walls. Create a free account to save this 3D project to your dashboard and continue editing later!
                 </p>
               </div>
               <div className="flex-shrink-0 flex flex-col gap-3 w-full md:w-auto">
-                <button className="px-8 py-4 bg-white text-purple-900 rounded-xl font-bold hover:bg-gray-100 transition-colors shadow-md w-full">
+                <button className="px-8 py-4 bg-white text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-colors shadow-md w-full">
                   Create Account
                 </button>
-                <button className="text-sm font-medium text-purple-300 hover:text-white transition-colors underline decoration-dotted underline-offset-4 text-center">
+                <button className="text-sm font-medium text-amber-300 hover:text-white transition-colors underline decoration-dotted underline-offset-4 text-center">
                   Sign in
                 </button>
               </div>
@@ -1092,8 +1092,8 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         {/* Right Side: Chat Interface */}
         <div className="w-full lg:w-96 bg-white rounded-3xl shadow-sm border border-gray-100 flex flex-col h-[600px] lg:h-auto">
           <div className="p-4 border-b flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-purple-600" />
+            <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-gray-800" />
             </div>
             <h3 className="font-bold text-gray-900">Kitchen AI Assistant</h3>
           </div>
@@ -1103,7 +1103,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
               <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] rounded-2xl p-3 text-sm ${
                   msg.role === 'user' 
-                    ? 'bg-purple-600 text-white rounded-tr-none' 
+                    ? 'bg-gray-800 text-white rounded-tr-none' 
                     : 'bg-gray-100 text-gray-800 rounded-tl-none'
                 }`}>
                   {msg.content}
@@ -1120,12 +1120,12 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Make cabinets white..." 
-                className="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white shadow-sm"
+                className="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-white shadow-sm"
               />
               <button 
                 onClick={handleSendMessage}
                 disabled={!chatInput.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-gray-800 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
               >
                 <Send className="w-4 h-4" />
               </button>
@@ -1135,7 +1135,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                 <button 
                   key={prompt}
                   onClick={() => setChatInput(prompt)}
-                  className="whitespace-nowrap px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-colors"
+                  className="whitespace-nowrap px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:border-amber-300 hover:text-gray-800 transition-colors"
                 >
                   {prompt}
                 </button>
@@ -1155,7 +1155,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
         <div className="flex flex-col border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-40">
           <div className="flex items-center justify-between px-6 py-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-purple-900 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-gray-900 text-lg">Apex Kitchen Studio</span>
@@ -1177,11 +1177,11 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                     className={`
                       flex items-center gap-2 px-5 py-2 rounded-full text-sm font-bold transition-all duration-300 relative z-10
                       ${isActive 
-                        ? "text-purple-700 bg-white shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-gray-100/50 scale-105" 
-                        : "text-gray-500 hover:text-purple-600 hover:bg-gray-200/50 hover:scale-105"}
+                        ? "text-gray-800 bg-white shadow-[0_4px_10px_rgba(0,0,0,0.05)] border border-gray-100/50 scale-105" 
+                        : "text-gray-500 hover:text-gray-800 hover:bg-gray-200/50 hover:scale-105"}
                     `}
                   >
-                    <span className={`${isActive ? 'text-purple-600' : 'text-gray-400 group-hover:text-purple-500'} transition-colors`}>
+                    <span className={`${isActive ? 'text-gray-800' : 'text-gray-400 group-hover:text-amber-500'} transition-colors`}>
                       {s.icon}
                     </span>
                     {i + 1}. {s.label}
@@ -1247,7 +1247,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
             <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
               {loadingProducts ? (
                 <div className="flex flex-col items-center justify-center py-20 text-gray-400">
-                  <Loader2 className="w-8 h-8 text-purple-600 animate-spin mb-4" />
+                  <Loader2 className="w-8 h-8 text-gray-800 animate-spin mb-4" />
                   <p className="font-bold text-sm">Fetching factory inventory...</p>
                 </div>
               ) : partnerProducts.length > 0 ? (
@@ -1277,7 +1277,7 @@ export function KitchenStudio({ onExit }: { onExit: () => void }) {
                       <div className="p-3">
                         <h4 className="font-bold text-sm text-gray-900 truncate mb-1" title={product.name}>{product.name}</h4>
                         <div className="flex items-end justify-between">
-                          <span className="font-bold text-purple-700">${product.price.toLocaleString()}</span>
+                          <span className="font-bold text-gray-800">${product.price.toLocaleString()}</span>
                           <span className="text-[10px] uppercase font-bold text-gray-400">/{product.price_type}</span>
                         </div>
                       </div>

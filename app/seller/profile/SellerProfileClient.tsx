@@ -5,7 +5,7 @@ import { User, Mail, Phone, MapPin, Building, Edit2, Save, X, CheckCircle, Clock
 import { updateSellerProfile } from "@/app/actions/seller";
 import { createBrowserClient } from "@supabase/ssr";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface ProfileData {
@@ -110,7 +110,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
   };
 
   const inputClass =
-    "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow placeholder:text-gray-400";
+    "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow placeholder:text-gray-400";
 
   const verifications = [
     { label: "Email", status: "verified" },
@@ -126,7 +126,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div
           className="h-32 w-full relative"
-          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
+          style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #111827 100%)` }}
         >
           <span className="absolute top-3 left-3 h-6 w-6 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
           <span className="absolute top-3 right-3 h-6 w-6 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />
@@ -326,7 +326,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
                 <div className="flex flex-wrap gap-2 px-4 py-2 bg-gray-50 rounded-xl min-h-[44px] items-center">
                   {profile.specialties && profile.specialties.length > 0 ? (
                     profile.specialties.map(spec => (
-                      <span key={spec} className="text-xs font-bold bg-purple-50 text-purple-700 px-2 py-1 rounded-full border border-purple-100">
+                      <span key={spec} className="text-xs font-bold bg-amber-50 text-gray-800 px-2 py-1 rounded-full border border-amber-100">
                         {spec}
                       </span>
                     ))
@@ -368,7 +368,7 @@ export function SellerProfileClient({ initialProfile }: Props) {
               </div>
             ))}
           </div>
-          <div className="p-3 rounded-xl text-sm" style={{ backgroundColor: "#EDE9F6", color: PURPLE }}>
+          <div className="p-3 rounded-xl text-sm" style={{ backgroundColor: "#FEF3C7", color: PURPLE }}>
             Complete all verifications to unlock premium features and increase buyer trust.
           </div>
         </div>

@@ -34,7 +34,7 @@ export function ARLoader({ glbUrl, usdzUrl, productName }: ARLoaderProps) {
     <div className="fixed inset-0 bg-gray-950 flex flex-col items-center justify-between p-6 z-50 text-white overflow-hidden">
       
       {/* Background ambient light */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-purple-900/30 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-gray-900/30 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Header */}
       <div className="w-full max-w-md flex items-center justify-between z-10">
@@ -52,7 +52,7 @@ export function ARLoader({ glbUrl, usdzUrl, productName }: ARLoaderProps) {
 
       {/* Title & Status */}
       <div className="flex flex-col items-center gap-3 mt-8 z-10 text-center">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30 backdrop-blur-md">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 backdrop-blur-md">
           <Sparkles className="h-3 w-3 text-yellow-400" />
           True Scale 1:1
         </div>

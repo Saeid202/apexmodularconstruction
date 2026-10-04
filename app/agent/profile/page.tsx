@@ -72,9 +72,9 @@ export default function AgentProfilePage() {
 
       {/* Password */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-5 py-3 bg-gradient-to-r from-violet-50 to-purple-50 border-b border-violet-100 flex items-center gap-2">
-          <Lock className="h-4 w-4 text-violet-600" />
-          <h2 className="text-xs font-bold text-violet-900 uppercase tracking-wide">Change Password</h2>
+        <div className="px-5 py-3 bg-gradient-to-r from-amber-50 to-amber-50 border-b border-amber-100 flex items-center gap-2">
+          <Lock className="h-4 w-4 text-gray-800" />
+          <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wide">Change Password</h2>
         </div>
         <form onSubmit={handleChangePassword} className="p-5 space-y-4">
           {pwMsg && <div className={`p-3 rounded-xl text-sm border ${pwMsg.type === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-700"}`}>{pwMsg.text}</div>}
@@ -83,7 +83,7 @@ export default function AgentProfilePage() {
             <input type="password" required minLength={6} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className={inp} />
           </div>
           <button type="submit" disabled={savingPw}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 text-white text-sm font-bold rounded-xl hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 shadow-md shadow-violet-500/20 transition-all">
+            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-gray-800 to-gray-800 text-white text-sm font-bold rounded-xl hover:from-gray-800 hover:to-gray-800 disabled:opacity-50 shadow-md shadow-amber-500/20 transition-all">
             {savingPw && <Loader2 className="h-4 w-4 animate-spin" />} Update Password
           </button>
         </form>

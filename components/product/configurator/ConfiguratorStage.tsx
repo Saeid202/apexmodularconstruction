@@ -25,7 +25,7 @@ import { extractYouTubeId, getYouTubeEmbedUrl } from '@/lib/youtube'
 import type { SceneDirectives, StudioConfig } from '@/lib/product/model3d'
 import type { CustomizationOption, ProductImageData, ProductWithRelations } from '@/types'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 export type StageMedia = 'photo' | 'sketchfab' | 'video' | 'model3d' | 'composite'
@@ -76,6 +76,8 @@ interface Props {
   studio: StudioConfig
   onStudioChange: (next: StudioConfig) => void
   onPartsDiscovered: (nodeNames: string[]) => void
+  /** Render the thumbnail strip outside the stage instead. */
+  hideThumbnails?: boolean
 }
 
 export function ConfiguratorStage({
@@ -95,6 +97,7 @@ export function ConfiguratorStage({
   studio,
   onStudioChange,
   onPartsDiscovered,
+  hideThumbnails,
 }: Props) {
   const activeIndex = Math.max(
     0,
@@ -119,11 +122,21 @@ export function ConfiguratorStage({
       className="relative h-full w-full overflow-hidden"
       style={{
         background:
-          'radial-gradient(ellipse at 50% -10%, #FFFFFF 0%, #F5F2FB 45%, #E7E0F4 100%)',
+          '#FFFFFF',
       }}
       aria-label={`${product.name} visuals`}
     >
       {/* ── Media ─────────────────────────────────────────────────────── */}
+      {media === 'photo' && activeImage && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={activeImage.url}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full scale-125 object-cover opacity-70 blur-2xl"
+        />
+      )}
+
       {media === 'photo' && activeImage && (
         <button
           type="button"
@@ -136,15 +149,15 @@ export function ConfiguratorStage({
           <img
             src={activeImage.url}
             alt={activeImage.altText ?? product.name}
-            className="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+            className="h-full w-full object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.02]"
           />
           {/* Scrim so the thumbnail rail, counter and variant badge stay legible
               over a full-bleed photo. */}
-          <span className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/45 to-transparent" />
+          <span className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/20 to-transparent" />
           <span className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             <span
               className="rounded-full p-3.5 shadow-xl"
-              style={{ backgroundColor: 'rgba(75,29,143,0.78)' }}
+              style={{ backgroundColor: 'rgba(31,41,55,0.78)' }}
             >
               <Expand className="h-6 w-6 text-white" />
             </span>
@@ -291,7 +304,7 @@ export function ConfiguratorStage({
             type="button"
             onClick={() => step(-1)}
             aria-label="Previous image"
-            className="absolute top-1/2 left-3 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-gray-700 shadow-lg ring-1 ring-black/5 backdrop-blur-md transition-all hover:bg-white hover:text-[#4B1D8F] active:scale-95 sm:left-4"
+            className="absolute top-1/2 left-3 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-gray-700 shadow-lg ring-1 ring-black/5 backdrop-blur-md transition-all hover:bg-white hover:text-[#1F2937] active:scale-95 sm:left-4"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
@@ -299,7 +312,7 @@ export function ConfiguratorStage({
             type="button"
             onClick={() => step(1)}
             aria-label="Next image"
-            className="absolute top-1/2 right-3 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-gray-700 shadow-lg ring-1 ring-black/5 backdrop-blur-md transition-all hover:bg-white hover:text-[#4B1D8F] active:scale-95 sm:right-4"
+            className="absolute top-1/2 right-3 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 text-gray-700 shadow-lg ring-1 ring-black/5 backdrop-blur-md transition-all hover:bg-white hover:text-[#1F2937] active:scale-95 sm:right-4"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -314,14 +327,14 @@ export function ConfiguratorStage({
       {media === 'photo' && activeImage?.variantCode && (
         <span
           className="pointer-events-none absolute bottom-4 left-4 z-20 rounded-lg px-2.5 py-1 text-xs font-black text-white shadow-lg"
-          style={{ backgroundColor: 'rgba(75,29,143,0.88)', border: `1px solid ${GOLD}` }}
+          style={{ backgroundColor: 'rgba(31,41,55,0.88)', border: `1px solid ${GOLD}` }}
         >
           {activeImage.variantCode}
         </span>
       )}
 
       {/* ── Thumbnail rail ───────────────────────────────────────────── */}
-      {media === 'photo' && hasGallery && (
+      {media === 'photo' && hasGallery && !hideThumbnails && (
         <div className="absolute bottom-14 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 justify-center sm:bottom-16">
           <div
             className="flex max-w-full gap-2 overflow-x-auto rounded-2xl bg-white/85 p-2 shadow-lg ring-1 ring-black/5 backdrop-blur-md"

@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { ChevronDown, X, Plus } from "lucide-react";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const inputClass =
-  "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:border-transparent transition-shadow";
+  "w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-white text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:border-transparent transition-shadow";
 
 // ── Preset options ──────────────────────────────────────────────
 const SIZE_PRESETS = [
@@ -205,7 +205,7 @@ export function SpecificationsEditor({ specs, onChange }: Props) {
       <button
         type="button"
         onClick={addExtra}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-colors hover:bg-[#EDE9F6]"
+        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-colors hover:bg-[#FEF3C7]"
         style={{ borderColor: GOLD, color: PURPLE }}
       >
         <Plus className="h-4 w-4" /> Add Specification

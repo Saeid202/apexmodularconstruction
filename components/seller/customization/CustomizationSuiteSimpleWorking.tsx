@@ -11,7 +11,7 @@ interface CustomizationSuiteSimpleProps {
   initialEnabled?: boolean;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface OptionRow {
@@ -202,7 +202,7 @@ export function CustomizationSuiteSimpleWorking({ productId, userId, initialEnab
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#EDE9F6" }}>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#FEF3C7" }}>
             <Settings className="h-4 w-4" style={{ color: PURPLE }} />
           </div>
           <div>
@@ -329,7 +329,7 @@ export function CustomizationSuiteSimpleWorking({ productId, userId, initialEnab
                       >
                         {option.uploading ? (
                           <>
-                            <div className="animate-spin h-3 w-3 border border-gray-300 border-t-purple-600 rounded-full"></div>
+                            <div className="animate-spin h-3 w-3 border border-gray-300 border-t-gray-800 rounded-full"></div>
                             Uploading...
                           </>
                         ) : (

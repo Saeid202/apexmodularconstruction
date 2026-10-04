@@ -18,7 +18,7 @@ interface Props {
   onComplete: (data: ShippingFormData) => void;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const PROVINCES: { code: CanadianProvince; name: string }[] = [
@@ -327,7 +327,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 700,
     cursor: "pointer",
     letterSpacing: "0.01em",
-    boxShadow: `0 2px 8px rgba(75,29,143,0.18)`,
+    boxShadow: `0 2px 8px rgba(31,41,55,0.18)`,
     transition: "background 0.15s, box-shadow 0.15s",
   },
 };

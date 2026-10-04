@@ -41,7 +41,7 @@ declare module 'react' {
   }
 }
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 interface AIStagerTabProps {
@@ -440,7 +440,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
               onClick={() => setStageMode('upload')}
               className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
                 stageMode === 'upload'
-                  ? 'bg-white text-[#4B1D8F] shadow-sm'
+                  ? 'bg-white text-[#1F2937] shadow-sm'
                   : 'text-gray-500 hover:text-gray-900'
               }`}
             >
@@ -452,8 +452,8 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                 onClick={() => setStageMode('ar')}
                 className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
                   stageMode === 'ar'
-                    ? 'bg-white text-purple-700 shadow-sm'
-                    : 'text-gray-500 hover:text-purple-700'
+                    ? 'bg-white text-gray-800 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-800'
                 }`}
               >
                 <Sparkles className="h-3 w-3 text-[#D4AF37] animate-pulse" />
@@ -507,7 +507,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
 
           <div className="flex flex-col justify-between gap-6 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-100">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-gray-800 border border-amber-100">
                 <Sparkles className="h-3 w-3 text-[#D4AF37]" />
                 Web AR Compatibility
               </div>
@@ -531,7 +531,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
               <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">How to use:</div>
               <ul className="text-xs text-gray-500 space-y-2 list-disc list-inside">
                 <li>Scan the QR code with your iPhone, iPad, or Android device.</li>
-                <li>Tap <strong className="text-purple-700">"View in Your Space"</strong> on your device screen.</li>
+                <li>Tap <strong className="text-gray-800">"View in Your Space"</strong> on your device screen.</li>
                 <li>Point camera to an open floor and move it slightly to place model.</li>
               </ul>
             </div>
@@ -617,7 +617,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
             <div className="flex flex-col gap-6">
               {/* Drag/Drop Zone */}
               <div 
-                className="border-3 border-dashed rounded-3xl p-12 text-center flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:bg-purple-50/30 group"
+                className="border-3 border-dashed rounded-3xl p-12 text-center flex flex-col items-center justify-center gap-4 transition-all duration-300 hover:bg-amber-50/30 group"
                 style={{ borderColor: `${PURPLE}44` }}
               >
                 <div 
@@ -890,7 +890,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         step="0.05"
                         value={scale} 
                         onChange={(e) => setScale(Number(e.target.value))}
-                        className="w-full accent-[#4B1D8F] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
+                        className="w-full accent-[#1F2937] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
                       />
                     </div>
 
@@ -906,7 +906,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         max="180" 
                         value={rotation} 
                         onChange={(e) => setRotation(Number(e.target.value))}
-                        className="w-full accent-[#4B1D8F] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
+                        className="w-full accent-[#1F2937] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
                       />
                     </div>
 
@@ -916,7 +916,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         onClick={() => setIsFlippedH(!isFlippedH)}
                         className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                           isFlippedH 
-                            ? 'bg-purple-50 text-[#4B1D8F]' 
+                            ? 'bg-amber-50 text-[#1F2937]' 
                             : 'bg-white text-gray-600 hover:bg-gray-50'
                         }`}
                         style={{ borderColor: isFlippedH ? PURPLE : '#E2E8F0' }}
@@ -928,7 +928,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         onClick={() => setIsFlippedV(!isFlippedV)}
                         className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                           isFlippedV 
-                            ? 'bg-purple-50 text-[#4B1D8F]' 
+                            ? 'bg-amber-50 text-[#1F2937]' 
                             : 'bg-white text-gray-600 hover:bg-gray-50'
                         }`}
                         style={{ borderColor: isFlippedV ? PURPLE : '#E2E8F0' }}
@@ -940,7 +940,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         onClick={() => setHasShadow(!hasShadow)}
                         className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all ${
                           hasShadow 
-                            ? 'bg-purple-50 text-[#4B1D8F]' 
+                            ? 'bg-amber-50 text-[#1F2937]' 
                             : 'bg-white text-gray-600 hover:bg-gray-50'
                         }`}
                         style={{ borderColor: hasShadow ? PURPLE : '#E2E8F0' }}
@@ -965,7 +965,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         max="150" 
                         value={brightness} 
                         onChange={(e) => setBrightness(Number(e.target.value))}
-                        className="w-full accent-[#4B1D8F] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
+                        className="w-full accent-[#1F2937] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
                       />
                     </div>
 
@@ -981,7 +981,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                         max="150" 
                         value={contrast} 
                         onChange={(e) => setContrast(Number(e.target.value))}
-                        className="w-full accent-[#4B1D8F] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
+                        className="w-full accent-[#1F2937] h-1.5 bg-gray-100 rounded-lg cursor-pointer"
                       />
                     </div>
 
@@ -991,7 +991,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                       <select
                         value={blendMode}
                         onChange={(e) => setBlendMode(e.target.value as any)}
-                        className="w-full px-3.5 py-2 text-xs font-bold border border-gray-200 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                        className="w-full px-3.5 py-2 text-xs font-bold border border-gray-200 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500/20"
                       >
                         <option value="normal">Normal Placement</option>
                         <option value="multiply">Multiply (Darks Blended - Good for white background)</option>
@@ -1006,7 +1006,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
                 <div className="flex gap-4 border-t pt-5 mt-2 flex-wrap sm:flex-nowrap">
                   <button
                     onClick={handleDownload}
-                    className="flex-1 min-h-[48px] px-6 rounded-xl font-extrabold text-sm text-white flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-purple-600/10 cursor-pointer"
+                    className="flex-1 min-h-[48px] px-6 rounded-xl font-extrabold text-sm text-white flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-gray-800/10 cursor-pointer"
                     style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #2f125a 100%)` }}
                   >
                     <Download className="h-5 w-5" />
@@ -1045,7 +1045,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
           style={{ 
             backgroundColor: '#ffffff', 
             borderColor: `${PURPLE}15`,
-            boxShadow: `0 4px 20px rgba(75, 29, 143, 0.03)`
+            boxShadow: `0 4px 20px rgba(31,41,55, 0.03)`
           }}
         >
           <div 
@@ -1066,7 +1066,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
           style={{ 
             backgroundColor: '#ffffff', 
             borderColor: `${PURPLE}15`,
-            boxShadow: `0 4px 20px rgba(75, 29, 143, 0.03)`
+            boxShadow: `0 4px 20px rgba(31,41,55, 0.03)`
           }}
         >
           <div 
@@ -1087,7 +1087,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
           style={{ 
             backgroundColor: '#ffffff', 
             borderColor: `${PURPLE}15`,
-            boxShadow: `0 4px 20px rgba(75, 29, 143, 0.03)`
+            boxShadow: `0 4px 20px rgba(31,41,55, 0.03)`
           }}
         >
           <div 
@@ -1118,7 +1118,7 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
 
         <div className="flex flex-col gap-1.5 z-10 text-center md:text-left">
           <h4 className="text-xl font-bold text-white">Be the first to experience AI Staging</h4>
-          <p className="text-sm text-purple-100 max-w-md">
+          <p className="text-sm text-amber-100 max-w-md">
             Join the waitlist to receive updates and get early access when the AI Staging launch begins.
           </p>
         </div>
@@ -1132,14 +1132,14 @@ export function AIStagerTab({ product, activeImageUrl, initialMode }: AIStagerTa
           ) : (
             <form onSubmit={handleSubmit} className="flex gap-2">
               <div className="relative flex-1">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-300" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-amber-300" />
                 <input 
                   type="email" 
                   required
                   placeholder="Enter your email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/10 border border-purple-400/30 text-white placeholder-purple-300/60 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/10 border border-amber-400/30 text-white placeholder-amber-300/60 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent text-sm transition-all"
                 />
               </div>
               <button 

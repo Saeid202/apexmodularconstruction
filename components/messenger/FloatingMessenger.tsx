@@ -103,7 +103,7 @@ export function FloatingMessenger() {
       <button
         onClick={() => setOpen((v) => !v)}
         className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-xl transition-transform hover:scale-105 focus:outline-none"
-        style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}
+        style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "2px solid #D4AF37" }}
         aria-label="Open messenger"
       >
         {open ? (
@@ -126,19 +126,19 @@ export function FloatingMessenger() {
           className="fixed bottom-24 right-6 z-50 w-80 rounded-2xl bg-white overflow-hidden flex flex-col"
           style={{
             height: 480,
-            boxShadow: "0 8px 40px rgba(75,29,143,0.22), 0 0 0 1px rgba(75,29,143,0.12)",
+            boxShadow: "0 8px 40px rgba(31,41,55,0.22), 0 0 0 1px rgba(31,41,55,0.12)",
           }}
         >
           {/* Panel header */}
           <div
             className="flex items-center justify-between px-4 py-3 shrink-0"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}
+            style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}
           >
             <div className="flex items-center gap-2">
               <MessageSquare className="h-4 w-4 text-yellow-300" />
               <p className="text-sm font-bold text-white">Messenger</p>
             </div>
-            <button onClick={() => setOpen(false)} className="text-purple-200 hover:text-white transition-colors">
+            <button onClick={() => setOpen(false)} className="text-amber-200 hover:text-white transition-colors">
               <X className="h-4 w-4" />
             </button>
           </div>

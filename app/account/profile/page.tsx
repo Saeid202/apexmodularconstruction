@@ -82,7 +82,7 @@ export default function ProfilePage() {
     w-full px-4 py-2.5 rounded-lg text-sm font-medium
     bg-white border-2 border-gray-200
     text-gray-900 placeholder:text-gray-400
-    focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100
+    focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-100
     transition-all duration-200 shadow-sm
   `;
 
@@ -90,7 +90,7 @@ export default function ProfilePage() {
     w-full px-4 py-2.5 rounded-lg text-sm font-medium resize-none
     bg-white border-2 border-gray-200
     text-gray-900 placeholder:text-gray-400
-    focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100
+    focus:outline-none focus:border-amber-500 focus:ring-4 focus:ring-amber-100
     transition-all duration-200 shadow-sm
   `;
 
@@ -106,7 +106,7 @@ export default function ProfilePage() {
 
         {/* Personal */}
         <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-          <div className="flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-indigo-600 to-blue-500">
+          <div className="flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r from-gray-800 to-blue-500">
             <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20">
               <User className="h-4 w-4 text-white" />
             </div>
@@ -198,7 +198,7 @@ export default function ProfilePage() {
           </div>
           <button type="submit" disabled={saving}
             className="flex items-center gap-2 px-8 py-2.5 rounded-xl text-sm font-bold text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-100 transition-all duration-200 disabled:opacity-60 cursor-pointer"
-            style={{ background: "linear-gradient(135deg, #6366f1, #8b5cf6)" }}>
+            style={{ background: "linear-gradient(135deg, #6366f1, #F59E0B)" }}>
             <Save className="h-4 w-4" />
             {saving ? "Saving..." : "Save Profile"}
           </button>

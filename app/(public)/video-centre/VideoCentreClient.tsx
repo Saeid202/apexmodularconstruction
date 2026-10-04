@@ -24,7 +24,7 @@ interface VideoCentreClientProps {
 }
 
 const GOLD = "#D4AF37";
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 
 export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
   const [videos] = useState<VideoItem[]>(initialVideos);
@@ -41,9 +41,9 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
 
   if (videos.length === 0) {
     return (
-      <main className="bg-[#FAF9FC] min-h-screen py-24 flex items-center justify-center">
+      <main className="bg-[#FFFBEB] min-h-screen py-24 flex items-center justify-center">
         <div className="text-center p-8 bg-white border border-gray-100 rounded-3xl max-w-md mx-auto shadow-sm">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-purple-50 mb-6 border border-purple-100 text-[#4B1D8F]">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-50 mb-6 border border-amber-100 text-[#1F2937]">
             <Video className="h-6 w-6" />
           </div>
           <h2 className="text-xl font-black text-gray-900 mb-2">Portfolio Showroom Offline</h2>
@@ -76,7 +76,7 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
   };
 
   return (
-    <main className="bg-[#FAF9FC] min-h-screen text-gray-900 relative">
+    <main className="bg-[#FFFBEB] min-h-screen text-gray-900 relative">
       
       {/* Background Blueprint Grid Effect */}
       <div 
@@ -142,7 +142,7 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
                   <span className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] mb-2 block">Featured Project</span>
                   <h3 className="text-base font-black tracking-tight leading-snug mb-2">{spotlightVideo.title}</h3>
                   {spotlightVideo.description && (
-                    <p className="text-purple-200 text-xs leading-relaxed line-clamp-3">
+                    <p className="text-amber-200 text-xs leading-relaxed line-clamp-3">
                       {spotlightVideo.description}
                     </p>
                   )}
@@ -196,7 +196,7 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/15 group-hover:bg-black/35 transition-colors flex items-center justify-center">
-                    <div className="h-12 w-12 rounded-full bg-white/90 group-hover:bg-[#D4AF37] group-hover:text-gray-950 text-[#4B1D8F] flex items-center justify-center shadow-lg transition-all scale-90 group-hover:scale-100">
+                    <div className="h-12 w-12 rounded-full bg-white/90 group-hover:bg-[#D4AF37] group-hover:text-gray-950 text-[#1F2937] flex items-center justify-center shadow-lg transition-all scale-90 group-hover:scale-100">
                       <Play className="h-5 w-5 fill-current ml-0.5" />
                     </div>
                   </div>
@@ -205,7 +205,7 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
                 {/* Core description text and explanation */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-extrabold text-gray-950 tracking-tight leading-snug mb-3 group-hover:text-[#4B1D8F] transition-colors text-base">
+                    <h3 className="font-extrabold text-gray-950 tracking-tight leading-snug mb-3 group-hover:text-[#1F2937] transition-colors text-base">
                       {video.title}
                     </h3>
                     
@@ -219,7 +219,7 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
                   <div className="pt-6 mt-6 border-t border-gray-50 flex items-center justify-between">
                     <button 
                       onClick={() => handleOpenLightbox(video.youtube_id)}
-                      className="text-xs font-black uppercase tracking-widest text-[#4B1D8F] flex items-center gap-1 hover:text-[#b8960f] transition-colors cursor-pointer"
+                      className="text-xs font-black uppercase tracking-widest text-[#1F2937] flex items-center gap-1 hover:text-[#b8960f] transition-colors cursor-pointer"
                     >
                       Launch Theater
                       <ArrowRight className="h-3 w-3" />
@@ -247,7 +247,7 @@ export function VideoCentreClient({ initialVideos }: VideoCentreClientProps) {
             className="inline-flex h-11 items-center justify-center rounded-xl text-white px-6 text-xs font-black uppercase tracking-widest transition-transform hover:scale-105 active:scale-95 shadow-md"
             style={{ 
               background: `linear-gradient(135deg, ${PURPLE} 0%, #351368 100%)`,
-              boxShadow: "0 10px 20px -5px rgba(75, 29, 143, 0.3)"
+              boxShadow: "0 10px 20px -5px rgba(31,41,55, 0.3)"
             }}
           >
             Request Project Consultation

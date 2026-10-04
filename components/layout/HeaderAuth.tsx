@@ -67,7 +67,7 @@ export function HeaderAuth() {
       <div className="flex items-center gap-2">
         <button
           onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal", { detail: "login" }))}
-          className="inline-flex h-8 cursor-pointer items-center justify-center rounded-full px-3 text-[12.5px] font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+          className="inline-flex h-10 cursor-pointer items-center justify-center rounded-full bg-[#EA580C] px-6 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#C2410C]"
         >
           Login
         </button>
@@ -84,9 +84,9 @@ export function HeaderAuth() {
     <div className="relative">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex h-8 cursor-pointer items-center gap-2 rounded-full border border-neutral-300 px-3 text-[12.5px] font-medium text-neutral-800 transition-colors hover:border-neutral-400 hover:bg-neutral-50"
+        className="flex h-10 cursor-pointer items-center gap-2 rounded-full border-2 border-[#EA580C] px-4 text-sm font-semibold text-[#EA580C] transition-colors hover:bg-[#EA580C] hover:text-white"
       >
-        <User className="h-3.5 w-3.5 text-[#4B1D8F]" />
+        <User className="h-3.5 w-3.5 text-[#EA580C]" />
         <span className="max-w-[110px] truncate">{name}</span>
         <ChevronDown className="h-3 w-3 text-neutral-400" />
       </button>

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Home, PackageX } from 'lucide-react'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 /**
@@ -42,7 +42,7 @@ export default function ProductNotFound() {
         </Link>
         <Link
           href="/"
-          className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl border-2 bg-white px-6 text-sm font-bold transition-colors hover:bg-[#EDE9F6]"
+          className="flex min-h-[48px] items-center justify-center gap-2 rounded-xl border-2 bg-white px-6 text-sm font-bold transition-colors hover:bg-[#FEF3C7]"
           style={{ borderColor: `${PURPLE}33`, color: PURPLE }}
         >
           <Home className="h-4 w-4" />

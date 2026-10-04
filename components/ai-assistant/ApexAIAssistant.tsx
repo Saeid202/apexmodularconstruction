@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send, Sparkles, MessageCircle, ArrowRight, Loader2 } from "lucide-react";
 
-const CP_PURPLE = "#4B1D8F";
+const CP_PURPLE = "#1F2937";
 const CP_GOLD = "#D4AF37";
 
 interface Message {
@@ -149,7 +149,7 @@ export function ApexAIAssistant({ showHeader = true }: ApexAIAssistantProps) {
             <div className="flex items-center gap-3">
               <span
                 aria-hidden
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--surface-tint)] text-[#4B1D8F]"
+                className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--surface-tint)] text-[#1F2937]"
               >
                 <Sparkles className="h-5 w-5" />
               </span>
@@ -192,12 +192,12 @@ export function ApexAIAssistant({ showHeader = true }: ApexAIAssistantProps) {
                     <button
                       key={index}
                       onClick={() => handleActionSelect(card.action)}
-                      className="group hover:shadow-card flex items-center gap-3.5 rounded-2xl border border-neutral-200 bg-white p-4 text-left transition-all hover:border-neutral-300 hover:bg-[var(--surface-subtle)] focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none"
+                      className="group hover:shadow-card flex items-center gap-3.5 rounded-2xl border border-neutral-200 bg-white p-4 text-left transition-all hover:border-neutral-300 hover:bg-[var(--surface-subtle)] focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 focus-visible:outline-none"
                     >
                       <span aria-hidden className="text-2xl">
                         {card.icon}
                       </span>
-                      <p className="text-[15px] font-medium text-neutral-900 group-hover:text-[#4B1D8F]">
+                      <p className="text-[15px] font-medium text-neutral-900 group-hover:text-[#1F2937]">
                         {card.title}
                       </p>
                     </button>
@@ -216,7 +216,7 @@ export function ApexAIAssistant({ showHeader = true }: ApexAIAssistantProps) {
                   <div
                     className={`max-w-xl ${
                       msg.role === "user"
-                        ? "bg-purple-100 text-gray-900 rounded-3xl rounded-tr-none px-6 py-3"
+                        ? "bg-amber-100 text-gray-900 rounded-3xl rounded-tr-none px-6 py-3"
                         : "space-y-3 max-w-lg"
                     }`}
                   >
@@ -283,7 +283,7 @@ export function ApexAIAssistant({ showHeader = true }: ApexAIAssistantProps) {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && !isLoading && sendMessage()}
               placeholder="Ask me anything..."
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               disabled={isLoading}
             />
             <button

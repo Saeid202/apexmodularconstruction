@@ -24,7 +24,7 @@ const CABINET_COLORS: Record<string, string> = {
   Black:  '#1C1C1E',
   Walnut: '#6B3F25',
   Oak:    '#C8A882',
-  Custom: '#4B1D8F',
+  Custom: '#1F2937',
 }
 
 const COUNTERTOP_COLORS: Record<string, string> = {
@@ -287,8 +287,8 @@ function ControlPanel({
                 onClick={() => onChange({ widthInches: w })}
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${
                   config.widthInches === w
-                    ? 'bg-purple-700 text-white border-purple-700'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+                    ? 'bg-gray-800 text-white border-gray-800'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-amber-300'
                 }`}
               >
                 {w}"
@@ -307,8 +307,8 @@ function ControlPanel({
                 onClick={() => onChange({ doorCount: n })}
                 className={`flex-1 py-2 rounded-lg text-sm font-bold border transition-all ${
                   config.doorCount === n
-                    ? 'bg-purple-700 text-white border-purple-700'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+                    ? 'bg-gray-800 text-white border-gray-800'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-amber-300'
                 }`}
               >
                 {n}
@@ -331,15 +331,15 @@ function ControlPanel({
                 onClick={() => onChange({ doorStyle: val })}
                 className={`flex items-center justify-between p-2.5 rounded-xl border text-left transition-all ${
                   config.doorStyle === val
-                    ? 'border-purple-600 bg-purple-50'
-                    : 'border-gray-200 hover:border-purple-200 bg-white'
+                    ? 'border-gray-800 bg-amber-50'
+                    : 'border-gray-200 hover:border-amber-200 bg-white'
                 }`}
               >
                 <div>
-                  <p className={`text-xs font-bold ${config.doorStyle === val ? 'text-purple-800' : 'text-gray-800'}`}>{label}</p>
+                  <p className={`text-xs font-bold ${config.doorStyle === val ? 'text-gray-900' : 'text-gray-800'}`}>{label}</p>
                   <p className="text-[10px] text-gray-400">{desc}</p>
                 </div>
-                {extra && <span className="text-[10px] font-bold text-purple-600 ml-2">{extra}</span>}
+                {extra && <span className="text-[10px] font-bold text-gray-800 ml-2">{extra}</span>}
               </button>
             ))}
           </div>
@@ -360,8 +360,8 @@ function ControlPanel({
                 onClick={() => onChange({ handleStyle: val })}
                 className={`py-2 rounded-lg text-xs font-bold border transition-all ${
                   config.handleStyle === val
-                    ? 'bg-purple-700 text-white border-purple-700'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+                    ? 'bg-gray-800 text-white border-gray-800'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-amber-300'
                 }`}
               >
                 {label}
@@ -391,13 +391,13 @@ function ControlPanel({
         </div>
         <button
           onClick={onAddToCart}
-          className="w-full py-3 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-xl transition-colors shadow-md text-sm"
+          className="w-full py-3 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl transition-colors shadow-md text-sm"
         >
           Add to Cart
         </button>
         <button
           onClick={onRequestQuote}
-          className="w-full py-2.5 bg-white border border-gray-200 hover:border-purple-300 text-gray-700 font-bold rounded-xl transition-colors text-sm"
+          className="w-full py-2.5 bg-white border border-gray-200 hover:border-amber-300 text-gray-700 font-bold rounded-xl transition-colors text-sm"
         >
           Request Factory Quote
         </button>

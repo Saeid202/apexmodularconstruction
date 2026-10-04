@@ -5,7 +5,7 @@ import { getOrderDetail } from "@/app/actions/admin-orders";
 
 export const dynamic = "force-dynamic";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface Props {
@@ -60,7 +60,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         </div>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
           <thead>
-            <tr style={{ background: "#f9f7ff" }}>
+            <tr style={{ background: "#FFFBEB" }}>
               {["Product", "Variant", "Price", "Qty", "Line Total"].map((h) => (
                 <th key={h} style={{ padding: "10px 16px", textAlign: "left", fontWeight: 700, fontSize: 12, color: PURPLE }}>{h}</th>
               ))}

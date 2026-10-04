@@ -37,10 +37,10 @@ import { saveProductDocuments } from '@/app/actions/product-documents'
 import { enrichProductFromImage } from '@/app/actions/product-enrichment'
 import { CustomizationSuiteSimple } from '@/components/seller/customization/CustomizationSuiteSimple'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 const inputClass =
-  'w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:border-transparent transition-shadow'
+  'w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:border-transparent transition-shadow'
 
 function Field({
   label,
@@ -61,7 +61,7 @@ function Field({
         {Icon && (
           <span
             className="flex h-6 w-6 items-center justify-center rounded-md"
-            style={{ backgroundColor: '#EDE9F6' }}
+            style={{ backgroundColor: '#FEF3C7' }}
           >
             <Icon className="h-3.5 w-3.5" style={{ color: PURPLE }} />
           </span>
@@ -160,6 +160,10 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
   const [glassType, setGlassType] = useState('')
   const [openingStyle, setOpeningStyle] = useState('')
   const [doorWindowDimensions, setDoorWindowDimensions] = useState('')
+  const [showcaseSubtitle, setShowcaseSubtitle] = useState('')
+  const [showcaseBuildingType, setShowcaseBuildingType] = useState('')
+  const [showcaseHighlights, setShowcaseHighlights] = useState('')
+  const [showcaseWhyChoose, setShowcaseWhyChoose] = useState('')
   const [hardware, setHardware] = useState('')
 
   const handleAiScan = async () => {
@@ -333,6 +337,10 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
       if (glassType) specObj['Glass Type'] = glassType
       if (openingStyle) specObj['Opening Style'] = openingStyle
       if (doorWindowDimensions) specObj['Dimensions'] = doorWindowDimensions
+      if (showcaseSubtitle.trim()) specObj['_subtitle'] = showcaseSubtitle.trim()
+      if (showcaseBuildingType.trim()) specObj['Building Type'] = showcaseBuildingType.trim()
+      if (showcaseHighlights.trim()) specObj['_highlights'] = showcaseHighlights.trim()
+      if (showcaseWhyChoose.trim()) specObj['_why_choose'] = showcaseWhyChoose.trim()
       if (hardware) specObj['Hardware'] = hardware
       
       if (specText) {
@@ -446,7 +454,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
           className="flex items-center justify-between rounded-xl border px-3 py-2.5"
           style={{
             borderColor: hasCustomization ? PURPLE : `${GOLD}44`,
-            background: hasCustomization ? '#EDE9F6' : '#fdfbf7',
+            background: hasCustomization ? '#FEF3C7' : '#fdfbf7',
           }}
         >
           <div className="flex-1 pr-3">
@@ -464,7 +472,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
             role="switch"
             aria-checked={hasCustomization}
             onClick={() => setHasCustomization(!hasCustomization)}
-            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:ring-offset-2"
             style={{
               backgroundColor: hasCustomization ? PURPLE : '#D1D5DB',
               borderColor: hasCustomization ? PURPLE : '#D1D5DB',
@@ -579,7 +587,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
               className="flex items-center justify-between rounded-xl border px-3 py-2.5 mt-1"
               style={{
                 borderColor: requireOrderRequest ? PURPLE : `${GOLD}44`,
-                background: requireOrderRequest ? '#EDE9F6' : '#fdfbf7',
+                background: requireOrderRequest ? '#FEF3C7' : '#fdfbf7',
               }}
             >
               <div className="flex-1 pr-3">
@@ -593,7 +601,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
                 role="switch"
                 aria-checked={requireOrderRequest}
                 onClick={() => setRequireOrderRequest((v) => !v)}
-                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:ring-offset-2"
                 style={{
                   backgroundColor: requireOrderRequest ? PURPLE : '#D1D5DB',
                   borderColor: requireOrderRequest ? PURPLE : '#D1D5DB',
@@ -626,7 +634,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
                 role="switch"
                 aria-checked={showStock}
                 onClick={() => setShowStock((v) => !v)}
-                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:ring-offset-2"
                 style={{
                   backgroundColor: showStock ? PURPLE : '#D1D5DB',
                   borderColor: showStock ? PURPLE : '#D1D5DB',
@@ -791,7 +799,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
           className="flex items-center justify-between rounded-xl border px-3 py-2.5"
           style={{
             borderColor: affiliateEnabled ? PURPLE : `${GOLD}44`,
-            background: affiliateEnabled ? '#EDE9F6' : '#fdfbf7',
+            background: affiliateEnabled ? '#FEF3C7' : '#fdfbf7',
           }}
         >
           <div className="flex-1 pr-3">
@@ -808,7 +816,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
             role="switch"
             aria-checked={affiliateEnabled}
             onClick={() => setAffiliateEnabled(!affiliateEnabled)}
-            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] focus:ring-offset-2"
+            className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#1F2937] focus:ring-offset-2"
             style={{
               backgroundColor: affiliateEnabled ? PURPLE : '#D1D5DB',
               borderColor: affiliateEnabled ? PURPLE : '#D1D5DB',
@@ -1050,7 +1058,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
                                 ✓ {certificateFileInputs.get(cert.id)!.name}
                               </span>
                             )}
-                            <label className="inline-flex items-center gap-1 text-xs font-medium text-purple-600 hover:text-purple-700 cursor-pointer">
+                            <label className="inline-flex items-center gap-1 text-xs font-medium text-gray-800 hover:text-gray-800 cursor-pointer">
                               <Upload className="h-3 w-3" />
                               {certificateFileInputs.get(cert.id) ? 'Change' : 'Upload'}
                               <input
@@ -1120,6 +1128,43 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
         </Field>
       </div>
 
+      {/* Product page showcase */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
+        <Section title="Product Page Showcase" />
+        <Field label="Subtitle" hint="Short line under the product name (e.g., Prefabricated Residential Building).">
+          <input
+            type="text"
+            value={showcaseSubtitle}
+            onChange={(e) => setShowcaseSubtitle(e.target.value)}
+            className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm"
+          />
+        </Field>
+        <Field label="Building Type" hint="Shown in the Overview tab (e.g., Prefabricated House). Defaults to the category.">
+          <input
+            type="text"
+            value={showcaseBuildingType}
+            onChange={(e) => setShowcaseBuildingType(e.target.value)}
+            className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm"
+          />
+        </Field>
+        <Field label="Key Highlights" hint="One per line, up to 4 (e.g., Modular Construction).">
+          <textarea
+            rows={4}
+            value={showcaseHighlights}
+            onChange={(e) => setShowcaseHighlights(e.target.value)}
+            className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm"
+          />
+        </Field>
+        <Field label="Why Choose Us" hint="One reason per line (e.g., Fast & efficient production).">
+          <textarea
+            rows={5}
+            value={showcaseWhyChoose}
+            onChange={(e) => setShowcaseWhyChoose(e.target.value)}
+            className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm"
+          />
+        </Field>
+      </div>
+
       {/* Card 9: Specifications */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
         <Section title="9. Specifications" />
@@ -1167,7 +1212,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
             <div className="flex-1">
               {specFile.name ? (
                 <div className="flex items-center gap-2 text-sm font-semibold text-gray-800">
-                  <File className="h-4 w-4 text-purple-600" />
+                  <File className="h-4 w-4 text-gray-800" />
                   <span>{specFile.name}</span>
                 </div>
               ) : (
@@ -1175,7 +1220,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
               )}
             </div>
             <div className="flex gap-2">
-              <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold text-purple-600 hover:bg-purple-50 cursor-pointer transition-colors" style={{ borderColor: `${PURPLE}44` }}>
+              <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold text-gray-800 hover:bg-amber-50 cursor-pointer transition-colors" style={{ borderColor: `${PURPLE}44` }}>
                 <Upload className="h-3.5 w-3.5" />
                 Upload File
                 <input
@@ -1226,7 +1271,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
                   <button type="button" onClick={() => setArGlbFile(null)} className="text-red-500 hover:text-red-700">Remove</button>
                 </div>
               ) : (
-                <label className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 hover:border-purple-300 transition-all flex flex-col items-center gap-2">
+                <label className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 hover:border-amber-300 transition-all flex flex-col items-center gap-2">
                   <Upload className="h-6 w-6 text-gray-400" />
                   <span className="text-xs font-bold text-gray-600">Select GLB File</span>
                   <input type="file" accept=".glb" onChange={(e) => setArGlbFile(e.target.files?.[0] || null)} className="hidden" />
@@ -1246,7 +1291,7 @@ export function NewProductForm({ categories }: { categories: Category[] }) {
                   <button type="button" onClick={() => setArUsdzFile(null)} className="text-red-500 hover:text-red-700">Remove</button>
                 </div>
               ) : (
-                <label className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 hover:border-purple-300 transition-all flex flex-col items-center gap-2">
+                <label className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:bg-gray-50 hover:border-amber-300 transition-all flex flex-col items-center gap-2">
                   <Upload className="h-6 w-6 text-gray-400" />
                   <span className="text-xs font-bold text-gray-600">Select USDZ File</span>
                   <input type="file" accept=".usdz" onChange={(e) => setArUsdzFile(e.target.files?.[0] || null)} className="hidden" />

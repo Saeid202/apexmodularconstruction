@@ -14,7 +14,7 @@ interface CategoryManagerProps {
   onCategoriesChange: (categories: CustomizationGroup[]) => void;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export function CategoryManager({ productId, categories, onCategoriesChange }: CategoryManagerProps) {

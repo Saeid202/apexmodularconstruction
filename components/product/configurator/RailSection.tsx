@@ -9,7 +9,7 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 interface Props {

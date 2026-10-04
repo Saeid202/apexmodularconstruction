@@ -5,7 +5,7 @@ import { Bell, Shield, CreditCard, Globe, Smartphone, Mail, Save, Eye, EyeOff, L
 import { createBrowserClient } from "@/lib/supabase/client";
 import { LuxuryButton } from "@/components/seller/LuxuryButton";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 
 const tabs = [
   { id: "general", label: "General", icon: Globe },
@@ -15,7 +15,7 @@ const tabs = [
 ];
 
 const inputClass =
-  "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow";
+  "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -31,7 +31,7 @@ function ToggleRow({
   return (
     <label className="flex items-center justify-between p-4 rounded-xl border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
       <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ backgroundColor: "#EDE9F6" }}>
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ backgroundColor: "#FEF3C7" }}>
           <Icon className="h-4 w-4" style={{ color: PURPLE }} />
         </div>
         <div>
@@ -141,7 +141,7 @@ export default function SellerSettingsPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-5 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                activeTab === tab.id ? "border-[#4B1D8F] text-[#4B1D8F]" : "border-transparent text-gray-500 hover:text-gray-700"
+                activeTab === tab.id ? "border-[#1F2937] text-[#1F2937]" : "border-transparent text-gray-500 hover:text-gray-700"
               }`}
             >
               <tab.icon className="h-4 w-4" />
@@ -264,7 +264,7 @@ export default function SellerSettingsPage() {
                 <button
                   type="submit"
                   disabled={passwordSaving}
-                  className="flex items-center gap-2 px-5 py-2 bg-[#4B1D8F] text-white text-sm font-semibold rounded-xl hover:bg-[#3e176f] disabled:opacity-60 transition-colors"
+                  className="flex items-center gap-2 px-5 py-2 bg-[#1F2937] text-white text-sm font-semibold rounded-xl hover:bg-[#3e176f] disabled:opacity-60 transition-colors"
                 >
                   {passwordSaving && <Loader2 className="h-4 w-4 animate-spin" />}
                   Update Password

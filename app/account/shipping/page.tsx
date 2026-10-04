@@ -20,8 +20,8 @@ import {
 } from "@/lib/shipping-constants";
 
 // ── Styles ────────────────────────────────────────────────────────────────────
-const inp = "w-full px-4 py-3 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 transition-colors";
-const inpStyle = { color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" };
+const inp = "w-full px-4 py-3 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white placeholder-gray-300 transition-colors";
+const inpStyle = { color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" };
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   pending:     { label: "Pending",     className: "bg-amber-100 text-amber-700 border border-amber-200" },
@@ -71,11 +71,11 @@ function CityDropdown({
         <span className={value ? "" : "text-gray-300 font-normal"}>
           {value || placeholder}
         </span>
-        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} style={{ color: "#4B1D8F" }} />
+        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} style={{ color: "#1F2937" }} />
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-1 w-full rounded-xl border-2 border-[#4B1D8F]/30 bg-white shadow-xl overflow-hidden">
+        <div className="absolute z-50 mt-1 w-full rounded-xl border-2 border-[#1F2937]/30 bg-white shadow-xl overflow-hidden">
           <div className="p-2 border-b border-gray-100">
             <input
               autoFocus
@@ -83,7 +83,7 @@ function CityDropdown({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search city…"
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[#4B1D8F]"
+              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[#1F2937]"
             />
           </div>
           <div className="max-h-52 overflow-y-auto">
@@ -94,8 +94,8 @@ function CityDropdown({
                 key={city}
                 type="button"
                 onClick={() => { onChange(city); setOpen(false); }}
-                className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[#4B1D8F]/5 ${
-                  value === city ? "bg-[#4B1D8F]/10 text-[#4B1D8F] font-bold" : "text-gray-700"
+                className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-[#1F2937]/5 ${
+                  value === city ? "bg-[#1F2937]/10 text-[#1F2937] font-bold" : "text-gray-700"
                 }`}
               >
                 {city}
@@ -185,8 +185,8 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
       )}
 
       {/* Order Reference */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12)" }}>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>
           📋 Order Reference *
         </label>
         <input
@@ -202,10 +202,10 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
       </div>
 
       {/* Origin + Destination */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12)" }}>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12)" }}>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>
+            <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>
               🇨🇳 Origin City (China) *
             </label>
             <CityDropdown
@@ -216,7 +216,7 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
             />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>
+            <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>
               🇮🇷 Destination City (Iran) *
             </label>
             <CityDropdown
@@ -230,8 +230,8 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
       </div>
 
       {/* Shipping Method */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12)" }}>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#4B1D8F" }}>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#1F2937" }}>
           🚚 Shipping Method *
         </label>
         <div className="grid grid-cols-3 gap-3">
@@ -242,8 +242,8 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
               onClick={() => setMethod(m.value)}
               className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 font-bold text-sm transition-all ${
                 method === m.value
-                  ? "border-[#4B1D8F] bg-[#4B1D8F] text-white shadow-lg"
-                  : "border-[#4B1D8F]/30 text-gray-600 hover:border-[#4B1D8F]/60 hover:bg-[#4B1D8F]/5"
+                  ? "border-[#1F2937] bg-[#1F2937] text-white shadow-lg"
+                  : "border-[#1F2937]/30 text-gray-600 hover:border-[#1F2937]/60 hover:bg-[#1F2937]/5"
               }`}
             >
               <span className="text-2xl">{m.icon}</span>
@@ -254,8 +254,8 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
       </div>
 
       {/* Documents */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12)" }}>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#4B1D8F" }}>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#1F2937" }}>
           📎 Shipping Documents
         </label>
         <p className="text-xs text-gray-500 mb-3">
@@ -264,11 +264,11 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
 
         {/* Drop zone */}
         <label
-          className="flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50 mb-3"
-          style={{ borderColor: "rgba(75,29,143,0.4)", background: "rgba(75,29,143,0.02)" }}
+          className="flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-amber-50 mb-3"
+          style={{ borderColor: "rgba(31,41,55,0.4)", background: "rgba(31,41,55,0.02)" }}
         >
-          <FileUp className="h-6 w-6 mb-1" style={{ color: "#4B1D8F" }} />
-          <span className="text-sm font-bold" style={{ color: "#4B1D8F" }}>Click to upload documents</span>
+          <FileUp className="h-6 w-6 mb-1" style={{ color: "#1F2937" }} />
+          <span className="text-sm font-bold" style={{ color: "#1F2937" }}>Click to upload documents</span>
           <span className="text-xs text-gray-400 mt-0.5">PDF, JPG, PNG, DOC — multiple allowed</span>
           <input
             ref={fileRef}
@@ -284,14 +284,14 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
         {docs.length > 0 && (
           <div className="space-y-2">
             {docs.map((d, i) => (
-              <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-[#4B1D8F]/20 bg-purple-50">
-                <FileText className="h-4 w-4 shrink-0" style={{ color: "#4B1D8F" }} />
+              <div key={i} className="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-[#1F2937]/20 bg-amber-50">
+                <FileText className="h-4 w-4 shrink-0" style={{ color: "#1F2937" }} />
                 <span className="text-sm font-semibold truncate flex-1" style={{ color: "#1a0a3c" }}>{d.file.name}</span>
                 <select
                   value={d.doc_type}
                   onChange={(e) => updateDocType(i, e.target.value as DocType)}
-                  className="text-xs border border-[#4B1D8F]/30 rounded-lg px-2 py-1 bg-white focus:outline-none focus:border-[#4B1D8F] font-semibold shrink-0"
-                  style={{ color: "#4B1D8F" }}
+                  className="text-xs border border-[#1F2937]/30 rounded-lg px-2 py-1 bg-white focus:outline-none focus:border-[#1F2937] font-semibold shrink-0"
+                  style={{ color: "#1F2937" }}
                 >
                   {DOC_TYPES.map((dt) => (
                     <option key={dt.value} value={dt.value}>{dt.label}</option>
@@ -311,8 +311,8 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
       </div>
 
       {/* Notes */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12)" }}>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>
           📝 Additional Notes (Optional)
         </label>
         <textarea
@@ -331,7 +331,7 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
           type="submit"
           disabled={saving}
           className="flex items-center gap-2 px-6 py-3 text-white text-sm font-bold rounded-xl disabled:opacity-50 transition-all shadow-lg"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}
+          style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "2px solid #D4AF37" }}
         >
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
           🚀 Submit Shipping Request
@@ -340,7 +340,7 @@ function ShippingForm({ onDone }: { onDone: () => void }) {
           type="button"
           onClick={onDone}
           className="px-6 py-3 text-sm font-semibold rounded-xl transition-colors"
-          style={{ border: "2px solid #4B1D8F", color: "#4B1D8F" }}
+          style={{ border: "2px solid #1F2937", color: "#1F2937" }}
         >
           Cancel
         </button>
@@ -478,7 +478,7 @@ export default function ShippingPage() {
         <button
           onClick={() => setView(view === "form" ? "list" : "form")}
           className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-md"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}
+          style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "1px solid #D4AF37" }}
         >
           {view === "form"
             ? <><X className="h-4 w-4" /> Cancel</>
@@ -490,17 +490,17 @@ export default function ShippingPage() {
       {/* Guidance banner */}
       {view === "list" && (
         <div
-          className="rounded-2xl overflow-hidden border border-[#4B1D8F]/20"
-          style={{ background: "linear-gradient(135deg, #f9f7ff 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(75,29,143,0.08)" }}
+          className="rounded-2xl overflow-hidden border border-[#1F2937]/20"
+          style={{ background: "linear-gradient(135deg, #FFFBEB 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(31,41,55,0.08)" }}
         >
           <div
-            className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}
+            className="px-6 py-4 flex items-center gap-3 border-b border-[#1F2937]/10"
+            style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}
           >
             <Truck className="h-5 w-5 text-yellow-300" />
             <p className="text-sm font-bold uppercase tracking-widest text-white">How Shipping Works</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#4B1D8F]/10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#1F2937]/10">
             {[
               { step: "1", title: "Submit Your Request", desc: "Fill in your shipment details — origin, destination, method, and upload your documents." },
               { step: "2", title: "We Arrange Freight", desc: "Our team reviews your request and coordinates the shipment via your chosen transport mode." },
@@ -510,7 +510,7 @@ export default function ShippingPage() {
                 <div className="flex items-center gap-3 mb-3">
                   <span
                     className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0"
-                    style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}
+                    style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}
                   >
                     {step}
                   </span>
@@ -533,21 +533,21 @@ export default function ShippingPage() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           {loading ? (
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#4B1D8F" }} />
+              <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#1F2937" }} />
             </div>
           ) : requests.length === 0 ? (
             <div className="text-center py-16">
               <div
                 className="inline-flex h-14 w-14 items-center justify-center rounded-2xl mb-4"
-                style={{ backgroundColor: "#EDE9F6" }}
+                style={{ backgroundColor: "#FEF3C7" }}
               >
-                <Truck className="h-7 w-7" style={{ color: "#4B1D8F" }} />
+                <Truck className="h-7 w-7" style={{ color: "#1F2937" }} />
               </div>
               <p className="text-gray-400 text-sm">No shipping requests yet.</p>
               <button
                 onClick={() => setView("form")}
                 className="mt-3 text-sm font-semibold hover:underline"
-                style={{ color: "#4B1D8F" }}
+                style={{ color: "#1F2937" }}
               >
                 Submit your first request
               </button>
@@ -589,7 +589,7 @@ export default function ShippingPage() {
                         </td>
                         <td className="px-4 py-3 text-gray-500">
                           {req.documents.length > 0 ? (
-                            <span className="flex items-center gap-1 text-[#4B1D8F] font-semibold">
+                            <span className="flex items-center gap-1 text-[#1F2937] font-semibold">
                               <FileText className="h-3.5 w-3.5" />
                               {req.documents.length} file{req.documents.length !== 1 ? "s" : ""}
                             </span>
@@ -610,7 +610,7 @@ export default function ShippingPage() {
                             onClick={() => openChat(req.id)}
                             title="Messages"
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors"
-                            style={{ color: "#4B1D8F", backgroundColor: "#EDE9F6" }}
+                            style={{ color: "#1F2937", backgroundColor: "#FEF3C7" }}
                           >
                             <MessageSquare className="h-4 w-4" />
                             Chat
@@ -619,11 +619,11 @@ export default function ShippingPage() {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-1">
                             <button onClick={() => setViewRequest(req)} title="View"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#4B1D8F] hover:bg-purple-50 transition-colors">
+                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#1F2937] hover:bg-amber-50 transition-colors">
                               <Eye className="h-4 w-4" />
                             </button>
                             <button onClick={() => openEdit(req)} title="Edit"
-                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#4B1D8F] hover:bg-purple-50 transition-colors">
+                              className="p-1.5 rounded-lg text-gray-400 hover:text-[#1F2937] hover:bg-amber-50 transition-colors">
                               <Pencil className="h-4 w-4" />
                             </button>
                             <button
@@ -655,7 +655,7 @@ export default function ShippingPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setViewRequest(null)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
+              style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}>
               <div className="flex items-center gap-3">
                 <Truck className="h-5 w-5 text-[#D4AF37]" />
                 <p className="text-base font-bold text-white">{viewRequest.order_reference}</p>
@@ -684,9 +684,9 @@ export default function ShippingPage() {
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">Files</p>
                   {viewRequest.documents.map((doc: any) => (
                     <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-purple-50 hover:bg-purple-100 transition-colors">
-                      <FileText className="h-4 w-4 shrink-0" style={{ color: "#4B1D8F" }} />
-                      <span className="text-sm font-semibold truncate" style={{ color: "#4B1D8F" }}>{doc.file_name}</span>
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 transition-colors">
+                      <FileText className="h-4 w-4 shrink-0" style={{ color: "#1F2937" }} />
+                      <span className="text-sm font-semibold truncate" style={{ color: "#1F2937" }}>{doc.file_name}</span>
                       <Download className="h-3.5 w-3.5 ml-auto shrink-0 text-gray-400" />
                     </a>
                   ))}
@@ -703,7 +703,7 @@ export default function ShippingPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setEditRequest(null)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between px-6 py-4 sticky top-0"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
+              style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}>
               <div className="flex items-center gap-3">
                 <Pencil className="h-5 w-5 text-[#D4AF37]" />
                 <p className="text-base font-bold text-white">Edit Request</p>
@@ -715,26 +715,26 @@ export default function ShippingPage() {
             <div className="p-6 space-y-4">
               {editError && <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700">{editError}</div>}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>Order Reference *</label>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>Order Reference *</label>
                 <input type="text" required value={editRef} onChange={(e) => setEditRef(e.target.value)} className={inp} style={inpStyle} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>🇨🇳 Origin</label>
+                  <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>🇨🇳 Origin</label>
                   <CityDropdown value={editOrigin} onChange={setEditOrigin} cities={CHINA_CITIES} placeholder="Select city…" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>🇮🇷 Destination</label>
+                  <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>🇮🇷 Destination</label>
                   <CityDropdown value={editDest} onChange={setEditDest} cities={IRAN_CITIES} placeholder="Select city…" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>Shipping Method *</label>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>Shipping Method *</label>
                 <div className="grid grid-cols-3 gap-2">
                   {SHIPPING_METHODS.map((m) => (
                     <button key={m.value} type="button" onClick={() => setEditMethod(m.value)}
                       className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 font-bold text-xs transition-all ${
-                        editMethod === m.value ? "border-[#4B1D8F] bg-[#4B1D8F] text-white" : "border-[#4B1D8F]/30 text-gray-600 hover:border-[#4B1D8F]/60"
+                        editMethod === m.value ? "border-[#1F2937] bg-[#1F2937] text-white" : "border-[#1F2937]/30 text-gray-600 hover:border-[#1F2937]/60"
                       }`}>
                       <span className="text-xl">{m.icon}</span>
                       <span>{m.label}</span>
@@ -743,24 +743,24 @@ export default function ShippingPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>Notes</label>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>Notes</label>
                 <textarea rows={3} value={editNotes} onChange={(e) => setEditNotes(e.target.value)}
                   placeholder="Additional instructions…" className={`${inp} resize-none`} style={inpStyle} />
               </div>
 
               {/* Documents section */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>Documents</label>
+                <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>Documents</label>
 
                 {/* Existing docs */}
                 {editRequest.documents.length > 0 && (
                   <div className="space-y-1.5 mb-3">
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Uploaded</p>
                     {editRequest.documents.map((doc: any) => (
-                      <div key={doc.id} className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[#4B1D8F]/20 bg-purple-50">
-                        <FileText className="h-4 w-4 shrink-0" style={{ color: "#4B1D8F" }} />
+                      <div key={doc.id} className="flex items-center gap-2 px-3 py-2 rounded-xl border border-[#1F2937]/20 bg-amber-50">
+                        <FileText className="h-4 w-4 shrink-0" style={{ color: "#1F2937" }} />
                         <a href={doc.url} target="_blank" rel="noopener noreferrer"
-                          className="text-sm font-semibold truncate flex-1 hover:underline" style={{ color: "#4B1D8F" }}>
+                          className="text-sm font-semibold truncate flex-1 hover:underline" style={{ color: "#1F2937" }}>
                           {doc.file_name}
                         </a>
                         <span className="text-xs text-gray-400 shrink-0">
@@ -785,8 +785,8 @@ export default function ShippingPage() {
                         <span className="text-sm font-semibold truncate flex-1 text-gray-700">{d.file.name}</span>
                         <select value={d.doc_type}
                           onChange={(e) => setEditNewDocs((prev) => prev.map((x, j) => j === i ? { ...x, doc_type: e.target.value as DocType } : x))}
-                          className="text-xs border border-[#4B1D8F]/30 rounded-lg px-2 py-1 bg-white focus:outline-none shrink-0"
-                          style={{ color: "#4B1D8F" }}>
+                          className="text-xs border border-[#1F2937]/30 rounded-lg px-2 py-1 bg-white focus:outline-none shrink-0"
+                          style={{ color: "#1F2937" }}>
                           {DOC_TYPES.map((dt) => <option key={dt.value} value={dt.value}>{dt.label}</option>)}
                         </select>
                         <button type="button" onClick={() => setEditNewDocs((prev) => prev.filter((_, j) => j !== i))}
@@ -799,10 +799,10 @@ export default function ShippingPage() {
                 )}
 
                 {/* Add more */}
-                <label className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50"
-                  style={{ borderColor: "rgba(75,29,143,0.4)" }}>
-                  <FileUp className="h-4 w-4" style={{ color: "#4B1D8F" }} />
-                  <span className="text-sm font-semibold" style={{ color: "#4B1D8F" }}>Add documents…</span>
+                <label className="flex items-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-amber-50"
+                  style={{ borderColor: "rgba(31,41,55,0.4)" }}>
+                  <FileUp className="h-4 w-4" style={{ color: "#1F2937" }} />
+                  <span className="text-sm font-semibold" style={{ color: "#1F2937" }}>Add documents…</span>
                   <input ref={editFileRef} type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" className="hidden"
                     onChange={(e) => {
                       if (!e.target.files) return;
@@ -815,13 +815,13 @@ export default function ShippingPage() {
 
               <div className="flex gap-3 pt-2">                <button onClick={handleEditSave} disabled={editSaving || !editRef || !editOrigin || !editDest || !editMethod}
                   className="flex items-center gap-2 px-5 py-2.5 text-white text-sm font-bold rounded-xl disabled:opacity-50 transition-all shadow-md"
-                  style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}>
+                  style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "2px solid #D4AF37" }}>
                   {editSaving && <Loader2 className="h-4 w-4 animate-spin" />}
                   Save Changes
                 </button>
                 <button onClick={() => setEditRequest(null)}
                   className="px-5 py-2.5 text-sm font-semibold rounded-xl transition-colors"
-                  style={{ border: "2px solid #4B1D8F", color: "#4B1D8F" }}>
+                  style={{ border: "2px solid #1F2937", color: "#1F2937" }}>
                   Cancel
                 </button>
               </div>
@@ -836,12 +836,12 @@ export default function ShippingPage() {
           <div className="absolute inset-0 bg-black/40" onClick={() => setChatRequestId(null)} />
           <div className="relative ml-auto w-full max-w-md bg-white shadow-2xl flex flex-col h-full">
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
+              style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}>
               <div className="flex items-center gap-3">
                 <MessageSquare className="h-5 w-5 text-[#D4AF37]" />
                 <div>
                   <p className="text-sm font-bold text-white">Shipping Messages</p>
-                  <p className="text-xs text-purple-200">
+                  <p className="text-xs text-amber-200">
                     {requests.find((r) => r.id === chatRequestId)?.order_reference ?? ""}
                   </p>
                 </div>
@@ -857,12 +857,12 @@ export default function ShippingPage() {
                 const isClient = msg.sender_role === "client";
                 return (
                   <div key={msg.id} className={`flex ${isClient ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${isClient ? "bg-[#4B1D8F] text-white rounded-br-sm" : "bg-gray-100 text-gray-800 rounded-bl-sm"}`}>
-                      <p className={`text-[10px] font-bold mb-1 ${isClient ? "text-purple-200" : "text-gray-400"}`}>
+                    <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${isClient ? "bg-[#1F2937] text-white rounded-br-sm" : "bg-gray-100 text-gray-800 rounded-bl-sm"}`}>
+                      <p className={`text-[10px] font-bold mb-1 ${isClient ? "text-amber-200" : "text-gray-400"}`}>
                         {isClient ? "You" : "Shipping Agent"}
                       </p>
                       {msg.message && <p className="whitespace-pre-wrap">{msg.message}</p>}
-                      <p className={`text-[10px] mt-1 ${isClient ? "text-purple-300" : "text-gray-400"}`}>
+                      <p className={`text-[10px] mt-1 ${isClient ? "text-amber-300" : "text-gray-400"}`}>
                         {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       </p>
                     </div>
@@ -872,7 +872,7 @@ export default function ShippingPage() {
               <div ref={chatBottomRef} />
             </div>
             <div className="px-4 pb-4 pt-2 border-t border-gray-100 flex items-end gap-2">
-              <div className="flex-1 border-2 border-gray-200 rounded-xl px-3 py-2 focus-within:border-[#4B1D8F] transition-colors">
+              <div className="flex-1 border-2 border-gray-200 rounded-xl px-3 py-2 focus-within:border-[#1F2937] transition-colors">
                 <textarea
                   value={chatText}
                   onChange={(e) => setChatText(e.target.value)}
@@ -883,7 +883,7 @@ export default function ShippingPage() {
                 />
               </div>
               <button onClick={handleChatSend} disabled={chatSending || !chatText.trim()}
-                className="h-10 w-10 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3A1570] disabled:opacity-40 shadow-md transition-all shrink-0">
+                className="h-10 w-10 flex items-center justify-center bg-[#1F2937] text-white rounded-xl hover:bg-[#111827] disabled:opacity-40 shadow-md transition-all shrink-0">
                 {chatSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
               </button>
             </div>

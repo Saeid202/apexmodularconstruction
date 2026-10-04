@@ -13,12 +13,12 @@ import {
   Link2Off, RemoveFormatting, Pilcrow, Palette,
 } from "lucide-react";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const PRESET_COLORS = [
   { label: "Default",  value: "inherit" },
-  { label: "Purple",   value: "#4B1D8F" },
+  { label: "Purple",   value: "#1F2937" },
   { label: "Gold",     value: "#D4AF37" },
   { label: "Dark",     value: "#111827" },
   { label: "Gray",     value: "#6B7280" },

@@ -41,7 +41,7 @@ export function PageTreeNode({ page, isChild, onEdit, onDeleted, onAddChild }: P
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-medium text-gray-900 text-sm">{page.title}</span>
             {isChild && (
-              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] font-semibold text-purple-700">
+              <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-gray-800">
                 child
               </span>
             )}

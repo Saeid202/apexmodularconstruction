@@ -18,7 +18,7 @@ function roleLabel(role: string) {
 function roleBadgeColor(role: string) {
   if (role === "agent") return "bg-blue-100 text-blue-700";
   if (role === "partner") return "bg-amber-100 text-amber-700";
-  return "bg-purple-100 text-purple-700";
+  return "bg-amber-100 text-gray-800";
 }
 
 export function NewChatPicker({ onBack, onConversationReady }: Props) {
@@ -78,7 +78,7 @@ export function NewChatPicker({ onBack, onConversationReady }: Props) {
       <div className="flex-1 overflow-y-auto">
         {loading ? (
           <div className="flex justify-center pt-8">
-            <Loader2 className="h-5 w-5 animate-spin text-purple-400" />
+            <Loader2 className="h-5 w-5 animate-spin text-amber-400" />
           </div>
         ) : filtered.length === 0 ? (
           <p className="text-center text-xs text-gray-400 pt-8">No contacts found.</p>
@@ -117,7 +117,7 @@ function ContactRow({ contact, starting, onSelect }: {
     >
       <div
         className="flex h-9 w-9 items-center justify-center rounded-full text-white text-xs font-bold shrink-0"
-        style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}
+        style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}
       >
         {contact.full_name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)}
       </div>
@@ -125,7 +125,7 @@ function ContactRow({ contact, starting, onSelect }: {
         <p className="text-xs font-bold text-gray-900 truncate">{contact.full_name}</p>
         <p className="text-[10px] text-gray-400 truncate">{contact.email}</p>
       </div>
-      {isStarting && <Loader2 className="h-3.5 w-3.5 animate-spin text-purple-400 shrink-0" />}
+      {isStarting && <Loader2 className="h-3.5 w-3.5 animate-spin text-amber-400 shrink-0" />}
     </button>
   );
 }

@@ -245,7 +245,7 @@ export function ProceduralHome({ directives, studio, onPartsDiscovered }: Props)
       <Part
         name="door_entry"
         position={[A.x + 1.9, FLOOR + 1.1, A_FRONT + 0.06]}
-        baseColor="#4B1D8F"
+        baseColor="#1F2937"
         {...shared}
       >
         <boxGeometry args={[1.15, 2.2, 0.12]} />

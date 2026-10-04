@@ -11,7 +11,7 @@ export default function KitchenStudioPage() {
       {/* Background ambient effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-blue-900/20 blur-[120px] rounded-full mix-blend-screen" />
-        <div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-purple-900/20 blur-[120px] rounded-full mix-blend-screen" />
+        <div className="absolute top-[40%] -right-[10%] w-[40%] h-[40%] bg-gray-900/20 blur-[120px] rounded-full mix-blend-screen" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -19,7 +19,7 @@ export default function KitchenStudioPage() {
           
           <div className="text-center space-y-6">
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-              Design Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Dream Kitchen</span>
+              Design Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-amber-400">Dream Kitchen</span>
             </h1>
             <p className="text-xl text-white/60 max-w-2xl mx-auto">
               Start by capturing your real-world space. Our Apple RoomPlan integration seamlessly builds a 3D model of your room in seconds.

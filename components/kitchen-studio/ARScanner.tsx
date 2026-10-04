@@ -147,14 +147,14 @@ export function ARScanner({ onComplete }: ARScannerProps = {}) {
       </div>
       {deviceType === 'ios' ? (
         <div className="bg-white p-8 rounded-3xl shadow-2xl relative group flex flex-col items-center justify-center min-w-[300px]">
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-amber-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
           <div className="relative bg-white rounded-2xl p-6 flex flex-col items-center text-center">
-            <Smartphone className="h-16 w-16 text-purple-600 mb-4" />
+            <Smartphone className="h-16 w-16 text-gray-800 mb-4" />
             <h3 className="text-xl font-bold text-gray-900 mb-2">Ready to Scan</h3>
             <p className="text-sm text-gray-500 mb-6">Tap below to open the RoomPlan scanner directly.</p>
             <a 
               href={scanUrl}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-lg transition-all w-full text-center"
+              className="px-6 py-3 bg-gray-800 hover:bg-gray-800 text-white font-bold rounded-xl shadow-lg transition-all w-full text-center"
             >
               Launch AR Scanner
             </a>
@@ -172,7 +172,7 @@ export function ARScanner({ onComplete }: ARScannerProps = {}) {
         </div>
       ) : (
         <div className="bg-white p-6 rounded-3xl shadow-2xl relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-amber-500 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
           <div className="relative bg-white rounded-2xl p-2">
             <QRCodeSVG 
               value={scanUrl} 

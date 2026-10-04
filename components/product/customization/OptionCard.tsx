@@ -13,7 +13,7 @@ interface OptionCardProps {
   disabled?: boolean;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export function OptionCard({ option, isSelected, onSelect, disabled = false }: OptionCardProps) {

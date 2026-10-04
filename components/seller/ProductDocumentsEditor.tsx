@@ -5,7 +5,7 @@ import { X, Upload, FileText, FileSpreadsheet, File, LucideIcon } from 'lucide-r
 import { uploadProductDocument } from "@/lib/uploadProductDocument";
 import { detectFileType, type FileType } from "@/lib/detectFileType";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export interface DocSlot {
@@ -145,7 +145,7 @@ export function ProductDocumentsEditor({ userId, docs, onChange }: Props) {
         className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-5 transition-colors"
         style={{
           borderColor: dragOver ? PURPLE : `${GOLD}66`,
-          backgroundColor: dragOver ? "#EDE9F6" : "#FDFBF7",
+          backgroundColor: dragOver ? "#FEF3C7" : "#FDFBF7",
         }}
         onClick={() => inputRef.current?.click()}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}

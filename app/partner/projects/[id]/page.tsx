@@ -101,13 +101,13 @@ export default async function PartnerProjectDetailPage({
 
         {/* Customer contact */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 bg-gradient-to-r from-purple-50 to-pink-50 border-b border-purple-100 flex items-center gap-2">
-            <User className="h-4 w-4 text-purple-600" />
-            <h2 className="text-sm font-bold text-purple-900 uppercase tracking-wide">Customer Contact</h2>
+          <div className="px-6 py-4 bg-gradient-to-r from-amber-50 to-pink-50 border-b border-amber-100 flex items-center gap-2">
+            <User className="h-4 w-4 text-gray-800" />
+            <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide">Customer Contact</h2>
           </div>
           <div className="px-6 py-5 space-y-4">
             <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-amber-500 to-pink-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
                 {p.full_name?.charAt(0).toUpperCase()}
               </div>
               <div>

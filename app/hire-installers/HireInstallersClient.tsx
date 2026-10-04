@@ -56,7 +56,7 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
               <select
                 value={selectedProvince}
                 onChange={(e) => setSelectedProvince(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-gray-900 font-medium"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors text-gray-900 font-medium"
               >
                 <option value="">All Provinces</option>
                 {PROVINCES.map((province) => (
@@ -73,7 +73,7 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
                   placeholder="Search by city..."
                   value={searchCity}
                   onChange={(e) => setSearchCity(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-gray-900 font-medium"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors text-gray-900 font-medium"
                 />
               </div>
             </div>
@@ -81,7 +81,7 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
               <label className="block text-sm font-semibold text-transparent mb-2 hidden md:block select-none">Action</label>
               <Link
                 href="/rental-equipment"
-                className="w-full text-center px-4 py-3 bg-[#4B1D8F] hover:bg-[#3b1671] text-white font-bold rounded-xl transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 h-[48px]"
+                className="w-full text-center px-4 py-3 bg-[#1F2937] hover:bg-[#3b1671] text-white font-bold rounded-xl transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 h-[48px]"
               >
                 <Wrench className="h-4 w-4" />
                 Need Construction Equipment?
@@ -105,7 +105,7 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
             {filteredInstallers.map((installer) => (
               <div key={installer.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                 {/* Header */}
-                <div className="p-6 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #4B1D8F, #5a2d9f)' }}>
+                <div className="p-6 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #1F2937, #5a2d9f)' }}>
                   <div className="flex items-start gap-4">
                     {installer.avatar_url ? (
                       <img
@@ -120,7 +120,7 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
                     )}
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-white mb-1">{installer.business_name || installer.full_name}</h3>
-                      <div className="flex items-center gap-2 text-purple-200 text-sm">
+                      <div className="flex items-center gap-2 text-amber-200 text-sm">
                         <MapPin className="h-4 w-4" />
                         <span>{installer.city && installer.province ? `${installer.city}, ${installer.province}` : installer.city || installer.province || 'Location not specified'}</span>
                       </div>
@@ -132,8 +132,8 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
                 <div className="p-6 space-y-4">
                   {/* Experience */}
                   <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: '#EDE9F6' }}>
-                      <Clock className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+                    <div className="p-2 rounded-lg" style={{ backgroundColor: '#FEF3C7' }}>
+                      <Clock className="h-5 w-5" style={{ color: '#1F2937' }} />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 font-semibold uppercase">Experience</p>
@@ -185,7 +185,7 @@ export default function HireInstallersClient({ installers }: HireInstallersClien
                   <a
                     href={`/hire-installers/${installer.id}`}
                     className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90"
-                    style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+                    style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
                   >
                     View Full Profile
                     <ChevronRight className="h-4 w-4" />

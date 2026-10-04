@@ -11,7 +11,7 @@
 import { FileText, ListChecks, Ruler, ShieldCheck } from 'lucide-react'
 import { RailSection } from '@/components/product/configurator/RailSection'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 interface Certificate {

@@ -30,7 +30,7 @@ export default function SellerSidebar({ children }: SellerSidebarProps) {
     <div className="h-screen flex bg-[#F5F4F7] overflow-hidden">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 bg-[#4B1D8F] ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 bg-[#1F2937] ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >        {/* Logo */}
@@ -43,7 +43,7 @@ export default function SellerSidebar({ children }: SellerSidebarProps) {
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg text-purple-200 hover:bg-white/10"
+            className="lg:hidden p-1.5 rounded-lg text-amber-200 hover:bg-white/10"
           >
             <X className="h-5 w-5" />
           </button>
@@ -63,7 +63,7 @@ export default function SellerSidebar({ children }: SellerSidebarProps) {
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
                     ? "text-white shadow-md"
-                    : "text-purple-200 hover:bg-white/10 hover:text-white"
+                    : "text-amber-200 hover:bg-white/10 hover:text-white"
                 }`}
                 style={isActive ? { backgroundColor: "#D4AF37", color: "#1a1a2e" } : {}}
               >
@@ -79,7 +79,7 @@ export default function SellerSidebar({ children }: SellerSidebarProps) {
         <div className="p-4 border-t border-white/10">
           <Link
             href="/"
-            className="flex items-center gap-2 text-xs text-purple-300 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-xs text-amber-300 hover:text-white transition-colors"
           >
             ← Back to Store
           </Link>

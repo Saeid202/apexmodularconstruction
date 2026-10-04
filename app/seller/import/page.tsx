@@ -10,7 +10,7 @@ import {
 import { createBrowserClient } from "@/lib/supabase/client";
 import { processCatalogFile } from "@/app/actions/catalog-ingestion";
 
-const CP_PURPLE = "#4B1D8F";
+const CP_PURPLE = "#1F2937";
 const CP_GOLD = "#D4AF37";
 
 export default function BulkImportPage() {
@@ -70,7 +70,7 @@ export default function BulkImportPage() {
         {/* Left: Uploader */}
         <div className="md:col-span-2 space-y-6">
           <div 
-            className={`relative border-4 border-dashed rounded-[48px] p-16 transition-all flex flex-col items-center justify-center text-center space-y-6 ${file ? 'border-purple-200 bg-purple-50/30' : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-purple-200'}`}
+            className={`relative border-4 border-dashed rounded-[48px] p-16 transition-all flex flex-col items-center justify-center text-center space-y-6 ${file ? 'border-amber-200 bg-amber-50/30' : 'border-gray-100 bg-gray-50/50 hover:bg-white hover:border-amber-200'}`}
           >
             <input 
               type="file" 

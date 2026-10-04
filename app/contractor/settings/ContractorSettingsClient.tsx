@@ -144,7 +144,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
         {/* Change Name */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <User className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+            <User className="h-5 w-5" style={{ color: '#1F2937' }} />
             Change Username
           </h3>
           <form onSubmit={handleNameChange} className="space-y-4">
@@ -154,7 +154,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="text"
                 value={nameForm.fullName}
                 onChange={(e) => setNameForm(prev => ({ ...prev, fullName: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                 required
               />
             </div>
@@ -163,7 +163,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="submit"
                 disabled={loading}
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+                style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
               >
                 <Save className="h-4 w-4" />
                 {loading ? 'Saving...' : 'Save Changes'}
@@ -175,7 +175,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
         {/* Change Password */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Lock className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+            <Lock className="h-5 w-5" style={{ color: '#1F2937' }} />
             Change Password
           </h3>
           <form onSubmit={handlePasswordChange} className="space-y-4">
@@ -185,7 +185,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="password"
                 value={passwordForm.currentPassword}
                 onChange={(e) => setPasswordForm(prev => ({ ...prev, currentPassword: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                 required
               />
             </div>
@@ -195,7 +195,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="password"
                 value={passwordForm.newPassword}
                 onChange={(e) => setPasswordForm(prev => ({ ...prev, newPassword: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                 required
                 minLength={8}
               />
@@ -207,7 +207,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="password"
                 value={passwordForm.confirmPassword}
                 onChange={(e) => setPasswordForm(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                 required
                 minLength={8}
               />
@@ -217,7 +217,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="submit"
                 disabled={loading}
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+                style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
               >
                 <Save className="h-4 w-4" />
                 {loading ? 'Updating...' : 'Update Password'}
@@ -229,7 +229,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
         {/* Change Email */}
         <div>
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Mail className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+            <Mail className="h-5 w-5" style={{ color: '#1F2937' }} />
             Change Email
           </h3>
           <form onSubmit={handleEmailChange} className="space-y-4">
@@ -248,7 +248,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="email"
                 value={emailForm.newEmail}
                 onChange={(e) => setEmailForm(prev => ({ ...prev, newEmail: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                 required
               />
             </div>
@@ -258,7 +258,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="password"
                 value={emailForm.currentPassword}
                 onChange={(e) => setEmailForm(prev => ({ ...prev, currentPassword: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                 required
               />
             </div>
@@ -267,7 +267,7 @@ export default function ContractorSettingsClient({ user, profile }: ContractorSe
                 type="submit"
                 disabled={loading}
                 className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+                style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
               >
                 <Save className="h-4 w-4" />
                 {loading ? 'Updating...' : 'Update Email'}

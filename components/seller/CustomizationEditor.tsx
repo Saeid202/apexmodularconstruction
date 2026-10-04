@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Plus, Trash2, Image as ImageIcon, X, DollarSign, GripVertical } from "lucide-react";
 import { uploadProductImage } from "@/lib/uploadProductImage";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export interface CustomizationOptionInput {
@@ -108,7 +108,7 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
                 value={group.name}
                 onChange={(e) => updateGroup(group.id, e.target.value)}
                 placeholder="e.g., Windows, Door Type, Interior Color"
-                className="flex-1 rounded-xl border border-gray-200 px-4 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#4B1D8F]"
+                className="flex-1 rounded-xl border border-gray-200 px-4 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#1F2937]"
               />
             </div>
             <button
@@ -122,7 +122,7 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {group.options.map((option) => (
-              <div key={option.id} className="group relative rounded-xl border border-gray-100 bg-gray-50/50 p-3 transition-all hover:border-purple-200 hover:bg-white hover:shadow-md">
+              <div key={option.id} className="group relative rounded-xl border border-gray-100 bg-gray-50/50 p-3 transition-all hover:border-amber-200 hover:bg-white hover:shadow-md">
                 <button
                   type="button"
                   onClick={() => removeOption(group.id, option.id)}
@@ -151,10 +151,10 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
                       </div>
                     </>
                   ) : (
-                    <label className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 p-4 transition-colors hover:bg-purple-50/30">
+                    <label className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-2 p-4 transition-colors hover:bg-amber-50/30">
                       <div className="rounded-full bg-gray-50 p-2 text-gray-400">
                         {option.uploading ? (
-                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
+                          <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-500 border-t-transparent" />
                         ) : (
                           <ImageIcon className="h-5 w-5" />
                         )}
@@ -179,7 +179,7 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
                     value={option.name}
                     onChange={(e) => updateOption(group.id, option.id, { name: e.target.value })}
                     placeholder="Option name (e.g., Door A60)"
-                    className="w-full rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#4B1D8F]"
+                    className="w-full rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#1F2937]"
                   />
                   <div className="relative">
                     <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-gray-400">$</span>
@@ -188,7 +188,7 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
                       value={option.priceModifier}
                       onChange={(e) => updateOption(group.id, option.id, { priceModifier: e.target.value })}
                       placeholder="Upcharge (e.g., 350)"
-                      className="w-full rounded-lg border border-gray-200 bg-white pl-6 pr-3 py-1.5 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#4B1D8F]"
+                      className="w-full rounded-lg border border-gray-200 bg-white pl-6 pr-3 py-1.5 text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-[#1F2937]"
                     />
                   </div>
                 </div>
@@ -198,12 +198,12 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
             <button
               type="button"
               onClick={() => addOption(group.id)}
-              className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-100 bg-white p-4 transition-all hover:border-purple-200 hover:bg-purple-50/30"
+              className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-100 bg-white p-4 transition-all hover:border-amber-200 hover:bg-amber-50/30"
             >
-              <div className="rounded-full bg-purple-50 p-2 text-[#4B1D8F]">
+              <div className="rounded-full bg-amber-50 p-2 text-[#1F2937]">
                 <Plus className="h-5 w-5" />
               </div>
-              <span className="text-xs font-bold text-purple-700">Add Option</span>
+              <span className="text-xs font-bold text-gray-800">Add Option</span>
             </button>
           </div>
         </div>
@@ -212,10 +212,10 @@ export function CustomizationEditor({ groups, onChange, userId }: Props) {
       <button
         type="button"
         onClick={addGroup}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-gray-200 py-6 transition-all hover:border-purple-300 hover:bg-purple-50/30 group"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-gray-200 py-6 transition-all hover:border-amber-300 hover:bg-amber-50/30 group"
       >
-        <Plus className="h-5 w-5 text-gray-400 group-hover:text-purple-500" />
-        <span className="text-sm font-bold text-gray-500 group-hover:text-purple-700">Add New Customization Category</span>
+        <Plus className="h-5 w-5 text-gray-400 group-hover:text-amber-500" />
+        <span className="text-sm font-bold text-gray-500 group-hover:text-gray-800">Add New Customization Category</span>
       </button>
     </div>
   );

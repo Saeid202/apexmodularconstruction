@@ -4,12 +4,12 @@ import { useState } from "react";
 import { Upload, X, CheckCircle } from "lucide-react";
 import { submitEngineeringProject } from "@/app/actions/engineering";
 
-const inp = "w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white transition-colors placeholder-gray-300";
-const inputStyle = { color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" };
+const inp = "w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white transition-colors placeholder-gray-300";
+const inputStyle = { color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" };
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl border-2 border-[#4B1D8F]/30 p-6 space-y-4" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.06)" }}>
+    <div className="bg-white rounded-xl border-2 border-[#1F2937]/30 p-6 space-y-4" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.06)" }}>
       <h2 className="text-xs font-extrabold text-gray-700 uppercase tracking-wider">{title}</h2>
       {children}
     </div>
@@ -185,7 +185,7 @@ export function ProjectForm({ onSubmitted }: { onSubmitted: () => void }) {
 
       <button type="submit" disabled={submitting}
         className="w-full py-3 text-white font-bold rounded-xl transition-all shadow-lg disabled:opacity-50"
-        style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}>
+        style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "2px solid #D4AF37" }}>
         {submitting ? "Submitting…" : "🚀 Submit Project"}
       </button>
     </form>

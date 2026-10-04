@@ -78,7 +78,7 @@ export default function ShippingAgentRequestDetailPage() {
 
   if (loading) return (
     <div className="flex justify-center py-32">
-      <Loader2 className="h-8 w-8 animate-spin" style={{ color: "#4B1D8F" }} />
+      <Loader2 className="h-8 w-8 animate-spin" style={{ color: "#1F2937" }} />
     </div>
   );
   if (!request) return <div className="text-center py-20 text-gray-400 text-lg">Request not found.</div>;
@@ -90,12 +90,12 @@ export default function ShippingAgentRequestDetailPage() {
     <div className="space-y-6 pb-12">
       {/* Back */}
       <Link href="/shipping-agent/requests"
-        className="inline-flex items-center gap-2 text-base font-semibold text-gray-500 hover:text-[#4B1D8F] transition-colors">
+        className="inline-flex items-center gap-2 text-base font-semibold text-gray-500 hover:text-[#1F2937] transition-colors">
         <ArrowLeft className="h-5 w-5" /> Back to Requests
       </Link>
 
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-[#4B1D8F] p-8 text-white shadow-xl">
+      <div className="relative overflow-hidden rounded-2xl bg-[#1F2937] p-8 text-white shadow-xl">
         <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/5" />
         <div className="relative flex items-start justify-between gap-4">
           <div>
@@ -104,7 +104,7 @@ export default function ShippingAgentRequestDetailPage() {
               <span className="text-[#D4AF37] text-sm font-bold uppercase tracking-widest">Shipping Request</span>
             </div>
             <h1 className="text-3xl font-bold mb-2">{request.order_reference}</h1>
-            <p className="text-purple-200 text-base">
+            <p className="text-amber-200 text-base">
               {new Date(request.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </p>
           </div>
@@ -119,15 +119,15 @@ export default function ShippingAgentRequestDetailPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Buyer */}
         <div className="bg-white rounded-2xl border-2 border-gray-300 shadow-md overflow-hidden">
-          <div className="px-6 py-4 bg-[#4B1D8F]/5 border-b-2 border-[#4B1D8F]/10 flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-[#4B1D8F] flex items-center justify-center">
+          <div className="px-6 py-4 bg-[#1F2937]/5 border-b-2 border-[#1F2937]/10 flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-[#1F2937] flex items-center justify-center">
               <User className="h-4 w-4 text-white" />
             </div>
-            <h2 className="text-base font-bold text-[#4B1D8F] uppercase tracking-wide">Client</h2>
+            <h2 className="text-base font-bold text-[#1F2937] uppercase tracking-wide">Client</h2>
           </div>
           <div className="p-6 space-y-3">
             <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-              <div className="h-12 w-12 rounded-full bg-[#4B1D8F] flex items-center justify-center text-white font-bold text-lg shrink-0">
+              <div className="h-12 w-12 rounded-full bg-[#1F2937] flex items-center justify-center text-white font-bold text-lg shrink-0">
                 {request.buyer_name?.charAt(0).toUpperCase() ?? "?"}
               </div>
               <p className="font-bold text-gray-900 text-lg">{request.buyer_name ?? "—"}</p>
@@ -144,11 +144,11 @@ export default function ShippingAgentRequestDetailPage() {
 
         {/* Shipment details */}
         <div className="bg-white rounded-2xl border-2 border-gray-300 shadow-md overflow-hidden">
-          <div className="px-6 py-4 bg-[#4B1D8F]/5 border-b-2 border-[#4B1D8F]/10 flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-[#4B1D8F] flex items-center justify-center">
+          <div className="px-6 py-4 bg-[#1F2937]/5 border-b-2 border-[#1F2937]/10 flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-[#1F2937] flex items-center justify-center">
               <Truck className="h-4 w-4 text-white" />
             </div>
-            <h2 className="text-base font-bold text-[#4B1D8F] uppercase tracking-wide">Shipment Details</h2>
+            <h2 className="text-base font-bold text-[#1F2937] uppercase tracking-wide">Shipment Details</h2>
           </div>
           <div className="divide-y divide-gray-100">
             <div className="grid grid-cols-2 divide-x divide-gray-100">
@@ -181,11 +181,11 @@ export default function ShippingAgentRequestDetailPage() {
       {/* Documents */}
       {request.documents.length > 0 && (
         <div className="bg-white rounded-2xl border-2 border-gray-300 shadow-md overflow-hidden">
-          <div className="px-6 py-4 bg-[#4B1D8F]/5 border-b-2 border-[#4B1D8F]/10 flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-[#4B1D8F] flex items-center justify-center">
+          <div className="px-6 py-4 bg-[#1F2937]/5 border-b-2 border-[#1F2937]/10 flex items-center gap-3">
+            <div className="h-8 w-8 rounded-lg bg-[#1F2937] flex items-center justify-center">
               <FileText className="h-4 w-4 text-white" />
             </div>
-            <h2 className="text-base font-bold text-[#4B1D8F] uppercase tracking-wide">
+            <h2 className="text-base font-bold text-[#1F2937] uppercase tracking-wide">
               Documents ({request.documents.length})
             </h2>
           </div>
@@ -194,8 +194,8 @@ export default function ShippingAgentRequestDetailPage() {
               const docTypeLabel = DOC_TYPES.find((d) => d.value === doc.doc_type)?.label ?? doc.doc_type;
               return (
                 <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-4 px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-[#4B1D8F]/5 hover:border-[#4B1D8F]/20 transition-colors">
-                  <FileText className="h-6 w-6 text-[#4B1D8F] shrink-0" />
+                  className="flex items-center gap-4 px-5 py-4 rounded-xl border-2 border-gray-100 bg-gray-50 hover:bg-[#1F2937]/5 hover:border-[#1F2937]/20 transition-colors">
+                  <FileText className="h-6 w-6 text-[#1F2937] shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-base font-bold text-gray-900 truncate">{doc.file_name}</p>
                     <p className="text-sm text-gray-500">{docTypeLabel}</p>
@@ -209,8 +209,8 @@ export default function ShippingAgentRequestDetailPage() {
       )}
 
       {/* Status update */}
-      <div className="bg-white rounded-2xl border-2 border-[#4B1D8F]/30 shadow-lg overflow-hidden">
-        <div className="px-8 py-5 bg-[#4B1D8F] flex items-center gap-3">
+      <div className="bg-white rounded-2xl border-2 border-[#1F2937]/30 shadow-lg overflow-hidden">
+        <div className="px-8 py-5 bg-[#1F2937] flex items-center gap-3">
           <CheckCircle className="h-6 w-6 text-[#D4AF37]" />
           <h2 className="text-xl font-bold text-white">Update Status</h2>
         </div>
@@ -218,7 +218,7 @@ export default function ShippingAgentRequestDetailPage() {
           <select
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value as ShippingStatus)}
-            className="flex-1 px-4 py-3.5 border-2 border-gray-200 rounded-xl text-base font-medium text-gray-900 focus:outline-none focus:border-[#4B1D8F] bg-white transition-all"
+            className="flex-1 px-4 py-3.5 border-2 border-gray-200 rounded-xl text-base font-medium text-gray-900 focus:outline-none focus:border-[#1F2937] bg-white transition-all"
           >
             {STATUS_OPTIONS.map((s) => (
               <option key={s.value} value={s.value}>{s.label}</option>
@@ -228,7 +228,7 @@ export default function ShippingAgentRequestDetailPage() {
             onClick={handleStatusSave}
             disabled={savingStatus || statusValue === request.status}
             className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-white disabled:opacity-50 transition-all shadow-md"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}
+            style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "2px solid #D4AF37" }}
           >
             {savingStatus ? <Loader2 className="h-5 w-5 animate-spin" /> : statusSaved ? <CheckCircle className="h-5 w-5" /> : null}
             {statusSaved ? "Saved!" : "Save Status"}
@@ -238,11 +238,11 @@ export default function ShippingAgentRequestDetailPage() {
 
       {/* Message thread */}
       <div className="bg-white rounded-2xl border-2 border-gray-300 shadow-md overflow-hidden">
-        <div className="px-6 py-4 bg-[#4B1D8F]/5 border-b-2 border-[#4B1D8F]/10 flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-[#4B1D8F] flex items-center justify-center">
+        <div className="px-6 py-4 bg-[#1F2937]/5 border-b-2 border-[#1F2937]/10 flex items-center gap-3">
+          <div className="h-8 w-8 rounded-lg bg-[#1F2937] flex items-center justify-center">
             <MessageSquare className="h-4 w-4 text-white" />
           </div>
-          <h2 className="text-base font-bold text-[#4B1D8F] uppercase tracking-wide">Message Thread</h2>
+          <h2 className="text-base font-bold text-[#1F2937] uppercase tracking-wide">Message Thread</h2>
         </div>
         <div className="p-5 min-h-[120px] max-h-80 overflow-y-auto space-y-3">
           {messages.length === 0 ? (
@@ -251,12 +251,12 @@ export default function ShippingAgentRequestDetailPage() {
             const isAgent = msg.sender_role === "shipping_agent";
             return (
               <div key={msg.id} className={`flex ${isAgent ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[75%] rounded-2xl px-5 py-3 ${isAgent ? "bg-[#4B1D8F] text-white rounded-br-sm" : "bg-gray-100 text-gray-800 rounded-bl-sm"}`}>
-                  <p className={`text-xs font-bold mb-1.5 ${isAgent ? "text-purple-200" : "text-gray-400"}`}>
+                <div className={`max-w-[75%] rounded-2xl px-5 py-3 ${isAgent ? "bg-[#1F2937] text-white rounded-br-sm" : "bg-gray-100 text-gray-800 rounded-bl-sm"}`}>
+                  <p className={`text-xs font-bold mb-1.5 ${isAgent ? "text-amber-200" : "text-gray-400"}`}>
                     {isAgent ? "You (Agent)" : "Client"}
                   </p>
                   {msg.message && <p className="whitespace-pre-wrap text-base">{msg.message}</p>}
-                  <p className={`text-xs mt-1.5 ${isAgent ? "text-purple-300" : "text-gray-400"}`}>
+                  <p className={`text-xs mt-1.5 ${isAgent ? "text-amber-300" : "text-gray-400"}`}>
                     {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>
@@ -266,7 +266,7 @@ export default function ShippingAgentRequestDetailPage() {
           <div ref={bottomRef} />
         </div>
         <div className="px-5 pb-5 flex items-end gap-3">
-          <div className="flex-1 flex items-end gap-2 border-2 border-gray-200 rounded-xl px-4 py-3 focus-within:border-[#4B1D8F] transition-colors">
+          <div className="flex-1 flex items-end gap-2 border-2 border-gray-200 rounded-xl px-4 py-3 focus-within:border-[#1F2937] transition-colors">
             <textarea
               value={msgText}
               onChange={(e) => setMsgText(e.target.value)}
@@ -279,7 +279,7 @@ export default function ShippingAgentRequestDetailPage() {
           <button
             onClick={handleSendMessage}
             disabled={sending || !msgText.trim()}
-            className="h-12 w-12 flex items-center justify-center bg-[#4B1D8F] text-white rounded-xl hover:bg-[#3A1570] disabled:opacity-40 shadow-md transition-all shrink-0"
+            className="h-12 w-12 flex items-center justify-center bg-[#1F2937] text-white rounded-xl hover:bg-[#111827] disabled:opacity-40 shadow-md transition-all shrink-0"
           >
             {sending ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
           </button>

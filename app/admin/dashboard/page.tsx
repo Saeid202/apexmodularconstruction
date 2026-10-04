@@ -5,7 +5,7 @@ const cards = [
   { title: "Partners",             description: "Create and manage partner accounts",       href: "/admin/partners",    icon: Users,        color: "bg-blue-50 text-blue-600" },
   { title: "Agents",               description: "Create and manage agent accounts",         href: "/admin/agents",      icon: Users,        color: "bg-orange-50 text-orange-600" },
   { title: "Engineering Projects", description: "View all submitted engineering projects",  href: "/admin/engineering", icon: Package,      color: "bg-green-50 text-green-600" },
-  { title: "Inquiries",            description: "Manage customer inquiries",                href: "/admin/inquiries",   icon: MessageSquare,color: "bg-purple-50 text-purple-600" },
+  { title: "Inquiries",            description: "Manage customer inquiries",                href: "/admin/inquiries",   icon: MessageSquare,color: "bg-amber-50 text-gray-800" },
   { title: "Sellers",              description: "Manage seller accounts",                   href: "/admin/sellers",     icon: Settings,     color: "bg-amber-50 text-amber-600" },
 ];
 

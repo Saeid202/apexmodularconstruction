@@ -188,8 +188,8 @@ function DashboardOverview() {
 
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
           <div className="flex items-center">
-            <div className="p-3 bg-purple-100 rounded-full">
-              <ShoppingCart className="h-6 w-6 text-purple-600" />
+            <div className="p-3 bg-amber-100 rounded-full">
+              <ShoppingCart className="h-6 w-6 text-gray-800" />
             </div>
             <div>
               <p className="text-sm font-medium text-gray-600">Total Orders</p>

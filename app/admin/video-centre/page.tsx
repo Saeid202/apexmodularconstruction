@@ -349,9 +349,9 @@ export default function AdminVideoCentrePage() {
                         </div>
                         {v.is_featured && (
                           <span 
-                            className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-purple-900 bg-gradient-to-br from-yellow-300 to-yellow-500 border border-yellow-400 shadow-md"
+                            className="absolute top-2 left-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-gray-900 bg-gradient-to-br from-yellow-300 to-yellow-500 border border-yellow-400 shadow-md"
                           >
-                            <Star className="h-2.5 w-2.5 fill-purple-900" />
+                            <Star className="h-2.5 w-2.5 fill-gray-900" />
                             Spotlight
                           </span>
                         )}

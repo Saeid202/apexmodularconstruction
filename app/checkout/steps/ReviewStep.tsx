@@ -5,7 +5,7 @@ import type { TaxBreakdown } from "@/lib/tax/calculator";
 import type { CartItem } from "@/lib/stores/cartStore";
 import type { ShippingFormData } from "./ShippingStep";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface Props {
@@ -188,7 +188,7 @@ const styles: Record<string, React.CSSProperties> = {
     paddingBottom: "0.375rem",
   },
   addressBox: {
-    background: "#f9f7ff",
+    background: "#FFFBEB",
     border: `1px solid ${PURPLE}22`,
     borderRadius: "0.5rem",
     padding: "1rem 1.25rem",
@@ -230,10 +230,10 @@ const styles: Record<string, React.CSSProperties> = {
     background: "#fff",
   },
   rowOdd: {
-    background: "#f9f7ff",
+    background: "#FFFBEB",
   },
   totalsBox: {
-    background: "#f9f7ff",
+    background: "#FFFBEB",
     border: `1px solid ${PURPLE}22`,
     borderRadius: "0.5rem",
     padding: "1rem 1.25rem",
@@ -290,7 +290,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 700,
     cursor: "pointer",
     letterSpacing: "0.01em",
-    boxShadow: `0 2px 8px rgba(75,29,143,0.18)`,
+    boxShadow: `0 2px 8px rgba(31,41,55,0.18)`,
     transition: "background 0.15s, box-shadow 0.15s",
   },
 };

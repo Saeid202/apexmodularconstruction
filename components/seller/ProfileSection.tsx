@@ -226,8 +226,8 @@ export default function ProfileSection() {
             </div>
 
             <div className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <Eye className="h-6 w-6 text-purple-600" />
+              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Eye className="h-6 w-6 text-gray-800" />
               </div>
               <p className="text-2xl font-bold text-gray-900">{stats.monthlyViews.toLocaleString()}</p>
               <p className="text-sm text-gray-600">Monthly Views</p>

@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 // Design Tokens
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 // Mock Data (matches the hub)
@@ -97,13 +97,13 @@ export default function BlogPostPage() {
       {/* Article Header */}
       <header className="pt-24 pb-8 px-6 bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-purple-700 transition-colors mb-12">
+          <Link href="/blog" className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-400 hover:text-gray-800 transition-colors mb-12">
             <ArrowLeft className="w-4 h-4" />
             Back to Journal
           </Link>
           
           <div className="flex items-center gap-4 mb-6">
-             <span className="px-4 py-1.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-black uppercase tracking-widest border border-purple-200">
+             <span className="px-4 py-1.5 rounded-full bg-amber-100 text-gray-900 text-[10px] font-black uppercase tracking-widest border border-amber-200">
                {post.category}
              </span>
              <div className="flex items-center gap-2 text-gray-400 text-[10px] font-bold uppercase tracking-widest">
@@ -167,8 +167,8 @@ export default function BlogPostPage() {
           </div>
           
           {/* Author Bio Card */}
-          <div className="mt-16 p-10 rounded-[40px] bg-[#F8F6FC] border border-purple-100 flex flex-col md:flex-row items-center gap-8">
-             <div className="w-24 h-24 rounded-full bg-purple-600 flex items-center justify-center text-3xl font-black text-white shrink-0">
+          <div className="mt-16 p-10 rounded-[40px] bg-[#FFFBEB] border border-amber-100 flex flex-col md:flex-row items-center gap-8">
+             <div className="w-24 h-24 rounded-full bg-gray-800 flex items-center justify-center text-3xl font-black text-white shrink-0">
                 {post.author.charAt(0)}
              </div>
              <div>
@@ -197,7 +197,7 @@ export default function BlogPostPage() {
                   Request Free Estimate <ArrowRight className="w-4 h-4" />
                </Link>
             </div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl" />
          </div>
       </section>
     </main>

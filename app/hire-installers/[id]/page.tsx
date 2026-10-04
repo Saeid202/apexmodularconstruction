@@ -48,9 +48,9 @@ export default async function ContractorProfilePage({ params }: { params: { id: 
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-          <div className="p-8" style={{ background: 'linear-gradient(135deg, #4B1D8F, #5a2d9f)' }}>
+          <div className="p-8" style={{ background: 'linear-gradient(135deg, #1F2937, #5a2d9f)' }}>
             <h1 className="text-3xl font-bold text-white mb-2">{installer.business_name || installer.full_name}</h1>
-            <p className="text-purple-200">{installer.city && installer.province ? `${installer.city}, ${installer.province}` : installer.city || installer.province || 'Location not specified'}</p>
+            <p className="text-amber-200">{installer.city && installer.province ? `${installer.city}, ${installer.province}` : installer.city || installer.province || 'Location not specified'}</p>
           </div>
         </div>
 
@@ -134,7 +134,7 @@ export default async function ContractorProfilePage({ params }: { params: { id: 
             <a
               href="/hire-installers"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90"
-              style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+              style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
             >
               ← Back to Installers
             </a>

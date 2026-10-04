@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ForbiddenPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#4B1D8F] to-[#3a1470] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#1F2937] to-[#3a1470] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
         <div className="mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-100 mb-4">
@@ -36,7 +36,7 @@ export default function ForbiddenPage() {
         <div className="flex flex-col gap-3">
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 w-full bg-[#4B1D8F] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#3a1470] transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full bg-[#1F2937] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#3a1470] transition-colors"
           >
             <Home className="w-5 h-5" />
             Back to Home
@@ -51,7 +51,7 @@ export default function ForbiddenPage() {
 
         <p className="text-xs text-gray-500 mt-6">
           Contact support:{' '}
-          <a href="mailto:support@cargoplus.ca" className="text-[#4B1D8F] hover:underline">
+          <a href="mailto:support@cargoplus.ca" className="text-[#1F2937] hover:underline">
             support@cargoplus.ca
           </a>
         </p>

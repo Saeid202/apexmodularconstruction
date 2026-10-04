@@ -76,7 +76,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
         <div>
           <Link 
             href="/hire-installers"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-[#4B1D8F] hover:text-[#3A1570] transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-[#1F2937] hover:text-[#111827] transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Installers List
@@ -84,7 +84,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
         </div>
 
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-[#4B1D8F] via-[#5a2d9f] to-[#3a1470] text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#1F2937] via-[#5a2d9f] to-[#3a1470] text-white rounded-3xl p-8 md:p-12 shadow-xl relative overflow-hidden">
           <span className="absolute top-0 right-0 h-96 w-96 bg-white/5 rounded-full translate-x-24 -translate-y-24 pointer-events-none" />
           <span className="absolute bottom-0 left-0 h-64 w-64 bg-white/5 rounded-full -translate-x-12 translate-y-12 pointer-events-none" />
           
@@ -94,7 +94,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
               Heavy Machinery Rentals
             </span>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight">Construction Equipment Rental</h1>
-            <p className="text-purple-100 text-base md:text-lg leading-relaxed">
+            <p className="text-amber-100 text-base md:text-lg leading-relaxed">
               Browse fully certified heavy equipment listed by our verified contractors and sellers. Rent cranes, telehandlers, and lifts specifically suited for modular assembly projects.
             </p>
           </div>
@@ -109,7 +109,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
               placeholder="Search equipment by name or brand..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#4B1D8F] focus:outline-none text-sm transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#1F2937] focus:outline-none text-sm transition-colors"
             />
           </div>
 
@@ -117,7 +117,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
             <select
               value={selectedSeller}
               onChange={(e) => setSelectedSeller(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#4B1D8F] focus:outline-none text-sm bg-white"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#1F2937] focus:outline-none text-sm bg-white"
             >
               <option value="">All Vendors</option>
               {uniqueSellers.map((seller) => (
@@ -125,7 +125,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
               ))}
             </select>
 
-            <div className="flex items-center justify-center bg-purple-50 text-[#4B1D8F] px-4 py-2 rounded-xl text-xs font-bold shrink-0">
+            <div className="flex items-center justify-center bg-amber-50 text-[#1F2937] px-4 py-2 rounded-xl text-xs font-bold shrink-0">
               {filteredProducts.length} items found
             </div>
           </div>
@@ -156,18 +156,18 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute top-3 left-3 bg-[#4B1D8F] text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
+                      <div className="absolute top-3 left-3 bg-[#1F2937] text-white px-3 py-1 rounded-full text-xs font-bold shadow-sm">
                         Rent
                       </div>
                     </div>
 
                     {/* Equipment Info */}
                     <div className="px-6 space-y-3">
-                      <div className="flex items-center gap-2 text-[10px] font-bold text-purple-600 uppercase tracking-wide">
+                      <div className="flex items-center gap-2 text-[10px] font-bold text-gray-800 uppercase tracking-wide">
                         <Building2 className="h-3 w-3" />
                         <span>{product.sellerName}</span>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#4B1D8F] transition-colors line-clamp-1">{product.name}</h3>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#1F2937] transition-colors line-clamp-1">{product.name}</h3>
                       <p className="text-xs text-gray-500 line-clamp-3 leading-relaxed h-12">{product.description}</p>
                     </div>
 
@@ -190,7 +190,7 @@ export default function RentalEquipmentClient({ initialProducts }: RentalEquipme
                   <div className="p-6 border-t border-gray-50 flex items-center justify-between mt-4">
                     <div>
                       <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Rate</p>
-                      <p className="text-lg font-extrabold text-[#4B1D8F]">
+                      <p className="text-lg font-extrabold text-[#1F2937]">
                         ${product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         <span className="text-xs font-medium text-gray-500"> / {product.priceType}</span>
                       </p>

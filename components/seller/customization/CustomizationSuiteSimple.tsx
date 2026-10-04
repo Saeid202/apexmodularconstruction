@@ -49,11 +49,11 @@ interface ZoneGroup {
   options: OptionItem[]
 }
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 const PRESET_COLORS = [
-  '#4B1D8F', // Brand Purple
+  '#1F2937', // Brand Purple
   '#D4AF37', // Brand Gold
   '#EF4444', // Red
   '#3B82F6', // Blue
@@ -278,7 +278,7 @@ export function CustomizationSuiteSimple({
         id: `opt-${Math.random().toString(36).substr(2, 9)}`,
         name: 'New Custom Choice',
         priceModifier: 0,
-        colorHex: '#4B1D8F',
+        colorHex: '#1F2937',
         imageUrl: null,
       }
       return {
@@ -319,13 +319,13 @@ export function CustomizationSuiteSimple({
   return (
     <div className="space-y-6">
       {/* AI Controls Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl border border-purple-100">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-gradient-to-r from-amber-50 to-amber-50 rounded-2xl border border-amber-100">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-purple-700 animate-pulse" />
-            <h4 className="text-sm font-bold text-purple-900">AI Segmentation scan (SAM)</h4>
+            <Sparkles className="h-5 w-5 text-gray-800 animate-pulse" />
+            <h4 className="text-sm font-bold text-gray-900">AI Segmentation scan (SAM)</h4>
           </div>
-          <p className="text-xs text-purple-700/80 leading-relaxed max-w-xl">
+          <p className="text-xs text-gray-800/80 leading-relaxed max-w-xl">
             Click scan to automatically analyze the image, find customization areas (cushions, frames, doors), and name them automatically.
           </p>
         </div>
@@ -377,7 +377,7 @@ export function CustomizationSuiteSimple({
                         WebkitMaskImage: `url("${getSafeMaskUrl(zone.maskUrl)}")`,
                         maskSize: '100% 100%',
                         WebkitMaskSize: '100% 100%',
-                        backgroundColor: isHovered ? 'rgba(75, 29, 143, 0.65)' : 'rgba(212, 175, 55, 0.25)',
+                        backgroundColor: isHovered ? 'rgba(31,41,55, 0.65)' : 'rgba(212, 175, 55, 0.25)',
                       }}
                     />
                   )
@@ -397,7 +397,7 @@ export function CustomizationSuiteSimple({
               <span className="h-2 w-2 rounded-full bg-[#D4AF37]/50" /> Proposed Zones
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-[#4B1D8F]/75" /> Active Hover
+              <span className="h-2 w-2 rounded-full bg-[#1F2937]/75" /> Active Hover
             </span>
           </div>
         </div>
@@ -419,14 +419,14 @@ export function CustomizationSuiteSimple({
                   onMouseLeave={() => setHoveredZoneId(null)}
                   className={`p-5 rounded-2xl border transition-all duration-300 ${
                     hoveredZoneId === zone.id
-                      ? 'border-purple-300 bg-purple-50/10 shadow-sm'
+                      ? 'border-amber-300 bg-amber-50/10 shadow-sm'
                       : 'border-gray-200 bg-white hover:border-gray-300'
                   }`}
                 >
                   {/* Zone Header */}
                   <div className="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-gray-100">
                     <div className="flex items-center gap-2 flex-1">
-                      <span className="flex items-center justify-center h-6 w-6 rounded-lg bg-purple-100 text-purple-700 text-xs font-bold shrink-0">
+                      <span className="flex items-center justify-center h-6 w-6 rounded-lg bg-amber-100 text-gray-800 text-xs font-bold shrink-0">
                         Z
                       </span>
                       <input
@@ -434,11 +434,11 @@ export function CustomizationSuiteSimple({
                         value={zone.name}
                         onChange={(e) => handleRenameZone(zone.id, e.target.value)}
                         placeholder="Zone name (e.g. Cushions)"
-                        className="text-xs font-bold text-gray-800 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-purple-600 focus:outline-none py-0.5 px-1 w-full max-w-sm rounded"
+                        className="text-xs font-bold text-gray-800 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-800 focus:outline-none py-0.5 px-1 w-full max-w-sm rounded"
                       />
                     </div>
                     <div className="flex items-center gap-2">
-                      <label className="cursor-pointer text-[10px] font-bold uppercase tracking-wider text-purple-600 bg-purple-50 hover:bg-purple-100 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                      <label className="cursor-pointer text-[10px] font-bold uppercase tracking-wider text-gray-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
                         <Upload className="h-3 w-3" />
                         Upload Mask
                         <input
@@ -470,7 +470,7 @@ export function CustomizationSuiteSimple({
                         <div className="flex items-center gap-2 shrink-0">
                           <input
                             type="color"
-                            value={opt.colorHex || '#4B1D8F'}
+                            value={opt.colorHex || '#1F2937'}
                             onChange={(e) =>
                               handleUpdateOption(zone.id, opt.id, { colorHex: e.target.value })
                             }
@@ -487,7 +487,7 @@ export function CustomizationSuiteSimple({
                               handleUpdateOption(zone.id, opt.id, { name: e.target.value })
                             }
                             placeholder="Option name (e.g. Forest Green)"
-                            className="w-full text-xs font-semibold bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 focus:border-purple-600 focus:outline-none"
+                            className="w-full text-xs font-semibold bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 focus:border-gray-800 focus:outline-none"
                           />
                         </div>
 
@@ -503,7 +503,7 @@ export function CustomizationSuiteSimple({
                               })
                             }
                             placeholder="Price"
-                            className="w-full text-xs font-semibold bg-white border border-gray-200 rounded-lg px-2 py-1.5 focus:border-purple-600 focus:outline-none"
+                            className="w-full text-xs font-semibold bg-white border border-gray-200 rounded-lg px-2 py-1.5 focus:border-gray-800 focus:outline-none"
                           />
                         </div>
 
@@ -536,7 +536,7 @@ export function CustomizationSuiteSimple({
           <button
             type="button"
             onClick={handleAddZoneManually}
-            className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-purple-200 hover:border-purple-400 rounded-2xl text-xs font-bold text-purple-700 hover:text-purple-900 transition-all bg-purple-50/20 active:scale-[0.99]"
+            className="flex items-center justify-center gap-2 w-full py-3 border-2 border-dashed border-amber-200 hover:border-amber-400 rounded-2xl text-xs font-bold text-gray-800 hover:text-gray-900 transition-all bg-amber-50/20 active:scale-[0.99]"
           >
             <Plus className="h-4 w-4" />
             Add Custom Zone Manually

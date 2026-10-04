@@ -427,7 +427,7 @@ export default function ContractorManagementClient() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
           >
             <Plus className="h-4 w-4" />
             Add Contractor
@@ -448,7 +448,7 @@ export default function ContractorManagementClient() {
               {stats.pending}
             </p>
           </div>
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4">
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-4">
             <p className="text-xs text-gray-600 font-medium">Featured</p>
             <p className="text-2xl font-bold text-gray-900 mt-1">
               {stats.featured}
@@ -480,7 +480,7 @@ export default function ContractorManagementClient() {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
               <button
@@ -509,7 +509,7 @@ export default function ContractorManagementClient() {
                   }}
                   className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                     filters.status === btn.value
-                      ? "bg-purple-600 text-white"
+                      ? "bg-gray-800 text-white"
                       : "bg-white border border-gray-200 text-gray-700 hover:bg-gray-50"
                   }`}
                 >
@@ -552,7 +552,7 @@ export default function ContractorManagementClient() {
             <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
               {loading ? (
                 <div className="flex justify-center py-16">
-                  <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
+                  <Loader2 className="h-6 w-6 animate-spin text-gray-800" />
                 </div>
               ) : paginatedContractors.length === 0 ? (
                 <div className="text-center py-12 text-gray-500">
@@ -610,7 +610,7 @@ export default function ContractorManagementClient() {
                           <tr
                             key={contractor.id}
                             className={`hover:bg-gray-50 transition-colors ${
-                              isSelected ? "bg-purple-50" : ""
+                              isSelected ? "bg-amber-50" : ""
                             }`}
                           >
                             <td className="px-4 py-3">
@@ -757,7 +757,7 @@ export default function ContractorManagementClient() {
                                         handleToggleFeatured(contractor.id)
                                       }
                                       disabled={actionLoading === contractor.id}
-                                      className="w-full text-left px-4 py-2 text-sm hover:bg-purple-50 text-purple-700 flex items-center gap-2 disabled:opacity-50"
+                                      className="w-full text-left px-4 py-2 text-sm hover:bg-amber-50 text-gray-800 flex items-center gap-2 disabled:opacity-50"
                                     >
                                       <TrendingUp className="h-4 w-4" />
                                       {contractor.featured
@@ -847,7 +847,7 @@ export default function ContractorManagementClient() {
                     setFilters({ ...filters, serviceType: e.target.value });
                     setCurrentPage(1);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="">All Services</option>
                   {SERVICE_TYPES.map((st) => (
@@ -868,7 +868,7 @@ export default function ContractorManagementClient() {
                     setFilters({ ...filters, province: e.target.value });
                     setCurrentPage(1);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="">All Provinces</option>
                   {PROVINCES.map((p) => (
@@ -892,7 +892,7 @@ export default function ContractorManagementClient() {
                     });
                     setCurrentPage(1);
                   }}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="all">All Levels</option>
                   <option value="beginner">Beginner (0-4 years)</option>
@@ -1020,7 +1020,7 @@ export default function ContractorManagementClient() {
                     <Mail className="h-4 w-4 text-gray-400" />
                     <a
                       href={`mailto:${selectedContractor.contactEmail}`}
-                      className="text-purple-600 hover:underline"
+                      className="text-gray-800 hover:underline"
                     >
                       {selectedContractor.contactEmail}
                     </a>
@@ -1029,7 +1029,7 @@ export default function ContractorManagementClient() {
                     <Phone className="h-4 w-4 text-gray-400" />
                     <a
                       href={`tel:${selectedContractor.contactPhone}`}
-                      className="text-purple-600 hover:underline"
+                      className="text-gray-800 hover:underline"
                     >
                       {selectedContractor.contactPhone}
                     </a>
@@ -1041,7 +1041,7 @@ export default function ContractorManagementClient() {
                         href={selectedContractor.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-purple-600 hover:underline"
+                        className="text-gray-800 hover:underline"
                       >
                         {selectedContractor.website}
                       </a>
@@ -1064,7 +1064,7 @@ export default function ContractorManagementClient() {
                       {selectedContractor.serviceTypes.map((st) => (
                         <span
                           key={st}
-                          className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm font-medium"
+                          className="px-2 py-1 bg-amber-100 text-gray-800 rounded text-sm font-medium"
                         >
                           {st}
                         </span>
@@ -1137,7 +1137,7 @@ export default function ContractorManagementClient() {
                         className="p-3 border border-gray-200 rounded-lg"
                       >
                         <div className="flex items-start gap-2">
-                          <Award className="h-4 w-4 text-purple-600 mt-0.5 shrink-0" />
+                          <Award className="h-4 w-4 text-gray-800 mt-0.5 shrink-0" />
                           <div>
                             <p className="font-medium text-gray-900">
                               {cert.name}
@@ -1217,7 +1217,7 @@ export default function ContractorManagementClient() {
                     <span
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium ${
                         selectedContractor.featured
-                          ? "bg-purple-100 text-purple-700"
+                          ? "bg-amber-100 text-gray-800"
                           : "bg-gray-100 text-gray-700"
                       }`}
                     >
@@ -1269,7 +1269,7 @@ export default function ContractorManagementClient() {
                         handleToggleFeatured(selectedContractor.id)
                       }
                       disabled={actionLoading === selectedContractor.id}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 font-medium"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 font-medium"
                     >
                       {actionLoading === selectedContractor.id && (
                         <Loader2 className="h-4 w-4 animate-spin" />

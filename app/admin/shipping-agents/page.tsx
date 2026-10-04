@@ -7,7 +7,7 @@ import {
   updateShippingAgent, deleteShippingAgent,
 } from "@/app/actions/shipping-agent";
 
-const inp = "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] bg-white";
+const inp = "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] bg-white";
 
 interface Agent {
   id: string;
@@ -114,7 +114,7 @@ export default function AdminShippingAgentsPage() {
         <button
           onClick={() => { setShowCreate(!showCreate); resetCreate(); }}
           className="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-lg transition-colors"
-          style={{ backgroundColor: "#4B1D8F" }}
+          style={{ backgroundColor: "#1F2937" }}
         >
           {showCreate ? <><X className="h-4 w-4" /> Cancel</> : <><Plus className="h-4 w-4" /> Create Shipping Agent</>}
         </button>
@@ -156,7 +156,7 @@ export default function AdminShippingAgentsPage() {
             </div>
             <button type="submit" disabled={creating}
               className="flex items-center gap-2 px-5 py-2 text-white text-sm font-semibold rounded-lg disabled:opacity-50 transition-colors"
-              style={{ backgroundColor: "#4B1D8F" }}>
+              style={{ backgroundColor: "#1F2937" }}>
               {creating && <Loader2 className="h-4 w-4 animate-spin" />} Create Agent
             </button>
           </form>
@@ -167,7 +167,7 @@ export default function AdminShippingAgentsPage() {
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-16">
-            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#4B1D8F" }} />
+            <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#1F2937" }} />
           </div>
         ) : agents.length === 0 ? (
           <div className="text-center py-16">
@@ -187,7 +187,7 @@ export default function AdminShippingAgentsPage() {
               {agents.map((agent) => (
                 <React.Fragment key={agent.id}>
                   {/* Normal row */}
-                  <tr className={`hover:bg-gray-50 transition-colors ${editId === agent.id ? "bg-purple-50" : ""}`}>
+                  <tr className={`hover:bg-gray-50 transition-colors ${editId === agent.id ? "bg-amber-50" : ""}`}>
                     <td className="px-4 py-3 font-semibold text-gray-900">{agent.full_name ?? "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{agent.email}</td>
                     <td className="px-4 py-3 text-gray-600">{agent.phone ?? "—"}</td>
@@ -200,7 +200,7 @@ export default function AdminShippingAgentsPage() {
                         <button
                           onClick={() => editId === agent.id ? cancelEdit() : startEdit(agent)}
                           title={editId === agent.id ? "Cancel edit" : "Edit"}
-                          className={`p-1.5 rounded-lg transition-colors ${editId === agent.id ? "bg-purple-100 text-[#4B1D8F]" : "text-gray-400 hover:text-[#4B1D8F] hover:bg-purple-50"}`}
+                          className={`p-1.5 rounded-lg transition-colors ${editId === agent.id ? "bg-amber-100 text-[#1F2937]" : "text-gray-400 hover:text-[#1F2937] hover:bg-amber-50"}`}
                         >
                           {editId === agent.id ? <X className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
                         </button>
@@ -223,7 +223,7 @@ export default function AdminShippingAgentsPage() {
 
                   {/* Inline edit row */}
                   {editId === agent.id && (
-                    <tr className="bg-purple-50 border-b border-purple-100">
+                    <tr className="bg-amber-50 border-b border-amber-100">
                       <td colSpan={5} className="px-4 py-4">
                         {editError && (
                           <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">{editError}</div>
@@ -259,7 +259,7 @@ export default function AdminShippingAgentsPage() {
                             onClick={() => handleSaveEdit(agent.id)}
                             disabled={saving}
                             className="flex items-center gap-2 px-4 py-2 text-white text-sm font-semibold rounded-lg disabled:opacity-50 transition-colors"
-                            style={{ backgroundColor: "#4B1D8F" }}
+                            style={{ backgroundColor: "#1F2937" }}
                           >
                             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
                             Save Changes

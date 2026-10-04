@@ -74,14 +74,14 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
   return (
     <tr>
       <td colSpan={8} className="p-0">
-        <div className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 border-t border-b border-purple-100 px-6 py-4">
+        <div className="bg-gradient-to-br from-amber-50 via-blue-50 to-amber-50 border-t border-b border-amber-100 px-6 py-4">
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <MessageSquare className="h-4 w-4 text-purple-600" />
-              <span className="text-sm font-semibold text-purple-900">Notes — {project.project_name}</span>
+              <MessageSquare className="h-4 w-4 text-gray-800" />
+              <span className="text-sm font-semibold text-gray-900">Notes — {project.project_name}</span>
             </div>
-            <button onClick={onClose} className="p-1 rounded-lg hover:bg-purple-100 text-purple-400 hover:text-purple-600 transition-colors">
+            <button onClick={onClose} className="p-1 rounded-lg hover:bg-amber-100 text-amber-400 hover:text-gray-800 transition-colors">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -89,7 +89,7 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
           {/* Messages */}
           <div className="max-h-64 overflow-y-auto space-y-2 mb-3 pr-1">
             {loading ? (
-              <div className="flex justify-center py-6"><Loader2 className="h-5 w-5 animate-spin text-purple-400" /></div>
+              <div className="flex justify-center py-6"><Loader2 className="h-5 w-5 animate-spin text-amber-400" /></div>
             ) : messages.length === 0 ? (
               <p className="text-center text-xs text-gray-400 py-6">No notes yet. Start the conversation.</p>
             ) : (
@@ -99,7 +99,7 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
                   <div key={msg.id} className={`flex ${isPartner ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${
                       isPartner
-                        ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-br-sm shadow-md shadow-blue-500/20"
+                        ? "bg-gradient-to-br from-blue-600 to-gray-800 text-white rounded-br-sm shadow-md shadow-blue-500/20"
                         : "bg-white text-gray-800 rounded-bl-sm shadow-sm border border-gray-100"
                     }`}>
                       <p className={`text-[10px] font-semibold mb-1 ${isPartner ? "text-blue-200" : "text-gray-400"}`}>
@@ -131,10 +131,10 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
           {files.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mb-2">
               {files.map((f, i) => (
-                <div key={i} className="flex items-center gap-1 bg-white border border-purple-200 rounded-lg px-2 py-1 text-xs text-purple-700">
+                <div key={i} className="flex items-center gap-1 bg-white border border-amber-200 rounded-lg px-2 py-1 text-xs text-gray-800">
                   <FileText className="h-3 w-3" />
                   <span className="max-w-[100px] truncate">{f.name}</span>
-                  <button onClick={() => setFiles((p) => p.filter((_, j) => j !== i))} className="ml-1 text-purple-400 hover:text-red-500">
+                  <button onClick={() => setFiles((p) => p.filter((_, j) => j !== i))} className="ml-1 text-amber-400 hover:text-red-500">
                     <X className="h-3 w-3" />
                   </button>
                 </div>
@@ -144,7 +144,7 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
 
           {/* Input */}
           <div className="flex items-end gap-2">
-            <div className="flex-1 flex items-end gap-2 bg-white border border-purple-200 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-purple-400 shadow-sm">
+            <div className="flex-1 flex items-end gap-2 bg-white border border-amber-200 rounded-xl px-3 py-2 focus-within:ring-2 focus-within:ring-amber-400 shadow-sm">
               <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -153,7 +153,7 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
                 placeholder="Write a note… (Enter to send)"
                 className="flex-1 resize-none text-sm outline-none bg-transparent max-h-24 text-gray-800 placeholder-gray-400"
               />
-              <label className="cursor-pointer text-gray-400 hover:text-purple-600 shrink-0">
+              <label className="cursor-pointer text-gray-400 hover:text-gray-800 shrink-0">
                 <Paperclip className="h-4 w-4" />
                 <input type="file" multiple className="hidden"
                   onChange={(e) => { if (e.target.files) setFiles((p) => [...p, ...Array.from(e.target.files!)]); }} />
@@ -162,7 +162,7 @@ function InlineNotes({ project, onClose }: { project: PartnerProjectRow; onClose
             <button
               onClick={handleSend}
               disabled={sending || (!text.trim() && files.length === 0)}
-              className="h-10 w-10 flex items-center justify-center bg-gradient-to-br from-purple-600 to-indigo-600 text-white rounded-xl hover:from-purple-700 hover:to-indigo-700 disabled:opacity-40 shadow-md shadow-purple-500/30 transition-all shrink-0"
+              className="h-10 w-10 flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-800 text-white rounded-xl hover:from-gray-800 hover:to-gray-800 disabled:opacity-40 shadow-md shadow-amber-500/30 transition-all shrink-0"
             >
               {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </button>
@@ -196,11 +196,11 @@ export default function PartnerProjectsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <div className="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-blue-600 rounded-2xl p-5 text-white shadow-lg shadow-indigo-500/20">
+        <div className="relative overflow-hidden bg-gradient-to-br from-amber-500 to-blue-600 rounded-2xl p-5 text-white shadow-lg shadow-amber-500/20">
           <div className="absolute -right-3 -top-3 h-20 w-20 rounded-full bg-white/10" />
-          <FolderOpen className="h-5 w-5 text-indigo-200 mb-2" />
+          <FolderOpen className="h-5 w-5 text-amber-200 mb-2" />
           <p className="text-3xl font-bold">{projects.length}</p>
-          <p className="text-indigo-100 text-xs font-medium mt-0.5">Total Projects</p>
+          <p className="text-amber-100 text-xs font-medium mt-0.5">Total Projects</p>
         </div>
         <div className="relative overflow-hidden bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl p-5 text-white shadow-lg shadow-amber-500/20">
           <div className="absolute -right-3 -top-3 h-20 w-20 rounded-full bg-white/10" />
@@ -246,7 +246,7 @@ export default function PartnerProjectsPage() {
                   const noteOpen = openNoteId === p.id;
                   return (
                     <React.Fragment key={p.id}>
-                      <tr key={p.id} className={`hover:bg-blue-50/20 transition-colors border-b border-gray-50 ${noteOpen ? "bg-purple-50/30" : ""}`}>
+                      <tr key={p.id} className={`hover:bg-blue-50/20 transition-colors border-b border-gray-50 ${noteOpen ? "bg-amber-50/30" : ""}`}>
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-gray-900 text-sm">{p.project_name}</span>
@@ -277,8 +277,8 @@ export default function PartnerProjectsPage() {
                               onClick={() => setOpenNoteId(noteOpen ? null : p.id)}
                               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                                 noteOpen
-                                  ? "bg-purple-600 text-white"
-                                  : "text-purple-600 bg-purple-50 hover:bg-purple-100"
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-800 bg-amber-50 hover:bg-amber-100"
                               }`}>
                               <MessageSquare className="h-3.5 w-3.5" /> Note
                             </button>

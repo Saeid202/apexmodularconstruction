@@ -47,11 +47,11 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   /* CargoPlus brand colors */
-  --color-primary-50: #f3eefb;
-  --color-primary-100: #e0d0f5;
-  --color-primary-500: #6B35B8;
-  --color-primary-600: #4B1D8F;
-  --color-primary-700: #3A1570;
+  --color-primary-50: #FEF3C7;
+  --color-primary-100: #FDE68A;
+  --color-primary-500: #F59E0B;
+  --color-primary-600: #1F2937;
+  --color-primary-700: #111827;
   --color-secondary-500: #D4AF37;
   --color-secondary-600: #b8960f;
 }
@@ -64,7 +64,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   /* CargoPlus primary purple */
-  --primary: #4B1D8F;
+  --primary: #1F2937;
   --primary-foreground: oklch(0.985 0 0);
   /* CargoPlus secondary gold */
   --secondary: #D4AF37;
@@ -76,7 +76,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: #6B35B8;
+  --ring: #F59E0B;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -85,12 +85,12 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #4B1D8F;
+  --sidebar-primary: #1F2937;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #6B35B8;
+  --sidebar-ring: #F59E0B;
 }
 
 .dark {
@@ -101,7 +101,7 @@
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   /* CargoPlus primary purple (lighter for dark mode) */
-  --primary: #6B35B8;
+  --primary: #F59E0B;
   --primary-foreground: oklch(0.985 0 0);
   /* CargoPlus secondary gold */
   --secondary: #D4AF37;
@@ -113,7 +113,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: #6B35B8;
+  --ring: #F59E0B;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -121,12 +121,12 @@
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: #6B35B8;
+  --sidebar-primary: #F59E0B;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: #6B35B8;
+  --sidebar-ring: #F59E0B;
 }
 
 @keyframes shimmer {
@@ -137,7 +137,7 @@
 /* ─── Hero section design tokens ─────────────────────────────────────────── */
 :root {
   --gradient-hero: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.9) 100%);
-  --gradient-radial: radial-gradient(ellipse at 20% 10%, rgba(75,29,143,0.5) 0%, transparent 55%);
+  --gradient-radial: radial-gradient(ellipse at 20% 10%, rgba(31,41,55,0.5) 0%, transparent 55%);
 }
 
 /* ─── Brand chrome surfaces ──────────────────────────────────────────────────
@@ -148,8 +148,8 @@
  * Managed by scripts/apply-palette.mjs.
  */
 :root {
-  --brand-chrome-from: #4B1D8F;
-  --brand-chrome-to: #3a1570;
+  --brand-chrome-from: #1F2937;
+  --brand-chrome-to: #111827;
 }
 
 /* ─── Marketing surface scale ────────────────────────────────────────────────
@@ -165,16 +165,16 @@
  */
 :root {
   --surface: #ffffff;
-  --surface-subtle: #F8F6FC;
-  --surface-tint: #F3EEFB;
-  --surface-tint-strong: #EDE9F6;
-  --surface-ink: #1a0a33;
+  --surface-subtle: #FFFBEB;
+  --surface-tint: #FEF3C7;
+  --surface-tint-strong: #FEF3C7;
+  --surface-ink: #111827;
 
-  --brand: #4B1D8F;
-  --brand-deep: #3A1570;
-  --brand-lift: #6B35B8;
-  --brand-hairline: rgba(75,29,143,0.14);
-  --brand-wash: rgba(75,29,143,0.04);
+  --brand: #1F2937;
+  --brand-deep: #111827;
+  --brand-lift: #F59E0B;
+  --brand-hairline: rgba(31,41,55,0.14);
+  --brand-wash: rgba(31,41,55,0.04);
   --accent-gold: #D4AF37;
 }
 
@@ -196,19 +196,7 @@
   /* Centred overlay text. A radial pool behind the copy, over a flat tint that
    * keeps busy photographs from competing with it. One flat layer alone either
    * greys out the image or leaves the type unreadable; two layers do both jobs. */
-  --scrim-centred:
-    radial-gradient(
-      ellipse 72% 62% at 50% 50%,
-      rgba(12,6,26,0.56) 0%,
-      rgba(12,6,26,0.22) 74%,
-      rgba(12,6,26,0.10) 100%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(12,6,26,0.44) 0%,
-      rgba(12,6,26,0.34) 45%,
-      rgba(12,6,26,0.52) 100%
-    );
+  --scrim-centred: linear-gradient(transparent, transparent);
 }
 
 /* Restrained elevation. Hairline borders carry the structure; shadow only
@@ -247,11 +235,11 @@
 }
 
 .bg-gradient-primary {
-  background: linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%);
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 40px rgba(75,29,143,0.5), 0 8px 32px rgba(75,29,143,0.35);
+  box-shadow: 0 0 40px rgba(31,41,55,0.5), 0 8px 32px rgba(31,41,55,0.35);
 }
 
 .shadow-soft {
@@ -289,7 +277,7 @@
 .product-description h2 {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #4B1D8F;
+  color: #1F2937;
   margin-top: 1.25rem;
   margin-bottom: 0.4rem;
   padding-bottom: 0.25rem;
@@ -350,7 +338,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #4B1D8F;
+  background-color: #1F2937;
 }
 
 .product-description ol {
@@ -365,12 +353,12 @@
 }
 
 .product-description ol li::marker {
-  color: #4B1D8F;
+  color: #1F2937;
   font-weight: 700;
 }
 
 .product-description a {
-  color: #4B1D8F;
+  color: #1F2937;
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 500;
@@ -385,7 +373,7 @@
 .ProseMirror h2 {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #4B1D8F;
+  color: #1F2937;
   margin-top: 1rem;
   margin-bottom: 0.3rem;
   padding-bottom: 0.2rem;
@@ -425,7 +413,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: #4B1D8F;
+  background-color: #1F2937;
 }
 
 .ProseMirror ol {
@@ -435,12 +423,12 @@
 }
 
 .ProseMirror ol li::marker {
-  color: #4B1D8F;
+  color: #1F2937;
   font-weight: 700;
 }
 
 .ProseMirror a {
-  color: #4B1D8F;
+  color: #1F2937;
   text-decoration: underline;
   text-underline-offset: 2px;
 }

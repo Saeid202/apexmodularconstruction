@@ -4,7 +4,7 @@ import { getOrderByNumber } from "@/app/actions/orders";
 
 export const dynamic = "force-dynamic";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface Props {
@@ -22,7 +22,7 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
   const address = order.shipping_address as Record<string, string>;
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f9f7ff", padding: "3rem 1rem" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#FFFBEB", padding: "3rem 1rem" }}>
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
 
         {/* Success header */}
@@ -43,13 +43,13 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
         </div>
 
         {/* Order number */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: "1.5rem", marginBottom: "1.25rem", border: `1px solid ${PURPLE}22`, boxShadow: "0 2px 12px rgba(75,29,143,0.06)" }}>
+        <div style={{ background: "#fff", borderRadius: 16, padding: "1.5rem", marginBottom: "1.25rem", border: `1px solid ${PURPLE}22`, boxShadow: "0 2px 12px rgba(31,41,55,0.06)" }}>
           <p style={{ margin: "0 0 0.25rem", fontSize: "0.8125rem", fontWeight: 600, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.06em" }}>Order Number</p>
           <p style={{ margin: 0, fontSize: "1.375rem", fontWeight: 800, color: PURPLE }}>{order.order_number}</p>
         </div>
 
         {/* Items */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: "1.5rem", marginBottom: "1.25rem", border: `1px solid ${PURPLE}22`, boxShadow: "0 2px 12px rgba(75,29,143,0.06)" }}>
+        <div style={{ background: "#fff", borderRadius: 16, padding: "1.5rem", marginBottom: "1.25rem", border: `1px solid ${PURPLE}22`, boxShadow: "0 2px 12px rgba(31,41,55,0.06)" }}>
           <h2 style={{ margin: "0 0 1rem", fontSize: "0.875rem", fontWeight: 700, color: GOLD, textTransform: "uppercase", letterSpacing: "0.06em" }}>Items Ordered</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {(order.order_items ?? []).map((item) => (
@@ -74,7 +74,7 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
         </div>
 
         {/* Shipping address */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: "1.5rem", marginBottom: "2rem", border: `1px solid ${PURPLE}22`, boxShadow: "0 2px 12px rgba(75,29,143,0.06)" }}>
+        <div style={{ background: "#fff", borderRadius: 16, padding: "1.5rem", marginBottom: "2rem", border: `1px solid ${PURPLE}22`, boxShadow: "0 2px 12px rgba(31,41,55,0.06)" }}>
           <h2 style={{ margin: "0 0 0.75rem", fontSize: "0.875rem", fontWeight: 700, color: GOLD, textTransform: "uppercase", letterSpacing: "0.06em" }}>Shipping To</h2>
           <p style={{ margin: 0, color: "#374151", lineHeight: 1.7 }}>
             {address.fullName}<br />

@@ -13,7 +13,7 @@ const DASHBOARD_PREFIXES = ['/partner', '/admin', '/seller', '/account', '/affil
  * Deliberately anchored to a single segment: /products (the catalogue) keeps
  * its header and footer.
  */
-const IMMERSIVE_ROUTE_PATTERNS = [/^\/products\/[^/]+\/?$/]
+const IMMERSIVE_ROUTE_PATTERNS: RegExp[] = []
 
 interface ConditionalShellProps {
   children: React.ReactNode

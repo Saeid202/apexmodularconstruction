@@ -28,9 +28,9 @@ export function SellerRegisterForm() {
       <div className="text-center py-6">
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-          style={{ backgroundColor: "#EDE9F6" }}
+          style={{ backgroundColor: "#FEF3C7" }}
         >
-          <CheckCircle className="w-8 h-8" style={{ color: "#4B1D8F" }} />
+          <CheckCircle className="w-8 h-8" style={{ color: "#1F2937" }} />
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">Account Created!</h3>
         <p className="text-sm text-gray-500 mb-6">
@@ -44,7 +44,7 @@ export function SellerRegisterForm() {
   }
 
   const inputClass =
-    "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow placeholder:text-gray-400";
+    "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow placeholder:text-gray-400";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -57,7 +57,7 @@ export function SellerRegisterForm() {
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
           <label htmlFor="businessName" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Business Name <span style={{ color: "#4B1D8F" }}>*</span>
+            Business Name <span style={{ color: "#1F2937" }}>*</span>
           </label>
           <input
             id="businessName" name="businessName" type="text" required
@@ -67,7 +67,7 @@ export function SellerRegisterForm() {
 
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Business Email <span style={{ color: "#4B1D8F" }}>*</span>
+            Business Email <span style={{ color: "#1F2937" }}>*</span>
           </label>
           <input
             id="email" name="email" type="email" required
@@ -88,7 +88,7 @@ export function SellerRegisterForm() {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-          Password <span style={{ color: "#4B1D8F" }}>*</span>
+          Password <span style={{ color: "#1F2937" }}>*</span>
         </label>
         <div className="relative">
           <input
@@ -133,7 +133,7 @@ export function SellerRegisterForm() {
       <div className="flex items-start gap-2 text-sm">
         <input
           id="terms" type="checkbox" required
-          className="mt-1 rounded border-gray-300 accent-[#4B1D8F]"
+          className="mt-1 rounded border-gray-300 accent-[#1F2937]"
         />
         <label htmlFor="terms" className="text-gray-500">
           I agree to the Terms and Conditions

@@ -21,8 +21,8 @@ const PRIORITY_CONFIG = {
   low:    { label: "Low",    className: "bg-green-100 text-green-700 border border-green-200" },
 };
 
-const inp = "w-full px-3 py-2 border-2 border-purple-200 rounded-xl text-sm focus:outline-none focus:border-[#4B1D8F] focus:ring-0 bg-white transition-colors placeholder-gray-300";
-const inpSm = "w-full px-3 py-2 border-2 border-purple-200 rounded-xl text-sm focus:outline-none focus:border-[#4B1D8F] focus:ring-0 bg-white transition-colors";
+const inp = "w-full px-3 py-2 border-2 border-amber-200 rounded-xl text-sm focus:outline-none focus:border-[#1F2937] focus:ring-0 bg-white transition-colors placeholder-gray-300";
+const inpSm = "w-full px-3 py-2 border-2 border-amber-200 rounded-xl text-sm focus:outline-none focus:border-[#1F2937] focus:ring-0 bg-white transition-colors";
 
 function emptyItem(position: number): OrderItem {
   return { product_name: "", category: CATEGORIES[0], specification: "", quantity: 1, unit: "pcs", target_price: null, reference_link: "", priority: "medium", position };
@@ -164,15 +164,15 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
       )}
 
       {/* Order name */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12), 0 4px 12px rgba(75,29,143,0.12)" }}>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12), 0 4px 12px rgba(31,41,55,0.12)" }}>
         <div className="flex items-center gap-2 mb-2">
-          <label className="text-xs font-bold uppercase tracking-widest" style={{ color: "#4B1D8F" }}>📦 Order Name *</label>
+          <label className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1F2937" }}>📦 Order Name *</label>
           <div className="relative">
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); setShowOrderNameTip((v) => !v); }}
               className="flex items-center justify-center h-4 w-4 rounded-full text-white text-[10px] font-black leading-none transition-transform hover:scale-110 focus:outline-none"
-              style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)", boxShadow: "0 1px 4px rgba(75,29,143,0.4)" }}
+              style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)", boxShadow: "0 1px 4px rgba(31,41,55,0.4)" }}
               aria-label="Order name help"
             >
               !
@@ -180,11 +180,11 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
             {showOrderNameTip && (
               <div
                 className="absolute left-1/2 -translate-x-1/2 top-6 z-50 w-72 rounded-xl bg-white p-4 text-xs text-gray-700 shadow-xl border-l-4"
-                style={{ borderColor: "#4B1D8F", boxShadow: "0 8px 24px rgba(75,29,143,0.18)" }}
+                style={{ borderColor: "#1F2937", boxShadow: "0 8px 24px rgba(31,41,55,0.18)" }}
               >
                 {/* arrow */}
-                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-3 w-3 rotate-45 bg-white border-l border-t" style={{ borderColor: "#4B1D8F" }} />
-                <p className="font-bold mb-1" style={{ color: "#4B1D8F" }}>Why does my order need a name?</p>
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-3 w-3 rotate-45 bg-white border-l border-t" style={{ borderColor: "#1F2937" }} />
+                <p className="font-bold mb-1" style={{ color: "#1F2937" }}>Why does my order need a name?</p>
                 <p className="leading-relaxed text-gray-600">
                   Every order must have a unique name or number so you and your agent can track it easily. Use anything that makes sense to you — a batch number, a date, or a short description.
                 </p>
@@ -198,7 +198,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                   type="button"
                   onClick={() => setShowOrderNameTip(false)}
                   className="mt-3 text-[10px] font-bold uppercase tracking-wider"
-                  style={{ color: "#4B1D8F" }}
+                  style={{ color: "#1F2937" }}
                 >
                   Got it ✕
                 </button>
@@ -208,7 +208,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
         </div>
         <input type="text" required value={orderName} onChange={(e) => setOrderName(e.target.value)}
           placeholder="e.g. Spring 2026 Batch — Electronics"
-          className="w-full px-4 py-3 rounded-xl text-base font-bold focus:outline-none bg-white placeholder-gray-300 transition-colors border-2 border-[#4B1D8F]/60 focus:border-[#4B1D8F]" style={{ color: "#1a0a3c" }} />
+          className="w-full px-4 py-3 rounded-xl text-base font-bold focus:outline-none bg-white placeholder-gray-300 transition-colors border-2 border-[#1F2937]/60 focus:border-[#1F2937]" style={{ color: "#1a0a3c" }} />
       </div>
 
       {/* Product lines */}
@@ -220,22 +220,22 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
           </div>
           <button type="button" onClick={addItem}
             className="flex items-center gap-1.5 px-4 py-2 text-white text-xs font-bold rounded-xl transition-all shadow-md"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}>
+            style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "1px solid #D4AF37" }}>
             <Plus className="h-3.5 w-3.5" /> Add Product Line
           </button>
         </div>
 
         <div className="space-y-4">
           {items.map((item, i) => {
-            const accentGradient = item.priority === "high" ? "from-red-500 to-rose-600" : item.priority === "low" ? "from-emerald-500 to-teal-600" : "from-blue-400 to-indigo-500";
+            const accentGradient = item.priority === "high" ? "from-red-500 to-rose-600" : item.priority === "low" ? "from-emerald-500 to-teal-600" : "from-blue-400 to-amber-500";
             return (
               <div key={i} className="relative rounded-xl overflow-hidden bg-white border border-gray-200">
-                <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: "#4B1D8F" }} />
+                <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: "#1F2937" }} />
                 <div className="pl-5 pr-4 pt-4 pb-5">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full text-white text-[10px] font-black" style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}>{i + 1}</span>
-                      <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#4B1D8F" }}>Product Line {i + 1}</span>
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full text-white text-[10px] font-black" style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}>{i + 1}</span>
+                      <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1F2937" }}>Product Line {i + 1}</span>
                     </div>
                     {items.length > 1 && (
                       <button type="button" onClick={() => removeItem(i)}
@@ -252,16 +252,16 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                       <input type="text" required value={item.product_name}
                         onChange={(e) => setItem(i, "product_name", e.target.value)}
                         placeholder="e.g. Galvanized Steel Pipe"
-                        className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+                        className="w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }} />
                       {/* Sample images */}
                       <div className="mt-3">
                         <label className="text-xs font-extrabold text-gray-700 uppercase tracking-wider mb-2 block">Sample Images</label>
                         {/* Upload drop zone — shown when no images yet */}
                         {((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) === 0 && (
-                          <label className="flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50"
-                            style={{ borderColor: "rgba(75,29,143,0.4)", background: "rgba(75,29,143,0.03)" }}>
-                            <ImagePlus className="h-7 w-7 mb-1.5" style={{ color: "#4B1D8F" }} />
-                            <span className="text-sm font-bold" style={{ color: "#4B1D8F" }}>Click to upload images</span>
+                          <label className="flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-amber-50"
+                            style={{ borderColor: "rgba(31,41,55,0.4)", background: "rgba(31,41,55,0.03)" }}>
+                            <ImagePlus className="h-7 w-7 mb-1.5" style={{ color: "#1F2937" }} />
+                            <span className="text-sm font-bold" style={{ color: "#1F2937" }}>Click to upload images</span>
                             <span className="text-xs text-gray-400 mt-0.5">JPG, PNG, WEBP — multiple allowed</span>
                             <input type="file" multiple accept="image/*" className="hidden"
                               onChange={(e) => e.target.files && addFiles(i, e.target.files)} />
@@ -271,7 +271,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                         {((existingImages[i]?.length ?? 0) + (newFiles[i]?.length ?? 0)) > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {(existingImages[i] ?? []).map((img) => (
-                              <div key={img.id} className="relative group h-20 w-20 rounded-xl overflow-hidden border-2 border-[#4B1D8F]/30 shadow-sm">
+                              <div key={img.id} className="relative group h-20 w-20 rounded-xl overflow-hidden border-2 border-[#1F2937]/30 shadow-sm">
                                 <img src={img.url} alt={img.file_name} className="h-full w-full object-cover" />
                                 <button type="button" onClick={() => removeExistingImage(i, img)}
                                   className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -280,7 +280,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                               </div>
                             ))}
                             {(newFiles[i] ?? []).map((file, fi) => (
-                              <div key={fi} className="relative group h-20 w-20 rounded-xl overflow-hidden border-2 border-[#4B1D8F]/30 shadow-sm">
+                              <div key={fi} className="relative group h-20 w-20 rounded-xl overflow-hidden border-2 border-[#1F2937]/30 shadow-sm">
                                 <img src={URL.createObjectURL(file)} alt={file.name} className="h-full w-full object-cover" />
                                 <button type="button" onClick={() => removeNewFile(i, fi)}
                                   className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -289,10 +289,10 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                               </div>
                             ))}
                             {/* Add more */}
-                            <label className="flex flex-col items-center justify-center h-20 w-20 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50"
-                              style={{ borderColor: "rgba(75,29,143,0.4)" }}>
-                              <ImagePlus className="h-5 w-5" style={{ color: "#4B1D8F" }} />
-                              <span className="text-[10px] font-bold mt-0.5" style={{ color: "#4B1D8F" }}>Add more</span>
+                            <label className="flex flex-col items-center justify-center h-20 w-20 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-amber-50"
+                              style={{ borderColor: "rgba(31,41,55,0.4)" }}>
+                              <ImagePlus className="h-5 w-5" style={{ color: "#1F2937" }} />
+                              <span className="text-[10px] font-bold mt-0.5" style={{ color: "#1F2937" }}>Add more</span>
                               <input type="file" multiple accept="image/*" className="hidden"
                                 onChange={(e) => e.target.files && addFiles(i, e.target.files)} />
                             </label>
@@ -306,7 +306,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                     <div className="sm:col-span-2 space-y-1.5">
                       <label className="text-xs font-extrabold text-gray-700 uppercase tracking-wider">Category *</label>
                       <select value={item.category} onChange={(e) => setItem(i, "category", e.target.value)}
-                        className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }}>
+                        className="w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }}>
                         {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
                       </select>
                     </div>
@@ -315,7 +315,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                       <select value={item.priority} onChange={(e) => setItem(i, "priority", e.target.value as any)}
                         className={`w-full px-3 py-2.5 border-2 rounded-xl text-sm font-semibold focus:outline-none transition-colors ${
                           item.priority === "high" ? "border-red-300 bg-red-50 text-red-700" :
-                          item.priority === "medium" ? "border-indigo-300 bg-indigo-50 text-indigo-700" :
+                          item.priority === "medium" ? "border-amber-300 bg-amber-50 text-gray-800" :
                           "border-green-300 bg-green-50 text-green-700"
                         }`}>
                         <option value="high">🔴 High</option>
@@ -331,23 +331,23 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                       <label className="text-xs font-extrabold text-gray-700 uppercase tracking-wider">Quantity *</label>
                       <input type="number" required min={0} step="any" value={item.quantity}
                         onChange={(e) => setItem(i, "quantity", parseFloat(e.target.value))}
-                        className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+                        className="w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }} />
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-xs font-extrabold text-gray-700 uppercase tracking-wider">Unit *</label>
                       <select value={item.unit} onChange={(e) => setItem(i, "unit", e.target.value)}
-                        className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }}>
+                        className="w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }}>
                         {UNITS.map((u) => <option key={u}>{u}</option>)}
                       </select>
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-xs font-extrabold text-gray-700 uppercase tracking-wider">Target Price ($/unit)</label>
                       <div className="relative">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#4B1D8F] text-sm font-bold">$</span>
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1F2937] text-sm font-bold">$</span>
                         <input type="number" min={0} step="any" value={item.target_price ?? ""}
                           onChange={(e) => setItem(i, "target_price", e.target.value ? parseFloat(e.target.value) : null)}
                           placeholder="0.00"
-                          className="w-full pl-7 pr-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+                          className="w-full pl-7 pr-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }} />
                       </div>
                     </div>
                     <div className="space-y-1.5">
@@ -355,7 +355,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                       <input type="url" value={item.reference_link ?? ""}
                         onChange={(e) => setItem(i, "reference_link", e.target.value || null)}
                         placeholder="https://alibaba.com/..."
-                        className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+                        className="w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }} />
                     </div>
                   </div>
 
@@ -365,7 +365,7 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
                     <input type="text" value={item.specification ?? ""}
                       onChange={(e) => setItem(i, "specification", e.target.value || null)}
                       placeholder="Size, color, material, grade, standard…"
-                      className="w-full px-3 py-2.5 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+                      className="w-full px-3 py-2.5 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white placeholder-gray-300 transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }} />
                   </div>
                 </div>
               </div>
@@ -375,23 +375,23 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
       </div>
 
       {/* Notes */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12), 0 4px 12px rgba(75,29,143,0.12)" }}>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#4B1D8F" }}>📝 Notes for Agent</label>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12), 0 4px 12px rgba(31,41,55,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1F2937" }}>📝 Notes for Agent</label>
         <textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)}
           placeholder="Any additional instructions, delivery requirements, or special requests…"
-          className="w-full px-4 py-3 border-2 border-[#4B1D8F]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#4B1D8F] bg-white placeholder-gray-300 resize-none transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(75,29,143,0.08)" }} />
+          className="w-full px-4 py-3 border-2 border-[#1F2937]/60 rounded-xl text-sm font-bold focus:outline-none focus:border-[#1F2937] bg-white placeholder-gray-300 resize-none transition-colors" style={{ color: "#1a0a3c", boxShadow: "0 0 0 3px rgba(31,41,55,0.08)" }} />
       </div>
 
       {/* Order attachments */}
-      <div className="rounded-xl p-5 bg-white border-2 border-[#4B1D8F]/60" style={{ boxShadow: "0 0 0 3px rgba(75,29,143,0.12), 0 4px 12px rgba(75,29,143,0.12)" }}>
-        <label className="block text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#4B1D8F" }}>📎 Order Documents</label>
+      <div className="rounded-xl p-5 bg-white border-2 border-[#1F2937]/60" style={{ boxShadow: "0 0 0 3px rgba(31,41,55,0.12), 0 4px 12px rgba(31,41,55,0.12)" }}>
+        <label className="block text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#1F2937" }}>📎 Order Documents</label>
         <p className="text-xs text-gray-500 mb-3">Attach your order request as a PDF or Excel file. Our agent will review it alongside your product lines.</p>
 
         {/* Drop zone */}
-        <label className="flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-purple-50 mb-3"
-          style={{ borderColor: "rgba(75,29,143,0.4)", background: "rgba(75,29,143,0.02)" }}>
-          <FileUp className="h-6 w-6 mb-1" style={{ color: "#4B1D8F" }} />
-          <span className="text-sm font-bold" style={{ color: "#4B1D8F" }}>Click to upload PDF or Excel</span>
+        <label className="flex flex-col items-center justify-center w-full h-24 rounded-xl border-2 border-dashed cursor-pointer transition-all hover:bg-amber-50 mb-3"
+          style={{ borderColor: "rgba(31,41,55,0.4)", background: "rgba(31,41,55,0.02)" }}>
+          <FileUp className="h-6 w-6 mb-1" style={{ color: "#1F2937" }} />
+          <span className="text-sm font-bold" style={{ color: "#1F2937" }}>Click to upload PDF or Excel</span>
           <span className="text-xs text-gray-400 mt-0.5">.pdf, .xls, .xlsx — multiple allowed</span>
           <input type="file" multiple accept=".pdf,.xls,.xlsx" className="hidden"
             onChange={(e) => e.target.files && setAttachmentFiles((prev) => [...prev, ...Array.from(e.target.files!)])} />
@@ -402,11 +402,11 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
           <div className="space-y-1.5 mb-2">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Previously uploaded</p>
             {existingAttachments.map((att) => (
-              <div key={att.id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-[#4B1D8F]/20 bg-purple-50">
+              <div key={att.id} className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl border border-[#1F2937]/20 bg-amber-50">
                 <div className="flex items-center gap-2 min-w-0">
-                  <FileText className="h-4 w-4 shrink-0" style={{ color: "#4B1D8F" }} />
+                  <FileText className="h-4 w-4 shrink-0" style={{ color: "#1F2937" }} />
                   <a href={att.url} target="_blank" rel="noopener noreferrer"
-                    className="text-sm font-semibold truncate hover:underline" style={{ color: "#4B1D8F" }}>
+                    className="text-sm font-semibold truncate hover:underline" style={{ color: "#1F2937" }}>
                     {att.file_name}
                   </a>
                 </div>
@@ -445,13 +445,13 @@ function OrderForm({ existing, onDone }: { existing?: ConsolidationOrder; onDone
       <div className="flex gap-3 pt-2">
         <button type="submit" disabled={saving}
           className="flex items-center gap-2 px-6 py-3 text-white text-sm font-bold rounded-xl disabled:opacity-50 transition-all shadow-lg"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "2px solid #D4AF37" }}>
+          style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "2px solid #D4AF37" }}>
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
           {existing ? "💾 Save Changes" : "🚀 Submit Order"}
         </button>
         <button type="button" onClick={onDone}
           className="px-6 py-3 text-sm font-semibold rounded-xl transition-colors"
-          style={{ border: "2px solid #4B1D8F", color: "#4B1D8F" }}>
+          style={{ border: "2px solid #1F2937", color: "#1F2937" }}>
           Cancel
         </button>
       </div>
@@ -529,14 +529,14 @@ function NoteEditor({ order, onClose, onSaved }: { order: ConsolidationOrder; on
     <div>
       <textarea rows={3} value={text} onChange={(e) => setText(e.target.value)}
         placeholder="Add notes for the agent…"
-        className="w-full px-3 py-2 border border-violet-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none" />
+        className="w-full px-3 py-2 border border-amber-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none" />
       <div className="flex gap-2 mt-2">
         <button onClick={handleSave} disabled={saving}
-          className="flex items-center gap-1.5 px-4 py-2 bg-violet-600 text-white text-sm font-semibold rounded-lg hover:bg-violet-700 disabled:opacity-50 transition-colors">
+          className="flex items-center gap-1.5 px-4 py-2 bg-gray-800 text-white text-sm font-semibold rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors">
           {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
           Save Note
         </button>
-        <button onClick={onClose} className="px-4 py-2 text-sm border border-violet-200 rounded-lg hover:bg-violet-50">Cancel</button>
+        <button onClick={onClose} className="px-4 py-2 text-sm border border-amber-200 rounded-lg hover:bg-amber-50">Cancel</button>
       </div>
     </div>
   );
@@ -585,7 +585,7 @@ export default function ConsolidationPage() {
         {view === "table" && (
           <button onClick={() => setView("form")}
             className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-md"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}>
+            style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "1px solid #D4AF37" }}>
             <Plus className="h-4 w-4" /> New Order
           </button>
         )}
@@ -593,16 +593,16 @@ export default function ConsolidationPage() {
 
       {/* Guidance banner */}
       {view === "table" && (
-        <div className="rounded-2xl overflow-hidden border border-[#4B1D8F]/20" style={{ background: "linear-gradient(135deg, #f9f7ff 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(75,29,143,0.08)" }}>
-          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10" style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
+        <div className="rounded-2xl overflow-hidden border border-[#1F2937]/20" style={{ background: "linear-gradient(135deg, #FFFBEB 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(31,41,55,0.08)" }}>
+          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#1F2937]/10" style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}>
             <span className="text-yellow-300 text-lg">✦</span>
             <p className="text-sm font-bold uppercase tracking-widest text-white">How It Works</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#4B1D8F]/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#1F2937]/10">
             {/* Service 1 */}
             <div className="bg-white/90 p-6">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}>1</span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}>1</span>
                 <p className="text-base font-bold text-gray-900">Sourcing & RFQ</p>
               </div>
               <p className="text-sm font-semibold text-gray-700 leading-relaxed">
@@ -612,7 +612,7 @@ export default function ConsolidationPage() {
             {/* Service 2 */}
             <div className="bg-white/90 p-6">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}>2</span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}>2</span>
                 <p className="text-base font-bold text-gray-900">Consolidation & Shipping</p>
               </div>
               <p className="text-sm font-semibold text-gray-700 leading-relaxed">
@@ -625,12 +625,12 @@ export default function ConsolidationPage() {
 
       {/* Form */}
       {(view === "form" || view === "edit") && (
-        <div className="relative rounded-2xl p-6 bg-white" style={{ boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F" }}>
+        <div className="relative rounded-2xl p-6 bg-white" style={{ boxShadow: "0 0 0 1px #1F2937, 0 0 0 4px #D4AF37, 0 0 0 5px #1F2937" }}>
           <span className="absolute top-3 left-3 h-5 w-5 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
           <span className="absolute top-3 right-3 h-5 w-5 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />
           <span className="absolute bottom-3 left-3 h-5 w-5 border-b-2 border-l-2 border-yellow-400 rounded-bl-md" />
           <span className="absolute bottom-3 right-3 h-5 w-5 border-b-2 border-r-2 border-yellow-400 rounded-br-md" />
-          <h2 className="font-bold mb-5" style={{ color: "#4B1D8F" }}>{view === "edit" ? "Edit Order" : "New Order"}</h2>
+          <h2 className="font-bold mb-5" style={{ color: "#1F2937" }}>{view === "edit" ? "Edit Order" : "New Order"}</h2>
           <OrderForm
             existing={view === "edit" ? editOrder ?? undefined : undefined}
             onDone={() => { setView("table"); setEditOrder(null); load(); }}
@@ -658,13 +658,13 @@ export default function ConsolidationPage() {
                 const lowCount  = order.items.filter((i) => i.priority === "low").length;
                 return (
                   <div key={order.id}>
-                    <div className={`relative overflow-hidden rounded-2xl transition-all ${noteOpen ? "" : ""}`} style={{ boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F" }}>
+                    <div className={`relative overflow-hidden rounded-2xl transition-all ${noteOpen ? "" : ""}`} style={{ boxShadow: "0 0 0 1px #1F2937, 0 0 0 4px #D4AF37, 0 0 0 5px #1F2937" }}>
                       {/* Top gradient accent */}
-                      <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #4B1D8F, #D4AF37, #4B1D8F)" }} />
+                      <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #1F2937, #D4AF37, #1F2937)" }} />
 
                       <div className="bg-white px-6 py-5 flex items-center gap-6">
                         {/* Order icon */}
-                        <div className="shrink-0 h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}>
+                        <div className="shrink-0 h-12 w-12 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}>
                           <Package className="h-6 w-6 text-white" />
                         </div>
 
@@ -672,7 +672,7 @@ export default function ConsolidationPage() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <h3 className="font-bold text-gray-900 text-base truncate">{order.order_name}</h3>
-                            <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold border" style={{ background: "#EDE9F6", color: "#4B1D8F", borderColor: "#4B1D8F33" }}>
+                            <span className="shrink-0 px-2 py-0.5 rounded-full text-[10px] font-bold border" style={{ background: "#FEF3C7", color: "#1F2937", borderColor: "#1F293733" }}>
                               {order.items.length} item{order.items.length !== 1 ? "s" : ""}
                             </span>
                           </div>
@@ -694,7 +694,7 @@ export default function ConsolidationPage() {
                           {/* Priority breakdown + date */}
                           <div className="flex items-center gap-3 text-xs text-gray-400">
                             {highCount > 0 && <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-red-500" />{highCount} high</span>}
-                            {medCount > 0  && <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-indigo-400" />{medCount} medium</span>}
+                            {medCount > 0  && <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-amber-400" />{medCount} medium</span>}
                             {lowCount > 0  && <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-emerald-500" />{lowCount} low</span>}
                             <span className="ml-auto">{new Date(order.created_at).toLocaleDateString()}</span>
                           </div>
@@ -704,17 +704,17 @@ export default function ConsolidationPage() {
                         <div className="shrink-0 flex items-center gap-2">
                           <button onClick={() => setViewOrder(order)}
                             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white transition-all"
-                            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}>
+                            style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "1px solid #D4AF37" }}>
                             <Eye className="h-3.5 w-3.5" /> View
                           </button>
                           <button onClick={() => { setEditOrder(order); setView("edit"); }}
                             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all"
-                            style={{ color: "#4B1D8F", background: "#EDE9F6", borderColor: "#4B1D8F44" }}>
+                            style={{ color: "#1F2937", background: "#FEF3C7", borderColor: "#1F293744" }}>
                             <Pencil className="h-3.5 w-3.5" /> Edit
                           </button>
                           <button onClick={() => setNoteOrderId(noteOpen ? null : order.id)}
                             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold border transition-all"
-                            style={noteOpen ? { background: "#4B1D8F", color: "#fff", borderColor: "#D4AF37" } : { color: "#4B1D8F", background: "#EDE9F6", borderColor: "#4B1D8F44" }}>
+                            style={noteOpen ? { background: "#1F2937", color: "#fff", borderColor: "#D4AF37" } : { color: "#1F2937", background: "#FEF3C7", borderColor: "#1F293744" }}>
                             <MessageSquare className="h-3.5 w-3.5" /> Note
                           </button>
                           <button onClick={() => exportPDF(order)}
@@ -732,13 +732,13 @@ export default function ConsolidationPage() {
 
                     {/* Inline notes */}
                     {noteOpen && (
-                      <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-100 border-t-0 rounded-b-2xl px-6 py-4 -mt-2 pt-4">
+                      <div className="bg-gradient-to-br from-amber-50 to-amber-50 border border-amber-100 border-t-0 rounded-b-2xl px-6 py-4 -mt-2 pt-4">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
-                            <MessageSquare className="h-4 w-4 text-violet-600" />
-                            <span className="text-sm font-semibold text-violet-900">Notes — {order.order_name}</span>
+                            <MessageSquare className="h-4 w-4 text-gray-800" />
+                            <span className="text-sm font-semibold text-gray-900">Notes — {order.order_name}</span>
                           </div>
-                          <button onClick={() => setNoteOrderId(null)} className="p-1 rounded-lg hover:bg-violet-100 text-violet-400 hover:text-violet-600">
+                          <button onClick={() => setNoteOrderId(null)} className="p-1 rounded-lg hover:bg-amber-100 text-amber-400 hover:text-gray-800">
                             <X className="h-4 w-4" />
                           </button>
                         </div>

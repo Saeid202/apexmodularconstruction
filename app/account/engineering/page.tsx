@@ -338,7 +338,7 @@ export default function EngineeringPage() {
         <button
           onClick={() => setView(view === "form" ? "table" : "form")}
           className="flex items-center gap-2 px-4 py-2.5 text-white text-sm font-semibold rounded-xl transition-colors shadow-md"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)", border: "1px solid #D4AF37" }}
+          style={{ background: "linear-gradient(135deg, #1F2937, #111827)", border: "1px solid #D4AF37" }}
         >
           {view === "form" ? <><X className="h-4 w-4" /> Cancel</> : <><Plus className="h-4 w-4" /> New Project</>}
         </button>
@@ -346,15 +346,15 @@ export default function EngineeringPage() {
 
       {/* Guidance banner */}
       {view === "table" && (
-        <div className="rounded-2xl overflow-hidden border border-[#4B1D8F]/20" style={{ background: "linear-gradient(135deg, #f9f7ff 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(75,29,143,0.08)" }}>
-          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#4B1D8F]/10" style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}>
+        <div className="rounded-2xl overflow-hidden border border-[#1F2937]/20" style={{ background: "linear-gradient(135deg, #FFFBEB 0%, #fdf8ec 100%)", boxShadow: "0 2px 12px rgba(31,41,55,0.08)" }}>
+          <div className="px-6 py-4 flex items-center gap-3 border-b border-[#1F2937]/10" style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}>
             <span className="text-yellow-300 text-lg">✦</span>
             <p className="text-sm font-bold uppercase tracking-widest text-white">How It Works</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#4B1D8F]/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#1F2937]/10">
             <div className="bg-white/90 p-6">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}>1</span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}>1</span>
                 <p className="text-base font-bold text-gray-900">Submit Your Project</p>
               </div>
               <p className="text-sm font-semibold text-gray-700 leading-relaxed">
@@ -363,7 +363,7 @@ export default function EngineeringPage() {
             </div>
             <div className="bg-white/90 p-6">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}>2</span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full text-white text-base font-black shrink-0" style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}>2</span>
                 <p className="text-base font-bold text-gray-900">We Handle the Rest</p>
               </div>
               <p className="text-sm font-semibold text-gray-700 leading-relaxed">

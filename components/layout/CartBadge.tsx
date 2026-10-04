@@ -16,14 +16,14 @@ export function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="relative flex h-9 w-9 items-center justify-center rounded-full text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
+      className="relative flex h-10 w-10 items-center justify-center rounded-full border border-[#1F2937]/30 bg-[#1F2937]/10 text-[#1F2937] shadow-sm transition-colors hover:bg-[#1F2937] hover:text-white"
       aria-label={displayCount > 0 ? `Shopping cart, ${displayCount} item${displayCount !== 1 ? "s" : ""}` : "Shopping cart"}
     >
-      <ShoppingCart className="h-5 w-5" />
+      <ShoppingCart className="h-5 w-5" strokeWidth={2.25} />
       {displayCount > 0 && (
         <span
-          className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white"
-          style={{ backgroundColor: "#4B1D8F" }}
+          className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white px-1 text-[10px] font-bold"
+          style={{ backgroundColor: "#F59E0B", color: "#1F2937" }}
         >
           {displayCount > 99 ? "99+" : displayCount}
         </span>

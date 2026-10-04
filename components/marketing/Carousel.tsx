@@ -275,7 +275,7 @@ export function Carousel({
               aria-current={i === activePage}
               // The visual dot stays 8px, but the button is padded to a 24px
               // target so it satisfies WCAG 2.5.8 on touch.
-              className="group/dot flex h-6 w-6 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none"
+              className="group/dot flex h-6 w-6 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 focus-visible:outline-none"
             >
               <span
                 className={cn(
@@ -283,7 +283,7 @@ export function Carousel({
                   i === activePage
                     ? dots === 'overlay'
                       ? 'bg-white'
-                      : 'bg-[#4B1D8F]'
+                      : 'bg-[#1F2937]'
                     : dots === 'overlay'
                       ? 'bg-white/45 group-hover/dot:bg-white/70'
                       : 'bg-neutral-300 group-hover/dot:bg-neutral-400'
@@ -311,7 +311,7 @@ function ArrowButton({
       onClick={onClick}
       aria-label={`${direction === 'previous' ? 'Previous' : 'Next'} slide`}
       className={cn(
-        'absolute top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/85 text-neutral-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none sm:flex',
+        'absolute top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/85 text-neutral-900 shadow-sm backdrop-blur-sm transition-colors hover:bg-white focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 focus-visible:outline-none sm:flex',
         direction === 'previous' ? 'left-4' : 'right-4'
       )}
     >

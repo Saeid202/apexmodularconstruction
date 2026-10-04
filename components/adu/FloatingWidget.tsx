@@ -7,7 +7,7 @@
  * surfaces, hairline neutral borders, brand purple reserved for glyphs and small
  * accents, and elevation rather than colour mass to signal "this floats".
  *
- * Previously the launcher was an 80px block of solid #4B1D8F and the panel header
+ * Previously the launcher was an 80px block of solid #1F2937 and the panel header
  * was a full-width solid purple band, which read as far heavier than anything
  * else on the page. Purple is still present — it is just carrying the icon and
  * the focus ring instead of a large fill.
@@ -44,7 +44,7 @@ export function FloatingWidget() {
             <div className="flex min-w-0 items-center gap-3">
               <span
                 aria-hidden
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--surface-tint)] text-[#4B1D8F]"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--surface-tint)] text-[#1F2937]"
               >
                 <Bot className="h-[18px] w-[18px]" />
               </span>
@@ -62,7 +62,7 @@ export function FloatingWidget() {
             <div className="flex shrink-0 items-center gap-1">
               <button
                 onClick={() => setIsMaximized(!isMaximized)}
-                className="hidden rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:outline-none sm:block"
+                className="hidden rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none sm:block"
                 aria-label={isMaximized ? 'Restore assistant size' : 'Maximize assistant'}
                 title={isMaximized ? 'Minimize' : 'Maximize'}
               >
@@ -71,7 +71,7 @@ export function FloatingWidget() {
               <button
                 onClick={toggleOpen}
                 aria-label="Close AI assistant"
-                className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:outline-none"
+                className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-700 focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:outline-none"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -94,7 +94,7 @@ export function FloatingWidget() {
         <button
           onClick={toggleOpen}
           aria-label="Open Apex AI assistant"
-          className="shadow-panel group flex h-14 w-14 items-center justify-center rounded-full border border-neutral-200 bg-white text-[#4B1D8F] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--surface-subtle)] active:translate-y-0 focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="shadow-panel group flex h-14 w-14 items-center justify-center rounded-full border border-neutral-200 bg-white text-[#1F2937] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[var(--surface-subtle)] active:translate-y-0 focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <Bot className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
         </button>

@@ -15,16 +15,16 @@ import {
 } from "lucide-react";
 
 // Design Tokens
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export default function ServicesHubPage() {
   return (
     <main className="bg-white">
       {/* Hero Section */}
-      <section className="relative py-24 px-6 overflow-hidden bg-[#F8F6FC]">
+      <section className="relative py-24 px-6 overflow-hidden bg-[#FFFBEB]">
         {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-60" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-60" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-50 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-60" />
         
         <div className="max-w-5xl mx-auto text-center relative z-10">
@@ -50,7 +50,7 @@ export default function ServicesHubPage() {
             {/* Service Card 1: Construction Solutions */}
             <Link 
               href="/services/construction-solutions"
-              className="group relative flex flex-col p-10 rounded-[40px] bg-white border border-gray-100 shadow-sm transition-all hover:shadow-2xl hover:border-purple-100 hover:-translate-y-2 overflow-hidden"
+              className="group relative flex flex-col p-10 rounded-[40px] bg-white border border-gray-100 shadow-sm transition-all hover:shadow-2xl hover:border-amber-100 hover:-translate-y-2 overflow-hidden"
             >
               {/* Icon */}
               <div className="w-16 h-16 rounded-2xl mb-8 flex items-center justify-center transition-transform group-hover:scale-110 duration-500" style={{ backgroundColor: `${PURPLE}10` }}>
@@ -84,7 +84,7 @@ export default function ServicesHubPage() {
               </div>
 
               {/* Decorative gradient */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-amber-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             </Link>
 
             {/* Service Card 2: CSA Certification */}
@@ -147,7 +147,7 @@ export default function ServicesHubPage() {
                     </p>
                     <div className="flex flex-wrap gap-4 pt-4">
                       <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-                        <Truck className="w-4 h-4 text-purple-400" />
+                        <Truck className="w-4 h-4 text-amber-400" />
                         <span className="text-xs font-bold">Ocean & Inland Freight</span>
                       </div>
                       <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
@@ -163,14 +163,14 @@ export default function ServicesHubPage() {
                         <p className="text-sm font-bold leading-snug tracking-tight">On-Site <br />Support</p>
                      </div>
                      <div className="aspect-square rounded-3xl bg-white/5 border border-white/10 p-6 flex flex-col justify-between">
-                        <Factory className="w-8 h-8 text-purple-400" />
+                        <Factory className="w-8 h-8 text-amber-400" />
                         <p className="text-sm font-bold leading-snug tracking-tight">Vetted <br />Factories</p>
                      </div>
                   </div>
                </div>
 
                {/* Background abstract circles */}
-               <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+               <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
             </div>
           </div>
         </div>

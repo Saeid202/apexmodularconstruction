@@ -25,7 +25,7 @@ export function CredentialStrip() {
           {CREDENTIALS.map((item) => (
             <li
               key={item}
-              className="text-[11px] font-semibold tracking-[0.16em] whitespace-nowrap text-neutral-400 uppercase"
+              className="text-xs font-extrabold tracking-[0.14em] whitespace-nowrap text-neutral-700 uppercase sm:text-[13px]"
             >
               {item}
             </li>

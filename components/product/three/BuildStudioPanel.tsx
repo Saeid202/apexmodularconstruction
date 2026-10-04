@@ -23,7 +23,7 @@ import {
   type SurfaceKey,
 } from '@/lib/product/model3d'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 const HEX_INPUT_RE = /^#[0-9a-f]{6}$/i
@@ -225,7 +225,7 @@ function SurfaceRow({
                 onChange={(e) => commit(e.target.value)}
                 spellCheck={false}
                 aria-label={`${label} hex value`}
-                className="mt-2 w-full rounded-lg border-2 border-gray-100 px-2 py-1 text-center text-xs font-bold uppercase tracking-wider text-gray-700 focus:border-purple-300 focus:outline-none"
+                className="mt-2 w-full rounded-lg border-2 border-gray-100 px-2 py-1 text-center text-xs font-bold uppercase tracking-wider text-gray-700 focus:border-amber-300 focus:outline-none"
               />
             </div>
           )}
@@ -399,7 +399,7 @@ export function BuildStudioPanel({ studio, onChange, discoveredNodes, directives
                   <span className="min-w-0 flex-1">
                     <span
                       className={`block truncate text-xs font-bold ${
-                        on && !blocked ? 'text-purple-900' : 'text-gray-600'
+                        on && !blocked ? 'text-gray-900' : 'text-gray-600'
                       }`}
                     >
                       {part.label}

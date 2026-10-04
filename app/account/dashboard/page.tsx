@@ -35,7 +35,7 @@ export default function BuyerDashboard() {
     <div className="space-y-6 max-w-5xl">
 
       {/* Hero welcome */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-700 p-8 text-white shadow-2xl shadow-blue-500/20">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-gray-800 to-gray-800 p-8 text-white shadow-2xl shadow-blue-500/20">
         <div className="absolute -right-8 -top-8 h-48 w-48 rounded-full bg-white/5" />
         <div className="absolute right-20 -bottom-10 h-36 w-36 rounded-full bg-white/5" />
         <div className="absolute -left-4 bottom-0 h-24 w-24 rounded-full bg-white/5" />
@@ -61,7 +61,7 @@ export default function BuyerDashboard() {
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "Total Orders",    value: "0", icon: ShoppingBag, gradient: "from-blue-500 to-indigo-600",   shadow: "shadow-blue-500/20" },
+          { label: "Total Orders",    value: "0", icon: ShoppingBag, gradient: "from-blue-500 to-gray-800",   shadow: "shadow-blue-500/20" },
           { label: "RFQ Submitted",   value: "0", icon: Package,     gradient: "from-orange-500 to-rose-500",   shadow: "shadow-orange-500/20" },
           { label: "Engineering",     value: "0", icon: Wrench,      gradient: "from-cyan-500 to-blue-500",     shadow: "shadow-cyan-500/20" },
           { label: "In Progress",     value: "0", icon: TrendingUp,  gradient: "from-emerald-500 to-teal-600",  shadow: "shadow-emerald-500/20" },
@@ -85,7 +85,7 @@ export default function BuyerDashboard() {
               label: "My Orders",
               desc: "Track and manage your purchases",
               icon: ShoppingBag,
-              gradient: "from-blue-500 to-indigo-600",
+              gradient: "from-blue-500 to-gray-800",
               bg: "bg-blue-50",
               border: "border-blue-100 hover:border-blue-300",
             },
@@ -121,9 +121,9 @@ export default function BuyerDashboard() {
               label: "My Profile",
               desc: "Update your account details",
               icon: User,
-              gradient: "from-violet-500 to-purple-600",
-              bg: "bg-violet-50",
-              border: "border-violet-100 hover:border-violet-300",
+              gradient: "from-amber-500 to-gray-800",
+              bg: "bg-amber-50",
+              border: "border-amber-100 hover:border-amber-300",
             },
           ].map(({ href, label, desc, icon: Icon, gradient, bg, border }) => (
             <Link

@@ -132,7 +132,7 @@ export default function ContractorBusinessScopeClient({ user, profile }: Contrac
           {/* Service Types */}
           <div>
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Briefcase className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+              <Briefcase className="h-5 w-5" style={{ color: '#1F2937' }} />
               Service Types
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -146,7 +146,7 @@ export default function ContractorBusinessScopeClient({ user, profile }: Contrac
                       ? 'text-white'
                       : 'text-gray-700 bg-gray-50 hover:bg-gray-100'
                   }`}
-                  style={formData.serviceTypes.includes(type) ? { backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' } : { border: '2px solid #e5e7eb' }}
+                  style={formData.serviceTypes.includes(type) ? { backgroundColor: '#1F2937', border: '2px solid #D4AF37' } : { border: '2px solid #e5e7eb' }}
                 >
                   {formData.serviceTypes.includes(type) && <Check className="h-4 w-4 inline mr-2" />}
                   {type}
@@ -169,7 +169,7 @@ export default function ContractorBusinessScopeClient({ user, profile }: Contrac
                       ? 'text-white'
                       : 'text-gray-700 bg-gray-50 hover:bg-gray-100'
                   }`}
-                  style={formData.serviceAreas.includes(province) ? { backgroundColor: '#4B1D8F' } : { border: '2px solid #e5e7eb' }}
+                  style={formData.serviceAreas.includes(province) ? { backgroundColor: '#1F2937' } : { border: '2px solid #e5e7eb' }}
                 >
                   {province}
                 </button>
@@ -187,7 +187,7 @@ export default function ContractorBusinessScopeClient({ user, profile }: Contrac
                 max="50"
                 value={formData.yearsExperience}
                 onChange={(e) => setFormData(prev => ({ ...prev, yearsExperience: parseInt(e.target.value) || 0 }))}
-                className="w-32 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                className="w-32 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
               />
               <span className="text-sm text-gray-600">years</span>
             </div>
@@ -205,27 +205,27 @@ export default function ContractorBusinessScopeClient({ user, profile }: Contrac
                   placeholder="Certification Name"
                   value={newCertification.name}
                   onChange={(e) => setNewCertification(prev => ({ ...prev, name: e.target.value }))}
-                  className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-sm"
+                  className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors text-sm"
                 />
                 <input
                   type="text"
                   placeholder="Issued By"
                   value={newCertification.issuedBy}
                   onChange={(e) => setNewCertification(prev => ({ ...prev, issuedBy: e.target.value }))}
-                  className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-sm"
+                  className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors text-sm"
                 />
                 <input
                   type="date"
                   value={newCertification.expiryDate}
                   onChange={(e) => setNewCertification(prev => ({ ...prev, expiryDate: e.target.value }))}
-                  className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors text-sm"
+                  className="px-4 py-2 rounded-lg border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors text-sm"
                 />
               </div>
               <button
                 type="button"
                 onClick={handleAddCertification}
                 className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90"
-                style={{ backgroundColor: '#4B1D8F' }}
+                style={{ backgroundColor: '#1F2937' }}
               >
                 <Plus className="h-4 w-4" />
                 Add Certification
@@ -261,7 +261,7 @@ export default function ContractorBusinessScopeClient({ user, profile }: Contrac
               type="submit"
               disabled={loading}
               className="flex items-center gap-2 px-8 py-3 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-              style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+              style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
             >
               <Save className="h-5 w-5" />
               {loading ? 'Saving...' : 'Save Changes'}

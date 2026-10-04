@@ -45,8 +45,8 @@ export default async function SellerProductsPage() {
 
       {products.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl mb-4" style={{ backgroundColor: "#EDE9F6" }}>
-            <Package className="h-7 w-7" style={{ color: "#4B1D8F" }} />
+          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl mb-4" style={{ backgroundColor: "#FEF3C7" }}>
+            <Package className="h-7 w-7" style={{ color: "#1F2937" }} />
           </div>
           <h2 className="text-lg font-bold text-gray-900 mb-1">No products yet</h2>
           <p className="text-sm text-gray-500 mb-5">Start adding products to sell on Apex Modular Construction.</p>
@@ -73,12 +73,12 @@ export default async function SellerProductsPage() {
                   <tr key={product.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0" style={{ backgroundColor: "#EDE9F6" }}>
+                        <div className="w-11 h-11 rounded-xl overflow-hidden shrink-0" style={{ backgroundColor: "#FEF3C7" }}>
                           {product.product_images[0] ? (
                             <img src={product.product_images[0].url} alt={product.name} className="w-full h-full object-contain" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center">
-                              <Package className="h-5 w-5" style={{ color: "#4B1D8F" }} />
+                              <Package className="h-5 w-5" style={{ color: "#1F2937" }} />
                             </div>
                           )}
                         </div>

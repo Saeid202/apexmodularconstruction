@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 /* ─── Shared components ───────────────────────────────────────────────────── */
@@ -223,11 +223,11 @@ export default function ConstructionSolutionsPage() {
               <span style={{ color: GOLD }}> from China to Canada</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-purple-200 max-w-3xl mx-auto mb-4 leading-relaxed">
+            <p className="text-lg md:text-xl text-amber-200 max-w-3xl mx-auto mb-4 leading-relaxed">
               We deliver integrated EPC, prefabricated structures, and industrial construction
               solutions—combining Chinese manufacturing efficiency with Canadian compliance standards.
             </p>
-            <p className="text-base text-purple-300 max-w-2xl mx-auto mb-10">
+            <p className="text-base text-amber-300 max-w-2xl mx-auto mb-10">
               From design and procurement to logistics, installation, and certification—we manage
               the full project lifecycle.
             </p>
@@ -262,7 +262,7 @@ export default function ConstructionSolutionsPage() {
                 <div key={label} className="flex items-center gap-3">
                   <span
                     className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: "#EDE9F6" }}
+                    style={{ backgroundColor: "#FEF3C7" }}
                   >
                     <Icon className="h-4 w-4" style={{ color: PURPLE }} />
                   </span>
@@ -333,7 +333,7 @@ export default function ConstructionSolutionsPage() {
         <section
           aria-labelledby="core-solutions"
           className="py-20 px-4"
-          style={{ backgroundColor: "#F8F6FC" }}
+          style={{ backgroundColor: "#FFFBEB" }}
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
@@ -417,12 +417,12 @@ export default function ConstructionSolutionsPage() {
                 <article
                   key={title}
                   className="rounded-2xl bg-white p-7 transition-shadow hover:shadow-md"
-                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(75,29,143,0.08)` }}
+                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(31,41,55,0.08)` }}
                 >
                   <div className="flex items-start gap-4 mb-4">
                     <div
                       className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: "#EDE9F6" }}
+                      style={{ backgroundColor: "#FEF3C7" }}
                     >
                       <Icon className="h-6 w-6" style={{ color: PURPLE }} />
                     </div>
@@ -442,7 +442,7 @@ export default function ConstructionSolutionsPage() {
                   </ul>
                   <p
                     className="text-xs font-bold rounded-lg px-3 py-2 inline-block"
-                    style={{ backgroundColor: "#EDE9F6", color: PURPLE }}
+                    style={{ backgroundColor: "#FEF3C7", color: PURPLE }}
                   >
                     → {tagline}
                   </p>
@@ -500,7 +500,7 @@ export default function ConstructionSolutionsPage() {
                   <div className="flex flex-col items-center">
                     <div
                       className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-extrabold text-white text-sm"
-                      style={{ backgroundColor: PURPLE, boxShadow: `0 4px 12px rgba(75,29,143,0.35)` }}
+                      style={{ backgroundColor: PURPLE, boxShadow: `0 4px 12px rgba(31,41,55,0.35)` }}
                     >
                       {step}
                     </div>
@@ -529,7 +529,7 @@ export default function ConstructionSolutionsPage() {
         <section
           aria-labelledby="why-cargoplus"
           className="py-20 px-4"
-          style={{ backgroundColor: "#F8F6FC" }}
+          style={{ backgroundColor: "#FFFBEB" }}
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
@@ -549,11 +549,11 @@ export default function ConstructionSolutionsPage() {
                 <div
                   key={title}
                   className="rounded-2xl bg-white p-6"
-                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(75,29,143,0.08)` }}
+                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(31,41,55,0.08)` }}
                 >
                   <div
                     className="flex h-10 w-10 items-center justify-center rounded-xl mb-4"
-                    style={{ backgroundColor: "#EDE9F6" }}
+                    style={{ backgroundColor: "#FEF3C7" }}
                   >
                     <Icon className="h-5 w-5" style={{ color: PURPLE }} />
                   </div>
@@ -638,7 +638,7 @@ export default function ConstructionSolutionsPage() {
                   range: "$120 – $200",
                   unit: "per sq ft",
                   note: "Simple steel-frame or modular units, standard finishes",
-                  color: "#EDE9F6",
+                  color: "#FEF3C7",
                 },
                 {
                   label: "Mid-Range Prefab",
@@ -652,7 +652,7 @@ export default function ConstructionSolutionsPage() {
                   range: "$300 – $400+",
                   unit: "per sq ft",
                   note: "Industrial, multi-story, or high-compliance projects",
-                  color: "#EDE9F6",
+                  color: "#FEF3C7",
                 },
                 {
                   label: "Light Steel Structure",
@@ -666,7 +666,7 @@ export default function ConstructionSolutionsPage() {
                   range: "8 – 20 weeks",
                   unit: "design to delivery",
                   note: "Includes manufacturing, shipping, customs, and site prep coordination.",
-                  color: "#EDE9F6",
+                  color: "#FEF3C7",
                 },
                 {
                   label: "China-Sourced Savings",
@@ -700,17 +700,17 @@ export default function ConstructionSolutionsPage() {
               </h3>
               <div className="grid md:grid-cols-2 gap-8 items-stretch">
                 <div className="p-8 rounded-2xl bg-white/10 border border-white/20 flex flex-col justify-center">
-                  <p className="text-xs font-black text-purple-200 uppercase mb-3 tracking-widest">Local Canadian Contractor</p>
+                  <p className="text-xs font-black text-amber-200 uppercase mb-3 tracking-widest">Local Canadian Contractor</p>
                   <p className="text-5xl font-black text-white">$2,000+</p>
-                  <p className="text-sm text-purple-200 mt-2 font-bold uppercase tracking-tighter">Average per SQM (CAD)</p>
+                  <p className="text-sm text-amber-200 mt-2 font-bold uppercase tracking-tighter">Average per SQM (CAD)</p>
                 </div>
                 <div className="p-8 rounded-2xl bg-\[#D4AF37\] flex flex-col justify-center transform md:scale-110 shadow-xl">
-                  <p className="text-xs font-black text-purple-900 uppercase mb-3 tracking-widest">Apex Modular Construction (China Sourced)</p>
-                  <p className="text-6xl font-black text-purple-900">$700</p>
-                  <p className="text-sm text-purple-900 mt-2 font-black uppercase tracking-tighter">Delivered to Canada (CAD)</p>
+                  <p className="text-xs font-black text-gray-900 uppercase mb-3 tracking-widest">Apex Modular Construction (China Sourced)</p>
+                  <p className="text-6xl font-black text-gray-900">$700</p>
+                  <p className="text-sm text-gray-900 mt-2 font-black uppercase tracking-tighter">Delivered to Canada (CAD)</p>
                 </div>
               </div>
-              <p className="mt-10 text-purple-100 text-sm font-medium max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-10 text-amber-100 text-sm font-medium max-w-2xl mx-auto leading-relaxed">
                 * Comparison based on light steel structure projects. Apex Modular Construction pricing includes 
                 architectural design, precision engineering, factory fabrication, and sea-freight logistics.
               </p>
@@ -747,7 +747,7 @@ export default function ConstructionSolutionsPage() {
         <section
           aria-labelledby="related-topics"
           className="py-16 px-4"
-          style={{ backgroundColor: "#F8F6FC" }}
+          style={{ backgroundColor: "#FFFBEB" }}
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10">
@@ -770,7 +770,7 @@ export default function ConstructionSolutionsPage() {
               >
                 <div
                   className="flex h-10 w-10 items-center justify-center rounded-xl mb-4"
-                  style={{ backgroundColor: "#EDE9F6" }}
+                  style={{ backgroundColor: "#FEF3C7" }}
                 >
                   <ShieldCheck className="h-5 w-5" style={{ color: PURPLE }} />
                 </div>
@@ -793,7 +793,7 @@ export default function ConstructionSolutionsPage() {
               >
                 <div
                   className="flex h-10 w-10 items-center justify-center rounded-xl mb-4"
-                  style={{ backgroundColor: "#EDE9F6" }}
+                  style={{ backgroundColor: "#FEF3C7" }}
                 >
                   <Wrench className="h-5 w-5" style={{ color: PURPLE }} />
                 </div>
@@ -816,7 +816,7 @@ export default function ConstructionSolutionsPage() {
               >
                 <div
                   className="flex h-10 w-10 items-center justify-center rounded-xl mb-4"
-                  style={{ backgroundColor: "#EDE9F6" }}
+                  style={{ backgroundColor: "#FEF3C7" }}
                 >
                   <Truck className="h-5 w-5" style={{ color: PURPLE }} />
                 </div>
@@ -904,7 +904,7 @@ export default function ConstructionSolutionsPage() {
                 Start Your Construction Project With Us
               </h2>
             </div>
-            <p className="text-lg text-purple-200 mb-10 leading-relaxed">
+            <p className="text-lg text-amber-200 mb-10 leading-relaxed">
               Whether you&apos;re planning a prefab development or a full EPC industrial project,
               Apex Modular Construction connects China&apos;s manufacturing strength with Canada&apos;s construction
               standards.

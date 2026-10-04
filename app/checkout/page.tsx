@@ -23,7 +23,7 @@ export default async function CheckoutPage() {
   const userName = (profile as any)?.full_name ?? user.user_metadata?.full_name ?? "";
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f9f7ff" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#FFFBEB" }}>
       <CheckoutFlow userEmail={userEmail} userName={userName} />
     </div>
   );

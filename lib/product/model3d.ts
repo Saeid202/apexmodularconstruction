@@ -47,7 +47,7 @@ export const SURFACES: SurfaceDefinition[] = [
     key: 'trim',
     label: 'Trim & Fascia',
     tokens: ['trim', 'fascia', 'corner', 'accent', 'soffit', 'batten'],
-    swatches: ['#FFFFFF', '#F2EFE9', '#2E3338', '#4B1D8F', '#D4AF37', '#8C6239', '#6B7280'],
+    swatches: ['#FFFFFF', '#F2EFE9', '#2E3338', '#1F2937', '#D4AF37', '#8C6239', '#6B7280'],
     defaultColor: '#FFFFFF',
   },
   {
@@ -61,8 +61,8 @@ export const SURFACES: SurfaceDefinition[] = [
     key: 'door',
     label: 'Front Door',
     tokens: ['door', 'entry', 'entrance'],
-    swatches: ['#4B1D8F', '#1F3A5F', '#7A2E2E', '#2F4F3E', '#D4AF37', '#3A3F44', '#F2EFE9'],
-    defaultColor: '#4B1D8F',
+    swatches: ['#1F2937', '#1F3A5F', '#7A2E2E', '#2F4F3E', '#D4AF37', '#3A3F44', '#F2EFE9'],
+    defaultColor: '#1F2937',
   },
   {
     key: 'window',

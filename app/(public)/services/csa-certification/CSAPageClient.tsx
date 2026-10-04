@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, ChevronDown, ChevronUp, MessageCircle, CheckCircle, AlertCircle } from "lucide-react";
 import { submitProjectEstimate } from "@/app/actions/inquiries";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 const WHATSAPP_NUMBER = "16047128018";
 const WHATSAPP_MSG = encodeURIComponent(
@@ -84,7 +84,7 @@ export function CSAFAQSection() {
     <section
       aria-labelledby="csa-faq-heading"
       className="py-20 px-4"
-      style={{ backgroundColor: "#F8F6FC", fontFamily: "'Inter', sans-serif" }}
+      style={{ backgroundColor: "#FFFBEB", fontFamily: "'Inter', sans-serif" }}
     >
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
@@ -113,8 +113,8 @@ export function CSAFAQSection() {
                 style={{
                   border: `1.5px solid ${isOpen ? GOLD : `${PURPLE}20`}`,
                   boxShadow: isOpen
-                    ? `0 4px 20px rgba(75,29,143,0.10)`
-                    : `0 1px 4px rgba(75,29,143,0.05)`,
+                    ? `0 4px 20px rgba(31,41,55,0.10)`
+                    : `0 1px 4px rgba(31,41,55,0.05)`,
                   backgroundColor: "#fff",
                 }}
               >
@@ -270,7 +270,7 @@ export function ProjectEstimateForm({ context = "general" }: { context?: "csa" |
   }
 
   const inputClass =
-    "w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white";
+    "w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white";
   const labelClass = "block text-sm font-semibold text-gray-700 mb-1";
 
   return (

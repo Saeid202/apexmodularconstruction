@@ -42,8 +42,8 @@ function buildClasses(variant: Variant, size: Size, disabled?: boolean, extra?: 
     solid: [
       "text-white",
       "border border-[#D4AF37]",
-      "shadow-[0_0_0_1px_rgba(212,175,55,0.25),0_2px_8px_rgba(75,29,143,0.35)]",
-      "hover:shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_4px_16px_rgba(75,29,143,0.45)]",
+      "shadow-[0_0_0_1px_rgba(212,175,55,0.25),0_2px_8px_rgba(31,41,55,0.35)]",
+      "hover:shadow-[0_0_0_1px_rgba(212,175,55,0.6),0_4px_16px_rgba(31,41,55,0.45)]",
       "hover:brightness-110",
       "active:scale-[0.98]",
       disabled ? "opacity-50 cursor-not-allowed" : "",
@@ -52,7 +52,7 @@ function buildClasses(variant: Variant, size: Size, disabled?: boolean, extra?: 
     outline: [
       "bg-transparent",
       "border border-[#D4AF37]",
-      "text-[#4B1D8F]",
+      "text-[#1F2937]",
       "shadow-[0_0_0_1px_rgba(212,175,55,0.15)]",
       "hover:bg-[#D4AF37]/10",
       "hover:shadow-[0_0_0_1px_rgba(212,175,55,0.5)]",
@@ -61,8 +61,8 @@ function buildClasses(variant: Variant, size: Size, disabled?: boolean, extra?: 
     ].join(" "),
 
     ghost: [
-      "bg-transparent border-transparent text-[#4B1D8F]",
-      "hover:bg-[#EDE9F6]",
+      "bg-transparent border-transparent text-[#1F2937]",
+      "hover:bg-[#FEF3C7]",
       "active:scale-[0.98]",
       disabled ? "opacity-50 cursor-not-allowed" : "",
     ].join(" "),
@@ -96,7 +96,7 @@ export function LuxuryButton({
       {...props}
       disabled={disabled || loading}
       className={buildClasses(variant, size, disabled || loading, className)}
-      style={variant === "solid" ? { backgroundColor: "#4B1D8F" } : undefined}
+      style={variant === "solid" ? { backgroundColor: "#1F2937" } : undefined}
     >
       {variant === "solid" && <Shimmer />}
       {loading && <Loader2 className="h-4 w-4 animate-spin shrink-0" />}
@@ -119,7 +119,7 @@ export function LuxuryLinkButton({
       {...props}
       href={href}
       className={buildClasses(variant, size, false, className)}
-      style={variant === "solid" ? { backgroundColor: "#4B1D8F" } : undefined}
+      style={variant === "solid" ? { backgroundColor: "#1F2937" } : undefined}
     >
       {variant === "solid" && <Shimmer />}
       {children}

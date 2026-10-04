@@ -121,9 +121,20 @@ export function MobileMenu({
                     <Link
                       href="/building-designer"
                       onClick={onClose}
-                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-semibold text-[#4B1D8F] transition-colors hover:bg-[#EDE9F6]"
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-semibold text-[#1F2937] transition-colors hover:bg-[#FEF3C7]"
                     >
                       Design Your Building
+                    </Link>
+                  </li>
+
+                  {/* Cabinet Designer */}
+                  <li>
+                    <Link
+                      href="/cabinet-designer"
+                      onClick={onClose}
+                      className="flex min-h-[44px] items-center rounded-lg px-4 text-base font-semibold text-[#1F2937] transition-colors hover:bg-[#FEF3C7]"
+                    >
+                      Design Your Cabinet
                     </Link>
                   </li>
 
@@ -141,14 +152,14 @@ export function MobileMenu({
                       />
                     </button>
                     {servicesOpen && (
-                      <ul className="ml-4 mt-1 space-y-1 border-l-2 border-[#4B1D8F22] pl-3">
+                      <ul className="ml-4 mt-1 space-y-1 border-l-2 border-[#1F293722] pl-3">
                         <li>
                           <Link
                             href="/services/construction-solutions"
                             onClick={onClose}
                             className="flex min-h-[40px] items-center gap-2 rounded-lg px-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                           >
-                            <Wrench className="h-4 w-4 text-[#4B1D8F]" />
+                            <Wrench className="h-4 w-4 text-[#1F2937]" />
                             Construction Solutions
                           </Link>
                         </li>
@@ -158,7 +169,7 @@ export function MobileMenu({
                             onClick={onClose}
                             className="flex min-h-[40px] items-center gap-2 rounded-lg px-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-muted hover:text-foreground"
                           >
-                            <ShieldCheck className="h-4 w-4 text-[#4B1D8F]" />
+                            <ShieldCheck className="h-4 w-4 text-[#1F2937]" />
                             CSA Certification Guide
                           </Link>
                         </li>

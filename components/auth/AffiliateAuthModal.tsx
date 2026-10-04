@@ -59,7 +59,7 @@ export function AffiliateAuthModal({
     >
       <div className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden">
         {/* Top brand line */}
-        <div className="h-1.5 w-full bg-gradient-to-r from-[#4B1D8F] to-[#D4AF37]" />
+        <div className="h-1.5 w-full bg-gradient-to-r from-[#1F2937] to-[#D4AF37]" />
 
         <button
           ref={closeButtonRef}
@@ -79,7 +79,7 @@ export function AffiliateAuthModal({
                   ? "text-white shadow-sm"
                   : "text-gray-500 hover:text-gray-700"
               }`}
-              style={mode === "login" ? { backgroundColor: "#4B1D8F" } : {}}
+              style={mode === "login" ? { backgroundColor: "#1F2937" } : {}}
             >
               Affiliate Login
             </button>
@@ -90,7 +90,7 @@ export function AffiliateAuthModal({
                   ? "text-white shadow-sm"
                   : "text-gray-500 hover:text-gray-700"
               }`}
-              style={mode === "register" ? { backgroundColor: "#4B1D8F" } : {}}
+              style={mode === "register" ? { backgroundColor: "#1F2937" } : {}}
             >
               Affiliate Sign Up
             </button>

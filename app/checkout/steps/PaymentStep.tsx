@@ -10,7 +10,7 @@ import {
 import { getStripe } from "@/lib/stripe/client";
 import { createPaymentIntent } from "@/app/actions/payment";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 // ── Props ─────────────────────────────────────────────────────────────────────

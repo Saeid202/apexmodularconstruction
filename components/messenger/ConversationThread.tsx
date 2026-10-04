@@ -99,7 +99,7 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
         </button>
         <div
           className="flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-bold shrink-0"
-          style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}
+          style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}
         >
           {conversation.other_user_name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)}
         </div>
@@ -113,7 +113,7 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
         {loading ? (
           <div className="flex justify-center pt-8">
-            <Loader2 className="h-5 w-5 animate-spin text-purple-400" />
+            <Loader2 className="h-5 w-5 animate-spin text-amber-400" />
           </div>
         ) : messages.length === 0 ? (
           <p className="text-center text-xs text-gray-400 pt-8">
@@ -139,10 +139,10 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
                           ? "text-white rounded-br-sm"
                           : "bg-gray-100 text-gray-900 rounded-bl-sm"
                       }`}
-                      style={isMe ? { background: "linear-gradient(135deg, #4B1D8F, #3A1570)" } : {}}
+                      style={isMe ? { background: "linear-gradient(135deg, #1F2937, #111827)" } : {}}
                     >
                       <p className="whitespace-pre-wrap leading-relaxed">{msg.message}</p>
-                      <p className={`text-[10px] mt-1 ${isMe ? "text-purple-200 text-right" : "text-gray-400"}`}>
+                      <p className={`text-[10px] mt-1 ${isMe ? "text-amber-200 text-right" : "text-gray-400"}`}>
                         {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       </p>
                     </div>
@@ -161,7 +161,7 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
       {/* Input */}
       <div className="px-3 py-3 border-t border-gray-100 bg-white">
         <div className="flex items-end gap-2">
-          <div className="flex-1 border-2 border-[#4B1D8F]/40 rounded-2xl px-3 py-2 focus-within:border-[#4B1D8F] transition-colors">
+          <div className="flex-1 border-2 border-[#1F2937]/40 rounded-2xl px-3 py-2 focus-within:border-[#1F2937] transition-colors">
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
@@ -175,7 +175,7 @@ export function ConversationThread({ conversation, currentUserId, onBack, onMess
             onClick={handleSend}
             disabled={sending || !text.trim()}
             className="flex items-center justify-center h-9 w-9 rounded-xl text-white disabled:opacity-40 shrink-0 transition-opacity"
-            style={{ background: "linear-gradient(135deg, #4B1D8F, #3A1570)" }}
+            style={{ background: "linear-gradient(135deg, #1F2937, #111827)" }}
           >
             {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           </button>

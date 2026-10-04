@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { useState, useRef, useEffect } from 'react'
-import { Building2, ChevronDown, Wrench, ShieldCheck } from 'lucide-react'
+import { Building2, ChevronDown, Wrench, ShieldCheck, Archive } from 'lucide-react'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 
 interface NavigationProps {
   className?: string
@@ -45,7 +45,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
   // The header is a white surface, so links are ink-on-white with a brand
   // underline on hover.
   const linkClass =
-    'group relative flex items-center rounded-lg px-3.5 py-2 text-[13.5px] font-medium whitespace-nowrap text-neutral-600 transition-colors hover:text-neutral-900 focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none'
+    'group relative flex items-center rounded-full px-4 py-2 text-[15px] font-semibold whitespace-nowrap text-neutral-900 transition-colors hover:bg-[#1F2937]/10 hover:text-[#1F2937] focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 focus-visible:outline-none'
 
   return (
     <nav className={className}>
@@ -54,7 +54,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
         <li>
           <Link href="/about" onClick={() => onLinkClick?.()} className={linkClass}>
             About Us
-            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#1F2937] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
         */}
@@ -63,7 +63,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
         <li>
           <Link href="/products" onClick={() => onLinkClick?.()} className={linkClass}>
             Buildings
-            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#1F2937] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 
@@ -72,7 +72,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
         <li>
           <Link href="/products?category=all-materials" onClick={() => onLinkClick?.()} className={linkClass}>
             Materials
-            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#1F2937] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 
@@ -81,7 +81,16 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
           <Link href="/building-designer" onClick={() => onLinkClick?.()} className={linkClass}>
             <Building2 className="mr-1.5 h-4 w-4" />
             Design Your Building
-            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#D4AF37] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#F59E0B] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+          </Link>
+        </li>
+
+        {/* Cabinet Designer */}
+        <li>
+          <Link href="/cabinet-designer" onClick={() => onLinkClick?.()} className={linkClass}>
+            <Archive className="mr-1.5 h-4 w-4" />
+            Design Your Cabinet
+            <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#F59E0B] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
 
@@ -104,7 +113,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
               className="h-3.5 w-3.5 transition-transform duration-200"
               style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
             />
-            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#1F2937] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </button>
 
           {/* Dropdown panel */}
@@ -135,7 +144,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
                         <Icon className="h-4 w-4" style={{ color: PURPLE }} />
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900 group-hover/item:text-[#4B1D8F]">
+                        <p className="text-sm font-semibold text-neutral-900 group-hover/item:text-[#1F2937]">
                           {s.label}
                         </p>
                         <p className="mt-0.5 text-[11px] leading-snug text-neutral-500">
@@ -158,7 +167,7 @@ export function Navigation({ className, onLinkClick }: NavigationProps) {
         <li>
           <Link href="/contact" onClick={() => onLinkClick?.()} className={linkClass}>
             Contact Us
-            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#4B1D8F] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
+            <span className="absolute bottom-1 left-3.5 right-3.5 h-0.5 bg-[#1F2937] scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full" />
           </Link>
         </li>
       </ul>

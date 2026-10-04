@@ -42,7 +42,7 @@ export default async function ARScanPage({ searchParams }: { searchParams: Promi
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
       <div className="max-w-md w-full bg-gray-900 p-8 rounded-3xl border border-gray-800 text-center shadow-2xl">
-        <Smartphone className="w-16 h-16 text-purple-500 mx-auto mb-6" />
+        <Smartphone className="w-16 h-16 text-amber-500 mx-auto mb-6" />
         <h1 className="text-3xl font-bold mb-4">App Clip Required</h1>
         
         <p className="text-gray-400 mb-8 leading-relaxed">

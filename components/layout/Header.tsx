@@ -123,10 +123,10 @@ export function Header({ cmsNav }: HeaderProps) {
        * around the logo whenever the sticky bar crossed the hero image. Opaque
        * white removes the mismatch for any logo asset, transparent or not. */}
       <header
-        className={`sticky top-0 z-50 w-full border-b bg-white transition-shadow duration-300 ${
+        className={`sticky top-0 z-50 w-full border-b-2 border-b-[#EA580C] bg-white transition-shadow duration-300 ${
           scrolled
-            ? 'border-neutral-200 shadow-[0_1px_16px_rgba(16,16,24,0.07)]'
-            : 'border-neutral-200/70'
+            ? 'shadow-[0_4px_20px_rgba(31,41,55,0.18)]'
+            : 'shadow-[0_2px_10px_rgba(31,41,55,0.10)]'
         }`}
       >
         <div className="relative z-10 mx-auto w-full max-w-[1360px] px-5 sm:px-8 lg:px-10">
@@ -135,7 +135,7 @@ export function Header({ cmsNav }: HeaderProps) {
            * the action cluster happen to be. With `auto 1fr auto` the nav was only
            * centred inside the leftover space, so it drifted off-centre whenever
            * the two sides differed in width — which they always do. */}
-          <div className="flex h-16 items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+          <div className="flex h-20 items-center justify-between gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr]">
             {/* Logo */}
             <Link
               href="/"
@@ -143,8 +143,8 @@ export function Header({ cmsNav }: HeaderProps) {
             >
               {(!settings || settings.logo_style === 'complete-banner') && (
                 <div
-                  className={`flex items-center overflow-hidden ${
-                    settings?.logo_height === 'h-20' ? 'h-11' : 'h-9'
+                  className={`flex items-center ${
+                    settings?.logo_height === 'h-20' ? 'h-[76px]' : 'h-[72px]'
                   }`}
                 >
                   <img
@@ -196,7 +196,7 @@ export function Header({ cmsNav }: HeaderProps) {
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-700 transition-colors hover:bg-neutral-100 hover:text-neutral-900 lg:hidden"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#EA580C] text-white transition-colors hover:bg-[#C2410C] lg:hidden"
                 aria-label="Open menu"
               >
                 <Menu className="h-5 w-5" />

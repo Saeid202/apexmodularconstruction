@@ -12,8 +12,8 @@ export default async function AgentDashboardPage() {
       <div
         className="relative overflow-hidden rounded-2xl p-8 text-white"
         style={{
-          background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)",
-          boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F",
+          background: "linear-gradient(135deg, #1F2937 0%, #111827 100%)",
+          boxShadow: "0 0 0 1px #1F2937, 0 0 0 4px #D4AF37, 0 0 0 5px #1F2937",
         }}
       >
         {/* Gold corner accents */}
@@ -36,7 +36,7 @@ export default async function AgentDashboardPage() {
               Agent Portal
             </span>
             <h1 className="text-3xl font-extrabold text-white">Consolidation / RFQ Orders</h1>
-            <p className="text-purple-200 text-base mt-1">Review buyer requests, source products, and send quotes.</p>
+            <p className="text-amber-200 text-base mt-1">Review buyer requests, source products, and send quotes.</p>
           </div>
         </div>
       </div>
@@ -44,17 +44,17 @@ export default async function AgentDashboardPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         {[
-          { label: "Total",       value: stats.total,       icon: ClipboardList, color: "#4B1D8F" },
+          { label: "Total",       value: stats.total,       icon: ClipboardList, color: "#1F2937" },
           { label: "Pending",     value: stats.pending,     icon: Clock,         color: "#6B7280" },
           { label: "In Progress", value: stats.in_progress, icon: TrendingUp,    color: "#3B82F6" },
-          { label: "Quoted",      value: stats.quoted,      icon: Briefcase,     color: "#7C3AED" },
+          { label: "Quoted",      value: stats.quoted,      icon: Briefcase,     color: "#1F2937" },
           { label: "Completed",   value: stats.completed,   icon: CheckCircle,   color: "#059669" },
         ].map(({ label, value, icon: Icon, color }) => (
           <div
             key={label}
             className="relative bg-white rounded-2xl p-5 overflow-hidden"
             style={{
-              boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 3px #D4AF37, 0 0 0 4px #4B1D8F",
+              boxShadow: "0 0 0 1px #1F2937, 0 0 0 3px #D4AF37, 0 0 0 4px #1F2937",
             }}
           >
             {/* Gold corner accents */}
@@ -78,7 +78,7 @@ export default async function AgentDashboardPage() {
         href="/agent/orders"
         className="group relative flex items-center justify-between p-6 rounded-2xl bg-white overflow-hidden transition-all hover:shadow-lg"
         style={{
-          boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 3px #D4AF37, 0 0 0 4px #4B1D8F",
+          boxShadow: "0 0 0 1px #1F2937, 0 0 0 3px #D4AF37, 0 0 0 4px #1F2937",
         }}
       >
         {/* Gold corner accents */}
@@ -89,15 +89,15 @@ export default async function AgentDashboardPage() {
 
         <div className="flex items-center gap-4">
           <div className="h-12 w-12 rounded-xl flex items-center justify-center shrink-0"
-            style={{ backgroundColor: "#EDE9F6" }}>
-            <ClipboardList className="h-6 w-6" style={{ color: "#4B1D8F" }} />
+            style={{ backgroundColor: "#FEF3C7" }}>
+            <ClipboardList className="h-6 w-6" style={{ color: "#1F2937" }} />
           </div>
           <div>
             <p className="text-lg font-bold text-gray-900">View All Orders</p>
             <p className="text-base text-gray-500">Review and respond to buyer RFQ submissions</p>
           </div>
         </div>
-        <ArrowRight className="h-6 w-6 text-gray-300 group-hover:translate-x-1 transition-transform shrink-0" style={{ color: "#4B1D8F" }} />
+        <ArrowRight className="h-6 w-6 text-gray-300 group-hover:translate-x-1 transition-transform shrink-0" style={{ color: "#1F2937" }} />
       </Link>
     </div>
   );

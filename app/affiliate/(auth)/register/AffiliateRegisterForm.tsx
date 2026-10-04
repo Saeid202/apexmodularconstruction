@@ -39,9 +39,9 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
       <div className="text-center py-6">
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-          style={{ backgroundColor: "#F3EEFB" }}
+          style={{ backgroundColor: "#FEF3C7" }}
         >
-          <CheckCircle className="w-8 h-8" style={{ color: "#4B1D8F" }} />
+          <CheckCircle className="w-8 h-8" style={{ color: "#1F2937" }} />
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">Account Request Received!</h3>
         <p className="text-sm text-gray-500 mb-6">
@@ -52,7 +52,7 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
             if (onToggleLogin) onToggleLogin();
           }}
           className="inline-flex items-center justify-center h-11 px-5 rounded-xl text-white text-sm font-semibold hover:opacity-95 transition-opacity"
-          style={{ backgroundColor: "#4B1D8F" }}
+          style={{ backgroundColor: "#1F2937" }}
         >
           Go to Affiliate Login
         </button>
@@ -61,7 +61,7 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
   }
 
   const inputClass =
-    "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow placeholder:text-gray-400";
+    "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow placeholder:text-gray-400";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -74,14 +74,14 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="sm:col-span-2">
           <label htmlFor="reg-fullName" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Full Name <span className="text-[#4B1D8F]">*</span>
+            Full Name <span className="text-[#1F2937]">*</span>
           </label>
           <input id="reg-fullName" name="fullName" type="text" required className={inputClass} placeholder="Your full name" />
         </div>
 
         <div>
           <label htmlFor="reg-email" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Email <span className="text-[#4B1D8F]">*</span>
+            Email <span className="text-[#1F2937]">*</span>
           </label>
           <input id="reg-email" name="email" type="email" required className={inputClass} placeholder="affiliate@example.com" />
         </div>
@@ -99,7 +99,7 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
 
       <div>
         <label htmlFor="reg-password" className="block text-sm font-medium text-gray-700 mb-1.5">
-          Password <span className="text-[#4B1D8F]">*</span>
+          Password <span className="text-[#1F2937]">*</span>
         </label>
         <div className="relative">
           <input
@@ -124,7 +124,7 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
       </div>
 
       <div className="flex items-start gap-2 text-sm">
-        <input id="reg-terms" type="checkbox" required className="mt-1 rounded border-gray-300 accent-[#4B1D8F]" />
+        <input id="reg-terms" type="checkbox" required className="mt-1 rounded border-gray-300 accent-[#1F2937]" />
         <label htmlFor="reg-terms" className="text-gray-500">
           I agree to the Terms and Conditions
         </label>
@@ -134,7 +134,7 @@ export function AffiliateRegisterForm({ onSuccess, onToggleLogin }: AffiliateReg
         type="submit"
         disabled={loading}
         className="w-full h-11 rounded-xl text-white text-sm font-semibold hover:opacity-90 disabled:opacity-60 transition-opacity"
-        style={{ backgroundColor: "#4B1D8F" }}
+        style={{ backgroundColor: "#1F2937" }}
       >
         {loading ? "Creating Account..." : "Create Affiliate Account"}
       </button>

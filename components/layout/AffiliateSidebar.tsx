@@ -45,7 +45,7 @@ export default function AffiliateSidebar({ children }: AffiliateSidebarProps) {
       >
         <div className="flex h-16 items-center justify-between px-5 border-b border-white/10">
           <Link href="/affiliate/dashboard" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#4B1D8F" }}>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#1F2937" }}>
               <Sparkles className="h-4 w-4 text-[#D4AF37]" />
             </div>
             <span className="text-white font-bold text-lg tracking-tight">
@@ -71,10 +71,10 @@ export default function AffiliateSidebar({ children }: AffiliateSidebarProps) {
                 onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
-                    ? "text-white shadow-md shadow-purple-950/20"
+                    ? "text-white shadow-md shadow-gray-950/20"
                     : "text-slate-300 hover:bg-white/5 hover:text-white"
                 }`}
-                style={isActive ? { backgroundColor: "#4B1D8F" } : {}}
+                style={isActive ? { backgroundColor: "#1F2937" } : {}}
               >
                 <item.icon className="h-5 w-5 shrink-0" style={isActive ? { color: "#D4AF37" } : {}} />
                 <span className="flex-1">{item.label}</span>

@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { submitProjectEstimate } from "@/app/actions/inquiries";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 const WHATSAPP_NUMBER = "16047128018"; // update to real number if different
 const WHATSAPP_MSG = encodeURIComponent(
@@ -309,7 +309,7 @@ export function FAQSection() {
                 className="rounded-2xl overflow-hidden transition-shadow"
                 style={{
                   border: `1.5px solid ${isOpen ? GOLD : `${PURPLE}18`}`,
-                  boxShadow: isOpen ? `0 4px 16px rgba(75,29,143,0.12)` : undefined,
+                  boxShadow: isOpen ? `0 4px 16px rgba(31,41,55,0.12)` : undefined,
                 }}
               >
                 <button
@@ -434,7 +434,7 @@ export function PrefabEPCFAQSection() {
     <section
       aria-labelledby="prefab-epc-faq-heading"
       className="py-20 px-4"
-      style={{ backgroundColor: "#F8F6FC", fontFamily: "'Inter', sans-serif" }}
+      style={{ backgroundColor: "#FFFBEB", fontFamily: "'Inter', sans-serif" }}
     >
       <div className="max-w-3xl mx-auto">
         {/* Heading */}
@@ -468,8 +468,8 @@ export function PrefabEPCFAQSection() {
                 style={{
                   border: `1.5px solid ${isOpen ? GOLD : `${PURPLE}20`}`,
                   boxShadow: isOpen
-                    ? `0 4px 20px rgba(75,29,143,0.10)`
-                    : `0 1px 4px rgba(75,29,143,0.05)`,
+                    ? `0 4px 20px rgba(31,41,55,0.10)`
+                    : `0 1px 4px rgba(31,41,55,0.05)`,
                   backgroundColor: "#fff",
                 }}
               >
@@ -554,7 +554,7 @@ export function TrustStrip() {
     <section
       aria-label="Social proof"
       className="py-14 px-4"
-      style={{ backgroundColor: "#F8F6FC" }}
+      style={{ backgroundColor: "#FFFBEB" }}
     >
       <div className="max-w-5xl mx-auto">
         <p className="text-center text-xs font-bold uppercase tracking-[0.2em] mb-8" style={{ color: GOLD }}>
@@ -582,7 +582,7 @@ export function TrustStrip() {
             <figure
               key={author}
               className="rounded-2xl bg-white p-6"
-              style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(75,29,143,0.08)` }}
+              style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(31,41,55,0.08)` }}
             >
               <blockquote className="text-sm text-gray-600 leading-relaxed mb-4">
                 &ldquo;{quote}&rdquo;
@@ -684,7 +684,7 @@ export function ProjectEstimateForm() {
   }
 
   const inputClass =
-    "w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 bg-white";
+    "w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white";
   const labelClass = "block text-sm font-semibold text-gray-700 mb-1";
 
   return (
@@ -947,8 +947,8 @@ export function LightSteelStructureFAQSection() {
                 style={{
                   border: `1.5px solid ${isOpen ? GOLD : `${PURPLE}20`}`,
                   boxShadow: isOpen
-                    ? `0 4px 20px rgba(75,29,143,0.10)`
-                    : `0 1px 4px rgba(75,29,143,0.05)`,
+                    ? `0 4px 20px rgba(31,41,55,0.10)`
+                    : `0 1px 4px rgba(31,41,55,0.05)`,
                   backgroundColor: isOpen ? "#FAF9FF" : "#fff",
                 }}
               >

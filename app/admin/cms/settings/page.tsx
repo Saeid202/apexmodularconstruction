@@ -196,7 +196,7 @@ export default function BrandingSettingsPage() {
     <div className="p-8 max-w-4xl mx-auto space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <Sparkles className="h-6 w-6 text-purple-600 animate-pulse" />
+          <Sparkles className="h-6 w-6 text-gray-800 animate-pulse" />
           Branding & Logo Settings
         </h1>
         <p className="text-sm text-gray-500 mt-1">
@@ -363,7 +363,7 @@ export default function BrandingSettingsPage() {
             {/* Complete Banner Option */}
             <label className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
               settings.logo_style === "complete-banner" 
-                ? "border-purple-600 bg-purple-50/30" 
+                ? "border-gray-800 bg-amber-50/30" 
                 : "border-gray-200 hover:bg-gray-50"
             }`}>
               <input
@@ -372,11 +372,11 @@ export default function BrandingSettingsPage() {
                 value="complete-banner"
                 checked={settings.logo_style === "complete-banner"}
                 onChange={() => setSettings({ ...settings, logo_style: "complete-banner" })}
-                className="mt-1 text-purple-600 focus:ring-purple-500"
+                className="mt-1 text-gray-800 focus:ring-amber-500"
               />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
-                  <Image className="h-4 w-4 text-purple-600" />
+                  <Image className="h-4 w-4 text-gray-800" />
                   Option A: Complete Shiny Logo Banner
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
@@ -388,7 +388,7 @@ export default function BrandingSettingsPage() {
             {/* Icon and Text Option */}
             <label className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
               settings.logo_style === "icon-and-text" 
-                ? "border-purple-600 bg-purple-50/30" 
+                ? "border-gray-800 bg-amber-50/30" 
                 : "border-gray-200 hover:bg-gray-50"
             }`}>
               <input
@@ -397,11 +397,11 @@ export default function BrandingSettingsPage() {
                 value="icon-and-text"
                 checked={settings.logo_style === "icon-and-text"}
                 onChange={() => setSettings({ ...settings, logo_style: "icon-and-text" })}
-                className="mt-1 text-purple-600 focus:ring-purple-500"
+                className="mt-1 text-gray-800 focus:ring-amber-500"
               />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
-                  <Menu className="h-4 w-4 text-purple-600" />
+                  <Menu className="h-4 w-4 text-gray-800" />
                   Option B: Graphic Icon + Gold Text
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
@@ -413,7 +413,7 @@ export default function BrandingSettingsPage() {
             {/* Text Only Option */}
             <label className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
               settings.logo_style === "text-only" 
-                ? "border-purple-600 bg-purple-50/30" 
+                ? "border-gray-800 bg-amber-50/30" 
                 : "border-gray-200 hover:bg-gray-50"
             }`}>
               <input
@@ -422,11 +422,11 @@ export default function BrandingSettingsPage() {
                 value="text-only"
                 checked={settings.logo_style === "text-only"}
                 onChange={() => setSettings({ ...settings, logo_style: "text-only" })}
-                className="mt-1 text-purple-600 focus:ring-purple-500"
+                className="mt-1 text-gray-800 focus:ring-amber-500"
               />
               <div className="flex-1">
                 <p className="text-sm font-semibold text-gray-900 flex items-center gap-1.5">
-                  <Type className="h-4 w-4 text-purple-600" />
+                  <Type className="h-4 w-4 text-gray-800" />
                   Option C: Gold Brand Text Only
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
@@ -450,7 +450,7 @@ export default function BrandingSettingsPage() {
                   onClick={() => setSettings({ ...settings, logo_height: h })}
                   className={`px-4 py-3 rounded-xl border text-sm font-semibold transition-all ${
                     settings.logo_height === h
-                      ? "border-purple-600 bg-purple-50/50 text-purple-700 shadow-sm"
+                      ? "border-gray-800 bg-amber-50/50 text-gray-800 shadow-sm"
                       : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
                   }`}
                 >
@@ -463,7 +463,7 @@ export default function BrandingSettingsPage() {
           {/* Real-time Preview */}
           <div className="rounded-xl bg-gray-950 p-6 space-y-3">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Real-time Header Preview</p>
-            <div className="w-full bg-[#4B1D8F] h-24 rounded-lg flex items-center px-6 border border-purple-800/40 relative overflow-hidden">
+            <div className="w-full bg-[#1F2937] h-24 rounded-lg flex items-center px-6 border border-gray-900/40 relative overflow-hidden">
               {settings.logo_style === "complete-banner" && (
                 <div className={`flex items-center bg-white/95 backdrop-blur-sm px-4 py-1.5 rounded-xl shadow-lg border border-white/20 overflow-hidden transition-all ${
                   settings.logo_height === "h-12" ? "h-12" : settings.logo_height === "h-16" ? "h-16" : "h-20"
@@ -513,7 +513,7 @@ export default function BrandingSettingsPage() {
       <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm space-y-6">
         <div>
           <h3 className="text-md font-semibold text-gray-900 flex items-center gap-2">
-            <Share2 className="h-5 w-5 text-purple-600" />
+            <Share2 className="h-5 w-5 text-gray-800" />
             Social Media Links
           </h3>
           <p className="text-xs text-gray-500 mt-1">
@@ -528,7 +528,7 @@ export default function BrandingSettingsPage() {
           )}
           {(settings.social_links ?? []).map((link) => (
             <div key={link.platform} className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 bg-gray-50">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-100 text-purple-700 shrink-0">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-gray-800 shrink-0">
                 <PlatformIcon platform={link.platform} />
               </div>
               <span className="text-sm font-medium text-gray-700 w-24 shrink-0">
@@ -539,14 +539,14 @@ export default function BrandingSettingsPage() {
                 value={link.url}
                 onChange={(e) => updateSocialLink(link.platform, { url: e.target.value })}
                 placeholder="https://..."
-                className="flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="flex-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
               <label className="flex items-center gap-1.5 cursor-pointer shrink-0">
                 <input
                   type="checkbox"
                   checked={link.enabled}
                   onChange={(e) => updateSocialLink(link.platform, { enabled: e.target.checked })}
-                  className="h-4 w-4 rounded text-purple-600 focus:ring-purple-500"
+                  className="h-4 w-4 rounded text-gray-800 focus:ring-amber-500"
                 />
                 <span className="text-xs text-gray-600">Visible</span>
               </label>
@@ -566,7 +566,7 @@ export default function BrandingSettingsPage() {
           <select
             value={newPlatform}
             onChange={(e) => setNewPlatform(e.target.value)}
-            className="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white"
+            className="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 bg-white"
           >
             {PLATFORM_OPTIONS.filter(
               (p) => !(settings.social_links ?? []).some((l) => l.platform === p.value)
@@ -580,12 +580,12 @@ export default function BrandingSettingsPage() {
             onChange={(e) => setNewUrl(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addSocialLink()}
             placeholder="https://..."
-            className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+            className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
           />
           <button
             onClick={addSocialLink}
             disabled={!newUrl.trim()}
-            className="flex items-center gap-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 disabled:opacity-40 text-white text-sm font-medium px-4 py-2 transition-all shrink-0"
+            className="flex items-center gap-1.5 rounded-lg bg-gray-800 hover:bg-gray-800 disabled:opacity-40 text-white text-sm font-medium px-4 py-2 transition-all shrink-0"
           >
             <Plus className="h-4 w-4" />
             Add
@@ -618,7 +618,7 @@ export default function BrandingSettingsPage() {
                     homepage_products_limit: val === "" ? null : Math.max(1, parseInt(val) || 1),
                   });
                 }}
-                className="w-28 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="w-28 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
               {settings.homepage_products_limit && (
                 <button
@@ -642,7 +642,7 @@ export default function BrandingSettingsPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 rounded-xl bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-semibold px-6 py-3 shadow-md transition-all shrink-0 cursor-pointer"
+          className="flex items-center gap-2 rounded-xl bg-gray-800 hover:bg-gray-800 disabled:opacity-50 text-white font-semibold px-6 py-3 shadow-md transition-all shrink-0 cursor-pointer"
         >
           {saving ? (
             <Loader2 className="h-5 w-5 animate-spin" />

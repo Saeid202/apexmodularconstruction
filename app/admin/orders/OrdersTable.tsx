@@ -5,7 +5,7 @@ import { useState } from "react";
 import { updateOrderStatus } from "@/app/actions/admin-orders";
 import type { AdminOrderRow } from "@/app/actions/admin-orders";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
@@ -86,7 +86,7 @@ export function OrdersTable({ orders }: { orders: AdminOrderRow[] }) {
             const address = order.shipping_address as Record<string, string>;
             const email = address?.email ?? "—";
             return (
-              <tr key={order.id} style={{ background: idx % 2 === 0 ? "#fff" : "#f9f7ff", borderBottom: `1px solid ${PURPLE}11` }}>
+              <tr key={order.id} style={{ background: idx % 2 === 0 ? "#fff" : "#FFFBEB", borderBottom: `1px solid ${PURPLE}11` }}>
                 <td style={{ padding: "12px 16px", fontWeight: 700, color: PURPLE }}>{order.order_number}</td>
                 <td style={{ padding: "12px 16px", color: "#374151" }}>{email}</td>
                 <td style={{ padding: "12px 16px", color: "#6b7280", whiteSpace: "nowrap" }}>

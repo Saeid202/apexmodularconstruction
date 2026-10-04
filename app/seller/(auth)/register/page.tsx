@@ -21,7 +21,7 @@ export default function SellerRegisterPage() {
       {/* Left panel */}
       <div
         className="hidden lg:flex lg:w-5/12 flex-col items-center justify-center p-12 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)" }}
+        style={{ background: "linear-gradient(135deg, #1F2937 0%, #111827 100%)" }}
       >
         <span className="absolute top-6 left-6 h-8 w-8 border-t-2 border-l-2 border-yellow-400 rounded-tl-lg" />
         <span className="absolute top-6 right-6 h-8 w-8 border-t-2 border-r-2 border-yellow-400 rounded-tr-lg" />
@@ -36,7 +36,7 @@ export default function SellerRegisterPage() {
             <Store className="h-8 w-8 text-white" />
           </div>
           <h2 className="text-2xl font-extrabold text-white mb-3">Join Apex Modular Construction</h2>
-          <p className="text-purple-200 text-sm leading-relaxed mb-8">
+          <p className="text-amber-200 text-sm leading-relaxed mb-8">
             Reach thousands of Canadian businesses looking for quality products from China.
           </p>
 
@@ -50,7 +50,7 @@ export default function SellerRegisterPage() {
                 >
                   {i + 1}
                 </div>
-                <p className="text-sm text-purple-200">{step}</p>
+                <p className="text-sm text-amber-200">{step}</p>
               </div>
             ))}
           </div>
@@ -64,7 +64,7 @@ export default function SellerRegisterPage() {
           <div className="lg:hidden text-center mb-6">
             <div
               className="inline-flex h-12 w-12 items-center justify-center rounded-xl mb-3"
-              style={{ backgroundColor: "#4B1D8F" }}
+              style={{ backgroundColor: "#1F2937" }}
             >
               <Store className="h-6 w-6 text-white" />
             </div>
@@ -81,7 +81,7 @@ export default function SellerRegisterPage() {
 
             <p className="mt-6 text-center text-sm text-gray-500">
               Already have a seller account?{" "}
-              <Link href="/seller/login" className="font-medium hover:underline" style={{ color: "#4B1D8F" }}>
+              <Link href="/seller/login" className="font-medium hover:underline" style={{ color: "#1F2937" }}>
                 Sign in here
               </Link>
             </p>

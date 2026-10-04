@@ -29,7 +29,7 @@ export default async function NewProductPage() {
         <Link
           href="/seller/products"
           className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:opacity-80"
-          style={{ color: "#4B1D8F" }}
+          style={{ color: "#1F2937" }}
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Products
@@ -40,13 +40,13 @@ export default async function NewProductPage() {
       <div
         className="max-w-7xl mx-auto rounded-2xl overflow-hidden"
         style={{
-          boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F, 0 8px 32px rgba(75,29,143,0.18)",
+          boxShadow: "0 0 0 1px #1F2937, 0 0 0 4px #D4AF37, 0 0 0 5px #1F2937, 0 8px 32px rgba(31,41,55,0.18)",
         }}
       >
         {/* Header band */}
         <div
           className="relative px-8 py-6"
-          style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)" }}
+          style={{ background: "linear-gradient(135deg, #1F2937 0%, #111827 100%)" }}
         >
           {/* Gold corner accents */}
           <span className="absolute top-3 left-3 h-5 w-5 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
@@ -61,7 +61,7 @@ export default async function NewProductPage() {
             </div>
             <div>
               <h1 className="text-xl font-extrabold text-white tracking-tight">Add New Product</h1>
-              <p className="text-sm text-purple-200 mt-0.5">
+              <p className="text-sm text-amber-200 mt-0.5">
                 Fill in the details below. Products are reviewed before going live.
               </p>
             </div>
@@ -69,7 +69,7 @@ export default async function NewProductPage() {
         </div>
 
         {/* Form body */}
-        <div className="bg-[#FAF9FC] p-6 sm:p-8">
+        <div className="bg-[#FFFBEB] p-6 sm:p-8">
           <NewProductForm categories={categories} />
         </div>
       </div>

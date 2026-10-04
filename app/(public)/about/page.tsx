@@ -70,7 +70,7 @@ export default async function AboutPage() {
     <h2>A New Construction Economy</h2>
     <p>We believe the future of construction will move from job-site production to factory production, from fragmented supply chains to integrated platforms, and from manual processes to intelligent digital workflows.</p>
     <p>Apex is building the infrastructure for that transition.</p>
-    <p class="text-center font-bold" style="color: #4B1D8F; margin-top: 2rem; font-size: 1.25rem;">
+    <p class="text-center font-bold" style="color: #1F2937; margin-top: 2rem; font-size: 1.25rem;">
       Design digitally. Manufacture efficiently. Build smarter.
     </p>
     <p class="text-center text-sm text-gray-500">
@@ -82,7 +82,7 @@ export default async function AboutPage() {
     <>
       <PageHeader
         eyebrow="Our Story"
-        title={<>About <span style={{ color: '#4B1D8F' }}>Apex Modular Construction</span></>}
+        title={<>About <span style={{ color: '#1F2937' }}>Apex Modular Construction</span></>}
         subtitle="Connecting Canadian customers with trusted Chinese manufacturers of construction materials and modular solutions."
       />
       <div className="container mx-auto px-6 py-12 max-w-4xl">

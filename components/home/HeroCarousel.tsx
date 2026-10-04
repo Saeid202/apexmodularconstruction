@@ -37,8 +37,9 @@ interface HeroCarouselProps {
   slide?: SlideData | null
 }
 
+// Bright luxury-home photo used for every slide; the CMS image (very dark) is ignored.
 const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop&q=80'
+  'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1920&h=1080&fit=crop&q=80'
 
 const DEFAULT_SLIDE: SlideData = {
   headline: 'Design it online. Built in the factory. Delivered to your site.',
@@ -128,7 +129,7 @@ function HeroSlide({
 
   return (
     <MediaCard
-      src={slide.image_url || FALLBACK_IMAGE}
+      src={FALLBACK_IMAGE}
       alt={slide.title || 'Apex Modular Construction prefabricated building'}
       overlay="centred"
       rounded="none"

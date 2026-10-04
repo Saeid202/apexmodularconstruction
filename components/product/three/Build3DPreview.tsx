@@ -22,7 +22,7 @@ import {
 import type { WebGLRenderer } from 'three'
 import { CAMERA_VIEWS, type SceneDirectives, type StudioConfig } from '@/lib/product/model3d'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
 const GOLD = '#D4AF37'
 
 // `ssr: false` is only legal inside a Client Component, which this file is.

@@ -54,7 +54,7 @@ export function SellerLoginForm() {
 
   const inputClass =
     "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 transition-shadow placeholder:text-gray-400";
-  const focusRing = { "--tw-ring-color": "#4B1D8F" } as React.CSSProperties;
+  const focusRing = { "--tw-ring-color": "#1F2937" } as React.CSSProperties;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,10 +117,10 @@ export function SellerLoginForm() {
 
       <div className="flex items-center justify-between text-sm">
         <label className="flex items-center gap-2 text-gray-600 cursor-pointer">
-          <input type="checkbox" className="rounded border-gray-300 accent-[#4B1D8F]" />
+          <input type="checkbox" className="rounded border-gray-300 accent-[#1F2937]" />
           Remember me
         </label>
-        <Link href="/auth/reset-password" className="font-medium hover:underline" style={{ color: "#4B1D8F" }}>
+        <Link href="/auth/reset-password" className="font-medium hover:underline" style={{ color: "#1F2937" }}>
           Forgot password?
         </Link>
       </div>

@@ -13,7 +13,7 @@ export interface VariantSlot {
   isMaster: boolean;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 export const MAX_VARIANTS = 20;
 
@@ -95,10 +95,10 @@ export function DraggableVariantGrid({ variants, onChange }: Props) {
           className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-6 py-8 transition-all"
           style={{
             borderColor: zoneDragOver ? PURPLE : `${GOLD}88`,
-            backgroundColor: zoneDragOver ? "#EDE9F6" : "#FAFAFA",
+            backgroundColor: zoneDragOver ? "#FEF3C7" : "#FAFAFA",
           }}
         >
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl" style={{ backgroundColor: "#EDE9F6" }}>
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl" style={{ backgroundColor: "#FEF3C7" }}>
             <Upload className="h-6 w-6" style={{ color: PURPLE }} />
           </div>
           <div className="text-center">
@@ -135,10 +135,10 @@ export function DraggableVariantGrid({ variants, onChange }: Props) {
           <button
             type="button"
             onClick={addSlot}
-            className="flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed transition-colors hover:border-[#4B1D8F] hover:bg-[#EDE9F6]/40"
+            className="flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed transition-colors hover:border-[#1F2937] hover:bg-[#FEF3C7]/40"
             style={{ borderColor: `${GOLD}66` }}
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ backgroundColor: "#EDE9F6" }}>
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ backgroundColor: "#FEF3C7" }}>
               <Plus className="h-5 w-5" style={{ color: PURPLE }} />
             </div>
             <span className="text-xs font-semibold" style={{ color: PURPLE }}>Add Variant</span>
@@ -235,7 +235,7 @@ function VariantCard({ slot, index, isDragOver, onUpdate, onRemove, onDragStart,
           />
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl group-hover:opacity-75 transition-opacity" style={{ backgroundColor: "#EDE9F6" }}>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl group-hover:opacity-75 transition-opacity" style={{ backgroundColor: "#FEF3C7" }}>
               <Upload className="h-5 w-5" style={{ color: PURPLE }} />
             </div>
             <p className="text-xs text-gray-400">Click to upload</p>
@@ -255,7 +255,7 @@ function VariantCard({ slot, index, isDragOver, onUpdate, onRemove, onDragStart,
             value={slot.code}
             onChange={(e) => onUpdate(slot.id, { code: e.target.value })}
             placeholder={slot.isMaster ? "e.g. A800" : "e.g. A801"}
-            className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow"
+            className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow"
           />
         </div>
         {!slot.isMaster && (
@@ -272,7 +272,7 @@ function VariantCard({ slot, index, isDragOver, onUpdate, onRemove, onDragStart,
                 value={slot.price}
                 onChange={(e) => onUpdate(slot.id, { price: e.target.value })}
                 placeholder="Leave blank to use master price"
-                className="w-full rounded-xl border border-gray-200 pl-6 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow"
+                className="w-full rounded-xl border border-gray-200 pl-6 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow"
               />
             </div>
           </div>

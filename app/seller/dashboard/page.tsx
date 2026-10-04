@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 export const metadata: Metadata = { title: "Seller Dashboard | Apex Modular Construction" };
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export default async function SellerDashboardPage() {
@@ -120,7 +120,7 @@ export default async function SellerDashboardPage() {
             >
               <div
                 className="flex h-11 w-11 items-center justify-center rounded-xl"
-                style={{ backgroundColor: "#EDE9F6" }}
+                style={{ backgroundColor: "#FEF3C7" }}
               >
                 <Icon className="h-5 w-5" style={{ color: PURPLE }} />
               </div>
@@ -129,7 +129,7 @@ export default async function SellerDashboardPage() {
                 <p className="text-xs text-gray-400 mt-0.5">{description}</p>
               </div>
               <ArrowRight
-                className="h-4 w-4 mt-auto self-end text-gray-300 group-hover:text-purple-500 transition-colors"
+                className="h-4 w-4 mt-auto self-end text-gray-300 group-hover:text-amber-500 transition-colors"
               />
             </Link>
           ))}

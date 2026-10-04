@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, ArrowUpRight, Heart, ShieldCheck } from "lucide-react";
+import { ShoppingCart, ArrowUpRight, Heart, ShieldCheck, BedDouble, Bath, Ruler } from "lucide-react";
 import type { ProductWithRelations } from "@/types";
 import { OUT_OF_STOCK } from "@/lib/cart/errors";
 
@@ -28,10 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const [cartError, setCartError] = useState<string | null>(null);
   const inStock = product.stockQuantity > 0;
 
-  const priceLabel = product.requireOrderRequest
-    ? "Request a quote"
-    : `From $${product.price.toLocaleString("en-CA", { minimumFractionDigits: 0 })} CAD`;
-
+  const showPrice = !product.requireOrderRequest &&   product.price > 0;
   async function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
     if (isAdding) return;
@@ -118,21 +115,26 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Details Section */}
       <div className="flex flex-col flex-1 p-4">
         <Link href={`/products/${product.slug}`} className="block flex-1">
-          <h3 className="text-[13px] md:text-sm font-bold text-gray-900 leading-snug line-clamp-2 hover:text-[#4B1D8F] transition-colors mb-2">
+          <h3 className="text-[13px] md:text-sm font-bold text-gray-900 leading-snug line-clamp-2 hover:text-[#1F2937] transition-colors mb-2">
             {product.name}
           </h3>
 
           {/* House Specs Row */}
           {(product.specifications?.Beds || product.specifications?.Baths || product.specifications?.Area) && (
-            <div className="flex flex-wrap items-center gap-1.5 mb-2.5 text-[10px] md:text-xs text-gray-600 font-medium">
-              {product.specifications?.Beds && <span className="flex items-center gap-1"><span className="text-sm">🛏️</span> {product.specifications.Beds} Beds</span>}
-              {product.specifications?.Beds && (product.specifications?.Baths || product.specifications?.Area) && <span className="text-gray-300">•</span>}
-              {product.specifications?.Baths && <span className="flex items-center gap-1"><span className="text-sm">🛁</span> {product.specifications.Baths} Baths</span>}
-              {product.specifications?.Baths && product.specifications?.Area && <span className="text-gray-300">•</span>}
-              {product.specifications?.Area && <span className="flex items-center gap-1"><span className="text-sm">📐</span> {product.specifications.Area} sqft</span>}
+            <div className="mb-3 grid grid-cols-3 divide-x divide-gray-200 overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+              {[
+                { Icon: BedDouble, value: product.specifications?.Beds, label: 'Beds' },
+                { Icon: Bath, value: product.specifications?.Baths, label: 'Baths' },
+                { Icon: Ruler, value: product.specifications?.Area, label: 'Sq ft' },
+              ].map(({ Icon, value, label }) => (
+                <div key={label} className="flex flex-col items-center gap-0.5 px-1 py-2">
+                  <Icon className="h-4 w-4 text-[#EA580C]" strokeWidth={2.25} />
+                  <span className="text-sm font-extrabold leading-none text-gray-900 tabular-nums">{value || '—'}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-500">{label}</span>
+                </div>
+              ))}
             </div>
           )}
-
           {/* Certificates Row */}
           {product.certificatesStandards && product.certificatesStandards.length > 0 && (
             <div className="flex flex-wrap items-center gap-1 mb-2.5">
@@ -143,26 +145,28 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
 
-          <div className="flex items-baseline gap-1.5 mt-auto">
-            <span className="text-base md:text-lg font-black" style={{ color: '#4B1D8F' }}>
-              {priceLabel}
-            </span>
-            {!product.requireOrderRequest && (
-              <span className="text-[10px] md:text-xs font-semibold text-gray-400">
-                {getPriceTypeLabel(product.priceType)}
-              </span>
+          <div className="mt-auto flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+            {showPrice ? (
+              <>
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-gray-500">From</span>
+                <span className="text-xl font-extrabold tracking-tight text-gray-900 tabular-nums">
+                  ${product.price.toLocaleString("en-CA", { minimumFractionDigits: 0 })}
+                </span>
+                <span className="text-xs font-bold text-gray-500">CAD</span>
+                <span className="text-[11px] font-semibold whitespace-nowrap text-gray-400">{getPriceTypeLabel(product.priceType)}</span>
+              </>
+            ) : (
+              <span className="text-base font-extrabold text-gray-900">Request a quote</span>
             )}
-          </div>
-        </Link>
+          </div>        </Link>
         
         {/* Action buttons strip */}
         <div className="flex flex-col sm:flex-row gap-2 mt-4 pt-4 border-t border-gray-100">
           {product.requireOrderRequest ? (
             <Link
               href={`/products/${product.slug}`}
-              className="flex flex-1 min-h-[36px] items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-all hover:brightness-110 active:scale-95"
-              style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
-            >
+              className="flex flex-1 min-h-[36px] items-center justify-center gap-1.5 rounded-xl bg-[#EA580C] text-xs font-bold text-white transition-all hover:bg-[#C2410C] active:scale-95"
+                          >
               Request a Quote
             </Link>
           ) : (
@@ -170,13 +174,13 @@ export function ProductCard({ product }: ProductCardProps) {
               onClick={handleAddToCart}
               disabled={!inStock || isAdding}
               aria-label={`Add ${product.name} to cart`}
-              className="flex flex-1 min-h-[36px] items-center justify-center gap-1.5 rounded-xl text-xs font-semibold text-white transition-all hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex flex-1 min-h-[36px] items-center justify-center gap-1.5 rounded-xl text-xs font-bold text-white transition-all hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
               style={{
                 background: cartError
                   ? '#dc2626'
                   : added
                   ? '#16a34a'
-                  : 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)',
+                  : '#EA580C',
               }}
             >
               <ShoppingCart className="h-3.5 w-3.5" />

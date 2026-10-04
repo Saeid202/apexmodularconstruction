@@ -15,7 +15,7 @@ import {
 import { PageHeader } from "@/components/ui/PageHeader";
 
 // Design Tokens
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 // Mock Blog Data
@@ -89,7 +89,7 @@ export default function BlogHubPage() {
           <input
             type="text"
             placeholder="Search articles..."
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-200 transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-200 transition-all"
           />
         </div>
       </PageHeader>
@@ -113,8 +113,8 @@ export default function BlogHubPage() {
               </div>
 
               <div className="p-8 md:p-10 flex flex-col justify-center">
-                <div className="flex items-center gap-3 text-purple-300 text-xs font-bold mb-4">
-                  <span className="uppercase tracking-widest px-2 py-1 rounded bg-purple-500/20 border border-purple-500/30">
+                <div className="flex items-center gap-3 text-amber-300 text-xs font-bold mb-4">
+                  <span className="uppercase tracking-widest px-2 py-1 rounded bg-amber-500/20 border border-amber-500/30">
                     {featuredPost.category}
                   </span>
                   <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" /> {featuredPost.readTime}</span>
@@ -129,7 +129,7 @@ export default function BlogHubPage() {
                 </p>
 
                 <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                  <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center font-bold text-xs shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center font-bold text-xs shrink-0">
                     {featuredPost.author.charAt(0)}
                   </div>
                   <div className="min-w-0">
@@ -157,7 +157,7 @@ export default function BlogHubPage() {
               className={`px-5 py-2 rounded-xl text-xs font-bold transition-all border ${
                 activeCategory === cat
                   ? "bg-gray-900 text-white border-gray-900"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-purple-200 hover:bg-purple-50"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-amber-200 hover:bg-amber-50"
               }`}
             >
               {cat}
@@ -199,7 +199,7 @@ export default function BlogHubPage() {
                       <span>{post.readTime}</span>
                     </div>
 
-                    <h3 className="text-base font-black text-gray-900 leading-tight mb-3 group-hover:text-purple-700 transition-colors line-clamp-2">
+                    <h3 className="text-base font-black text-gray-900 leading-tight mb-3 group-hover:text-gray-800 transition-colors line-clamp-2">
                       {post.title}
                     </h3>
 
@@ -211,7 +211,7 @@ export default function BlogHubPage() {
                       <span className="text-[10px] font-black uppercase tracking-[0.2em] truncate mr-2" style={{ color: GOLD }}>
                         By {post.author}
                       </span>
-                      <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:bg-purple-100 group-hover:translate-x-0.5" style={{ color: PURPLE }}>
+                      <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all group-hover:bg-amber-100 group-hover:translate-x-0.5" style={{ color: PURPLE }}>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </div>
                     </div>
@@ -223,7 +223,7 @@ export default function BlogHubPage() {
 
           {/* Load More */}
           <div className="mt-10 text-center">
-            <button className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-gray-200 text-xs font-black uppercase tracking-widest text-gray-900 hover:border-purple-200 hover:bg-purple-50 transition-all shadow-sm">
+            <button className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-gray-200 text-xs font-black uppercase tracking-widest text-gray-900 hover:border-amber-200 hover:bg-amber-50 transition-all shadow-sm">
               Show More Articles
               <ChevronRight className="w-4 h-4" />
             </button>

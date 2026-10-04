@@ -130,7 +130,7 @@ const colorPresets = [
   { name: "Charcoal Slate", value: "#334155" },
   { name: "Burgundy Wine", value: "#991B1B" },
   { name: "Luxury Gold", value: "#D97706" },
-  { name: "Amethyst Violet", value: "#7C3AED" },
+  { name: "Amethyst Violet", value: "#1F2937" },
 ];
 
 function createBlock(type: BlockType): Block {

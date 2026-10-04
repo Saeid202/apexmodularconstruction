@@ -123,12 +123,12 @@ interface FooterProps {
 function ColHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-5">
-      <p className="mb-2 text-[10px] font-bold tracking-[0.2em] text-neutral-500 uppercase">
+      <p className="mb-2 text-xs font-black tracking-[0.2em] text-[#EA580C] uppercase">
         {children}
       </p>
       {/* Gold is decorative only on a light surface — as text it is ~2.2:1 on
        * white and fails WCAG AA, so the accent lives in this rule instead. */}
-      <div className="h-px w-8 rounded-full" style={{ background: 'rgba(212,175,55,0.55)' }} />
+      <div className="h-0.5 w-10 rounded-full" style={{ background: '#EA580C' }} />
     </div>
   )
 }
@@ -146,13 +146,13 @@ export function Footer({ socialLinks = [] }: FooterProps) {
   }
 
   return (
-    <footer className="border-t border-neutral-200 bg-white text-neutral-700">
+    <footer className="border-t border-neutral-200 bg-white font-bold text-neutral-900">
       {/* Gold accent top line */}
       <div
         className="h-[3px]"
         style={{
           background:
-            'linear-gradient(90deg, transparent 0%, #D4AF37 25%, #D4AF37 75%, transparent 100%)',
+            'linear-gradient(90deg, transparent 0%, #F59E0B 25%, #F59E0B 75%, transparent 100%)',
         }}
       />
 
@@ -165,41 +165,41 @@ export function Footer({ socialLinks = [] }: FooterProps) {
               href="/"
               className="inline-flex items-center gap-3 hover:opacity-85 transition-opacity"
             >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-200 bg-white">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-[#F59E0B] bg-white">
                 <img
                   src="/logo.png"
                   alt="Apex Modular Construction"
                   className="h-10 w-10 object-contain"
                 />
               </div>
-              <span className="text-base font-bold text-neutral-900">
+              <span className="text-base font-black text-neutral-900">
                 Apex Modular Construction (16481043 Canada Inc.)
               </span>
             </Link>
-            <p className="max-w-sm text-sm leading-relaxed text-neutral-600">
+            <p className="max-w-sm text-sm leading-relaxed font-bold text-neutral-900">
               Your trusted partner for quality prefabricated structures and construction solutions —
               direct from factory to your Canadian site.
             </p>
-            <div className="space-y-2.5 text-sm text-neutral-600">
+            <div className="space-y-2.5 text-sm font-bold text-neutral-900">
               <div className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#4B1D8F]" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#EA580C]" />
                 <span>1050 King St W 1st Floor, Toronto, ON M6K 0C7</span>
               </div>
               <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 shrink-0 text-[#4B1D8F]" />
+                <Phone className="h-4 w-4 shrink-0 text-[#EA580C]" />
                 <div className="flex items-center gap-2">
-                  <a href="tel:+12898168314" className="inline-block py-1 transition-colors hover:text-[#4B1D8F]">
+                  <a href="tel:+12898168314" className="inline-block py-1 transition-colors hover:text-[#EA580C]">
                     +1 289 816 8314
                   </a>
-                  <span className="text-neutral-300">|</span>
-                  <a href="https://wa.me/12898168314" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 transition-colors font-bold flex items-center gap-1">
+                  <span className="text-neutral-400">|</span>
+                  <a href="https://wa.me/12898168314" target="_blank" rel="noopener noreferrer" className="text-emerald-700 hover:text-emerald-600 transition-colors font-bold flex items-center gap-1">
                     WhatsApp
                   </a>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 shrink-0 text-[#4B1D8F]" />
-                <a href="mailto:hello@apexmodularconstruction.com" className="inline-block py-1 transition-colors hover:text-[#4B1D8F]">
+                <Mail className="h-4 w-4 shrink-0 text-[#EA580C]" />
+                <a href="mailto:hello@apexmodularconstruction.com" className="inline-block py-1 transition-colors hover:text-[#EA580C]">
                   hello@apexmodularconstruction.com
                 </a>
               </div>
@@ -214,7 +214,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     title={link.platform.charAt(0).toUpperCase() + link.platform.slice(1)}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-500 transition-all duration-200 hover:border-[#4B1D8F] hover:bg-[#4B1D8F] hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 bg-white text-neutral-900 transition-all duration-200 hover:border-[#EA580C] hover:bg-[#EA580C] hover:text-white"
                   >
                     <SocialIcon platform={link.platform} />
                   </a>
@@ -233,7 +233,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                   <li key={link.href + link.label}>
                     <Link
                       href={link.href}
-                      className="inline-block py-1 text-sm text-neutral-600 transition-colors hover:text-[#4B1D8F]"
+                      className="inline-block py-1 text-sm font-bold text-neutral-900 transition-colors hover:text-[#EA580C]"
                     >
                       {link.label}
                     </Link>
@@ -253,7 +253,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                         <button
                           type="button"
                           onClick={() => openArchitectAuth('register')}
-                          className="inline-block cursor-pointer py-1 text-sm text-neutral-600 transition-colors hover:text-[#4B1D8F]"
+                          className="inline-block cursor-pointer py-1 text-sm font-bold text-neutral-900 transition-colors hover:text-[#EA580C]"
                         >
                           {link.label}
                         </button>
@@ -261,14 +261,14 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                         <button
                           type="button"
                           onClick={() => openAffiliateAuth('register')}
-                          className="inline-block cursor-pointer py-1 text-sm text-neutral-600 transition-colors hover:text-[#4B1D8F]"
+                          className="inline-block cursor-pointer py-1 text-sm font-bold text-neutral-900 transition-colors hover:text-[#EA580C]"
                         >
                           {link.label}
                         </button>
                       ) : (
                         <Link
                           href={link.href}
-                          className="inline-block py-1 text-sm text-neutral-600 transition-colors hover:text-[#4B1D8F]"
+                          className="inline-block py-1 text-sm font-bold text-neutral-900 transition-colors hover:text-[#EA580C]"
                         >
                           {link.label}
                         </Link>
@@ -276,7 +276,7 @@ export function Footer({ socialLinks = [] }: FooterProps) {
                     </li>
                   ))
                 ) : (
-                  <li className="text-sm text-neutral-400">Coming soon</li>
+                  <li className="text-sm font-bold text-neutral-500">Coming soon</li>
                 )}
               </ul>
             </div>
@@ -286,12 +286,12 @@ export function Footer({ socialLinks = [] }: FooterProps) {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-neutral-200">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-3 px-6 py-4 text-xs text-neutral-500 sm:flex-row">
+      <div className="border-t border-neutral-200 bg-neutral-50">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-3 px-6 py-4 text-xs font-bold text-neutral-900 sm:flex-row">
           <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
             <p>© {currentYear} Apex Modular Construction (16481043 Canada Inc.). All rights reserved.</p>
-            <span className="hidden text-neutral-300 sm:inline">|</span>
-            <Link href="/privacy" className="inline-block py-1 transition-colors hover:text-[#4B1D8F]">
+            <span className="hidden text-neutral-400 sm:inline">|</span>
+            <Link href="/privacy" className="inline-block py-1 transition-colors hover:text-[#EA580C]">
               Privacy Policy
             </Link>
           </div>

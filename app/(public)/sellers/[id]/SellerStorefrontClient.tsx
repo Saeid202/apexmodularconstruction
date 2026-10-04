@@ -15,7 +15,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
       {/* Header Profile Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative">
-          <div className="h-48 bg-gradient-to-r from-purple-900 to-[#1A1A2E] w-full relative">
+          <div className="h-48 bg-gradient-to-r from-gray-900 to-[#1A1A2E] w-full relative">
             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
           </div>
           
@@ -26,7 +26,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
                   {seller.logo_url ? (
                     <img src={seller.logo_url} alt={seller.business_name} className="w-full h-full object-cover" />
                   ) : (
-                    <Building className="w-12 h-12 text-purple-200" />
+                    <Building className="w-12 h-12 text-amber-200" />
                   )}
                 </div>
                 <div className="mb-2">
@@ -47,7 +47,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
                 </div>
               </div>
               <div className="mb-2 flex gap-3">
-                <button className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-colors shadow-sm">
+                <button className="px-6 py-2.5 bg-gray-800 hover:bg-gray-800 text-white font-bold rounded-xl transition-colors shadow-sm">
                   Contact Factory
                 </button>
               </div>
@@ -81,7 +81,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
                       <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center shrink-0">
                         <Mail className="w-4 h-4 text-gray-400" />
                       </div>
-                      <a href={`mailto:${seller.business_email}`} className="hover:text-purple-600 font-medium">{seller.business_email}</a>
+                      <a href={`mailto:${seller.business_email}`} className="hover:text-gray-800 font-medium">{seller.business_email}</a>
                     </div>
                   )}
                   {seller.business_phone && (
@@ -89,7 +89,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
                       <div className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center shrink-0">
                         <Phone className="w-4 h-4 text-gray-400" />
                       </div>
-                      <a href={`tel:${seller.business_phone}`} className="hover:text-purple-600 font-medium">{seller.business_phone}</a>
+                      <a href={`tel:${seller.business_phone}`} className="hover:text-gray-800 font-medium">{seller.business_phone}</a>
                     </div>
                   )}
                   <div className="flex items-center gap-3 text-sm text-gray-600">
@@ -111,7 +111,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
               <h2 className="text-2xl font-bold text-gray-900">Factory Catalog</h2>
               <p className="text-gray-500 font-medium mt-1">Browse and customize products directly from the source.</p>
             </div>
-            <span className="bg-purple-100 text-purple-800 text-sm font-bold px-4 py-1.5 rounded-full">
+            <span className="bg-amber-100 text-gray-900 text-sm font-bold px-4 py-1.5 rounded-full">
               {products.length} Products
             </span>
           </div>
@@ -133,7 +133,7 @@ export default function SellerStorefrontClient({ seller, products }: SellerStore
                     </div>
                   </div>
                   <div className="p-5">
-                    <h3 className="font-bold text-gray-900 text-lg leading-tight mb-2 group-hover:text-purple-700 transition-colors line-clamp-2">
+                    <h3 className="font-bold text-gray-900 text-lg leading-tight mb-2 group-hover:text-gray-800 transition-colors line-clamp-2">
                       {product.name}
                     </h3>
                     <div className="flex items-baseline gap-1 mt-auto">

@@ -28,7 +28,7 @@ export default function AffiliateRegisterPage() {
         <div className="mt-6 text-center space-y-2">
           <p className="text-sm text-gray-500">
             Already have a partner account?{" "}
-            <Link href="/affiliate/login" className="font-semibold transition-colors" style={{ color: "#4B1D8F" }}>
+            <Link href="/affiliate/login" className="font-semibold transition-colors" style={{ color: "#1F2937" }}>
               Login here
             </Link>
           </p>

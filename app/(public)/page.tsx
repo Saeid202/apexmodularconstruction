@@ -3,9 +3,6 @@ import { CredentialStrip } from '@/components/home/CredentialStrip'
 import { ProductShowcaseWrapper } from '@/components/home/ProductShowcaseWrapper'
 import { SpotlightCarousel } from '@/components/home/SpotlightCarousel'
 import { PartnerPanel } from '@/components/home/PartnerPanel'
-import { PromoPair } from '@/components/home/PromoPair'
-import { StyleBlock } from '@/components/home/StyleBlock'
-import { InsideApex } from '@/components/home/InsideApex'
 import { getProducts } from '@/app/actions/products'
 import { getHeroSlides } from '@/app/actions/hero-slides'
 import { getSiteSettings } from '@/app/actions/cms-settings'
@@ -30,11 +27,9 @@ export default async function HomePage() {
   let activeSlides: any[] = []
   let heroAutoplay = false
   let heroAutoplayInterval = 5
-  let productsLimit: number | null = null
   try {
     const [slidesResult, siteSettings] = await Promise.all([getHeroSlides(), getSiteSettings()])
     activeSlides = slidesResult.data ?? []
-    productsLimit = siteSettings.homepage_products_limit ?? null
     heroAutoplay = siteSettings.hero_autoplay ?? false
     heroAutoplayInterval = siteSettings.hero_autoplay_interval ?? 5
   } catch (error) {
@@ -131,18 +126,7 @@ export default async function HomePage() {
     products.length
   )
 
-  // Closing image: walk the catalogue from the end for the first usable photo, so
-  // it is a real building and is unlikely to duplicate one of the models the
-  // carousel shows from the front of the list.
-  const closingImage =
-    [...products]
-      .reverse()
-      .flatMap((product) => product.images.map((img) => img.url))
-      .find((url) => !!url) ?? null
-
-  // Section order mirrors the reference layout: hero carousel, credential strip,
-  // model carousel, spotlight carousel, partnership panel, promo pair, spec
-  // showcase, closing media block, then the site footer.
+  // Section order: hero, credentials, models, spotlight, and partnership.
   return (
     <>
       <HeroCarousel
@@ -151,15 +135,9 @@ export default async function HomePage() {
         autoplayInterval={heroAutoplayInterval}
       />
       <CredentialStrip />
-      <ProductShowcaseWrapper products={products} title="Models" limit={productsLimit} />
+      <ProductShowcaseWrapper products={products} title="Models" limit={8} />
       <SpotlightCarousel />
       <PartnerPanel />
-      <PromoPair />
-      <StyleBlock />
-      {/* Reads from the end of the catalogue so the closing image is a real
-       * building rather than stock photography, and is unlikely to repeat one of
-       * the models already shown in the carousel above. */}
-      <InsideApex image={closingImage} />
     </>
   )
 }

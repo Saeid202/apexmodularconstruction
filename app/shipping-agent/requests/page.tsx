@@ -53,7 +53,7 @@ export default function ShippingAgentRequestsPage() {
           {FILTER_TABS.map((tab) => (
             <button key={tab.key} onClick={() => setFilter(tab.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
-                filter === tab.key ? "bg-white text-[#4B1D8F] shadow-sm font-bold" : "text-gray-500 hover:text-gray-700"
+                filter === tab.key ? "bg-white text-[#1F2937] shadow-sm font-bold" : "text-gray-500 hover:text-gray-700"
               }`}>
               {tab.label}
             </button>
@@ -63,7 +63,7 @@ export default function ShippingAgentRequestsPage() {
 
       {loading ? (
         <div className="flex justify-center py-24">
-          <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#4B1D8F" }} />
+          <Loader2 className="h-6 w-6 animate-spin" style={{ color: "#1F2937" }} />
         </div>
       ) : filtered.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm text-center py-24">
@@ -77,12 +77,12 @@ export default function ShippingAgentRequestsPage() {
             const methodLabel = SHIPPING_METHODS.find((m) => m.value === req.shipping_method);
             return (
               <div key={req.id}
-                className="bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-[#4B1D8F]/40 hover:shadow-md transition-all">
-                <div className="h-1 w-full rounded-t-2xl bg-[#4B1D8F]" />
+                className="bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-[#1F2937]/40 hover:shadow-md transition-all">
+                <div className="h-1 w-full rounded-t-2xl bg-[#1F2937]" />
                 <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
                   {/* Left */}
                   <div className="flex items-start gap-4 flex-1 min-w-0">
-                    <div className="shrink-0 h-14 w-14 rounded-xl bg-[#4B1D8F] flex items-center justify-center shadow-sm">
+                    <div className="shrink-0 h-14 w-14 rounded-xl bg-[#1F2937] flex items-center justify-center shadow-sm">
                       <Truck className="h-7 w-7 text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -94,7 +94,7 @@ export default function ShippingAgentRequestsPage() {
                           {status.label}
                         </span>
                         {req.unread_count > 0 && (
-                          <span className="px-2.5 py-1 rounded-full text-sm font-bold bg-[#4B1D8F] text-white">
+                          <span className="px-2.5 py-1 rounded-full text-sm font-bold bg-[#1F2937] text-white">
                             {req.unread_count} new message{req.unread_count !== 1 ? "s" : ""}
                           </span>
                         )}
@@ -115,7 +115,7 @@ export default function ShippingAgentRequestsPage() {
                       {/* Docs + date */}
                       <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                         {req.documents.length > 0 && (
-                          <span className="flex items-center gap-1 font-semibold" style={{ color: "#4B1D8F" }}>
+                          <span className="flex items-center gap-1 font-semibold" style={{ color: "#1F2937" }}>
                             <FileText className="h-4 w-4" />
                             {req.documents.length} document{req.documents.length !== 1 ? "s" : ""}
                           </span>
@@ -127,7 +127,7 @@ export default function ShippingAgentRequestsPage() {
                   {/* Actions */}
                   <div className="flex items-center gap-3 shrink-0 sm:pl-5 sm:border-l sm:border-gray-100">
                     <Link href={`/shipping-agent/requests/${req.id}`}
-                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white bg-[#4B1D8F] hover:bg-[#3A1570] shadow-md transition-colors whitespace-nowrap">
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white bg-[#1F2937] hover:bg-[#111827] shadow-md transition-colors whitespace-nowrap">
                       <Eye className="h-5 w-5" /> View & Reply
                     </Link>
                   </div>

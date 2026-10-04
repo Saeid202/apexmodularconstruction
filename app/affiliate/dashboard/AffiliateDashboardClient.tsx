@@ -260,7 +260,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
       >
         <div className="flex h-16 items-center justify-between px-5 border-b border-white/10">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#4B1D8F" }}>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#1F2937" }}>
               <Sparkles className="h-4 w-4 text-[#D4AF37]" />
             </div>
             <span className="text-white font-bold text-lg tracking-tight">
@@ -288,10 +288,10 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all cursor-pointer text-left ${
                   isActive
-                    ? "text-white shadow-md shadow-purple-950/20"
+                    ? "text-white shadow-md shadow-gray-950/20"
                     : "text-slate-300 hover:bg-white/5 hover:text-white"
                 }`}
-                style={isActive ? { backgroundColor: "#4B1D8F" } : {}}
+                style={isActive ? { backgroundColor: "#1F2937" } : {}}
               >
                 <item.icon className="h-5 w-5 shrink-0" style={isActive ? { color: "#D4AF37" } : {}} />
                 <span className="flex-1">{item.label}</span>
@@ -341,19 +341,19 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
             {activeTab === "dashboard" && (
               <div className="space-y-6 animate-fade-in">
                 {/* Top Banner welcome */}
-                <div className="bg-gradient-to-r from-[#4B1D8F] to-[#3a1570] rounded-2xl p-6 md:p-8 text-white shadow-glow relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="bg-gradient-to-r from-[#1F2937] to-[#111827] rounded-2xl p-6 md:p-8 text-white shadow-glow relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                   <div className="space-y-2 relative z-10">
                     <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
                       Welcome back, {profile?.full_name}!
                     </h2>
-                    <p className="text-purple-200 text-sm md:text-base max-w-xl">
+                    <p className="text-amber-200 text-sm md:text-base max-w-xl">
                       Track your real-time modular home and component referrals. Build your partner level to earn higher commission rates.
                     </p>
                   </div>
                   <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/10 shrink-0 text-center md:text-left z-10">
                     <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-semibold">Partner Tier</span>
                     <p className="text-xl font-bold">{profile?.partner_level || "Bronze"} Member</p>
-                    <p className="text-xs text-purple-200 mt-1">Rank: {profile?.partner_rank || "Newcomer"}</p>
+                    <p className="text-xs text-amber-200 mt-1">Rank: {profile?.partner_rank || "Newcomer"}</p>
                   </div>
                 </div>
 
@@ -375,7 +375,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                   <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-soft hover:shadow-md transition-shadow relative overflow-hidden group">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Available Balance</span>
-                      <div className="p-2 rounded-lg bg-purple-50 text-[#4B1D8F] group-hover:scale-110 transition-transform">
+                      <div className="p-2 rounded-lg bg-amber-50 text-[#1F2937] group-hover:scale-110 transition-transform">
                         <DollarSign className="h-5 w-5" />
                       </div>
                     </div>
@@ -386,7 +386,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                       <p className="text-xs text-gray-400">Ready for cashout</p>
                       <button
                         onClick={() => setActiveTab("payouts")}
-                        className="text-xs font-bold text-[#4B1D8F] hover:underline flex items-center gap-0.5 cursor-pointer"
+                        className="text-xs font-bold text-[#1F2937] hover:underline flex items-center gap-0.5 cursor-pointer"
                       >
                         Withdraw <ArrowRight className="h-3 w-3" />
                       </button>
@@ -439,7 +439,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                             <button
                               onClick={() => handleCopyLink(referralLink)}
                               className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold text-white transition-all cursor-pointer select-none shrink-0"
-                              style={{ backgroundColor: copiedLink ? "#10B981" : "#4B1D8F" }}
+                              style={{ backgroundColor: copiedLink ? "#10B981" : "#1F2937" }}
                             >
                               {copiedLink ? (
                                 <>
@@ -469,7 +469,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                             <button
                               onClick={() => handleCopyCoupon(profile?.coupon_code || "APEX-PARTNER")}
                               className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold text-white transition-all cursor-pointer select-none shrink-0"
-                              style={{ backgroundColor: copiedCoupon ? "#10B981" : "#4B1D8F" }}
+                              style={{ backgroundColor: copiedCoupon ? "#10B981" : "#1F2937" }}
                             >
                               {copiedCoupon ? (
                                 <>
@@ -495,7 +495,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                         </div>
                         <button
                           onClick={() => setActiveTab("commissions")}
-                          className="text-sm font-semibold text-[#4B1D8F] hover:underline cursor-pointer"
+                          className="text-sm font-semibold text-[#1F2937] hover:underline cursor-pointer"
                         >
                           View All
                         </button>
@@ -504,7 +504,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                       <div className="overflow-x-auto">
                         {loadingCommissions ? (
                           <div className="flex justify-center items-center py-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4B1D8F]" />
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1F2937]" />
                           </div>
                         ) : commissions.length === 0 ? (
                           <div className="text-center py-10 border border-dashed border-gray-200 rounded-xl space-y-2">
@@ -529,7 +529,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                                   <td className="py-3.5 font-medium text-gray-900">{row.customer_name}</td>
                                   <td className="py-3.5 text-gray-500 max-w-[180px] truncate">{row.product_name}</td>
                                   <td className="py-3.5 font-semibold">${row.sale_amount?.toFixed(2)}</td>
-                                  <td className="py-3.5 text-[#4B1D8F] font-bold">${row.commission_amount?.toFixed(2)}</td>
+                                  <td className="py-3.5 text-[#1F2937] font-bold">${row.commission_amount?.toFixed(2)}</td>
                                   <td className="py-3.5 text-right">
                                     <span
                                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
@@ -558,7 +558,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                     <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-soft space-y-5">
                       <div className="flex items-center justify-between">
                         <h3 className="text-base font-bold text-gray-900">Partner Tier Upgrade</h3>
-                        <span className="text-xs font-bold text-[#D4AF37] bg-[#F3EEFB] px-2 py-0.5 rounded-full">
+                        <span className="text-xs font-bold text-[#D4AF37] bg-[#FEF3C7] px-2 py-0.5 rounded-full">
                           {Math.round(levelProgress)}% Complete
                         </span>
                       </div>
@@ -573,7 +573,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                             className="h-full rounded-full transition-all duration-500"
                             style={{
                               width: `${levelProgress}%`,
-                              background: "linear-gradient(90deg, #4B1D8F 0%, #D4AF37 100%)"
+                              background: "linear-gradient(90deg, #1F2937 0%, #D4AF37 100%)"
                             }}
                           />
                         </div>
@@ -603,7 +603,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                           className="w-full flex items-center justify-between p-3 border border-gray-100 rounded-xl hover:bg-gray-50 text-left text-sm font-medium text-gray-700 transition-colors cursor-pointer"
                         >
                           <span className="flex items-center gap-2">
-                            <Image className="h-4 w-4 text-[#4B1D8F]" /> Product Designs
+                            <Image className="h-4 w-4 text-[#1F2937]" /> Product Designs
                           </span>
                           <ChevronRight className="h-4 w-4 text-gray-400" />
                         </button>
@@ -612,7 +612,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                           className="w-full flex items-center justify-between p-3 border border-gray-100 rounded-xl hover:bg-gray-50 text-left text-sm font-medium text-gray-700 transition-colors cursor-pointer"
                         >
                           <span className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-[#4B1D8F]" /> Sales brochures
+                            <FileText className="h-4 w-4 text-[#1F2937]" /> Sales brochures
                           </span>
                           <ChevronRight className="h-4 w-4 text-gray-400" />
                         </button>
@@ -643,7 +643,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
 
                 {loadingProducts ? (
                   <div className="flex justify-center items-center py-20">
-                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#4B1D8F]" />
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#1F2937]" />
                   </div>
                 ) : products.length === 0 ? (
                   <div className="text-center py-20 border border-dashed border-gray-200 rounded-3xl bg-white space-y-4">
@@ -681,12 +681,12 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center bg-purple-50 text-purple-300">
+                              <div className="w-full h-full flex items-center justify-center bg-amber-50 text-amber-300">
                                 <Package className="h-12 w-12" />
                               </div>
                             )}
                             <div className="absolute top-3 left-3">
-                              <span className="bg-[#4B1D8F] text-[#D4AF37] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                              <span className="bg-[#1F2937] text-[#D4AF37] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
                                 {product.category?.name || "Prefab"}
                               </span>
                             </div>
@@ -695,7 +695,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                                 href={`/products/${product.slug}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white/95 backdrop-blur-sm text-gray-600 hover:text-[#4B1D8F] h-7 w-7 rounded-full flex items-center justify-center shadow-sm transition-all border border-gray-100 hover:scale-105 cursor-pointer"
+                                className="bg-white/95 backdrop-blur-sm text-gray-600 hover:text-[#1F2937] h-7 w-7 rounded-full flex items-center justify-center shadow-sm transition-all border border-gray-100 hover:scale-105 cursor-pointer"
                                 title="View Product on Website"
                               >
                                 <ExternalLink className="h-3.5 w-3.5" />
@@ -706,7 +706,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                           {/* Content */}
                           <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                             <div className="space-y-2">
-                              <h3 className="font-bold text-gray-900 text-base line-clamp-1 group-hover:text-[#4B1D8F] transition-colors">
+                              <h3 className="font-bold text-gray-900 text-base line-clamp-1 group-hover:text-[#1F2937] transition-colors">
                                 {product.name}
                               </h3>
                               <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed h-8">
@@ -722,8 +722,8 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                                 </p>
                               </div>
                               <div className="text-right">
-                                <p className="text-[10px] text-purple-400 font-bold uppercase tracking-wider">Commission</p>
-                                <p className="text-sm font-extrabold text-[#4B1D8F]">
+                                <p className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Commission</p>
+                                <p className="text-sm font-extrabold text-[#1F2937]">
                                   {commissionDisplay}
                                 </p>
                               </div>
@@ -743,7 +743,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                                   setActiveTab("links");
                                 }}
                                 className="h-9 rounded-xl text-xs font-bold text-white transition-all flex items-center justify-center gap-1 cursor-pointer hover:opacity-95 shadow-sm"
-                                style={{ backgroundColor: "#4B1D8F" }}
+                                style={{ backgroundColor: "#1F2937" }}
                               >
                                 <Link2 className="h-3 w-3 text-[#D4AF37]" /> Create Link
                               </button>
@@ -776,7 +776,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                         value={customPath}
                         onChange={(e) => setCustomPath(e.target.value)}
                         placeholder="/shop/cottage-cabin"
-                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow"
+                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow"
                       />
                       <p className="text-xs text-gray-400 mt-1.5">
                         Enter paths like `/shop`, `/about`, or `/customization`. Keep leading slash.
@@ -795,7 +795,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                     <button
                       onClick={() => handleCopyLink(generatedCustomLink)}
                       className="w-full h-11 flex items-center justify-center gap-1.5 rounded-xl text-white text-sm font-semibold hover:opacity-95 transition-opacity cursor-pointer"
-                      style={{ backgroundColor: copiedLink ? "#10B981" : "#4B1D8F" }}
+                      style={{ backgroundColor: copiedLink ? "#10B981" : "#1F2937" }}
                     >
                       {copiedLink ? (
                         <>
@@ -809,8 +809,8 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                     </button>
                   </div>
 
-                  <div className="bg-[#F3EEFB] border border-purple-100 rounded-2xl p-6 space-y-4">
-                    <h4 className="font-bold text-[#4B1D8F] flex items-center gap-1.5">
+                  <div className="bg-[#FEF3C7] border border-amber-100 rounded-2xl p-6 space-y-4">
+                    <h4 className="font-bold text-[#1F2937] flex items-center gap-1.5">
                       <AlertCircle className="h-4 w-4" /> How to use custom links
                     </h4>
                     <ul className="space-y-2 text-sm text-gray-600 list-disc list-inside">
@@ -831,7 +831,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                   <p className="text-sm text-gray-500 mt-1">Customers who checkout using your coupon get an immediate discount, and you earn full commissions.</p>
                 </div>
 
-                <div className="max-w-xl border border-gray-200 rounded-2xl p-6 space-y-6 bg-gradient-to-br from-white to-[#F3EEFB]">
+                <div className="max-w-xl border border-gray-200 rounded-2xl p-6 space-y-6 bg-gradient-to-br from-white to-[#FEF3C7]">
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-bold">Active Coupon</span>
@@ -851,7 +851,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                   <button
                     onClick={() => handleCopyCoupon(profile?.coupon_code || "APEX-PARTNER")}
                     className="w-full h-11 flex items-center justify-center gap-1.5 rounded-xl text-white text-sm font-semibold hover:opacity-95 transition-opacity cursor-pointer"
-                    style={{ backgroundColor: copiedCoupon ? "#10B981" : "#4B1D8F" }}
+                    style={{ backgroundColor: copiedCoupon ? "#10B981" : "#1F2937" }}
                   >
                     {copiedCoupon ? (
                       <>
@@ -910,7 +910,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                         <td className="py-4 text-gray-500 font-mono text-xs">2026-07-29</td>
                         <td className="py-4 font-semibold text-gray-900">david.lee@techcorp.com</td>
                         <td className="py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-purple-50 text-purple-700 border-purple-200">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-amber-50 text-gray-800 border-amber-200">
                             Contacted Sales
                           </span>
                         </td>
@@ -984,7 +984,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                 <div className="overflow-x-auto">
                   {loadingCommissions ? (
                     <div className="flex justify-center items-center py-12">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4B1D8F]" />
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1F2937]" />
                     </div>
                   ) : commissions.length === 0 ? (
                     <div className="text-center py-16 space-y-2 border border-dashed border-gray-200 rounded-xl">
@@ -1013,7 +1013,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                             <td className="py-4 font-semibold text-gray-900">{row.customer_name}</td>
                             <td className="py-4 text-gray-600">{row.product_name}</td>
                             <td className="py-4 font-semibold text-gray-800">${row.sale_amount?.toFixed(2)}</td>
-                            <td className="py-4 text-[#4B1D8F] font-extrabold">${row.commission_amount?.toFixed(2)}</td>
+                            <td className="py-4 text-[#1F2937] font-extrabold">${row.commission_amount?.toFixed(2)}</td>
                             <td className="py-4 text-right">
                               <span
                                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
@@ -1046,42 +1046,42 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-soft space-y-4 hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center">
-                      <Image className="h-6 w-6 text-[#4B1D8F]" />
+                    <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <Image className="h-6 w-6 text-[#1F2937]" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">Product Image Assets</h3>
                     <p className="text-sm text-gray-500">Includes render mockups, exterior layouts, and custom floor plans for marketing posts.</p>
                     <button
                       onClick={() => alert("Downloading Zip containing mock design image packs...")}
-                      className="w-full h-11 flex items-center justify-center gap-1.5 border border-purple-200 rounded-xl text-xs font-semibold text-[#4B1D8F] hover:bg-purple-50 transition-colors cursor-pointer"
+                      className="w-full h-11 flex items-center justify-center gap-1.5 border border-amber-200 rounded-xl text-xs font-semibold text-[#1F2937] hover:bg-amber-50 transition-colors cursor-pointer"
                     >
                       <Download className="h-4 w-4" /> Download Images (.ZIP)
                     </button>
                   </div>
 
                   <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-soft space-y-4 hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center">
-                      <Video className="h-6 w-6 text-[#4B1D8F]" />
+                    <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <Video className="h-6 w-6 text-[#1F2937]" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">Product Video Clips</h3>
                     <p className="text-sm text-gray-500">Short video loops of modular houses assembling and 3D walkthroughs for social media.</p>
                     <button
                       onClick={() => alert("Downloading marketing short clips package...")}
-                      className="w-full h-11 flex items-center justify-center gap-1.5 border border-purple-200 rounded-xl text-xs font-semibold text-[#4B1D8F] hover:bg-purple-50 transition-colors cursor-pointer"
+                      className="w-full h-11 flex items-center justify-center gap-1.5 border border-amber-200 rounded-xl text-xs font-semibold text-[#1F2937] hover:bg-amber-50 transition-colors cursor-pointer"
                     >
                       <Download className="h-4 w-4" /> Download Videos (.MP4)
                     </button>
                   </div>
 
                   <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-soft space-y-4 hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center">
-                      <FileText className="h-6 w-6 text-[#4B1D8F]" />
+                    <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <FileText className="h-6 w-6 text-[#1F2937]" />
                     </div>
                     <h3 className="text-lg font-bold text-gray-900">Sales Sheets & Catalog</h3>
                     <p className="text-sm text-gray-500">Standard brochures with technical specifications, pricing details, and warranty terms.</p>
                     <button
                       onClick={() => alert("Opening Apex Modular brochure package...")}
-                      className="w-full h-11 flex items-center justify-center gap-1.5 border border-purple-200 rounded-xl text-xs font-semibold text-[#4B1D8F] hover:bg-purple-50 transition-colors cursor-pointer"
+                      className="w-full h-11 flex items-center justify-center gap-1.5 border border-amber-200 rounded-xl text-xs font-semibold text-[#1F2937] hover:bg-amber-50 transition-colors cursor-pointer"
                     >
                       <Download className="h-4 w-4" /> View Catalog PDF
                     </button>
@@ -1126,7 +1126,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                           value={payoutAmount}
                           onChange={(e) => setPayoutAmount(e.target.value)}
                           placeholder="100.00"
-                          className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F]"
+                          className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937]"
                         />
                         <p className="text-xs text-gray-400 mt-1">Minimum payout is $10.00</p>
                       </div>
@@ -1139,7 +1139,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                           id="payout-method"
                           value={payoutMethod}
                           onChange={(e) => setPayoutMethod(e.target.value)}
-                          className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F]"
+                          className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937]"
                         >
                           <option value="Bank Transfer">Direct Bank Wire</option>
                           <option value="PayPal">PayPal Email Address</option>
@@ -1152,20 +1152,20 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                       type="submit"
                       disabled={submittingPayout || !payoutAmount}
                       className="w-full h-11 flex items-center justify-center gap-1.5 rounded-xl text-white text-sm font-semibold hover:opacity-95 disabled:opacity-60 transition-opacity cursor-pointer"
-                      style={{ backgroundColor: "#4B1D8F" }}
+                      style={{ backgroundColor: "#1F2937" }}
                     >
                       {submittingPayout ? "Processing Transfer Request..." : "Request Cashout Transfer"}
                     </button>
                   </form>
                 </div>
 
-                <div className="bg-[#F3EEFB] border border-purple-100 rounded-2xl p-6 shadow-soft space-y-4 h-fit">
+                <div className="bg-[#FEF3C7] border border-amber-100 rounded-2xl p-6 shadow-soft space-y-4 h-fit">
                   <span className="text-xs uppercase tracking-widest text-[#D4AF37] font-bold">Your Wallet</span>
                   <div className="space-y-1">
                     <span className="text-xs text-gray-500">Available Balance</span>
                     <p className="text-3xl font-black text-gray-900">${profile?.available_balance?.toFixed(2) || "0.00"}</p>
                   </div>
-                  <div className="border-t border-purple-200/50 pt-4 space-y-2 text-xs text-gray-600">
+                  <div className="border-t border-amber-200/50 pt-4 space-y-2 text-xs text-gray-600">
                     <p className="flex justify-between">
                       <span>Hold Period:</span>
                       <span className="font-semibold text-gray-800">None (Instantly cashable)</span>
@@ -1213,7 +1213,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                         required
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
-                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F]"
+                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937]"
                       />
                     </div>
 
@@ -1227,7 +1227,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="+1 (555) 123-4567"
-                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F]"
+                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937]"
                       />
                     </div>
 
@@ -1241,7 +1241,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
                         placeholder="Apex Growth Marketing"
-                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F]"
+                        className="w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937]"
                       />
                     </div>
                   </div>
@@ -1254,7 +1254,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                       type="submit"
                       disabled={updatingProfile}
                       className="h-11 px-6 rounded-xl text-white text-sm font-semibold hover:opacity-95 disabled:opacity-60 transition-opacity cursor-pointer"
-                      style={{ backgroundColor: "#4B1D8F" }}
+                      style={{ backgroundColor: "#1F2937" }}
                     >
                       {updatingProfile ? "Saving Details..." : "Save Settings"}
                     </button>
@@ -1277,12 +1277,12 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-purple-50 text-purple-300">
+                <div className="w-full h-full flex items-center justify-center bg-amber-50 text-amber-300">
                   <Package className="h-16 w-16" />
                 </div>
               )}
               <div className="absolute top-4 left-4">
-                <span className="bg-[#4B1D8F] text-[#D4AF37] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md border border-purple-900/10">
+                <span className="bg-[#1F2937] text-[#D4AF37] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md border border-gray-900/10">
                   {selectedProduct.category?.name || "Prefab"}
                 </span>
               </div>
@@ -1318,8 +1318,8 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
               </div>
 
               {/* Commission Box */}
-              <div className="bg-[#F3EEFB] border border-purple-100 rounded-2xl p-5 space-y-3">
-                <h4 className="text-xs font-bold text-[#4B1D8F] uppercase tracking-widest flex items-center gap-1.5">
+              <div className="bg-[#FEF3C7] border border-amber-100 rounded-2xl p-5 space-y-3">
+                <h4 className="text-xs font-bold text-[#1F2937] uppercase tracking-widest flex items-center gap-1.5">
                   <Coins className="h-4 w-4 text-[#D4AF37]" /> Affiliate Commission Details
                 </h4>
                 <div className="grid grid-cols-2 gap-4 pt-1">
@@ -1331,7 +1331,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                   </div>
                   <div>
                     <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Estimated Earning</span>
-                    <p className="text-base font-black text-[#4B1D8F] mt-0.5">
+                    <p className="text-base font-black text-[#1F2937] mt-0.5">
                       {selectedProduct.affiliate_commission_type === "percentage"
                         ? `${selectedProduct.affiliate_commission_value}% (~$${((selectedProduct.price * selectedProduct.affiliate_commission_value) / 100).toLocaleString()} CAD)`
                         : `$${selectedProduct.affiliate_commission_value.toLocaleString()} CAD`
@@ -1356,7 +1356,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                 rel="noopener noreferrer"
                 className="h-11 px-5 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
-                <ExternalLink className="h-4 w-4 text-purple-700" /> View on Website
+                <ExternalLink className="h-4 w-4 text-gray-800" /> View on Website
               </a>
               <button
                 onClick={() => {
@@ -1365,7 +1365,7 @@ export function AffiliateDashboardClient({ initialProfile }: AffiliateDashboardC
                   setSelectedProduct(null);
                 }}
                 className="h-11 px-6 rounded-xl text-sm font-bold text-white transition-all flex items-center justify-center gap-1.5 hover:opacity-95 shadow-md cursor-pointer"
-                style={{ backgroundColor: "#4B1D8F" }}
+                style={{ backgroundColor: "#1F2937" }}
               >
                 <Link2 className="h-4 w-4 text-[#D4AF37]" /> Create Referral Link
               </button>

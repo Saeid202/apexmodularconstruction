@@ -21,7 +21,7 @@ export default function ShippingAgentProfilePage() {
     <div className="space-y-6 max-w-lg">
       <div
         className="relative overflow-hidden rounded-2xl p-8 text-white"
-        style={{ background: "linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)", boxShadow: "0 0 0 1px #4B1D8F, 0 0 0 4px #D4AF37, 0 0 0 5px #4B1D8F" }}
+        style={{ background: "linear-gradient(135deg, #1F2937 0%, #111827 100%)", boxShadow: "0 0 0 1px #1F2937, 0 0 0 4px #D4AF37, 0 0 0 5px #1F2937" }}
       >
         <span className="absolute top-3 left-3 h-5 w-5 border-t-2 border-l-2 border-yellow-400 rounded-tl-md" />
         <span className="absolute top-3 right-3 h-5 w-5 border-t-2 border-r-2 border-yellow-400 rounded-tr-md" />
@@ -42,11 +42,11 @@ export default function ShippingAgentProfilePage() {
       </div>
 
       <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 bg-[#4B1D8F]/5 border-b-2 border-[#4B1D8F]/10 flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-[#4B1D8F] flex items-center justify-center">
+        <div className="px-6 py-4 bg-[#1F2937]/5 border-b-2 border-[#1F2937]/10 flex items-center gap-3">
+          <div className="h-8 w-8 rounded-lg bg-[#1F2937] flex items-center justify-center">
             <User className="h-4 w-4 text-white" />
           </div>
-          <h2 className="text-base font-bold text-[#4B1D8F] uppercase tracking-wide">Account Info</h2>
+          <h2 className="text-base font-bold text-[#1F2937] uppercase tracking-wide">Account Info</h2>
         </div>
         <div className="p-6 space-y-4">
           <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 border border-gray-100">

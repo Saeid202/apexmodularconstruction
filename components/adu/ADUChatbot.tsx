@@ -20,7 +20,7 @@ const AddressAutofill = dynamic(
 );
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
 // Apex Modular Construction Luxury Branding
-const CP_PURPLE = "#4B1D8F"; 
+const CP_PURPLE = "#1F2937"; 
 const CP_GOLD = "#D4AF37"; 
 
 export function ADUChatbot() {
@@ -129,7 +129,7 @@ export function ADUChatbot() {
                {report ? "Property Feasibility Report" : "Property Feasibility Analysis"}
              </span>
           </div>
-          <button onClick={resetSession} className="flex items-center space-x-2 px-4 py-2 border-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:bg-purple-50 group" style={{ color: CP_PURPLE, borderColor: `${CP_PURPLE}20` }}>
+          <button onClick={resetSession} className="flex items-center space-x-2 px-4 py-2 border-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all hover:bg-amber-50 group" style={{ color: CP_PURPLE, borderColor: `${CP_PURPLE}20` }}>
             <RotateCcw className="w-3.5 h-3.5 group-hover:rotate-[-45deg] transition-transform" />
             <span>New Search</span>
           </button>
@@ -228,7 +228,7 @@ export function ADUChatbot() {
                       
                       <div 
                         onClick={() => fileInputRef.current?.click()}
-                        className={`relative border-2 border-dashed rounded-3xl p-6 transition-all cursor-pointer flex flex-col items-center justify-center space-y-3 ${inputs.designImage ? 'bg-white border-purple-200' : 'bg-white/50 border-gray-200 hover:border-purple-300 hover:bg-white'}`}
+                        className={`relative border-2 border-dashed rounded-3xl p-6 transition-all cursor-pointer flex flex-col items-center justify-center space-y-3 ${inputs.designImage ? 'bg-white border-amber-200' : 'bg-white/50 border-gray-200 hover:border-amber-300 hover:bg-white'}`}
                       >
                         <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
                         {inputs.designImage ? (
@@ -276,7 +276,7 @@ export function ADUChatbot() {
         {step === 'loading' && (
           <div className="h-full flex flex-col items-center justify-center p-12 text-center space-y-8 animate-in fade-in duration-500">
             <div className="relative">
-              <RefreshCcw className="w-16 h-16 text-purple-600 animate-spin" />
+              <RefreshCcw className="w-16 h-16 text-gray-800 animate-spin" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-yellow-500" />
               </div>
@@ -284,7 +284,7 @@ export function ADUChatbot() {
             <div className="space-y-2">
               <p className="text-xs font-black text-gray-400 uppercase tracking-[0.4em]">Consulting Provincial Records & Zoning Bylaws...</p>
               {inputs.designImage && (
-                <p className="text-[10px] font-black text-purple-400 uppercase tracking-[0.4em] animate-pulse">Running Vision AI Analysis on Design Drawing...</p>
+                <p className="text-[10px] font-black text-amber-400 uppercase tracking-[0.4em] animate-pulse">Running Vision AI Analysis on Design Drawing...</p>
               )}
             </div>
           </div>
@@ -442,7 +442,7 @@ export function ADUChatbot() {
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent pt-12 pb-10 z-50">
           <div className="max-w-4xl mx-auto px-6">
             <div className="flex gap-2 overflow-x-auto pb-4 custom-scrollbar">
-               <button onClick={() => handleSendChat("I want to scan my kitchen")} className="px-5 py-2.5 bg-gray-100 hover:bg-purple-50 text-sm font-[1000] text-gray-700 hover:text-purple-700 rounded-full transition-colors whitespace-nowrap border-2 border-transparent hover:border-purple-200">
+               <button onClick={() => handleSendChat("I want to scan my kitchen")} className="px-5 py-2.5 bg-gray-100 hover:bg-amber-50 text-sm font-[1000] text-gray-700 hover:text-gray-800 rounded-full transition-colors whitespace-nowrap border-2 border-transparent hover:border-amber-200">
                  📸 Scan My Kitchen
                </button>
             </div>

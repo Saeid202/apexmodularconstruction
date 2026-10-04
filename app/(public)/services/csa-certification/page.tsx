@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   },
 };
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -197,12 +197,12 @@ export default function CSACertificationPage() {
               <span style={{ color: GOLD }}> Prefab Buildings in Canada</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-purple-200 max-w-3xl mx-auto mb-4 leading-relaxed">
+            <p className="text-lg md:text-xl text-amber-200 max-w-3xl mx-auto mb-4 leading-relaxed">
               A complete guide to Canadian Standards Association requirements for prefabricated
               and modular buildings imported from China — what's required, how to comply, and
               what it costs.
             </p>
-            <p className="text-base text-purple-300 max-w-2xl mx-auto mb-10">
+            <p className="text-base text-amber-300 max-w-2xl mx-auto mb-10">
               CSA compliance is not optional. It determines whether your project gets approved,
               permitted, and built on time.
             </p>
@@ -237,7 +237,7 @@ export default function CSACertificationPage() {
                 <div key={label} className="flex items-center gap-3">
                   <span
                     className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: "#EDE9F6" }}
+                    style={{ backgroundColor: "#FEF3C7" }}
                   >
                     <Icon className="h-4 w-4" style={{ color: PURPLE }} />
                   </span>
@@ -318,7 +318,7 @@ export default function CSACertificationPage() {
         <section
           aria-labelledby="when-required"
           className="py-20 px-4"
-          style={{ backgroundColor: "#F8F6FC" }}
+          style={{ backgroundColor: "#FFFBEB" }}
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
@@ -371,12 +371,12 @@ export default function CSACertificationPage() {
                 <article
                   key={title}
                   className="rounded-2xl bg-white p-6"
-                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(75,29,143,0.08)` }}
+                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(31,41,55,0.08)` }}
                 >
                   <div className="flex items-start gap-4 mb-3">
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                      style={{ backgroundColor: "#EDE9F6" }}
+                      style={{ backgroundColor: "#FEF3C7" }}
                     >
                       <Icon className="h-5 w-5" style={{ color: PURPLE }} />
                     </div>
@@ -388,7 +388,7 @@ export default function CSACertificationPage() {
                           style={
                             required
                               ? { backgroundColor: "#FEF3C7", color: "#92400E" }
-                              : { backgroundColor: "#EDE9F6", color: PURPLE }
+                              : { backgroundColor: "#FEF3C7", color: PURPLE }
                           }
                         >
                           {required ? "Usually Required" : "Case-by-Case"}
@@ -442,11 +442,11 @@ export default function CSACertificationPage() {
                 <div
                   key={number}
                   className="rounded-2xl bg-white p-7 flex gap-6"
-                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(75,29,143,0.08)` }}
+                  style={{ border: `1.5px solid ${PURPLE}18`, boxShadow: `0 2px 8px rgba(31,41,55,0.08)` }}
                 >
                   <div
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-extrabold text-white text-sm"
-                    style={{ backgroundColor: PURPLE, boxShadow: `0 4px 12px rgba(75,29,143,0.35)` }}
+                    style={{ backgroundColor: PURPLE, boxShadow: `0 4px 12px rgba(31,41,55,0.35)` }}
                   >
                     {number}
                   </div>
@@ -455,7 +455,7 @@ export default function CSACertificationPage() {
                     <p className="text-sm text-gray-600 leading-relaxed mb-3">{body}</p>
                     <span
                       className="text-xs font-bold rounded-lg px-3 py-1.5 inline-block"
-                      style={{ backgroundColor: "#EDE9F6", color: PURPLE }}
+                      style={{ backgroundColor: "#FEF3C7", color: PURPLE }}
                     >
                       → {tag}
                     </span>
@@ -472,7 +472,7 @@ export default function CSACertificationPage() {
         <section
           aria-labelledby="common-mistakes"
           className="py-20 px-4"
-          style={{ backgroundColor: "#F8F6FC" }}
+          style={{ backgroundColor: "#FFFBEB" }}
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
@@ -585,7 +585,7 @@ export default function CSACertificationPage() {
                   <div className="flex flex-col items-center">
                     <div
                       className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full font-extrabold text-white text-sm"
-                      style={{ backgroundColor: PURPLE, boxShadow: `0 4px 12px rgba(75,29,143,0.35)` }}
+                      style={{ backgroundColor: PURPLE, boxShadow: `0 4px 12px rgba(31,41,55,0.35)` }}
                     >
                       {step}
                     </div>
@@ -612,7 +612,7 @@ export default function CSACertificationPage() {
         <section
           aria-labelledby="compliance-cost"
           className="py-20 px-4"
-          style={{ backgroundColor: "#F8F6FC" }}
+          style={{ backgroundColor: "#FFFBEB" }}
         >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-14">
@@ -637,7 +637,7 @@ export default function CSACertificationPage() {
                   label: "Engineering Review (per project)",
                   range: "$3,000 – $15,000",
                   note: "Canadian engineer of record review, stamping, and Letters of Assurance",
-                  color: "#EDE9F6",
+                  color: "#FEF3C7",
                 },
                 {
                   label: "Electrical Component Testing",
@@ -649,7 +649,7 @@ export default function CSACertificationPage() {
                   label: "Structural Testing / Review",
                   range: "$5,000 – $25,000",
                   note: "Depends on complexity; equivalency documentation may reduce cost",
-                  color: "#EDE9F6",
+                  color: "#FEF3C7",
                 },
                 {
                   label: "CSA A277 Factory Certification",
@@ -661,7 +661,7 @@ export default function CSACertificationPage() {
                   label: "Documentation & Translation",
                   range: "$1,000 – $5,000",
                   note: "Technical translation, document preparation, and package assembly",
-                  color: "#EDE9F6",
+                  color: "#FEF3C7",
                 },
                 {
                   label: "Total Compliance (% of project)",
@@ -684,7 +684,7 @@ export default function CSACertificationPage() {
 
             <div
               className="rounded-2xl p-6 flex gap-4"
-              style={{ backgroundColor: "#EDE9F6", border: `1.5px solid ${PURPLE}30` }}
+              style={{ backgroundColor: "#FEF3C7", border: `1.5px solid ${PURPLE}30` }}
             >
               <CheckCircle className="h-5 w-5 shrink-0 mt-0.5" style={{ color: PURPLE }} />
               <p className="text-sm text-gray-700 leading-relaxed">
@@ -757,11 +757,11 @@ export default function CSACertificationPage() {
             >
               Ready to Start Your Compliant Prefab Project?
             </h2>
-            <p className="text-lg text-purple-200 mb-6 leading-relaxed">
+            <p className="text-lg text-amber-200 mb-6 leading-relaxed">
               CSA compliance is manageable when it&apos;s planned from the start. Apex Modular Construction
               coordinates the full process — from factory verification to permit-ready documentation.
             </p>
-            <p className="text-sm text-purple-300 mb-10">
+            <p className="text-sm text-amber-300 mb-10">
               Also see:{" "}
               <Link
                 href="/services/construction-solutions"

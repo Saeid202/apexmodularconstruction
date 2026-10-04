@@ -88,7 +88,7 @@ export function ProductFilters({
                       ? "text-white shadow-soft"
                       : "text-foreground/70 hover:text-primary hover:bg-primary/5"
                   }`}
-                  style={selectedCategory === cat.slug ? { background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' } : {}}
+                  style={selectedCategory === cat.slug ? { background: '#EA580C' } : {}}
                 >
                   <span className="truncate">{cat.name}</span>
                   <span
@@ -96,7 +96,7 @@ export function ProductFilters({
                     style={
                       selectedCategory === cat.slug
                         ? { background: 'rgba(255,255,255,0.2)', color: 'white' }
-                        : { background: 'rgba(75,29,143,0.08)', color: '#4B1D8F' }
+                        : { background: 'rgba(31,41,55,0.08)', color: '#1F2937' }
                     }
                   >
                     {cat.count}
@@ -115,7 +115,7 @@ export function ProductFilters({
                         ? "text-white hover:bg-white/10"
                         : "text-foreground/50 hover:text-primary hover:bg-primary/5"
                     }`}
-                    style={selectedCategory === cat.slug ? { background: '#3A1570' } : {}}
+                    style={selectedCategory === cat.slug ? { background: '#C2410C' } : {}}
                   >
                     <ChevronDown
                       className={`h-4 w-4 transition-transform duration-200 ${
@@ -145,7 +145,7 @@ export function ProductFilters({
                           style={
                             selectedCategory === sub.slug
                               ? { background: 'rgba(59,130,246,0.1)', color: '#2563eb' }
-                              : { background: 'rgba(75,29,143,0.05)', color: '#4B1D8F' }
+                              : { background: 'rgba(31,41,55,0.05)', color: '#1F2937' }
                           }
                         >
                           {sub.count}
@@ -172,10 +172,10 @@ export function ProductFilters({
             onValueChange={(vals) => onPriceChange([vals[0], vals[1]])}
           />
           <div className="flex justify-between mt-3">
-            <span className="text-sm font-semibold" style={{ color: '#4B1D8F' }}>
+            <span className="text-sm font-semibold" style={{ color: '#1F2937' }}>
               ${priceRange[0].toLocaleString()} CAD
             </span>
-            <span className="text-sm font-semibold" style={{ color: '#4B1D8F' }}>
+            <span className="text-sm font-semibold" style={{ color: '#1F2937' }}>
               ${priceRange[1].toLocaleString()} CAD
             </span>
           </div>

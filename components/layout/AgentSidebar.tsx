@@ -8,9 +8,9 @@ import { createBrowserClient } from "@/lib/supabase/client";
 import { FloatingMessenger } from "@/components/messenger/FloatingMessenger";
 
 const menuItems = [
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/agent/dashboard", color: "from-blue-400 to-indigo-500" },
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/agent/dashboard", color: "from-blue-400 to-amber-500" },
   { id: "orders",    label: "Orders",    icon: ClipboardList,   href: "/agent/orders",    color: "from-orange-400 to-rose-500" },
-  { id: "profile",   label: "Profile",   icon: User,            href: "/agent/profile",   color: "from-violet-400 to-purple-500" },
+  { id: "profile",   label: "Profile",   icon: User,            href: "/agent/profile",   color: "from-amber-400 to-amber-500" },
 ];
 
 export default function AgentSidebar({ children }: { children: React.ReactNode }) {
@@ -30,17 +30,17 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col border-r border-purple-900/40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-50 w-64 flex flex-col border-r border-gray-900/40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${open ? "translate-x-0" : "-translate-x-full"}`}
         style={{ background: "linear-gradient(180deg, #2d0f6b 0%, #1e0a4a 60%, #150736 100%)" }}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-purple-800/50">
+        <div className="flex items-center gap-2.5 px-5 h-16 border-b border-gray-900/50">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/15 shadow-md">
             <Zap className="h-4 w-4 text-yellow-300" />
           </div>
           <div>
             <p className="text-sm font-bold text-white tracking-tight">Apex Modular Construction</p>
-            <p className="text-[10px] text-purple-300 font-semibold uppercase tracking-widest">Agent Portal</p>
+            <p className="text-[10px] text-amber-300 font-semibold uppercase tracking-widest">Agent Portal</p>
           </div>
           <button onClick={() => setOpen(false)} className="ml-auto lg:hidden text-white/50 hover:text-white">
             <X className="h-5 w-5" />
@@ -56,7 +56,7 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
                 className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                   active
                     ? "bg-white/15 text-white border border-white/15 shadow-sm"
-                    : "text-purple-200 hover:text-white hover:bg-white/8"
+                    : "text-amber-200 hover:text-white hover:bg-white/8"
                 }`}>
                 <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${item.color} shadow-sm shrink-0 ${active ? "" : "opacity-70 group-hover:opacity-100"}`}>
                   <item.icon className="h-4 w-4 text-white" />
@@ -69,9 +69,9 @@ export default function AgentSidebar({ children }: { children: React.ReactNode }
         </nav>
 
         {/* Logout */}
-        <div className="px-3 pb-4 border-t border-purple-800/50 pt-3">
+        <div className="px-3 pb-4 border-t border-gray-900/50 pt-3">
           <button onClick={handleLogout}
-            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-purple-300 hover:text-red-400 hover:bg-red-500/10 transition-all">
+            className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-amber-300 hover:text-red-400 hover:bg-red-500/10 transition-all">
             <LogOut className="h-4 w-4" /> Logout
           </button>
         </div>

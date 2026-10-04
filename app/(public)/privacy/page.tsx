@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Privacy Policy for 16481043 Canada Inc. (operating as Apex Modular Construction). Learn how we collect, use, and share your personal information.",
 };
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 
 export default async function PrivacyPage() {
   let cmsContent: string | null = null;
@@ -71,7 +71,7 @@ export default async function PrivacyPage() {
   const displayContent = cmsContent ?? staticContent;
 
   return (
-    <main className="bg-[#FAF9FC] min-h-screen text-gray-900 overflow-hidden relative">
+    <main className="bg-[#FFFBEB] min-h-screen text-gray-900 overflow-hidden relative">
       
       {/* Background Architectural Grid Effect */}
       <div 
@@ -88,7 +88,7 @@ export default async function PrivacyPage() {
 
       <PageHeader
         eyebrow="Legal"
-        title={<>Privacy <span style={{ color: '#4B1D8F' }}>Policy</span></>}
+        title={<>Privacy <span style={{ color: '#1F2937' }}>Policy</span></>}
         subtitle="Effective Date: August 27, 2026"
       />
 

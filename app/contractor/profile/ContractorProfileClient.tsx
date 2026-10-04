@@ -157,7 +157,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
           {/* Photo Upload */}
           <div>
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Camera className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+              <Camera className="h-5 w-5" style={{ color: '#1F2937' }} />
               Profile Photo
             </h3>
             <div className="flex items-center gap-6">
@@ -184,7 +184,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                 )}
               </div>
               <div className="flex-1">
-                <label className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-[#4B1D8F] transition-colors">
+                <label className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-[#1F2937] transition-colors">
                   <Upload className="h-5 w-5 text-gray-500" />
                   <span className="text-sm font-semibold text-gray-700">
                     {avatarFile ? avatarFile.name : 'Choose a photo...'}
@@ -204,7 +204,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
           {/* Personal Information */}
           <div>
             <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <User className="h-5 w-5" style={{ color: '#4B1D8F' }} />
+              <User className="h-5 w-5" style={{ color: '#1F2937' }} />
               Personal Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -215,7 +215,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   required
                 />
               </div>
@@ -244,7 +244,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="Your company name"
                 />
               </div>
@@ -255,7 +255,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="website"
                   value={formData.website}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="https://yourcompany.com"
                 />
               </div>
@@ -273,7 +273,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="(555) 123-4567"
                 />
               </div>
@@ -284,7 +284,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="Street address"
                 />
               </div>
@@ -302,7 +302,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="City"
                 />
               </div>
@@ -313,7 +313,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="province"
                   value={formData.province}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="Province"
                 />
               </div>
@@ -324,7 +324,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
                   name="postalCode"
                   value={formData.postalCode}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#4B1D8F] focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-[#1F2937] focus:outline-none transition-colors"
                   placeholder="Postal Code"
                 />
               </div>
@@ -337,7 +337,7 @@ export default function ContractorProfileClient({ user, profile }: ContractorPro
               type="submit"
               disabled={loading}
               className="flex items-center gap-2 px-8 py-3 rounded-xl text-base font-bold text-white transition-all hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-              style={{ backgroundColor: '#4B1D8F', border: '2px solid #D4AF37' }}
+              style={{ backgroundColor: '#1F2937', border: '2px solid #D4AF37' }}
             >
               <Save className="h-5 w-5" />
               {loading ? 'Saving...' : 'Save Changes'}

@@ -4,11 +4,11 @@ import { useState } from "react";
 import { BarChart3, TrendingUp, DollarSign, Package, Users, ShoppingCart, Calendar, Download } from "lucide-react";
 import { LuxuryButton } from "@/components/seller/LuxuryButton";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 const stats = [
-  { title: "Total Revenue", value: "$24,580", change: "+12.5%", icon: DollarSign, bg: "#EDE9F6", color: PURPLE },
+  { title: "Total Revenue", value: "$24,580", change: "+12.5%", icon: DollarSign, bg: "#FEF3C7", color: PURPLE },
   { title: "Total Orders", value: "1,247", change: "+8.2%", icon: ShoppingCart, bg: "#dcfce7", color: "#16a34a" },
   { title: "Products Sold", value: "3,842", change: "+15.3%", icon: Package, bg: "#fef9c3", color: "#ca8a04" },
   { title: "Active Customers", value: "892", change: "+5.7%", icon: Users, bg: "#fce7f3", color: "#be185d" },
@@ -42,7 +42,7 @@ export default function SellerAnalyticsPage() {
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
-            className="px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] bg-white"
+            className="px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] bg-white"
           >
             <option value="7days">Last 7 days</option>
             <option value="30days">Last 30 days</option>
@@ -116,7 +116,7 @@ export default function SellerAnalyticsPage() {
           <div className="space-y-2">
             {recentActivity.map((a, i) => (
               <div key={i} className="flex items-center gap-3 p-3 rounded-xl" style={{ backgroundColor: "#F5F4F7" }}>
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "#EDE9F6" }}>
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "#FEF3C7" }}>
                   <Calendar className="h-4 w-4" style={{ color: PURPLE }} />
                 </div>
                 <div className="flex-1">

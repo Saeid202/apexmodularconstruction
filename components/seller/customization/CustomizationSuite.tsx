@@ -16,7 +16,7 @@ interface CustomizationSuiteProps {
   initialEnabled?: boolean;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 export function CustomizationSuite({ productId, userId, initialEnabled = false }: CustomizationSuiteProps) {
@@ -84,7 +84,7 @@ export function CustomizationSuite({ productId, userId, initialEnabled = false }
       {/* Header with Toggle */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#EDE9F6" }}>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#FEF3C7" }}>
             <Settings className="h-4 w-4" style={{ color: PURPLE }} />
           </div>
           <div>
@@ -124,7 +124,7 @@ export function CustomizationSuite({ productId, userId, initialEnabled = false }
         <div className="space-y-6">
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin h-6 w-6 border-2 border-purple-600 border-t-transparent rounded-full"></div>
+              <div className="animate-spin h-6 w-6 border-2 border-gray-800 border-t-transparent rounded-full"></div>
               <span className="ml-2 text-sm text-gray-600">Loading customization data...</span>
             </div>
           ) : (

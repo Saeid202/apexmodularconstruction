@@ -170,7 +170,7 @@ export function ProductCatalog({ initialProducts, categories, categoryParam }: P
 
         <div className="container mx-auto px-4 py-2.5 md:px-6 md:py-4 flex flex-col items-center text-center transition-all duration-300 relative z-10">
           <h1 className="text-xl md:text-3xl font-extrabold text-[#1a1a2e] tracking-tight">
-            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4B1D8F] to-[#7c3aed]">{isPrefabMode ? "Buildings" : "Materials"}</span>
+            Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1F2937] to-[#1F2937]">{isPrefabMode ? "Buildings" : "Materials"}</span>
           </h1>
         </div>
       </div>
@@ -187,7 +187,7 @@ export function ProductCatalog({ initialProducts, categories, categoryParam }: P
             <button
               onClick={() => setIsMobileFilterOpen(true)}
               className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold text-white transition-transform active:scale-95 shadow-md"
-              style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
+              style={{ background: '#EA580C' }}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -218,13 +218,13 @@ export function ProductCatalog({ initialProducts, categories, categoryParam }: P
               <div className="flex items-center gap-3 mb-6 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
                 {selectedCategoryData && (
                   <>
-                    <span className="text-sm font-bold px-4 py-1.5 rounded-xl text-white shadow-md shadow-purple-900/20" style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}>
+                    <span className="text-sm font-bold px-4 py-1.5 rounded-xl text-white shadow-md shadow-gray-900/20" style={{ background: '#EA580C' }}>
                       {selectedCategoryData.name}
                     </span>
                     <span className="text-gray-200 font-black">/</span>
                   </>
                 )}
-                <span className="text-xl font-extrabold" style={{ color: '#4B1D8F' }}>
+                <span className="text-xl font-extrabold" style={{ color: '#1F2937' }}>
                   {filteredProducts.length}
                 </span>
                 <span className="text-sm font-semibold text-gray-400 uppercase tracking-widest">
@@ -246,8 +246,8 @@ export function ProductCatalog({ initialProducts, categories, categoryParam }: P
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
-                  <div className="h-16 w-16 rounded-full flex items-center justify-center mb-5" style={{ background: 'rgba(75,29,143,0.08)' }}>
-                    <svg className="h-7 w-7" style={{ color: '#4B1D8F' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div className="h-16 w-16 rounded-full flex items-center justify-center mb-5" style={{ background: 'rgba(31,41,55,0.08)' }}>
+                    <svg className="h-7 w-7" style={{ color: '#1F2937' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
                     </svg>
                   </div>
@@ -256,7 +256,7 @@ export function ProductCatalog({ initialProducts, categories, categoryParam }: P
                   <button
                     onClick={() => { setSelectedCategory(defaultCategory); setPriceRange([0, 50000]); }}
                     className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all hover:brightness-110"
-                    style={{ background: '#4B1D8F' }}
+                    style={{ background: '#EA580C' }}
                   >
                     Clear all filters
                   </button>
@@ -298,8 +298,8 @@ export function ProductCatalog({ initialProducts, categories, categoryParam }: P
               <div className="mt-8 pt-4 border-t sticky bottom-0 bg-white">
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all shadow-lg shadow-purple-900/20 active:scale-[0.98]"
-                  style={{ background: 'linear-gradient(135deg, #4B1D8F 0%, #3A1570 100%)' }}
+                  className="w-full py-3.5 rounded-xl text-sm font-bold text-white transition-all shadow-lg shadow-gray-900/20 active:scale-[0.98]"
+                  style={{ background: '#EA580C' }}
                 >
                   Show {filteredProducts.length} Results
                 </button>

@@ -325,17 +325,17 @@ export default function GetQuotePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden print:bg-white print:text-black">
       {/* Decorative Gradients */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/20 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-gray-900/20 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-yellow-900/10 blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Header */}
         <div className="text-center mb-12 print:hidden">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 mb-3 animate-pulse">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-3 animate-pulse">
             <Sparkles className="w-3.5 h-3.5" /> AI-Powered Estimator
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-purple-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-amber-400 bg-clip-text text-transparent">
             Apex AI Construction Estimator
           </h1>
           <p className="mt-3 text-lg text-slate-400 max-w-2xl mx-auto">
@@ -357,12 +357,12 @@ export default function GetQuotePage() {
         {/* LOADING STATE */}
         {loading && (
           <div className="max-w-md mx-auto my-16 bg-slate-900/80 border border-slate-800 rounded-3xl p-8 text-center backdrop-blur-md shadow-2xl relative overflow-hidden print:hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-yellow-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-yellow-500/5 pointer-events-none" />
             <div className="relative z-10">
-              <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
+              <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
               <h3 className="text-xl font-bold text-slate-100 mb-2">Analyzing Floor Plan</h3>
               <div className="w-full bg-slate-800 rounded-full h-1.5 mb-4 overflow-hidden">
-                <div className="bg-purple-600 h-1.5 rounded-full animate-progress" style={{ width: "60%" }} />
+                <div className="bg-gray-800 h-1.5 rounded-full animate-progress" style={{ width: "60%" }} />
               </div>
               <p className="text-sm text-slate-400 font-mono italic animate-pulse">{loadingMessage}</p>
             </div>
@@ -379,8 +379,8 @@ export default function GetQuotePage() {
                 onDrop={handleDrop}
                 className={`border-2 border-dashed rounded-3xl p-8 text-center transition-all duration-300 relative group overflow-hidden ${
                   file 
-                    ? "border-purple-500/40 bg-purple-950/5" 
-                    : "border-slate-800 bg-slate-900/50 hover:border-purple-500/20 hover:bg-slate-900/80"
+                    ? "border-amber-500/40 bg-gray-950/5" 
+                    : "border-slate-800 bg-slate-900/50 hover:border-amber-500/20 hover:bg-slate-900/80"
                 }`}
               >
                 {filePreview ? (
@@ -400,20 +400,20 @@ export default function GetQuotePage() {
                       </button>
                     </div>
                      <div className="mt-4 flex items-center justify-center gap-2 text-sm text-slate-300 font-medium bg-slate-900/90 px-4 py-2 rounded-full w-max mx-auto border border-slate-800">
-                      <FileText className="w-4 h-4 text-purple-400" />
+                      <FileText className="w-4 h-4 text-amber-400" />
                       {file?.name}
                     </div>
                   </div>
                 ) : (
                   <div className="py-12 flex flex-col items-center">
-                    <div className="w-16 h-16 rounded-2xl bg-purple-950/50 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-16 h-16 rounded-2xl bg-gray-950/50 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
                       <Upload className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold text-slate-200">Upload Architectural Plan</h3>
                     <p className="text-sm text-slate-400 mt-1 max-w-sm">
                       Drag & drop your floor plan here, or click to browse. Supports PNG, JPG, WebP, or PDF.
                     </p>
-                    <label className="mt-6 inline-flex items-center justify-center rounded-xl bg-purple-600 hover:bg-purple-700 px-5 py-2.5 text-sm font-bold text-white transition-all cursor-pointer hover:scale-105 shadow-lg shadow-purple-600/20">
+                    <label className="mt-6 inline-flex items-center justify-center rounded-xl bg-gray-800 hover:bg-gray-800 px-5 py-2.5 text-sm font-bold text-white transition-all cursor-pointer hover:scale-105 shadow-lg shadow-gray-800/20">
                       Browse Files
                       <input 
                         id="plan-file-upload" 
@@ -455,7 +455,7 @@ export default function GetQuotePage() {
                       max="20"
                       value={wallHeight}
                       onChange={(e) => setWallHeight(Number(e.target.value))}
-                      className="flex-1 h-11 bg-slate-950 border border-slate-800 rounded-xl text-center font-bold text-lg focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                      className="flex-1 h-11 bg-slate-950 border border-slate-800 rounded-xl text-center font-bold text-lg focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
                     />
                     <button 
                       type="button" 
@@ -502,7 +502,7 @@ export default function GetQuotePage() {
                   onClick={triggerEstimation}
                   className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                     file 
-                      ? "bg-gradient-to-r from-purple-600 to-[#4B1D8F] text-white hover:scale-[1.02] shadow-lg shadow-purple-600/20 active:scale-[0.98]" 
+                      ? "bg-gradient-to-r from-gray-800 to-[#1F2937] text-white hover:scale-[1.02] shadow-lg shadow-gray-800/20 active:scale-[0.98]" 
                       : "bg-slate-850 text-slate-500 cursor-not-allowed"
                   }`}
                 >
@@ -520,7 +520,7 @@ export default function GetQuotePage() {
             {/* Top info and reset bar */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 bg-slate-900/50 border border-slate-800/80 rounded-3xl gap-4 print:border-none print:bg-transparent print:p-0">
               <div>
-                <span className="text-xs font-mono text-purple-400 uppercase tracking-wider print:hidden">Analysis Complete</span>
+                <span className="text-xs font-mono text-amber-400 uppercase tracking-wider print:hidden">Analysis Complete</span>
                 <h2 className="text-2xl font-bold text-slate-100 flex items-center gap-2 print:text-black">
                   <Layers className="w-6 h-6 text-[#D4AF37]" /> Preliminary Structural Takeoff
                 </h2>
@@ -537,7 +537,7 @@ export default function GetQuotePage() {
                 </button>
                 <button
                   onClick={resetEstimator}
-                  className="inline-flex h-10 items-center justify-center gap-1.5 px-4 rounded-xl border border-purple-500/20 bg-purple-600/10 text-purple-400 text-sm font-semibold hover:bg-purple-600/20 active:scale-95 transition-all cursor-pointer"
+                  className="inline-flex h-10 items-center justify-center gap-1.5 px-4 rounded-xl border border-amber-500/20 bg-gray-800/10 text-amber-400 text-sm font-semibold hover:bg-gray-800/20 active:scale-95 transition-all cursor-pointer"
                 >
                   <RefreshCw className="w-4 h-4" /> Re-estimate
                 </button>
@@ -582,7 +582,7 @@ export default function GetQuotePage() {
               {/* Product Match Configuration */}
               <div className="lg:col-span-8 space-y-6 print:col-span-12">
                 <h3 className="text-lg font-bold text-slate-200 border-b border-slate-800 pb-3 flex items-center gap-2 print:text-black print:border-black">
-                  <Building className="w-5 h-5 text-purple-400" /> Match Marketplace Materials
+                  <Building className="w-5 h-5 text-amber-400" /> Match Marketplace Materials
                 </h3>
 
                 {/* 1. Wall System */}
@@ -604,7 +604,7 @@ export default function GetQuotePage() {
                         id="wall-panel-select"
                         value={selectedWallPanel}
                         onChange={(e) => setSelectedWallPanel(e.target.value)}
-                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-purple-500 print:hidden"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-amber-500 print:hidden"
                       >
                         {MARKETPLACE_PRODUCTS.filter(p => p.category === "wall_panel").map(p => (
                           <option key={p.id} value={p.id}>{p.name} — ${p.price}/{p.unit}</option>
@@ -612,7 +612,7 @@ export default function GetQuotePage() {
                       </select>
                     </div>
                     <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-850/80 text-xs text-slate-400 space-y-1 print:bg-slate-50 print:text-black">
-                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-purple-400 font-semibold">{wallPanel.name}</span></div>
+                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-amber-400 font-semibold">{wallPanel.name}</span></div>
                       <div className="flex justify-between"><span>Supplier:</span><span className="text-slate-300 font-medium print:text-black">{wallPanel.supplier}</span></div>
                       <div className="flex justify-between"><span>Spec:</span><span className="text-slate-300 font-medium truncate max-w-[200px] print:text-black" title={wallPanel.specification}>{wallPanel.specification}</span></div>
                     </div>
@@ -638,7 +638,7 @@ export default function GetQuotePage() {
                         id="roof-select"
                         value={selectedRoof}
                         onChange={(e) => setSelectedRoof(e.target.value)}
-                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-purple-500 print:hidden"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-amber-500 print:hidden"
                       >
                         {MARKETPLACE_PRODUCTS.filter(p => p.category === "roofing").map(p => (
                           <option key={p.id} value={p.id}>{p.name} — ${p.price}/{p.unit}</option>
@@ -646,7 +646,7 @@ export default function GetQuotePage() {
                       </select>
                     </div>
                     <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-850/80 text-xs text-slate-400 space-y-1 print:bg-slate-50 print:text-black">
-                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-purple-400 font-semibold">{roofing.name}</span></div>
+                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-amber-400 font-semibold">{roofing.name}</span></div>
                       <div className="flex justify-between"><span>Supplier:</span><span className="text-slate-300 font-medium print:text-black">{roofing.supplier}</span></div>
                       <div className="flex justify-between"><span>Spec:</span><span className="text-slate-300 font-medium truncate max-w-[200px] print:text-black" title={roofing.specification}>{roofing.specification}</span></div>
                     </div>
@@ -672,7 +672,7 @@ export default function GetQuotePage() {
                         id="window-select"
                         value={selectedWindow}
                         onChange={(e) => setSelectedWindow(e.target.value)}
-                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-purple-500 print:hidden"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-amber-500 print:hidden"
                       >
                         {MARKETPLACE_PRODUCTS.filter(p => p.category === "window").map(p => (
                           <option key={p.id} value={p.id}>{p.name} — ${p.price}/{p.unit}</option>
@@ -680,7 +680,7 @@ export default function GetQuotePage() {
                       </select>
                     </div>
                     <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-850/80 text-xs text-slate-400 space-y-1 print:bg-slate-50 print:text-black">
-                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-purple-400 font-semibold">{windowProduct.name}</span></div>
+                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-amber-400 font-semibold">{windowProduct.name}</span></div>
                       <div className="flex justify-between"><span>Supplier:</span><span className="text-slate-300 font-medium print:text-black">{windowProduct.supplier}</span></div>
                       <div className="flex justify-between"><span>Spec:</span><span className="text-slate-300 font-medium truncate max-w-[200px] print:text-black" title={windowProduct.specification}>{windowProduct.specification}</span></div>
                     </div>
@@ -706,7 +706,7 @@ export default function GetQuotePage() {
                         id="door-select"
                         value={selectedDoor}
                         onChange={(e) => setSelectedDoor(e.target.value)}
-                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-purple-500 print:hidden"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-amber-500 print:hidden"
                       >
                         {MARKETPLACE_PRODUCTS.filter(p => p.category === "door").map(p => (
                           <option key={p.id} value={p.id}>{p.name} — ${p.price}/{p.unit}</option>
@@ -714,7 +714,7 @@ export default function GetQuotePage() {
                       </select>
                     </div>
                     <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-850/80 text-xs text-slate-400 space-y-1 print:bg-slate-50 print:text-black">
-                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-purple-400 font-semibold">{doorProduct.name}</span></div>
+                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-amber-400 font-semibold">{doorProduct.name}</span></div>
                       <div className="flex justify-between"><span>Supplier:</span><span className="text-slate-300 font-medium print:text-black">{doorProduct.supplier}</span></div>
                       <div className="flex justify-between"><span>Spec:</span><span className="text-slate-300 font-medium truncate max-w-[200px] print:text-black" title={doorProduct.specification}>{doorProduct.specification}</span></div>
                     </div>
@@ -740,7 +740,7 @@ export default function GetQuotePage() {
                         id="flooring-select"
                         value={selectedFlooring}
                         onChange={(e) => setSelectedFlooring(e.target.value)}
-                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-purple-500 print:hidden"
+                        className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm font-semibold text-slate-200 focus:outline-none focus:border-amber-500 print:hidden"
                       >
                         {MARKETPLACE_PRODUCTS.filter(p => p.category === "flooring").map(p => (
                           <option key={p.id} value={p.id}>{p.name} — ${p.price}/{p.unit}</option>
@@ -748,7 +748,7 @@ export default function GetQuotePage() {
                       </select>
                     </div>
                     <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-850/80 text-xs text-slate-400 space-y-1 print:bg-slate-50 print:text-black">
-                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-purple-400 font-semibold">{flooring.name}</span></div>
+                      <div className="flex justify-between"><span className="font-bold text-slate-300 print:text-black">Selected:</span><span className="text-amber-400 font-semibold">{flooring.name}</span></div>
                       <div className="flex justify-between"><span>Supplier:</span><span className="text-slate-300 font-medium print:text-black">{flooring.supplier}</span></div>
                       <div className="flex justify-between"><span>Spec:</span><span className="text-slate-300 font-medium truncate max-w-[200px] print:text-black" title={flooring.specification}>{flooring.specification}</span></div>
                     </div>
@@ -810,7 +810,7 @@ export default function GetQuotePage() {
 
                   <div className="border-t border-slate-800 pt-4 flex justify-between items-baseline print:border-black">
                     <span className="text-base font-bold text-slate-200 print:text-black">Grand Total Est.</span>
-                    <span className="text-3xl font-black text-purple-400">${Math.ceil(grandTotal).toLocaleString()}</span>
+                    <span className="text-3xl font-black text-amber-400">${Math.ceil(grandTotal).toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -826,7 +826,7 @@ export default function GetQuotePage() {
                 <div className="mt-6 space-y-3 print:hidden">
                   <button
                     onClick={() => setReviewModalOpen(true)}
-                    className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5 shadow-lg shadow-purple-600/10 cursor-pointer"
+                    className="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-800 text-white font-bold transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5 shadow-lg shadow-gray-800/10 cursor-pointer"
                   >
                     <PhoneCall className="w-4 h-4" /> Request Professional Review
                   </button>
@@ -853,10 +853,10 @@ export default function GetQuotePage() {
       {reviewModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
           <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-yellow-500/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-yellow-500/5 pointer-events-none" />
             
             <h3 className="text-xl font-bold text-slate-100 flex items-center gap-2 mb-2">
-              <PhoneCall className="w-5 h-5 text-purple-400" /> Professional Takeoff Review
+              <PhoneCall className="w-5 h-5 text-amber-400" /> Professional Takeoff Review
             </h3>
             <p className="text-xs text-slate-400 mb-6">
               An Apex modular construction engineer will verify the AI-calculated quantities, match local zoning codes, and contact you with a formal engineered quote.
@@ -881,7 +881,7 @@ export default function GetQuotePage() {
                     value={contactForm.name}
                     onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                     placeholder="Enter your name"
-                    className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-purple-500"
+                    className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-amber-500"
                   />
                 </div>
                 <div>
@@ -893,7 +893,7 @@ export default function GetQuotePage() {
                     value={contactForm.email}
                     onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
                     placeholder="Enter your email"
-                    className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-purple-500"
+                    className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-amber-500"
                   />
                 </div>
                 <div>
@@ -905,7 +905,7 @@ export default function GetQuotePage() {
                     value={contactForm.phone}
                     onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                     placeholder="(555) 000-0000"
-                    className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-purple-500"
+                    className="w-full h-10 px-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-amber-500"
                   />
                 </div>
                 <div>
@@ -916,7 +916,7 @@ export default function GetQuotePage() {
                     value={contactForm.notes}
                     onChange={(e) => setContactForm({ ...contactForm, notes: e.target.value })}
                     placeholder="E.g., site conditions, timeline, or product preferences..."
-                    className="w-full p-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-purple-500 resize-none"
+                    className="w-full p-3 rounded-lg bg-slate-950 border border-slate-850 text-sm focus:outline-none focus:border-amber-500 resize-none"
                   />
                 </div>
                 
@@ -930,7 +930,7 @@ export default function GetQuotePage() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-sm font-bold transition-all hover:scale-[1.02] cursor-pointer"
+                    className="flex-1 py-2.5 rounded-lg bg-gray-800 hover:bg-gray-800 text-white text-sm font-bold transition-all hover:scale-[1.02] cursor-pointer"
                   >
                     Submit Request
                   </button>

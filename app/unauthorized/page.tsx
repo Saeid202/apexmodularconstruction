@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function UnauthorizedPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#4B1D8F] to-[#3a1470] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#1F2937] to-[#3a1470] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
         <div className="mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
@@ -30,7 +30,7 @@ export default function UnauthorizedPage() {
         <div className="flex flex-col gap-3">
           <Link
             href="/auth/login"
-            className="inline-flex items-center justify-center gap-2 w-full bg-[#4B1D8F] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#3a1470] transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full bg-[#1F2937] text-white font-semibold py-3 px-4 rounded-lg hover:bg-[#3a1470] transition-colors"
           >
             <LogIn className="w-5 h-5" />
             Log In

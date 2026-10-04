@@ -5,7 +5,7 @@ import { OrdersTable } from "./OrdersTable";
 
 export const dynamic = "force-dynamic";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 
 export default async function AdminOrdersPage() {
   const supabase = await createServerClient();

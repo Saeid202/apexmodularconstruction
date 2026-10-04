@@ -77,7 +77,7 @@ export function AffiliateLoginForm({ onSuccess }: AffiliateLoginFormProps) {
   };
 
   const inputClass =
-    "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#4B1D8F] transition-shadow placeholder:text-gray-400";
+    "w-full px-3.5 py-2.5 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#1F2937] transition-shadow placeholder:text-gray-400";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -137,7 +137,7 @@ export function AffiliateLoginForm({ onSuccess }: AffiliateLoginFormProps) {
         type="submit"
         disabled={loading}
         className="w-full h-11 rounded-xl text-white text-sm font-semibold hover:opacity-90 disabled:opacity-60 transition-opacity"
-        style={{ backgroundColor: "#4B1D8F" }}
+        style={{ backgroundColor: "#1F2937" }}
       >
         {loading ? "Signing in..." : "Sign In"}
       </button>
@@ -147,7 +147,7 @@ export function AffiliateLoginForm({ onSuccess }: AffiliateLoginFormProps) {
         onClick={handleResetPassword}
         disabled={resetting}
         className="w-full h-11 rounded-xl border text-sm font-semibold transition-colors"
-        style={{ borderColor: "#e0d0f5", color: "#4B1D8F" }}
+        style={{ borderColor: "#e0d0f5", color: "#1F2937" }}
       >
         {resetting ? "Sending Reset Email..." : "Forgot Password? Reset It"}
       </button>

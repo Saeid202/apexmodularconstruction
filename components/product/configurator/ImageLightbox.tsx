@@ -95,7 +95,7 @@ export function ImageLightbox({
         {current.variantCode && (
           <span
             className="absolute bottom-3 right-3 rounded-lg px-3 py-1 text-sm font-bold text-white"
-            style={{ backgroundColor: 'rgba(75,29,143,0.9)' }}
+            style={{ backgroundColor: 'rgba(31,41,55,0.9)' }}
           >
             {current.variantCode}
           </span>

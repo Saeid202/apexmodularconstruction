@@ -49,11 +49,11 @@ export default async function PartnerDashboardPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 p-6 text-white shadow-lg shadow-indigo-500/20">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-blue-600 p-6 text-white shadow-lg shadow-amber-500/20">
           <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-white/10" />
-          <FolderOpen className="h-6 w-6 text-indigo-200 mb-3" />
+          <FolderOpen className="h-6 w-6 text-amber-200 mb-3" />
           <p className="text-4xl font-bold">{stats?.total ?? 0}</p>
-          <p className="text-indigo-100 text-sm mt-1 font-medium">Total Projects</p>
+          <p className="text-amber-100 text-sm mt-1 font-medium">Total Projects</p>
         </div>
 
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 p-6 text-white shadow-lg shadow-amber-500/20">

@@ -9,7 +9,7 @@ import {
   Table, LayoutGrid, Filter, Search as SearchIcon, Image as ImageIcon, Upload
 } from "lucide-react";
 
-const CP_PURPLE = "#4B1D8F";
+const CP_PURPLE = "#1F2937";
 const CP_GOLD = "#D4AF37";
 
 export default function IngestionReviewPage() {
@@ -141,7 +141,7 @@ export default function IngestionReviewPage() {
           </div>
           <div className="relative">
              <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-             <input type="text" placeholder="Search extracted items..." className="pl-12 pr-6 py-2 rounded-xl border border-gray-200 text-xs focus:ring-purple-200" />
+             <input type="text" placeholder="Search extracted items..." className="pl-12 pr-6 py-2 rounded-xl border border-gray-200 text-xs focus:ring-amber-200" />
           </div>
         </div>
 
@@ -171,7 +171,7 @@ export default function IngestionReviewPage() {
                       <img src={draft.main_image_url} alt="Product" className="w-16 h-16 object-cover rounded-xl border-2 border-gray-100" />
                     ) : (
                       <label className="flex flex-col items-center justify-center w-16 h-16 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors group/upload">
-                        <Upload className="w-4 h-4 text-gray-400 group-hover/upload:text-purple-500 mb-1" />
+                        <Upload className="w-4 h-4 text-gray-400 group-hover/upload:text-amber-500 mb-1" />
                         <span className="text-[8px] font-bold text-gray-400 uppercase">Upload</span>
                         {/* In a real implementation, you'd add an input[type="file"] here and upload to Supabase storage */}
                       </label>
@@ -180,10 +180,10 @@ export default function IngestionReviewPage() {
                   <td className="px-8 py-6">
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
-                        <span className="px-2 py-0.5 rounded bg-purple-100 text-[10px] font-black text-purple-600">PAGE {draft.page_number}</span>
+                        <span className="px-2 py-0.5 rounded bg-amber-100 text-[10px] font-black text-gray-800">PAGE {draft.page_number}</span>
                         <input 
                           type="text" 
-                          className="flex-1 bg-transparent border-b border-transparent hover:border-gray-200 focus:border-purple-500 focus:ring-0 font-black text-lg p-1 text-black placeholder:text-gray-200 transition-colors"
+                          className="flex-1 bg-transparent border-b border-transparent hover:border-gray-200 focus:border-amber-500 focus:ring-0 font-black text-lg p-1 text-black placeholder:text-gray-200 transition-colors"
                           value={draft.name || ''}
                           onChange={(e) => updateDraft(draft.id, 'name', e.target.value)}
                           placeholder="Enter product name..."
@@ -202,7 +202,7 @@ export default function IngestionReviewPage() {
                       <span className="text-gray-300 font-black">$</span>
                       <input 
                         type="number" 
-                        className="w-24 bg-transparent border-b border-transparent hover:border-gray-200 focus:border-purple-500 focus:ring-0 font-black text-lg p-1 text-black transition-colors"
+                        className="w-24 bg-transparent border-b border-transparent hover:border-gray-200 focus:border-amber-500 focus:ring-0 font-black text-lg p-1 text-black transition-colors"
                         value={draft.price || ''}
                         onChange={(e) => updateDraft(draft.id, 'price', e.target.value)}
                         placeholder="0.00"

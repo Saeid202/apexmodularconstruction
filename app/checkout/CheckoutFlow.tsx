@@ -10,7 +10,7 @@ import { PaymentStep } from "./steps/PaymentStep";
 import { createOrder } from "@/app/actions/orders";
 import type { TaxBreakdown } from "@/lib/tax/calculator";
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface Props {
@@ -93,7 +93,7 @@ export function CheckoutFlow({ userEmail, userName }: Props) {
       </div>
 
       {/* Step content */}
-      <div style={{ background: "#fff", borderRadius: 16, padding: "2rem", boxShadow: "0 2px 16px rgba(75,29,143,0.08)", border: `1px solid ${PURPLE}18` }}>
+      <div style={{ background: "#fff", borderRadius: 16, padding: "2rem", boxShadow: "0 2px 16px rgba(31,41,55,0.08)", border: `1px solid ${PURPLE}18` }}>
         {step === 1 && (
           <ShippingStep
             initialData={shippingData ?? (userEmail || userName ? {

@@ -16,7 +16,7 @@ interface CustomizationSuiteSpreadsheetProps {
   initialEnabled?: boolean;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 const GOLD = "#D4AF37";
 
 interface OptionRow {
@@ -326,7 +326,7 @@ export function CustomizationSuiteSpreadsheet({ productId, userId, initialEnable
       {/* Header with Toggle */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#EDE9F6" }}>
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: "#FEF3C7" }}>
             <Settings className="h-4 w-4" style={{ color: PURPLE }} />
           </div>
           <div>
@@ -370,7 +370,7 @@ export function CustomizationSuiteSpreadsheet({ productId, userId, initialEnable
               <h4 className="font-semibold text-gray-900">Categories</h4>
               <button
                 onClick={handleAddCategory}
-                className="rounded-lg p-1 text-purple-600 hover:bg-purple-50 transition-colors"
+                className="rounded-lg p-1 text-gray-800 hover:bg-amber-50 transition-colors"
                 title="Add Category"
               >
                 <Plus className="h-4 w-4" />
@@ -386,7 +386,7 @@ export function CustomizationSuiteSpreadsheet({ productId, userId, initialEnable
                     <button
                       key={catName}
                       onClick={() => handleQuickAddCategory(catName)}
-                      className="text-xs p-2 rounded border border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-colors"
+                      className="text-xs p-2 rounded border border-gray-200 hover:border-amber-300 hover:bg-amber-50 transition-colors"
                     >
                       {catName}
                     </button>
@@ -404,7 +404,7 @@ export function CustomizationSuiteSpreadsheet({ productId, userId, initialEnable
                     key={category.id}
                     className={`p-3 rounded-lg border cursor-pointer transition-all ${
                       selectedCategoryId === category.id
-                        ? 'border-purple-500 bg-purple-50'
+                        ? 'border-amber-500 bg-amber-50'
                         : isTemp
                           ? 'border-orange-300 bg-orange-50'
                           : 'border-gray-200 hover:border-gray-300'
@@ -436,7 +436,7 @@ export function CustomizationSuiteSpreadsheet({ productId, userId, initialEnable
                           </button>
                         )}
                         {category.isRequired && (
-                          <span className="text-xs font-medium text-purple-600">Required</span>
+                          <span className="text-xs font-medium text-gray-800">Required</span>
                         )}
                       </div>
                     </div>

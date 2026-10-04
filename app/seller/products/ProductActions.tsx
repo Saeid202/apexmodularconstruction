@@ -13,7 +13,7 @@ interface ProductActionsProps {
   productStatus: string;
 }
 
-const PURPLE = "#4B1D8F";
+const PURPLE = "#1F2937";
 
 export function ProductActions({ productId, productName, productSlug, productStatus }: ProductActionsProps) {
   const router = useRouter();
@@ -71,17 +71,17 @@ export function ProductActions({ productId, productName, productSlug, productSta
       </button>
 
       <Link href={`/products/${productSlug}`} target="_blank" title="View listing"
-        className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#EDE9F6]"
+        className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#FEF3C7]"
         style={{ color: PURPLE }}>
         <Eye className="h-4 w-4" />
       </Link>
       <button type="button" title="Download PDF" onClick={handleDownloadPdf}
-        className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#EDE9F6]"
+        className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#FEF3C7]"
         style={{ color: PURPLE }}>
         <FileDown className="h-4 w-4" />
       </button>
       <Link href={`/seller/products/${productId}/edit`} title="Edit product"
-        className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#EDE9F6]"
+        className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors hover:bg-[#FEF3C7]"
         style={{ color: PURPLE }}>
         <Pencil className="h-4 w-4" />
       </Link>

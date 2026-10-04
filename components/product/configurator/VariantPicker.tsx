@@ -16,7 +16,8 @@
 import { Check } from 'lucide-react'
 import type { ProductImageData } from '@/types'
 
-const PURPLE = '#4B1D8F'
+const PURPLE = '#1F2937'
+const AMBER = '#F59E0B'
 const GOLD = '#D4AF37'
 
 /**
@@ -52,14 +53,14 @@ export function VariantPicker({ images, activeId, basePrice, onSelect }: Props) 
       {/* Column headers, mirroring the original variants table */}
       <div
         className={`${GRID} px-3 py-2`}
-        style={{ background: `linear-gradient(135deg, ${PURPLE} 0%, #3A1570 100%)` }}
+        style={{ backgroundColor: '#FFFBEB', borderBottom: `2px solid ${AMBER}` }}
       >
         <span aria-hidden="true" />
-        <span className="text-[10px] font-black uppercase tracking-wider text-white">Code</span>
-        <span className="text-right text-[10px] font-black uppercase tracking-wider text-white">
+        <span className="text-[10px] font-black uppercase tracking-wider text-gray-700">Code</span>
+        <span className="text-right text-[10px] font-black uppercase tracking-wider text-gray-700">
           Price (CAD)
         </span>
-        <span className="text-center text-[10px] font-black uppercase tracking-wider text-white">
+        <span className="text-center text-[10px] font-black uppercase tracking-wider text-gray-700">
           Type
         </span>
       </div>
@@ -81,7 +82,7 @@ export function VariantPicker({ images, activeId, basePrice, onSelect }: Props) 
               aria-pressed={active}
               aria-label={`Select variant ${code}`}
               className={`${GRID} w-full px-3 py-2.5 text-left transition-colors hover:bg-gray-50`}
-              style={{ backgroundColor: active ? '#EDE9F6' : 'white' }}
+              style={{ backgroundColor: active ? '#FEF3C7' : 'white' }}
             >
               {/* Thumbnail */}
               <span
@@ -100,7 +101,7 @@ export function VariantPicker({ images, activeId, basePrice, onSelect }: Props) 
                 {active && (
                   <span
                     className="absolute inset-0 flex items-center justify-center"
-                    style={{ backgroundColor: 'rgba(75,29,143,0.45)' }}
+                    style={{ backgroundColor: 'rgba(31,41,55,0.45)' }}
                   >
                     <Check className="h-3.5 w-3.5 text-white" />
                   </span>
@@ -129,7 +130,7 @@ export function VariantPicker({ images, activeId, basePrice, onSelect }: Props) 
               {/* Type */}
               <span
                 className="flex w-full items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold whitespace-nowrap text-white"
-                style={{ backgroundColor: isMaster ? GOLD : PURPLE }}
+                style={{ backgroundColor: isMaster ? GOLD : '#FDE68A', color: '#1F2937' }}
               >
                 {isMaster ? '★ Master' : 'Variant'}
               </span>

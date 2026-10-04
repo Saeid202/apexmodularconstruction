@@ -8,7 +8,7 @@ import { getAllOrdersForAgent, type AgentOrder } from "@/app/actions/agent";
 const STATUS_CONFIG: Record<string, { label: string; pill: string; dot: string }> = {
   pending:     { label: "Pending",     pill: "bg-amber-100 text-amber-800 border border-amber-300",    dot: "bg-amber-400" },
   in_progress: { label: "In Progress", pill: "bg-blue-100 text-blue-800 border border-blue-300",       dot: "bg-blue-500" },
-  quoted:      { label: "Quoted",      pill: "bg-violet-100 text-violet-800 border border-violet-300", dot: "bg-violet-500" },
+  quoted:      { label: "Quoted",      pill: "bg-amber-100 text-gray-900 border border-amber-300", dot: "bg-amber-500" },
   completed:   { label: "Completed",   pill: "bg-emerald-100 text-emerald-800 border border-emerald-300", dot: "bg-emerald-500" },
 };
 
@@ -75,7 +75,7 @@ export default function AgentOrdersPage() {
               onClick={() => setFilter(tab.key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
                 filter === tab.key
-                  ? "bg-white text-[#4B1D8F] shadow-sm font-bold"
+                  ? "bg-white text-[#1F2937] shadow-sm font-bold"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
@@ -88,7 +88,7 @@ export default function AgentOrdersPage() {
       {/* Content */}
       {loading ? (
         <div className="flex justify-center py-24">
-          <Loader2 className="h-6 w-6 animate-spin text-[#4B1D8F]" />
+          <Loader2 className="h-6 w-6 animate-spin text-[#1F2937]" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm text-center py-24">
@@ -106,16 +106,16 @@ export default function AgentOrdersPage() {
             return (
               <div
                 key={order.id}
-                className="bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-[#4B1D8F]/40 hover:shadow-md transition-all"
+                className="bg-white border-2 border-gray-200 rounded-2xl shadow-sm hover:border-[#1F2937]/40 hover:shadow-md transition-all"
               >
                 {/* Top accent bar */}
-                <div className="h-1 w-full rounded-t-2xl bg-[#4B1D8F]" />
+                <div className="h-1 w-full rounded-t-2xl bg-[#1F2937]" />
 
                 <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4">
 
                   {/* Left: icon + order info */}
                   <div className="flex items-start gap-4 flex-1 min-w-0">
-                    <div className="shrink-0 h-14 w-14 rounded-xl bg-[#4B1D8F] flex items-center justify-center shadow-sm">
+                    <div className="shrink-0 h-14 w-14 rounded-xl bg-[#1F2937] flex items-center justify-center shadow-sm">
                       <ClipboardList className="h-7 w-7 text-white" />
                     </div>
 
@@ -128,7 +128,7 @@ export default function AgentOrdersPage() {
                           {status.label}
                         </span>
                         {order.has_unread_response && (
-                          <span className="px-3 py-1 rounded-full text-sm font-bold bg-[#4B1D8F] text-white">
+                          <span className="px-3 py-1 rounded-full text-sm font-bold bg-[#1F2937] text-white">
                             New Reply
                           </span>
                         )}
@@ -186,7 +186,7 @@ export default function AgentOrdersPage() {
                   <div className="flex items-center gap-3 shrink-0 sm:pl-5 sm:border-l sm:border-gray-100">
                     <Link
                       href={`/agent/orders/${order.id}`}
-                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white bg-[#4B1D8F] hover:bg-[#3A1570] shadow-md transition-colors whitespace-nowrap"
+                      className="flex items-center gap-2 px-6 py-3 rounded-xl text-base font-bold text-white bg-[#1F2937] hover:bg-[#111827] shadow-md transition-colors whitespace-nowrap"
                     >
                       <Eye className="h-5 w-5" />
                       View & Reply

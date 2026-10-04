@@ -100,7 +100,7 @@ export function EyebrowPill({
         'inline-flex items-center rounded-full border px-3 py-1 text-[10px] font-semibold tracking-[0.16em] uppercase',
         invert
           ? 'border-white/25 text-white/80'
-          : 'border-[#D4AF37]/45 bg-[var(--surface-subtle)] text-[#4B1D8F]',
+          : 'border-[#D4AF37]/45 bg-[var(--surface-subtle)] text-[#1F2937]',
         className
       )}
     >
@@ -186,18 +186,18 @@ type PillVariant = 'primary' | 'secondary' | 'light' | 'outlineLight' | 'gold'
 type PillSize = 'sm' | 'md'
 
 const PILL_BASE =
-  'group inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full font-semibold whitespace-nowrap transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 active:translate-y-px'
+  'group inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full font-semibold whitespace-nowrap transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 active:translate-y-px'
 
 const PILL_VARIANT: Record<PillVariant, string> = {
   // Takes the role the reference gives amber: the single obvious next step.
-  primary: 'bg-[#4B1D8F] text-white hover:bg-[#3A1570]',
+  primary: 'bg-[#EA580C] text-white hover:bg-[#C2410C]',
   secondary:
     'border border-neutral-300 bg-white text-neutral-900 hover:border-neutral-900 hover:bg-neutral-50',
   // The reference's white "Learn More" pill, for use on top of photography.
   light: 'bg-white/95 text-neutral-900 backdrop-blur-sm hover:bg-white',
   outlineLight:
     'border border-white/60 text-white backdrop-blur-sm hover:border-white hover:bg-white/15',
-  gold: 'bg-[#D4AF37] text-[#1a0a33] hover:bg-[#b8960f]',
+  gold: 'bg-[#EA580C] text-white hover:bg-[#C2410C]',
 }
 
 const PILL_SIZE: Record<PillSize, string> = {
@@ -271,8 +271,8 @@ export function ArrowLink({
       href={href}
       className={cn(
         // min-h keeps the touch target at 24px without needing a bigger font.
-        'group inline-flex min-h-6 items-center gap-1.5 py-1 text-[13px] font-semibold underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current focus-visible:ring-2 focus-visible:ring-[#6B35B8] focus-visible:ring-offset-2 focus-visible:outline-none',
-        invert ? 'text-white/85 hover:text-white' : 'text-neutral-900 hover:text-[#4B1D8F]',
+        'group inline-flex min-h-6 items-center gap-1.5 py-1 text-[13px] font-semibold underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current focus-visible:ring-2 focus-visible:ring-[#F59E0B] focus-visible:ring-offset-2 focus-visible:outline-none',
+        invert ? 'text-white/85 hover:text-white' : 'text-neutral-900 hover:text-[#1F2937]',
         className
       )}
     >

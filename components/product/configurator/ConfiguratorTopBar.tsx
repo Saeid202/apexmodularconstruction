@@ -40,7 +40,7 @@ export function ConfiguratorTopBar({
       {/* Back to catalogue */}
       <Link
         href="/products"
-        className="flex h-9 shrink-0 items-center gap-2 rounded-xl px-2.5 text-xs font-bold uppercase tracking-widest text-purple-100 transition-colors hover:bg-white/10 hover:text-white sm:px-3"
+        className="flex h-9 shrink-0 items-center gap-2 rounded-xl px-2.5 text-xs font-bold uppercase tracking-widest text-amber-100 transition-colors hover:bg-white/10 hover:text-white sm:px-3"
       >
         <ArrowLeft className="h-4 w-4" />
         <span className="hidden sm:inline">All Products</span>
@@ -79,7 +79,7 @@ export function ConfiguratorTopBar({
       <div className="hidden shrink-0 flex-col items-end md:flex">
         <span className="text-sm font-black text-white">{priceLabel}</span>
         {priceCaption && (
-          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-purple-200">
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-amber-200">
             {priceCaption}
           </span>
         )}

@@ -19,7 +19,7 @@ function roleLabel(role: string) {
 function roleBadgeColor(role: string) {
   if (role === "agent") return "bg-blue-100 text-blue-700";
   if (role === "partner") return "bg-amber-100 text-amber-700";
-  return "bg-purple-100 text-purple-700";
+  return "bg-amber-100 text-gray-800";
 }
 
 function initials(name: string) {
@@ -46,8 +46,8 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat 
         <button
           onClick={onNewChat}
           title="New conversation"
-          className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-purple-50 transition-colors"
-          style={{ color: "#4B1D8F" }}
+          className="flex items-center justify-center h-7 w-7 rounded-lg hover:bg-amber-50 transition-colors"
+          style={{ color: "#1F2937" }}
         >
           <MessageSquarePlus className="h-4 w-4" />
         </button>
@@ -61,7 +61,7 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat 
             <button
               onClick={onNewChat}
               className="mt-3 text-xs font-semibold underline"
-              style={{ color: "#4B1D8F" }}
+              style={{ color: "#1F2937" }}
             >
               Start one
             </button>
@@ -74,13 +74,13 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat 
                 key={conv.id}
                 onClick={() => onSelect(conv)}
                 className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-gray-50 ${
-                  isActive ? "bg-purple-50" : "hover:bg-gray-50"
+                  isActive ? "bg-amber-50" : "hover:bg-gray-50"
                 }`}
               >
                 {/* Avatar */}
                 <div
                   className="flex h-9 w-9 items-center justify-center rounded-full text-white text-xs font-bold shrink-0"
-                  style={{ background: "linear-gradient(135deg, #4B1D8F, #D4AF37)" }}
+                  style={{ background: "linear-gradient(135deg, #1F2937, #D4AF37)" }}
                 >
                   {initials(conv.other_user_name)}
                 </div>
@@ -95,7 +95,7 @@ export function ConversationList({ conversations, activeId, onSelect, onNewChat 
                     <p className="text-[11px] text-gray-500 truncate">{conv.last_message ?? "No messages yet"}</p>
                     {conv.unread_count > 0 && (
                       <span className="flex h-4 w-4 items-center justify-center rounded-full text-white text-[9px] font-bold shrink-0"
-                        style={{ background: "#4B1D8F" }}>
+                        style={{ background: "#1F2937" }}>
                         {conv.unread_count > 9 ? "9+" : conv.unread_count}
                       </span>
                     )}
